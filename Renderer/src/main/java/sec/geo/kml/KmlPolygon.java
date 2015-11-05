@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import org.gavaghan.geodesy.Ellipsoid;
 import sec.geo.kml.KmlOptions.AltitudeMode;
 import sec.geo.shape.Point;
-import sec.geo.utilities.StringBuilder;
 
 public class KmlPolygon {
 

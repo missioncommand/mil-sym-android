@@ -13,8 +13,6 @@ import sec.geo.shape.Radarc;
 import sec.geo.shape.Route;
 import sec.geo.shape.Track;
 import sec.web.exceptions.InvalidNumberOfPointsException;
-import sec.geo.utilities.StringBuilder;
-
 
 /**
  * Responsible for generating the KML for all 3D shapes.  This

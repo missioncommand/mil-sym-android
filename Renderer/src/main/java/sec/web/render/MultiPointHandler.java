@@ -7,7 +7,6 @@ import android.util.SparseArray;
 import armyc2.c2sd.graphics2d.*;
 
 import java.util.Map;
-import sec.geo.utilities.StringBuilder;
 import sec.web.render.utilities.JavaRendererUtilities;
 import sec.web.render.utilities.LineInfo;
 import sec.web.render.utilities.SymbolInfo;
@@ -1379,13 +1378,12 @@ public class MultiPointHandler {
                 {
                     //String fillKML = AddImageFillToKML(tgPoints, jsonContent, mSymbol, ipc, normalize);
                     String fillKML = AddImageFillToKML(tgPoints, jsonContent, symbolModifiers, ipc, normalize);
-                    if(fillKML != null && fillKML.equals("")==false)
+                    if(fillKML != null && !fillKML.isEmpty())
                     {
-                        jsonContent = fillKML;
+                        jsonOutput.append(fillKML);
                     }
                 }///end if symbol fill or line pattern//////////////////////////
-                
-                jsonOutput.append(jsonContent);
+
 //                if(mSymbol.getModifierMap().indexOfKey(MilStdAttributes.LookAtTag) &&
 //                        mSymbol.getModifierMap().get(MilStdAttributes.LookAtTag).toLowerCase().equals("true"))
 //                {

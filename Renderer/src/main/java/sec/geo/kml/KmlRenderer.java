@@ -3,7 +3,6 @@ package sec.geo.kml;
 import armyc2.c2sd.graphics2d.PathIterator;
 import sec.sun.awt.geom.AreaIterator;
 import java.util.ArrayList;
-import sec.geo.utilities.StringBuilder;
 
 import sec.geo.shape.*;
 
@@ -169,7 +168,7 @@ public class KmlRenderer {
                 sb.replace(colorIndex, colorIndex + colorLength, colorDefault);
             }
 
-            int lineColorIndex = sb.indexOf2(colorField, colorIndex + colorLength);
+            int lineColorIndex = sb.indexOf(colorField, colorIndex + colorLength);
             if (lineColor != null) {
                 sb.replace(lineColorIndex, lineColorIndex + colorLength, lineColor);
             } else {
