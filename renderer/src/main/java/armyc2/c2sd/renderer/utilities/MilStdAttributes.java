@@ -106,11 +106,17 @@ public class MilStdAttributes {
     public static final int UsePatternFill = 18;
 
     public static final int PatternFillType = 19;
-    
+
+    /**
+     * Set the modifier color for unit modifiers. If you want to change the color of the echelon indicator you
+     * still have to use {@link #TextColor}
+     */
+    public static final int ModifierColor = 20;
+
     public static ArrayList<Integer> GetModifierList()
     {
         ArrayList<Integer> list = new ArrayList<Integer>();
-        
+
         list.add(LineColor);
         list.add(FillColor);
         list.add(IconColor);
@@ -125,7 +131,8 @@ public class MilStdAttributes {
         list.add(DrawAsIcon);
         list.add(SymbologyStandard);
         list.add(HideOptionalLabels);
-        
+        list.add(ModifierColor);
+
         return list;
     }
 }
