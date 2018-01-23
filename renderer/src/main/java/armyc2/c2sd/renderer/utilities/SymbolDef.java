@@ -9,21 +9,9 @@ package armyc2.c2sd.renderer.utilities;
 *
 * @author michael.spinelli
 */
-public class SymbolDef {
+public class SymbolDef extends BaseDef {
 
-   String _strBasicSymbolId = "";
-   String _strDescription = "";
-   String _strSymbolType = "";
-   String _strGeometry = "";
-   String _strDrawCategory = "";
-   int _intDrawCategory = 99;
-   int _intMinPoints = 0;
-   int _intMaxPoints = 0;
-   String _strModifiers = "";
-   String _strHierarchy = "";
-   String _strFullPath = "";
-   
-
+    private String _strModifiers = "";
 
 
    /**
@@ -123,102 +111,21 @@ public class SymbolDef {
 
    public SymbolDef(String basicSymbolID, String description, int drawCategory, String hierarchy, int minPoints, int maxPoints, String modifiers, String fullPath)
    {
-	   _strBasicSymbolId = basicSymbolID;
-	   _strDescription = description;
-	   _intDrawCategory = drawCategory;
-	   _strHierarchy = hierarchy;
+       _basicSymbolId = basicSymbolID;
+	   _description = description;
+	   _drawCategory = drawCategory;
+	   _hierarchy = hierarchy;
 	   _intMinPoints = minPoints;  
 	   _intMaxPoints = maxPoints;
 	   _strModifiers = modifiers;
-	   _strFullPath = fullPath;
+	   _path = fullPath;
 	      
    }
 
 
 
-   /**
-    * The basic 15 character basic symbol Id.
-    */
-
-   public String getBasicSymbolId()
-   {
-           return _strBasicSymbolId;
-   }
-
-   /**
-    * The description of this tactical graphic.  Typically the name of the tactical graphic in MIL-STD-2525B.
-    */
-   public String getDescription()
-   {
-           return _strDescription;
-   }
 
 
-
-   /**
-    * How does this draw? (autoshape, superautoshape, polygon)
-    * 
-    */
-   public int getDrawCategory()
-   {
-           return _intDrawCategory;
-   }
-
-   
-   /**
-    * Defines the minimum points fields.
-    */
-   public int getMinPoints()
-   {
-           return _intMinPoints;
-   }
-
-   /**
-    * Defines the maximum points fields.
-    */
-   public int getMaxPoints()
-   {
-           return _intMaxPoints;
-   }
-
-   public Boolean isMultiPoint()
-   {
-       char codingScheme = _strBasicSymbolId.charAt(0);
-       Boolean returnVal = false;
-       if (codingScheme == 'G' || codingScheme == 'W') 
-       {
-
-           if(_intMaxPoints > 1)
-           {
-               returnVal = true;
-           }
-           else
-           {
-               switch(_intDrawCategory)
-               {
-                   case SymbolDef.DRAW_CATEGORY_RECTANGULAR_PARAMETERED_AUTOSHAPE:
-                   case SymbolDef.DRAW_CATEGORY_SECTOR_PARAMETERED_AUTOSHAPE:
-                   case SymbolDef.DRAW_CATEGORY_TWO_POINT_RECT_PARAMETERED_AUTOSHAPE: 
-                   case SymbolDef.DRAW_CATEGORY_CIRCULAR_PARAMETERED_AUTOSHAPE:
-                   case SymbolDef.DRAW_CATEGORY_CIRCULAR_RANGEFAN_AUTOSHAPE:
-                   case SymbolDef.DRAW_CATEGORY_ROUTE:
-                       returnVal = true;
-                       break;
-                   default:
-                       returnVal = false;
-               }
-           }
-           return returnVal;
-       } 
-       else if(_strBasicSymbolId.startsWith("BS_") || _strBasicSymbolId.startsWith("BBS_") || _strBasicSymbolId.startsWith("PBS_"))
-       {
-           return true;
-       }
-       else 
-       {
-           return false;
-       }
-   }
    
 
    /**
@@ -229,22 +136,5 @@ public class SymbolDef {
            return _strModifiers;
    }
 
-   /**
-    * Defines where the symbol goes in the ms2525 hierarchy.
-    * 2.X.etc...
-    */
-   public String getHierarchy()
-   {
-           return _strHierarchy;
-   }
-
-    /**
-    * Defines where the symbol goes in the ms2525 hierarchy.
-     * TacticalGraphics/Areas/stuff...
-    */
-   public String getFullPath()
-   {
-           return _strFullPath;
-   }
 
 }

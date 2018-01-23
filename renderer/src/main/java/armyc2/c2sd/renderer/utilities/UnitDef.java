@@ -9,7 +9,7 @@ package armyc2.c2sd.renderer.utilities;
 *
 * @author michael.spinelli
 */
-public class UnitDef {
+public class UnitDef extends BaseDef {
 
 	/**
 	* Just a category in the milstd hierarchy.
@@ -24,16 +24,11 @@ public class UnitDef {
    static public final int DRAW_CATEGORY_POINT = 8;
 
 
-   private String _basicSymbolId = "";
-   private String _description = "";
-   private int _drawCategory = 0;
-   private String _hierarchy = "";
-   private String _path = "";
    /**
     * 
-    * @param symbolID
+    * @param basicSymbolID
     * @param description
-    * @param idc drar
+    * @param drawCategory
     * @param hierarchy
     * @param path
     */
@@ -45,51 +40,11 @@ public class UnitDef {
            _drawCategory = drawCategory;
            _hierarchy = hierarchy;
            _path = path;
+           _intMinPoints=1;
+           _intMaxPoints=1;
    }
 
 
-
-   /**
-    * The basic 15 character basic symbol Id.
-    */
-   
-   public String getBasicSymbolId()
-   {
-           return _basicSymbolId;
-   }
-
-
-   /**
-    * The description of this tactical graphic.  Typically the name of the tactical graphic in MIL-STD-2525B.
-    */
-   
-   public String getDescription()
-   {
-           return _description;
-   }
-
-
-   /**
-    * 8 is singlepoint unit, 0 is category
-    * (do not draw because it's just a category node in the tree)
-    * @return
-    */
-   public int getDrawCategory()
-   {
-           return _drawCategory;
-   }
-
-
-
-   /**
-    * Defines where the symbol goes in the ms2525 hierarchy.
-    * 2.X.whatever
-    */
-
-   public String getHierarchy()
-   {
-           return _hierarchy;
-   }
 
 
 
@@ -103,16 +58,6 @@ public class UnitDef {
            return _strAlphaHierarchy;
    }//*/
 
-
-           
-	/**
-	* Defines where the symbol goes in the ms2525 hierarchy.
-	 * Warfighting/something/something
-	*/
-   public String getFullPath()
-   {
-           return _path;
-   }
 
 
 
