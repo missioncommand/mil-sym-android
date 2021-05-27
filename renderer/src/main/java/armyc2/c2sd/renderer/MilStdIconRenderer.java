@@ -1,5 +1,6 @@
 package armyc2.c2sd.renderer;
 
+import android.content.Context;
 import android.util.Log;
 import android.util.SparseArray;
 
@@ -31,7 +32,7 @@ public class MilStdIconRenderer
      *
      * @param cacheDir
      */
-    public synchronized void init(String cacheDir)// List<Typeface> fonts, List<String> xml
+    public synchronized void init(Context context, String cacheDir)// List<Typeface> fonts, List<String> xml
     {
         try {
             if (!_initSucces.get()) {
@@ -39,13 +40,13 @@ public class MilStdIconRenderer
                 _cacheDir = cacheDir;
 
                 // setup fonts
-                FontManager.getInstance().init(cacheDir);
+                FontManager.getInstance().init(context, cacheDir);
 
-                UnitDefTable.getInstance().init();
-                UnitFontLookup.getInstance().init();
-                SymbolDefTable.getInstance().init();
-                SinglePointLookup.getInstance().init();
-                TacticalGraphicLookup.getInstance().init();
+                UnitDefTable.getInstance().init(context);
+                UnitFontLookup.getInstance().init(context);
+                SymbolDefTable.getInstance().init(context);
+                SinglePointLookup.getInstance().init(context);
+                TacticalGraphicLookup.getInstance().init(context);
 
                 // PROTOTYPE SVG////////////////////////////////////////
                 // works, but half speed

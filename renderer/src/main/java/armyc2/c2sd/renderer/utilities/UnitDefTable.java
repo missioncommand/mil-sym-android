@@ -4,6 +4,9 @@
 
 package armyc2.c2sd.renderer.utilities;
 
+import armyc2.c2sd.singlepointrenderer.R;
+
+import android.content.Context;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -49,7 +52,7 @@ public class UnitDefTable
      * if(foo.getHierarchy().equalsIgnoreCase(hierarchy)) { return } } }
      */
 
-    public synchronized void init()
+    public synchronized void init(Context context)
     {
         if (_initCalled == false) {
 
@@ -60,8 +63,7 @@ public class UnitDefTable
             _UnitDefDupsC = new ArrayList<>();
 
             try {
-                DataInputStream dis = new DataInputStream(new BufferedInputStream(getClass().getClassLoader
-                        ().getResourceAsStream("res/raw/unitconstants.bin")));
+                DataInputStream dis = new DataInputStream(new BufferedInputStream(context.getResources().openRawResource(R.raw.unitconstants)));
                 readBinary(dis);
                 dis.close();
             } catch (IOException e) {

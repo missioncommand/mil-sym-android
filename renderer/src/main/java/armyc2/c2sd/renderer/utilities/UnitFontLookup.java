@@ -4,6 +4,9 @@
 
 package armyc2.c2sd.renderer.utilities;
 
+import armyc2.c2sd.singlepointrenderer.R;
+
+import android.content.Context;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -90,14 +93,13 @@ public class UnitFontLookup
         return _instance;
     }
 
-    public synchronized void init()
+    public synchronized void init(Context context)
     {
         if (_initCalled == false) {
             _instance = new UnitFontLookup();
 
             try {
-                DataInputStream dis = new DataInputStream(new BufferedInputStream(getClass().getClassLoader
-                        ().getResourceAsStream("res/raw/unitfontmappings.bin")));
+                DataInputStream dis = new DataInputStream(new BufferedInputStream(context.getResources().openRawResource(R.raw.unitfontmappings)));
                 readBinary(dis);
                 dis.close();
             } catch (IOException e) {

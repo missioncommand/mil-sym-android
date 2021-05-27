@@ -1,5 +1,7 @@
 package armyc2.c2sd.renderer.utilities;
 
+import armyc2.c2sd.singlepointrenderer.R;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -7,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
+import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
@@ -27,9 +30,6 @@ public class FontManager {
 	private Typeface _tfUnits = null;
 	private Typeface _tfSP = null;
 	private Typeface _tfTG = null;
-	private String unitFontName = "unitfont.ttf";
-	private String spFontName = "singlepointfont.ttf";
-	private String tgFontName = "tacticalgraphicsfont.ttf";
 	private String _cacheDir = "";
 	
 	private FontManager()
@@ -45,14 +45,14 @@ public class FontManager {
       return _instance;
     }
 	
-	public synchronized void init(String cacheDir)
+	public synchronized void init(Context context, String cacheDir)
 	{
 		if(!_initSuccess)
 		{
 			_cacheDir = cacheDir;
-			_tfUnits = loadFont(unitFontName);
-			_tfSP = loadFont(spFontName);
-			_tfTG = loadFont(tgFontName);
+			_tfUnits = loadFont(context, R.raw.unitfont);
+			_tfSP = loadFont(context, R.raw.singlepointfont);
+			_tfTG = loadFont(context, R.raw.tacticalgraphicsfont);
 			if( _tfUnits != null && _tfSP != null && _tfTG != null)
 				_initSuccess = true;
 			else
@@ -82,16 +82,15 @@ public class FontManager {
 		throw new Error("FontManager:  Must call \".init(String cacheDir)\" before using");
 	}
 	
-	private Typeface loadFont(String fontName)
+	private Typeface loadFont(Context context, int fontName)
 	{
-		String fontFolder = "res/raw/";
 		Typeface tf = null;
 		InputStream is = null;
 		try
 		{
 			
 			//InputStream fontStream = this.getClass().getClassLoader().getResourceAsStream("assets/fonts/unitfonts.ttf");
-			is = this.getClass().getClassLoader().getResourceAsStream(fontFolder + fontName);
+			is = context.getResources().openRawResource(fontName);
 			
 			if(is != null)
 			{

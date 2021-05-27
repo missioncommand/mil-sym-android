@@ -4,6 +4,9 @@
 
 package armyc2.c2sd.renderer.utilities;
 
+import armyc2.c2sd.singlepointrenderer.R;
+
+import android.content.Context;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -52,15 +55,14 @@ public class SinglePointLookup
         return _instance;
     }
 
-    public synchronized void init()
+    public synchronized void init(Context context)
     {
 
         if (_initCalled == false) {
             _instance = new SinglePointLookup();
 
             try {
-                DataInputStream dis = new DataInputStream(new BufferedInputStream(getClass().getClassLoader
-                        ().getResourceAsStream("res/raw/singlepoint.bin")));
+                DataInputStream dis = new DataInputStream(new BufferedInputStream(context.getResources().openRawResource(R.raw.singlepoint)));
                 readBinary(dis);
                 dis.close();
             } catch (IOException e) {

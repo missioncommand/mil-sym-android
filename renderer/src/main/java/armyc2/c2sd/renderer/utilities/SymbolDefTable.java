@@ -9,6 +9,9 @@ package armyc2.c2sd.renderer.utilities;
  * import java.io.*; import java.util.HashMap; import java.util.Map;
  */
 
+import armyc2.c2sd.singlepointrenderer.R;
+
+import android.content.Context;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -78,7 +81,7 @@ public class SymbolDefTable
         return _instance;
     }
 
-    public final synchronized void init()
+    public final synchronized void init(Context context)
     {
         if (_initCalled == false) {
             _SymbolDefinitionsB = new HashMap<>();
@@ -88,8 +91,7 @@ public class SymbolDefTable
             _SymbolDefDupsC = new ArrayList<>();
 
             try {
-                DataInputStream dis = new DataInputStream(new BufferedInputStream(this.getClass()
-                        .getClassLoader().getResourceAsStream("res/raw/symbolconstants.bin")));
+                DataInputStream dis = new DataInputStream(new BufferedInputStream(context.getResources().openRawResource(R.raw.symbolconstants)));
                 readBinary(dis);
                 dis.close();
             } catch (IOException e) {

@@ -3,6 +3,7 @@ package sec.web.render;
 // It requires that you import the plugins.jar from the jdk folder into the project libraries
 //import netscape.javascript.JSObject;
 
+import android.content.Context;
 import android.graphics.BitmapShader;
 import android.graphics.Shader;
 import android.util.SparseArray;
@@ -75,13 +76,13 @@ public final class SECWebRenderer /* extends Applet */ {
     private static boolean _initSuccess = false;
     
 
-    public static synchronized void init(String cacheDir) {
+    public static synchronized void init(Context context, String cacheDir) {
 
         try
         {
         	if(_initSuccess == false)
         	{
-                    MilStdIconRenderer.getInstance().init(cacheDir);
+                    MilStdIconRenderer.getInstance().init(context, cacheDir);
 	            //use SECWebRenderer.setLoggingLevel()
 	            
 	            //sets default value for single point symbology to have an outline.
