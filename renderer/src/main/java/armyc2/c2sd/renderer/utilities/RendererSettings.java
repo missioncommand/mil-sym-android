@@ -114,6 +114,7 @@ public class RendererSettings{
      * 2525C, which includes 2525C & USAS COEv3
      */
     public static final int Symbology_2525C = 1;
+    public static final int Symbology_2525D = 2;
     
     private static int _SymbologyStandard = 1;
 

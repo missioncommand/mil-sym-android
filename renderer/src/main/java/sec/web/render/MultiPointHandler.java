@@ -1840,8 +1840,8 @@ public class MultiPointHandler {
      * Populates a symbol with the modifiers from a JSON string. This function
      * will overwrite any previously populated modifier data.
      *
-     * @param jsonString a JSON formatted string containing all the symbol
-     * modifier data.
+     *
+     *
      * @param symbol An existing MilStdSymbol
      * @return
      */
@@ -2078,7 +2078,7 @@ public class MultiPointHandler {
                 }
             }
         } catch (Exception exc2) {
-            Log.e("MultiPointHandler.populateModifiers", exc2.getMessage(), exc2);
+            Log.e("MPH.populateModifiers", exc2.getMessage(), exc2);
         }
         return true;
 
@@ -3337,6 +3337,11 @@ public class MultiPointHandler {
 
         try {
 
+            if(symbol.getSymbologyStandard() == RendererSettings.Symbology_2525D)
+            {
+                //if 2525D, just say true
+                return "true";
+            }
             String message = "";
             if (SymbolDefTable.getInstance().HasSymbolDef(basicID, symStd)) {
                 sd = SymbolDefTable.getInstance().getSymbolDef(basicID, symStd);
