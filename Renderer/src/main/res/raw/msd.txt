@@ -1,0 +1,2053 @@
+01	Unspecified			000000
+	Military			110000
+		Fixed Wing		110100
+			Medical Evacuation (MEDEVAC)	110101
+			Attack/Strike	110102
+			Bomber	110103
+			Fighter	110104
+			Fighter/Bomber	110105
+			{Reserved for future use}	110106
+			Cargo	110107
+			Electronic Combat (EC)/Jammer	110108
+			Tanker	110109
+			Patrol	110110
+			Reconnaissance	110111
+			Trainer	110112
+			Utility	110113
+			Vertical or Short Take-off and Landing (VSTOL)	110114
+			Airborne Command Post (ACP)	110115
+			Airborne Early Warning (AEW)	110116
+			Antisurface Warfare	110117
+			Antisubmarine Warfare	110118
+			Communications	110119
+			Combat Search and Rescue (CSAR)	110120
+			Electronic Support (ES)	110121
+			Government	110122
+			Mine Countermeasures (MCM)	110123
+			Personnel Recovery	110124
+			Search and Rescue	110125
+			Special Operations Forces	110126
+			Ultra Light	110127
+			Photographic Reconnaissance	110128
+			Very Important Person (VIP)	110129
+			Suppression of Enemy Air Defense	110130
+			Passenger	110131
+			Escort	110132
+			Electronic Attack (EA)	110133
+		Rotary Wing		110200
+		"Unmanned Aircraft (UA) / Unmanned Aerial Vehicle (UAV) / Unmanned Aircraft System (UAS) / Remotely Piloted Vehicle (RPV)"		110300
+		Vertical–Takeoff UAV (VT–UAV)		110400
+		Lighter Than Air		110500
+		Airship		110600
+		Tethered Lighter than Air		110700
+	Civilian			120000
+		Fixed Wing		120100
+		Rotary Wing		120200
+		"Unmanned Aircraft (UA) / Unmanned Aerial Vehicle (UAV) / Unmanned Aircraft System (UAS) / Remotely Piloted Vehicle (RPV)"		120300
+		Lighter Than Air		120400
+		Airship		120500
+		Tethered Lighter than Air		120600
+	Weapon			130000
+		Bomb		130100
+		Decoy		130200
+	Manual Track			140000
+02	Unspecified			0
+	Missile			110000
+05	Unspecified			0
+	Military			110000
+		Space Vehicle		110100
+		Re–Entry Vehicle		110200
+		Planet Lander		110300
+		Orbiter Shuttle		110400
+		Capsule		110500
+		"Satellite, General"		110600
+		Satellite		110700
+		Antisatellite Weapon		110800
+		Astronomical Satellite		110900
+		Biosatellite		111000
+		Communications Satellite		111100
+		Earth Observation Satellite		111200
+		Miniaturized Satellite		111300
+		Navigational Satellite		111400
+		Reconnaissance Satellite		111500
+		Space Station		111600
+		Tethered Satellite		111700
+		Weather Satellite		111800
+		Space Launched Vehicle (SLV)		111900
+	Civilian			120000
+		Orbiter Shuttle		120100
+		Capsule		120200
+		Satellite		120300
+		Astronomical Satellite		120400
+		Biosatellite		120500
+		Communications Satellite		120600
+		Earth Observation Satellite		120700
+		Miniaturized Satellite		120800
+		Navigational Satellite		120900
+		Space Station		121000
+		Tethered Satellite		121100
+		Weather Satellite		121200
+	Manual Track			130000
+06	Unspecified			0
+	Missile			110000
+10	Unspecified			0
+	Command and Control			110000
+		Broadcast Transmitter Antennae		110100
+		Civil Affairs 		110200
+		Civil–Military Cooperation 		110300
+		Information Operations		110400
+		Liaison		110500
+		Military Information Support Operations (MISO)		110600
+			Broadcast Transmitter Antennae	110601
+		Radio		110700
+		Radio Relay		110800
+		Radio Teletype Center		110900
+		Signal		111000
+			Radio	111001
+			Radio Relay	111002
+			Teletype	111003
+			Tactical Satellite	111004
+			Video Imagery (Combat Camera)	111005
+		Tactical Satellite		111100
+		Video Imagery (Combat Camera)		111200
+		Space		111300
+		Special Troops		111400
+	Movement and Maneuver			120000
+		Air Assault with Organic Lift		120100
+		Air Traffic Services/Airfield Operations		120200
+		{Reserved for future use}		120300
+		Antitank/Antiarmor		120400
+			Armored	120401
+			Motorized	120402
+		Armor/Armored/Mechanized/Self–Propelled/ Tracked		120500
+			Reconnaissance/Cavalry/Scout	120501
+			Amphibious	120502
+		Army Aviation/Aviation Rotary Wing		120600
+			Reconnaissance	120601
+		Aviation Composite		120700
+		Aviation Fixed Wing		120800
+			Reconnaissance	120801
+		Combat		120900
+		Combined Arms		121000
+		Infantry		121100
+			Amphibious	121101
+			Armored/Mechanized/Tracked	121102
+			Main Gun System 	121103
+			Motorized 	121104
+			Infantry Fighting Vehicle	121105
+		Observer		121200
+		Reconnaissance/Cavalry/Scout		121300
+			Reconnaissance and Surveillance	121301
+			Marine	121302
+			Motorized	121303
+		Sea Air Land (SEAL)		121400
+		Sniper		121500
+		Surveillance		121600
+		Special Forces		121700
+		Special Operations Forces (SOF)		121800
+			Fixed Wing MISO	121801
+			Ground	121802
+			Special Boat	121803
+			Special SSNR	121804
+			Underwater Demolition Team	121805
+		Unmanned Aerial Systems		121900
+		Ranger		122000
+	Fires			130000
+		Air Defense		130100
+			Main Gun System	130101
+			Missile	130102
+			Air and Missile Defense	130103
+		Air/Land Naval Gunfire Liaison		130200
+		Field Artillery		130300
+			Self–propelled	130301
+			Target Acquisition	130302
+		Field Artillery Observer		130400
+		Joint Fire Support		130500
+		Meteorological		130600
+		Missile		130700
+		Mortar		130800
+			Armored/Mechanized/Tracked	130801
+			Self-Propelled Wheeled	130802
+			Towed	130803
+		Survey		130900
+	Protection			140000
+		Chemical Biological Radiological Nuclear Defense		140100
+			Mechanized	140101
+			Motorized	140102
+			Reconnaissance	140103
+			Reconnaissance Armored	140104
+			Reconnaissance Equipped	140105
+			"Chemical, Biological, Radiological, Nuclear, and High-Yield Explosives"	140106
+		Combat Support (Maneuver Enhancement)		140200
+		Criminal Investigation Division		140300
+		Diving		140400
+		Dog		140500
+		Drilling		140600
+		Engineer		140700
+			Mechanized	140701
+			Motorized	140702
+			Reconnaissance	140703
+		Explosive Ordnance Disposal (EOD)		140800
+		Field Camp Construction		140900
+		Fire Fighting/Fire Protection		141000
+		Geospatial Support/Geospatial Information Support		141100
+		Military Police		141200
+		Mine		141300
+		Mine Clearing		141400
+		Mine Launching		141500
+		Mine Laying		141600
+		Security		141700
+			Mechanized	141701
+			Motorized	141702
+		Search and Rescue		141800
+		Security Police (Air)		141900
+		Shore Patrol		142000
+		Topographic/Geospatial		142100
+		Missile Defense		142200
+	Intelligence			150000
+		Analysis		150100
+		Counterintelligence		150200
+		Direction Finding		150300
+		Electronic Ranging		150400
+		Electronic Warfare		150500
+			Analysis	150501
+			Direction Finding	150502
+			Intercept	150503
+			Jamming	150504
+			Search	150505
+		Intercept (Search and Recording)		150600
+		Interrogation		150700
+		Jamming		150800
+		Joint Intelligence Center		150900
+		Military Intelligence		151000
+		Search		151100
+		Sensor		151200
+		Military History		151300
+	Sustainment			160000
+		Administrative		160100
+		All Classes of Supply		160200
+		Airport of Debarkation/Airport of Embarkation 		160300
+		Ammunition		160400
+		Band		160500
+			Army Music	160501
+		Combat Service Support		160600
+		Finance		160700
+		Judge Advocate General		160800
+		Labor		160900
+		Laundry/Bath		161000
+		Maintenance		161100
+		Material		161200
+		Medical		161300
+		Medical Treatment Facility		161400
+		"Morale, Welfare and Recreation"		161500
+		Mortuary Affairs		161600
+		Multiple Classes of Supply		161700
+		NATO Supply Class I		161800
+		{Reserved for future use}		161900
+		NATO Supply Class III		162000
+		NATO Supply Class IV		162100
+		{Reserved for future use}		162200
+		Ordnance		162300
+		Personnel Services		162400
+		"Petroleum, Oil and Lubricants"		162500
+		{Reserved for future use}		162600
+		{Reserved for future use}		162700
+		Public Affairs/Public Information		162800
+		Quartermaster		162900
+		Railhead		163000
+		Religious Support		163100
+		Replacement Holding Unit		163200
+		Sea Port of Debarkation/Sea Port of Embarkation 		163300
+		{Reserved for future use}		163400
+		Joint Information Bureau (JIB)		163500
+		Transportation		163600
+			Floating Craft	163601
+		US Supply Class I		163700
+		{Reserved for future use}		163800
+		{Reserved for future use}		163900
+		US Supply Class IV		164000
+		{Reserved for future use}		164100
+		US Supply Class VI		164200
+		US Supply Class VII		164300
+		US Supply Class VIII		164400
+		US Supply Class IX		164500
+		US Supply Class X		164600
+		{Reserved for future use}		164700
+		Water Purification		164800
+		Broadcast		164900
+		NATO Supply Class - ALL		165000
+		Interpreter/Translator		165100
+		Support		165200
+		Army Field Support		165300
+		Contracting Services		165400
+		Parachute Rigger		165500
+	Naval 			170000
+		Naval		170100
+	Named Headquarters			180000
+		Allied Command Europe Rapid Reaction Corps (ARRC)		180100
+		Allied Command Operations		180200
+		International Security Assistance Force (ISAF)		180300
+		Multinational (MN)		180400
+	Emergency Operation			190000
+	Law Enforcement			200000
+		"Bureau of Alcohol, Tobacco, Firearms and Explosives (ATF) (Department of Justice)"		200100
+		Border Patrol		200200
+		Customs Service		200300
+		Drug Enforcement Administration (DEA)		200400
+		Department of Justice (DOJ)		200500
+		Federal Bureau of Investigation (FBI)		200600
+		Police		200700
+		Prison		200800
+		United States Secret Service (Treas) (USSS)		200900
+		Transportation Security Administration (TSA)		201000
+		Coast Guard		201100
+		US Marshals Service		201200
+		Internal Security Force		201300
+11	Unspecified			0
+	Civilian			110000
+		Environmental Protection		110100
+		Governmental Organization		110200
+		Individual		110300
+		Organization or Group		110400
+		Killing Victim		110500
+		Killing Victims		110600
+		Victim of an Attempted Crime		110700
+		Spy		110800
+		Composite Loss		110900
+		Emergency Medical Operation		111000
+15	Unspecified			0
+	Weapon/Weapon System			110000
+		Rifle		110100
+			Single Shot Rifle	110101
+			Semiautomatic Rifle	110102
+			Automatic Rifle	110103
+		Machine Gun		110200
+			Light	110201
+			Medium	110202
+			Heavy	110203
+		Grenade Launcher		110300
+			Light	110301
+			Medium	110302
+			Heavy	110303
+		Flame Thrower		110400
+		Air Defense Gun		110500
+			Light	110501
+			Medium	110502
+			Heavy	110503
+		Antitank Gun		110600
+			Light	110601
+			Medium	110602
+			Heavy	110603
+		Direct Fire Gun		110700
+			Light	110701
+			Medium	110702
+			Heavy	110703
+		Recoilless Gun		110800
+			Light	110801
+			Medium	110802
+			Heavy	110803
+		Howitzer		110900
+			Light	110901
+			Medium	110902
+			Heavy	110903
+		Missile Launcher		111000
+			Light	111001
+			Medium	111002
+			Heavy	111003
+		Air Defense Missile Launcher		111100
+			Light	111101
+			"Light, Light Transporter-Launcher and Radar (TLAR)"	111102
+			"Light, Light Tactical Landing Approach Radar (TELAR)"	111103
+			Medium	111104
+			"Medium, TLAR"	111105
+			"Medium, TELAR"	111106
+			Heavy	111107
+			"Heavy, TLAR"	111108
+			"Heavy, TELAR"	111109
+		Antitank Missile Launcher		111200
+			Light	111201
+			Medium	111202
+			Heavy	111203
+		Surface-to-Surface Missile Launcher		111300
+			Light	111301
+			Medium	111302
+			Heavy	111303
+		Mortar		111400
+			Light	111401
+			Medium	111402
+			Heavy	111403
+		Single Rocket Launcher		111500
+			Light	111501
+			Medium	111502
+			Heavy	111503
+		Multiple Rocket Launcher		111600
+			Light	111601
+			Medium	111602
+			Heavy	111603
+		Antitank Rocket Launcher		111700
+			Light	111701
+			Medium	111702
+			Heavy	111703
+		Nonlethal Weapon		111800
+		Taser		111900
+		Water Cannon		112000
+	Vehicle			120000
+		Armored		120100
+			Armored Fighting Vehicle	120101
+			Armored Fighting Vehicle Command and Control	120102
+			Armored Personnel Carrier	120103
+			Armored Personnel Carrier Ambulance	120104
+			Armored Protected Vehicle	120105
+			Armored Protected Vehicle Recovery	120106
+			Armored Protected Vehicle Medical Evacuation	120107
+			"Armored Personnel Carrier, Recovery"	120108
+			Combat Service Support Vehicle	120109
+			Light Wheeled Armored Vehicle	120110
+			Light Armor Reconnaissance	120111
+		Tank		120200
+			Light	120201
+			Medium	120202
+			Heavy	120203
+		Tank Recovery Vehicle		120300
+			Light	120301
+			Medium	120302
+			Heavy	120303
+	Engineer Vehicle and Equipment			130000
+		Bridge		130100
+		Bridge Mounted on Utility Vehicle		130200
+		Fixed Bridge		130300
+		Floating Bridge		130400
+		Folding Girder Bridge		130500
+		Hollow Deck Bridge		130600
+		Drill		130700
+			Drill Mounted on Utility Vehicle	130701
+		Earthmover		130800
+			Multifunctional Earthmover/Digger	130801
+		Mine Clearing Equipment		130900
+			Trailer Mounted	130901
+			Mine Clearing Equipment on Tank Chassis	130902
+			Assault Breacher Vehicle (ABV) with Combat Dozer Blade	130903
+			Medium Capability Equipment	130904
+			Heavy Capability Equipment	130905
+		Mine Laying Equipment		131000
+			Mine Laying Equipment on Utility Vehicle	131001
+			Armored Carrier with Volcano	131002
+			Truck Mounted with Volcano	131003
+		Dozer		131100
+			"Dozer, Armored"	131101
+		Armored Assault		131200
+		Armored Engineer Recon Vehicle (AERV)		131300
+		Backhoe		131400
+		Construction Vehicle		131500
+		Ferry Transporter		131600
+	Utility Vehicle			140000
+		Vehicle (Generic)		140100
+		Medical		140200
+		Medical Evacuation		140300
+		Mobile Emergency Physician		140400
+		Bus		140500
+		Semi–Trailer and Truck		140600
+			Light	140601
+			Medium	140602
+			Heavy	140603
+		Limited Cross Country Truck		140700
+		Cross Country Truck		140800
+		"Petroleum, Oil and Lubricant"		140900
+		Water		141000
+		Amphibious Utility Wheeled Vehicle		141100
+		Tow Truck		141200
+			Light	141201
+			Heavy	141202
+	Train			150000
+		Locomotive		150100
+		Railcar		150200
+	Civilian Vehicle			160000
+		Automobile		160100
+			Compact	160101
+			Midsize	160102
+			Sedan	160103
+		Open-Bed Truck		160200
+			Pickup	160201
+			Small	160202
+			Large	160203
+		Multiple Passenger Vehicle		160300
+			Van	160301
+			Small Bus	160302
+			Large Bus	160303
+		Utility Vehicle		160400
+			Sport Utility Vehicle (SUV)	160401
+			Small Box Truck	160402
+			Large Box Truck	160403
+		Jeep Type Vehicle		160500
+			Small/Light	160501
+			Medium	160502
+			Large/Heavy	160503
+		Tractor Trailer Truck with Box		160600
+			Small/Light	160601
+			Medium	160602
+			Large/Heavy	160603
+		Tractor Trailer Truck with Flatbed Trailer		160700
+			Small/Light	160701
+			Medium	160702
+			Large/Heavy	160703
+		Known Insurgent Vehicle		160800
+		Drug Vehicle		160900
+	Law Enforcement			170000
+		"Bureau of Alcohol, Tobacco, Firearms and Explosives (ATF) (Department of Justice)"		170100
+		Border Patrol		170200
+		Customs Service		170300
+		Drug Enforcement Administration (DEA)		170400
+		Department of Justice (DOJ)		170500
+		Federal Bureau of Investigation (FBI)		170600
+		Police		170700
+		United States Secret Service (Treas) (USSS)		170800
+		Transportation Security Administration (TSA)		170900
+		Coast Guard		171000
+		US Marshals Service		171100
+	Pack Animals			180000
+	Missile Support			190000
+		Transloader		190100
+		Transporter		190200
+		Crane/Loading Device		190300
+		Propellant Transporter		190400
+		Warhead Transporter		190500
+	Other Equipment			200000
+		Antennae		200100
+		Bomb		200200
+		Booby Trap		200300
+		CBRN Equipment		200400
+		Computer System		200500
+		Command Launch Equipment (CLE)		200600
+		Generator Set		200700
+		Ground-based Midcourse Defense (GMD) Fire Control (GFC) Center		200800
+		In-Flight Interceptor Communications System (IFICS) Data Terminal (IDT)		200900
+		Laser		201000
+		Military Information Support Operations (MISO)		201100
+		Sustainment Shipments		201200
+		Tent		201300
+			Civilian	201301
+			Military	201302
+		Unit Deployment Shipments		201400
+		Emergency Medical Operation		201500
+			Medical Evacuation Helicopter	201501
+	Land Mines			210000
+		Land Mine		210100
+		Antipersonnel Land mine (APL)		210200
+		Antitank Mine		210300
+		Improvised Explosives Device (IED)		210400
+		Less Than Lethal		210500
+	Sensors			220000
+		Sensor		220100
+		Sensor Emplaced		220200
+		Radar		220300
+	Emergency Operation			230000
+		Ambulance		230100
+		Fire Fighting/Fire Protection		230200
+	Manual Track			240000
+	Rotary Wing			250000
+20	Unspecified			0
+	Military/Civilian			110000
+		Aircraft Production/Assembly		110100
+		Ammunition and Explosives Production		110200
+		Ammunition Cache		110300
+		Armament Production		110400
+		Black List Location		110500
+		"Chemical, Biological, Radiological and Nuclear (CBRN)"		110600
+		Engineering Equipment Production		110700
+			Bridge	110701
+		Equipment Manufacture		110800
+		Government Leadership		110900
+		Gray List Location		111000
+		Mass Grave Site		111100
+		Materiel		111200
+		Mine		111300
+		Missile and Space System Production		111400
+		Nuclear (Non CBRN Defense)		111500
+		Printed Media		111600
+		Safe House		111700
+		White List Location		111800
+		Tented Camp		111900
+			Displaced Persons/ Refugee/Evacuees Camp	111901
+			Training Camp	111902
+		Warehouse/Storage Facility		112000
+		Law Enforcement		112100
+			"Bureau of Alcohol, Tobacco, Firearms and Explosives (ATF) (Department of Justice)"	112101
+			Border Patrol	112102
+			Customs Service	112103
+			Drug Enforcement Administration (DEA)	112104
+			Department of Justice (DOJ)	112105
+			Federal Bureau of Investigation (FBI)	112106
+			Police	112107
+			Prison	112108
+			United States Secret Service (Treas) (USSS)	112109
+			Transportation Security Administration (TSA)	112110
+			Coast Guard	112111
+			US Marshals Service	112112
+		Emergency Operation		112200
+			Fire Station	112201
+			Emergency Medical Operation	112202
+	Infrastructure			120000
+		Agriculture and Food Infrastructure		120100
+			Agriculture Laboratory	120101
+			Animal Feedlot	120102
+			Commercial Food Distribution Center	120103
+			Farm/Ranch	120104
+			Food Distribution	120105
+			Food Production Center	120106
+			Food Retail	120107
+			Grain Storage	120108
+		Banking Finance and Insurance Infrastructure		120200
+			ATM	120201
+			Bank	120202
+			Bullion Storage	120203
+			Economic Infrastructure Asset	120204
+			Federal Reserve Bank	120205
+			Financial Exchange	120206
+			"Financial Services, Other"	120207
+		Commercial Infrastructure		120300
+			Chemical Plant	120301
+			Firearms Manufacturer	120302
+			Firearms Retailer	120303
+			Hazardous Material Production	120304
+			Hazardous Material Storage	120305
+			Industrial Site	120306
+			Landfill	120307
+			Pharmaceutical Manufacturer	120308
+			Contaminated Hazardous Waste Site	120309
+			Toxic Release Inventory	120310
+		Educational Facilities Infrastructure		120400
+			College/University	120401
+			School	120402
+		Energy Facility Infrastructure		120500
+			Electric Power	120501
+			Generation Station	120502
+			Natural Gas Facility	120503
+			Petroleum Facility	120504
+			Petroleum/Gas/Oil	120505
+			Propane Facility	120506
+		Government Site Infrastructure		120600
+		Medical Infrastructure		120700
+			Medical	120701
+			Medical Treatment Facility (Hospital)	120702
+		Military Infrastructure		120800
+			Military Armory	120801
+			Military Base	120802
+		Postal Services Infrastructure		120900
+			Postal Distribution Center	120901
+			Post Office	120902
+		Public Venues Infrastructure		121000
+			Enclosed Facility (Public Venue)	121001
+			Open Facility (Public Venue)	121002
+			Recreational Area	121003
+			Religious Institution	121004
+		Special Needs Infrastructure		121100
+			Adult Day Care	121101
+			Child Day Care	121102
+			Elder Care	121103
+		Telecommunications Infrastructure		121200
+			Broadcast Transmitter Antennae	121201
+			Telecommunications	121202
+			Telecommunications Tower	121203
+		Transportation Infrastructure		121300
+			Airport/Air Base	121301
+			Air Traffic Control Facility	121302
+			Bus Station	121303
+			Ferry Terminal	121304
+			Helicopter Landing Site	121305
+			Maintenance Facility	121306
+			Railhead/Railroad Station	121307
+			Rest Stop	121308
+			Sea Port/Naval Base	121309
+			Ship Yard	121310
+			Toll Facility	121311
+			Traffic Inspection Facility	121312
+			Tunnel	121313
+		Water Supply Infrastructure		121400
+			Control Valve	121401
+			Dam	121402
+			Discharge Outfall	121403
+			Ground Water Well	121404
+			Pumping Station	121405
+			Reservoir	121406
+			Storage Tower	121407
+			Surface Water Intake	121408
+			Wastewater Treatment Facility	121409
+			Water	121410
+			Water Treatment	121411
+25	Command and Control Lines				110000		
+		Boundary		Line	110100	Line7	
+		Light Line		Line	110200	Line2	
+		Engineer Work Line		Line	110300	Line7	
+	Command and Control Areas				120000		
+		Area of Operations		Area	120100	Area1	
+		Named Area of Interest		Area	120200	Area1	
+		Targeted Area of Interest		Area	120300	Area1	
+		Airfield Zone		Area	120400	Area20	
+		Base Camp		Area	120500	Area1	
+		Guerrilla Base		Area	120600	Area1	
+	Command and Control Points				130000		
+		Action Point (General)		Point	130100	Point1	
+		Amnesty Point		Point	130200	Point1	
+		Checkpoint		Point	130300	Point1	
+		Center of Main Effort		Point	130400	Point2	
+		Contact Point		Point	130500	Point2	
+		Coordinating Point		Point	130600	Point2	
+		Decision Point		Point	130700	Point2	
+		Distress Call		Point	130800	Point1	
+		Entry Control Point		Point	130900	Point1	
+		Fly-To-Point			131000		
+			Sonobuoy	Point	131001	Point1	
+			Weapon	Point	131002	Point1	
+			Normal	Point	131003	Point1	
+		Linkup Point		Point	131100	Point1	
+		Passage Point		Point	131200	Point1	
+		Point of Interest		Point	131300	Point1	
+			Launch Event	Point	131301	Point1	
+		Rally Point		Point	131400	Point1	
+		Release Point		Point	131500	Point1	
+		Start Point		Point	131600	Point1	
+		Special Point		Point	131700	Point2	
+		Waypoint		Point	131800	Point2	
+		Airfield		Point	131900	Point2	
+		Target Handover		Point	132000	Point2	
+		Key Terrain		Point	132100	Point2	
+	Maneuver Lines				140000		
+		Forward Line of Troops		Line	140100	Line1	
+		{Reserved for future use}			140200		
+		Phase Line		Line	140300	Line2	
+		Forward Edge of the Battle Area		Line	140400	Line2	
+		Principle Direction of Fire		Line	140500	Line3	
+		Direction of Attack		Line	140600	Line9	"std says line 1, I think it's wrong"
+			Friendly Aviation	Line	140601	Line9	"std says line 1, I think it's wrong"
+			Friendly Main Attack /Decisive	Line	140602	Line9	"std says line 1, I think it's wrong"
+			Friendly Supporting Attack	Line	140603	Line9	"std says line 1, I think it's wrong"
+			Feint	Line	140605	Line9	"std says line 1, I think it's wrong"
+		Final Coordination Line		Line	140700	Line2	
+		Infiltration Lane		Line	140800	Polyline1	
+		Limit of Advance		Line	140900	Line2	
+		Line of Departure		Line	141000	Line2	
+		Line of Departure/Line of Contact		Line	141100	Line2	
+		Probable Line of Deployment		Line	141200	Line2	
+		Airhead Line		Area	141300	Area1	
+		Bridgehead Line		Line	141400	Line2	
+		Holding Line		Line	141500	Line2	
+		Release Line		Line	141600	Line2	
+		Ambush		Line	141700	Line29	
+	Maneuver Areas				150000		
+		Area			150100	Area1	
+		Assembly Area		Area	150200	Area1	
+		Occupied Assembly Area		Area	150300	Area1	
+		{Reserved for future use}			150400		
+		Action Area			150500		
+			Joint Tactical Action Area (JTAA)	Area	150501	Area1	
+			Submarine Action Area (SAA)	Area	150502	Area1	
+			Submarine-Generated Action Area (SGAA)	Area	150503	Area1	
+		Drop Zone		Area	150600	Area1	
+		Extraction Zone		Area	150700	Area1	
+		Landing Zone		Area	150800	Area1	
+		Pick–Up Zone		Area	150900	Area1	
+		Fortified Area		Area	151000	Area1	
+		Limited Access Area		Area	151100	Area2	
+		Battle Position		Area	151200	Area3	
+			Prepared (P) but not Occupied	Area	151202	Area3	
+			Strong Point	Area	151203	Area4	
+			Contain	Area	151204	Area5	
+			Retain	Area	151205	Area6	
+		Engagement Area (EA)		Area	151300	Area1	
+		Axis of Advance			151400		
+			Friendly Airborne/Aviation	Line	151401	Axis1	
+			Attack Helicopter	Line	151402	Axis1	
+			Main Attack	Line	151403	Axis2	
+			Supporting Attack	Line	151404	Axis2	
+		Assault Position		Area	151500	Area1	
+		Attack Position		Area	151600	Area1	
+		Objective		Area	151700	Area1	
+		Encirclement			151800	Area1	
+		Penetration Box		Area	151900	Area1	
+		Attack by Fire Position		Area	152000	Area7	
+		Support by Fire		Area	152100	Area8	
+		Search Area/Reconnaissance Area		Area	152200	Area21	
+	Maneuver Points				160000		
+		Observation Post/Outpost (unspecified)		Point	160100	Point2	
+		Observation Post/Outpost (specified)		Point	160200		
+			Reconnaissance Outpost	Point	160201	Point2	
+			Forward Observer/Spotter Outpost/Position	Point	160202	Point2	
+			CBRN Observation Outpost	Point	160203	Point2	
+			Sensor Outpost /Listening Post	Point	160204	Point2	
+			Combat Outpost	Point	160205	Point2	
+		Target Reference Point		Point	160300	Point2	
+		Point of Departure		Point	160400	Point1	
+	Airspace Control (Corridors) Areas				170000		
+		Air Corridor		Area	170100	Corridor1	
+		Low Level Transit Route		Area	170200	Corridor1	
+		Minimum–Risk Route		Area	170300	Corridor1	
+		Safe Lane		Area	170400	Corridor1	
+		Standard Use Army Aircraft Flight Route		Area	170500	Corridor1	
+		Transit Corridor		Area	170600	Corridor1	
+		Special Corridor		Area	170700	Corridor1	
+		Base Defense Zone		Area	170800	Circular1	said area22 but Circular1 a better fit
+		High–Density Airspace Control Zone		Area	170900	Area1	
+		Restricted Operations Zone		Area	171000	Area1	
+		Air-to-Air Restricted Operating Zone		Area	171100	Area1	
+		Unmanned Aircraft Restricted Operating Zone		Area	171200	Area1	
+		Weapon Engagement Zone		Area	171300	Area1	
+		Fighter Engagement Zone		Area	171400	Area1	
+		Joint Engagement Zone		Area	171500	Area1	
+		Missile Engagement Zone		Area	171600	Area1	
+		Low Altitude Missile Engagement Zone		Area	171700	Area1	
+		High Altitude Missile Engagement Zone		Area	171800	Area1	
+		Short Range Air Defense Engagement Zone		Area	171900	Area1	
+		Weapons Free Zone		Area	172000	Area1	
+	Airspace Control Points				180000		
+		Air Control Point		Point	180100	Point2	
+		Communications Checkpoint		Point	180200	Point2	
+		Downed Aircraft Pick–up Point		Point	180300	Point1	
+		Pop–up Point		Point	180400	Point2	
+		Air Control Rendezvous		Point	180500	Point2	
+		Tactical Air Navigation (TACAN)		Point	180600	Point2	
+		Combat Air Patrol (CAP)Station		Point	180700	Point2	
+		Airborne Early Warning (AEW) Station		Point	180800	Point2	
+		ASW (Helo and F/W) Station		Point	180900	Point2	
+		Strike Initial Point		Point	181000	Point2	
+		Replenishment Station		Point	181100	Point2	
+		Tanking		Point	181200	Point2	
+		"Antisubmarine Warfare, Rotary Wing"		Point	181300	Point2	
+		Surface Combat Air Patrol (SUCAP) – Fixed Wing		Point	181400	Point2	
+		SUCAP – Rotary Wing		Point	181500	Point2	
+		MIW – Fixed Wing		Point	181600	Point2	
+		MIW – Rotary Wing		Point	181700	Point2	
+		Tomcat		Point	181800	Point2	
+		Rescue		Point	181900	Point2	
+		Unmanned Aerial System (UAS/UA)		Point	182000	Point2	
+		Vertical Takeoff and Landing (VTOL) Tactical Unmanned Aircraft (VTUA)		Point	182100	Point2	
+		Orbit		Point	182200	Point2	
+		Orbit – Figure Eight		Point	182300	Point2	
+		Orbit – Race Track		Point	182400	Point2	
+		Orbit – Random Closed		Point	182500	Point2	
+	Airspace Control Lines				190000		
+		Identification Friend or Foe Off Line		Line	190100	Line2	
+		Identification Friend or Foe On Line		Line	190200	Line2	
+	Maritime Control Areas				200000		
+		Launch Area			200100		
+			Ellipse/Circle	Area	200101	Ellipse1	
+		Defended Area			200200		
+			Ellipse/Circle	Area	200201	Ellipse1	
+			Rectangle	Area	200202	Rectangular1	
+		No Attack (NOTACK) Zone		Area	200300	Circular1	
+		Ship Area of Interest		Point	200400	Point3	
+			Ellipse/Circle	Area	200401	Ellipse1	
+			Rectangle	Area	200402	Rectangular1	
+		Active Maneuver Area		Point	200500	Point2	
+		Cued Acquisition Doctrine		Point	200600	Point17	
+		Radar Search Doctrine		Point	200700	Point18	
+	Maritime Control Points				210000		
+		Plan Ship		Point	210100	Point2	
+		Aim Point		Point	210200	Point2	
+		Defended Asset		Point	210300	Point2	
+		Drop Point		Point	210400	Point4	
+		Entry Point		Point	210500	Point5	
+		Air Detonation		Point	210600	Point2	
+		Ground Zero		Point	210700	Point6	
+		Impact Point		Point	210800	Point2	
+		Predicted Impact Point		Point	210900	Point2	
+		Launched Torpedo		Point	211000	Point7	
+		Missile Detection Point		Point	211100	Point7	
+		Acoustic Countermeasure (Decoy)		Point	211200	Point7	
+		Electronic Countermeasures (ECM) Decoy		Point	211300	Point2	
+		Brief Contact		Point	211400	Point7	
+		Datum Lost Contact		Point	211500	Point2	
+		BT Buoy Drop		Point	211600	Point9	
+		Reported Bottomed Sub		Point	211700	Point2	
+		Moving Haven		Point	211800	Point2	
+		Screen Center		Point	211900	Point2	
+		Lost Contact		Point	212000	Point7	
+		Sinker		Point	212100	Point7	
+		Trial Track		Point	212200	Point7	
+		Acoustic Fix		Point	212300	Point2	
+		Electromagnetic Fix		Point	212400	Point2	
+		Electromagnetic – Magnetic Anomaly Detection (MAD)		Point	212500	Point2	
+		Optical Fix		Point	212600	Point2	
+		Formation		Point	212700	Point2	
+		Harbor		Point	212800	Point8	
+		Harbor Entrance Point		Point	212900	Point8	
+			A	Point	212901	Point8	
+			Q	Point	212902	Point8	
+			X	Point	212903	Point8	
+			Y	Point	212904	Point8	
+		Dip Position		Point	213000	Point2	
+		Search		Point	213100	Point2	
+		Search Area		Point	213200	Point2	
+		Search Center		Point	213300	Point2	
+		Navigational Reference Point		Point	213400	Point2	
+		Sonobuoy		Point	213500	Point10	
+			Ambient Noise	Point	213501	Point10	
+			Air Transportable Communication	Point	213502	Point10	
+			Barra	Point	213503	Point10	
+			Bathythermograph Transmitting	Point	213504	Point10	
+			Command Active Multi-Beam (CAMBS)	Point	213505	Point10	
+			Command Active Sonobuoy Directional Command Active Sonobuoy System (CASS)	Point	213506	Point10	
+			Directional Frequency Analysis and Recording (DIFAR)	Point	213507	Point10	
+			Directional Command Active Sonobuoy System (DICASS)	Point	213508	Point10	
+			Expendable Reliable Acoustic Path Sonobuoy (ERAPS)	Point	213509	Point10	
+			Expired	Point	213510	Point10	
+			Kingpin	Point	213511	Point10	
+			Low Frequency Analysis and Recording (LOFAR)	Point	213512	Point10	
+			Pattern Center	Point	213513	Point10	
+			Range Only	Point	213514	Point10	
+			Vertical Line Array Directional Frequency Analysis and Recording (DIFAR)	Point	213515	Point10	
+		Reference Point		Point	213600	Point2	
+		Special Point		Point	213700	Point2	
+		Navigational Reference Point(Points)		Point	213800	Point2	
+		Data Link Reference Point		Point	213900	Point2	
+		{Reserved for future use}			214000		
+		Vital Area Center		Point	214100	Point2	
+		Corridor Tab Point		Point	214200	Point2	
+		Enemy Point		Point	214300	Point2	
+		Marshall Point		Point	214400	Point2	
+		Position and Intended Movement (PIM)		Point	214500	Point2	
+		Pre-Landfall Waypoint		Point	214600	Point2	
+		Estimated Position (EP)		Point	214700	Point2	
+		Waypoint		Point	214800	Point2	
+		General Sea Subsurface Station		Point	214900	Point2	
+		Submarine Sea Subsurface Station		Point	215000	Point2	
+		Submarine Antisubmarine Warfare Sea Subsurface Station		Point	215100	Point2	
+		Unmanned Underwater Vehicle Sea Subsurface Station		Point	215200	Point2	
+		Antisubmarine Warfare (ASW) Unmanned Underwater Vehicle Sea Subsurface Station		Point	215300	Point2	
+		Mine Warfare Unmanned Underwater Vehicle Sea Subsurface Station		Point	215400	Point2	
+		Sea Surface Warfare Unmanned Underwater Vehicle Subsurface Station		Point	215500	Point2	
+		General Sea Surface Station		Point	215600	Point2	
+		Antisubmarine Warfare (ASW) Sea Surface Station		Point	215700	Point2	
+		Mine Warfare Sea Surface Station		Point	215800	Point2	
+		Non-Combatant Sea Surface Station		Point	215900	Point2	
+		Picket Sea Surface Station		Point	216000	Point2	
+		Rendezvous Sea Surface Station		Point	216100	Point2	
+		Replenishment at Sea Surface Station		Point	216200	Point2	
+		Rescue Sea Surface Station		Point	216300	Point2	
+		Surface Warfare Sea Surface Station		Point	216400	Point2	
+		Unmanned Underwater Vehicle Sea Surface Station		Point	216500	Point2	
+		Antisubmarine Warfare (ASW) Unmanned Underwater Vehicle Sea Surface Station		Point	216600	Point2	
+		Mine Warfare Unmanned Underwater Vehicle Sea Surface Station		Point	216700	Point2	
+		Remote Multi-Mission Vehicle Mine Warfare Unmanned Underwater Sea Surface Station		Point	216800	Point2	
+		Surface Warfare Mine Warfare Unmanned Underwater Vehicle Sea Surface Station		Point	216900	Point2	
+		Shore Control Station		Point	217000	Point2	
+		General Route		Point	217100	Point2	
+		Diversion Route		Point	217200	Point2	
+		Position and Intended		Point	217300	Point2	
+		Movement (PIM) Route				Point2	
+		Picket Route		Point	217400	Point2	
+		Point R Route		Point	217500	Point2	
+		Rendezvous Route		Point	217600	Point2	
+		Waypoint Route		Point	217700	Point2	
+		"Clutter, Stationary or Cease Reporting"		Point	217800	Point2	
+		Tentative or Provisional Track		Point	217900	Point2	
+		Distressed Vessel		Point	218000	Point7	
+		Ditched Aircraft/Downed Aircraft		Point	218100	Point7	
+		Person in Water/Bailout		Point	218200	Point7	
+		Iceberg		Point	218300	Point2	
+		Navigational		Line	218400	Line4	
+		Oil Rig		Point	218500	Point2	
+		Sea Mine–Like		Point	218600	Point2	
+		"Bottom Return/Non-Mine, Mine-Like Bottom Object (NOMBO)"		Point	218700	Point7	
+		"Bottom Return/Non-Mine, Mine-Like Bottom Object (NOMBO)/Installation Manmade"		Point	218800	Point7	
+			Marine Life	Point	218900	Point15	
+			"Sea Anomaly (Wake, Current, Knuckle)"	Point	219000	Point2	
+			"Bottom Return/Non-MILCO, Wreck, Dangerous"	Point	219100	Point2	
+			"Bottom Return/Non-MILCO, Wreck, Non Dangerous"	Point	219200	Point2	
+	Maritime Control Lines				220000		
+		Bearing Line		Line	220100	Line5	
+			Electronic	Line	220101	Line5	
+			Electronic Warfare (EW)	Line	220102	Line5	
+			Acoustic	Line	220103	Line5	
+			Acoustic (Ambiguous)	Line	220104	Line5	
+			Torpedo	Line	220105	Line5	
+			Electro-Optical Intercept	Line	220106	Line5	
+			Jammer	Line	220107	Line5	
+			Radio Direction Finder (RDF)	Line	220108	Line5	
+	{reserved for future use}				230000		
+	Fires Areas				240000		
+		Airspace Coordination Area			240100		
+			Irregular	Area	240101	Area1	
+			Rectangular	Area	240102	Rectangular1	
+			Circular	Area	240103	Circular1	
+		Free Fire Area			240200		
+			Irregular	Area	240201	Area1	
+			Rectangular	Area	240202	Rectangular1	
+			Circular	Area	240203	Circular1	
+		No Fire Area			240300		
+			Irregular	Area	240301	Area1	
+			Rectangular	Area	240302	Rectangular1	
+			Circular	Area	240303	Circular1	
+		Restricted Fire Area			240400		
+			Irregular	Area	240401	Area1	
+			Rectangular	Area	240402	Rectangular1	
+			Circular	Area	240403	Circular1	
+		Position Area For Artillery (PAA)			240500		
+			Rectangular	Area	240501	Rectangular1	
+			Circular	Area	240502	Circular1	
+			Irregular	Area	240503	Area1	
+		Point Targets			240600		
+			Point or Single Target	Point	240601	Point2	
+			Nuclear Target	Point	240602	Point2	
+			Target-Recorded	Point	240603	Point11	
+		Linear Targets			240700		
+			Linear Target	Line	240701	Line5	
+			Linear Smoke Target	Line	240702	Line5	
+			Final Protective Fire (FPF)	Line	240703	Line5	
+		Area Targets			240800		
+			Area Target	Area	240801	Area1	
+			Rectangular Target	Area	240802	Rectangular2	
+			Circular Target	Area	240803	Circular1	
+			Rectangular Target – Single Target	Area	240804	Rectangular3	
+			Series or Groups of Targets	Area	240805	Area9	
+			Smoke	Area	240806	Area1	
+			{reserved for future use}		240807		
+			Bomb Area	Area	240808	Area1	
+		Fire Support Station		Point	240900	Point2	
+		Fire Support Area			241000		
+			Irregular	Area	241001	Area1	
+			Rectangular	Area	241002	Rectangular1	
+			Circular	Area	241003	Circular1	
+		Artillery Target Intelligence Zone			241100		
+			Irregular	Area	241101	Area10	
+			Rectangular	Area	241102	Rectangular1	
+			Circular	Area	241103	Circular1	
+		Call for Fire Area			241200		
+			Irregular	Area	241201	Area10	
+			Rectangular	Area	241202	Rectangular1	
+			Circular	Area	241203	Circular1	
+		Censor Zone			241300		
+			Irregular	Area	241301	Area10	
+			Rectangular	Area	241302	Rectangular1	
+			Circular	Area	241303	Circular1	
+		Critical Friendly Zone			241400		
+			Irregular	Area	241401	Area10	
+			Rectangular	Area	241402	Rectangular1	
+			Circular	Area	241403	Circular1	
+		Dead Space Area			241500		
+			Irregular	Area	241501	Area10	
+			Rectangular	Area	241502	Rectangular1	
+			Circular	Area	241503	Circular1	
+		Sensor Zone			241600		
+			Irregular	Area	241601	Area10	
+			Rectangular	Area	241602	Rectangular1	
+			Circular	Area	241603	Circular1	
+		Target Build–up Area			241700		
+			Irregular	Area	241701	Area10	
+			Rectangular	Area	241702	Rectangular1	
+			Circular	Area	241703	Circular1	
+		Target Value Area			241800		
+			Irregular	Area	241801	Area10	
+			Rectangular	Area	241802	Rectangular1	
+			Circular	Area	241803	Circular1	
+		Zone of Responsibility			241900		
+			Irregular	Area	241901	Area10	
+			Rectangular	Area	241902	Rectangular1	
+			Circular	Area	241903	Circular1	
+		Terminally Guided Munition Footprint (TGMF)		Area	242000	Area10	
+		"Weapon/Sensor Range fan, Circular"		Area	242100	Circular2	
+		"Weapon/Sensor Range fan, Sector"		Area	242200	Arc1	
+		Kill Box			242300		
+			"Irregular, Blue"	Area	242301	Area10	
+			"Rectangular, Blue"	Area	242302	Rectangular1	
+			"Circular, Blue"	Area	242303	Circular1	
+			"Irregular, Purple"	Area	242304	Area10	
+			"Rectangular, Purple"	Area	242305	Rectangular1	
+			"Circular, Purple"	Area	242306	Circular1	
+	Fires Points				250000		
+		Firing Point		Point	250100	Point1	
+		Hide Point		Point	250200	Point1	
+		Launch Point		Point	250300	Point1	
+		Reload Point		Point	250400	Point1	
+		Survey Control Point		Point	250500	Point1	
+		Known Point		Point	250600	Point2	
+	Fire Lines				260000		
+		Fire Support Coordination Line (FSCL)		Line	260100	Line2	
+		Coordinated Fire Line (CFL)		Line	260200	Line7	
+		No Fire Line		Line	260300	Line2	
+		Battlefield Coordination Line		Line	260400	Line2	
+		Restrictive Fire Line		Line	260500	Line2	
+		Munition Flight Path		Line	260600	Line8	
+	Protection Areas				270000		
+		Obstacle Belt		Area	270100	Area1	
+		Obstacle Zone		Area	270200	Area1	
+		Obstacle Free Zone		Area	270300	Area1	
+		Obstacle Restricted Zone		Area	270400	Area1	
+		Obstacle Effects			270500		
+			Block	Area	270501	Area11	
+			Disrupt	Area	270502	Area12	
+			Fix	Line	270503	Line9	
+			Turn	Line	270504	Line10	
+		Obstacle Bypass			270600		
+			Easy	Point	270601	Point12	
+			Difficult	Point	270602	Point12	
+			Impossible	Point	270603	Point12	
+		Minefields			270700		
+			Static Depiction	Point	270701	Point2	
+			Dynamic Depiction	Area	270707	Area23	
+		Mined Area		Area	270800	Area1	
+			Fenced	Area	270801	Area1	
+		Unexploded Explosive Ordnance (UXO) Area		Area	271000	Area1	
+		Bridge or Gap		Line	271100	Line11	
+		"Roadblocks, Craters and Blown Bridges"			271200		
+			Planned	Line	271201	Line12	
+			"Explosives, State of Readiness 1 (Safe)"	Line	271202	Line12	
+			"Explosives, State of Readiness 2 (armed but passable)"	Line	271203	Line12	
+			Roadblock Complete (Executed)	Line	271204	Line12	
+		Assault Crossing		Line	271300	Line16	
+		{Reserved for future use}			271400		
+		Ford Easy		Line	271500	Line17	
+		Ford Difficult		Line	271600	Line17	
+		Biological Contaminated Area		Area	271700	Area1	
+		Chemical Contaminated Area		Area	271800	Area1	
+		Nuclear Contaminated Area		Area	271900	Area1	
+		Radiological Contaminated Area		Area	272000	Area1	
+		Minimum Safe Distance Zone		Area	272100	Area14	
+		Multiple Strikes – STRIKWARN		Area	272101	Area26	
+		Radiation Dose Rate Contour Lines		Area	272200	Area1	
+	Protection Points				280000		
+		Abatis		Point	280100	Line13	
+		Antipersonnel Mine		Point	280200	Point2	
+			Antipersonnel Mine with Directional Effects	Point	280201	Point2	
+		Antitank Mine		Point	280300	Point2	
+		Antitank Mine with Anti-handling Device		Point	280400	Point2	
+		Wide Area Antitank Mine		Point	280500	Point2	
+		Unspecified Mine		Point	280600	Point2	
+		Booby Trap		Point	280700	Point13	
+		Engineer Regulating Point		Point	280800	Point1	
+		Shelter		Point	280900	Point2	
+		Shelter Above Ground		Point	281000	Point2	
+		Below Ground Shelter		Point	281100	Point2	
+		Fort		Point	281200	Point2	
+		Chemical Event		Point	281300	Point7	
+		Biological Event		Point	281400	Point7	
+		Nuclear Event		Point	281500	Point7	
+		Nuclear Fallout Producing Event		Point	281600	Point7	
+		Radiological Event		Point	281700	Point7	
+		General Decontamination Point/Site		Point	281800	Point1	
+			Alternate	Point	281801	Point1	
+			Equipment	Point	281802	Point1	
+			Troop	Point	281803	Point1	
+			Equipment/Troop 	Point	281804	Point1	
+			Operational	Point	281805	Point1	
+			Thorough	Point	281806	Point1	
+			Main Equipment	Point	281807	Point1	
+			Forward Troop	Point	281808	Point1	
+			Wounded Personnel	Point	281809	Point1	
+		"Tetrahedrons, Dragons Teeth, and Other Similar Obstacles"			281900		
+			Fixed and Prefabricated	Point	281901	Point7	
+			Movable	Point	281902	Point7	
+			Movable and Prefabricated	Point	281903	Point7	
+		Vertical Obstructions			282000		
+			"Tower, Low"	Point	282001	Point16	
+			"Tower, High"	Point	282002	Point16	
+			Overhead Wire	Line	282003	Line1	
+	Protection Lines				290000		
+		Obstacle Line		Line	290100	Line1	
+			Mineline	Line	290101	Line1	
+		Antitank Obstacles			290200		
+			Under Construction	Line	290201	Line1	
+			Completed	Line	290202	Line1	
+			"Reinforced, with Antitank Mines"	Line	290203	Line1	
+			Antitank Wall	Line	290204	Line1	
+		Wire Obstacles			290300		
+			Unspecified Wire	Line	290301	Line1	
+			Single Fence Wire	Line	290302	Line1	
+			Double Fence Wire	Line	290303	Line1	
+			Double Apron Fence	Line	290304	Line1	
+			Low Wire Fence	Line	290305	Line1	
+			High Wire Fence	Line	290306	Line1	
+			Single Concertina	Line	290307	Line1	
+			Double Strand Concertina	Line	290308	Line1	
+			Triple Strand Concertina	Line	290309	Line1	
+		Mine Cluster		Area	290400	Are13	
+		Trip Wire		Line	290500	Line15	
+		Lane		Line	290600	Line14	
+		Ferry		Line	290700	Line18	
+		Raft Site		Line	290800	Line14	
+		Fortified Line		Line	290900	Line1	
+		Fighting Position		Line	291000	Line19	
+	Intelligence Lines				300000		
+		Intelligence Coordination Line		Line	300100	Line2	
+	Sustainment Areas				310000		
+		Detainee Holding Area		Area	310100	Area1	
+		Enemy Prisoner or War Holding Area		Area	310200	Area1	
+		Forward Arming and Refueling Point		Area	310300	Area1	
+		Refugee Holding Area		Area	310400	Area1	
+		Regimental Support Area		Area	310500	Area1	
+		Brigade Support Area		Area	310600	Area1	
+		Division Support Area		Area	310700	Area1	
+	Sustainment Points				320000		
+		Ambulance Points		Point	320100		
+			Ambulance Exchange Point	Point	320101	Point1	
+			Ambulance Control Point	Point	320102	Point1	
+			Ambulance Load Point	Point	320103	Point1	
+			Ambulance Relay Point	Point	320104	Point1	
+		Ammunition Supply Point		Point	320200	Point1	
+		Ammunition Transfer and Holding Point		Point	320300	Point1	
+		Cannibalization Point		Point	320400	Point1	
+		Casualty Collection Point 		Point	320500	Point1	
+		Civilian Collection Point		Point	320600	Point1	
+		Detainee Collection Point		Point	320700	Point1	
+		Enemy Prisoner of War Collection Point		Point	320800	Point1	
+		Logistics Release Point		Point	320900	Point1	
+		Maintenance Collection Point (MCP)		Point	321000	Point1	
+		Medical Evacuation Point (MEDEVAC) Pick-Up Point		Point	321100	Point1	
+		"Rearm, Refuel and Resupply Point (R3P)"		Point	321200	Point1	
+		Refuel on the Move (ROM) Point		Point	321300	Point1	
+		Traffic Control Post (TCP)		Point	321400	Point1	
+		Trailer Transfer Point (TTP)		Point	321500	Point1	
+		Unit Maintenance Collection Point (UNCP)		Point	321600	Point1	
+		General Supply Point		Point	321700	Point1	
+			NATO Class I Supply Point	Point	321701	Point1	
+			NATO Class II Supply Point	Point	321702	Point1	
+			NATO Class III Supply Point	Point	321703	Point1	
+			NATO Class IV Supply Point	Point	321704	Point1	
+			NATO Class V Supply Point	Point	321705	Point1	
+			NATO Multiple Class Supply Point	Point	321706	Point1	
+			US Class I Supply Point	Point	321707	Point1	
+			US Class II Supply Point	Point	321708	Point1	
+			US Class III Supply Point	Point	321709	Point1	
+			US Class IV Supply Point	Point	321710	Point1	
+			US Class V Supply Point	Point	321711	Point1	
+			US Class VI Supply Point	Point	321712	Point1	
+			US Class VII Supply Point	Point	321713	Point1	
+			US Class VIII Supply Point	Point	321714	Point1	
+			US Class IX Supply Point	Point	321715	Point1	
+			US Class X Supply Point	Point	321716	Point1	
+		Medical Supply Point		Point	321800	Point1	
+	Sustainment Lines				330000		
+		Moving Convoy		Line	330100	Line9	
+		Halted Convoy		Line	330200	Line20	
+		Main Supply Route		Line	330300	Line21	
+			One Way Traffic	Line	330301	Line21	
+			Two Way Traffic	Line	330302	Line21	
+			Alternating Traffic	Line	330303	Line21	
+		Alternate Supply Route		Line	330400	Line21	
+			One Way Traffic	Line	330401	Line21	
+			Two Way Traffic	Line	330402	Line21	
+			Alternating Traffic	Line	330403	Line21	
+	Mission Tasks				340000		
+		Block		Area	340100	Area24	
+		Breach		Line	340200	Line22	
+		Bypass		Point	340300	Point12	
+		Canalize		Point	340400	Point12	
+		Clear		Line	340500	Line23	
+		Counterattack		Line	340600	Axis2	
+		Counterattack by Fire		Line	340700	Axis2	
+		Delay		Line	340800	Line24	
+		Destroy		Point	340900	Point2	
+		Disrupt		Area	341000	Area25	
+		Fix		Line	341100	Line28	
+		Follow and Assume		Line	341200	Line25	
+		Follow and Support		Line	341300	Line25	
+		Interdict		Point	341400	Point14	
+		Isolate		Area	341500	Area15	
+		Neutralize		Point	341600	Point2	
+		Occupy		Area	341700	Area16	
+		Penetrate		Area	341800	Area17	
+		Relief in Place (RIP)		Area	341900	Area18	
+		Retire/Retirement		Line	342000	Line24	
+		Secure		Area	342100	Area19	
+		Security			342200		
+			Cover	Line	342201	Line26	
+			Guard	Line	342202	Line26	
+			Screen	Line	342203	Line26	
+		Seize		Line	342300	Line27	
+		Withdraw		Line	342400	Line24	
+		Withdraw Under Pressure		Line	342500	Line24	
+		Cordon and Knock		Area	342600	Area15	
+		Cordon and Search		Area	342700	Area15	
+		Suppress		Point	342800	Point2	
+		Advance to Contact		Line	342900		MISSING
+		Capture		Line	343000		MISSING
+		Conduct Exploitation		Line	343100		MISSING
+		Control		Area	343200		MISSING
+		Demonstration		Line	343300		MISSING
+		Deny		Area	343400		MISSING
+		Envelop		Line	343500		MISSING
+		Escort		Line	343600		MISSING
+		Exfiltrate		Line	343700		MISSING
+		Infiltrate		Line	343800		MISSING
+		Locate		Area	343900		MISSING
+		Pursue		Line	344000		MISSING
+	Space Debris			Point	350000		MISSING
+		Man Made Space Debris			350100		MISSING
+			Man Made Space Debris Small		350101		MISSING
+			Man Made Space Debris Medium		350102		MISSING
+			Man Made Space Debris Big		350103		MISSING
+		Natural Space Debris			350200		MISSING
+			Natural Space Debris Small		350201		MISSING
+			Natural Space Debris Medium		350202		MISSING
+			Natural Space Debris Big		350203		MISSING
+30	Unspecified			0
+	Military			110000
+	Military Combatant			120000
+		Carrier		120100
+		"Surface Combatant, Line"		120200
+			Battleship	120201
+			Cruiser	120202
+			Destroyer	120203
+			Frigate	120204
+			Corvette	120205
+			Littoral Combatant Ship	120206
+		Amphibious Warfare Ship		120300
+			Amphibious Command Ship	120301
+			"Amphibious Assault, Non-specified"	120302
+			"Amphibious Assault Ship, General"	120303
+			"Amphibious Assault Ship, Multipurpose"	120304
+			"Amphibious Assault Ship, Helicopter"	120305
+			Amphibious Transport Dock	120306
+			Landing Ship	120307
+			Landing Craft	120308
+		Mine Warfare Ship		120400
+			Mine Layer	120401
+			Mine Sweeper	120402
+			"Mine Sweeper, Drone"	120403
+			Mine Hunter	120404
+			Mine Countermeasures	120405
+			"Mine Countermeasures, Support Ship"	120406
+		Patrol Boat		120500
+			"Patrol Craft, Submarine Chaser/Escort, General"	120501
+			"Patrol Ship, General"	120502
+		Decoy		120600
+		Unmanned Surface Water Vehicle (USV)		120700
+		Speedboat		120800
+			Rigid–Hull Inflatable Boat (RHIB)	120801
+		Jet Ski		120900
+		Navy Task Organization		121000
+			Navy Task Element	121001
+			Navy Task Force	121002
+			Navy Task Group	121003
+			Navy Task Unit	121004
+			Convoy	121005
+		Sea-Based X-Band Radar		121100
+	Military Non Combatant			130000
+		Auxiliary Ship		130100
+			Ammunition Ship	130101
+			Naval Stores Ship	130102
+			Auxiliary Flag Ship	130103
+			Intelligence Collector	130104
+			Oceanographic Research Ship	130105
+			Survey Ship	130106
+			Hospital Ship	130107
+			Naval Cargo Ship	130108
+			"Combat Support Ship, Fast"	130109
+			"Oiler, Replenishment"	130110
+			Repair Ship	130111
+			Submarine Tender	130112
+			"Tug, Ocean Going"	130113
+		Service Craft/Yard		130200
+			"Barge, not Self–Propelled"	130201
+			"Barge, Self–Propelled"	130202
+			"Tug, Harbor"	130203
+			Launch	130204
+	Civilian			140000
+		Merchant Ship		140100
+			"Cargo, General"	140101
+			Container Ship	140102
+			Dredge	140103
+			Roll On/Roll Off	140104
+			Ferry	140105
+			Heavy Lift	140106
+			Hovercraft	140107
+			Lash Carrier (with Barges)	140108
+			Oiler/Tanker	140109
+			Passenger	140110
+			"Tug, Ocean Going"	140111
+			Tow	140112
+			"Transport Ship, Hazardous Material"	140113
+			Junk/Dhow	140114
+			"Barge, not Self–Propelled"	140115
+			Hospital Ship	140116
+		Fishing Vessel		140200
+			Drifter	140201
+			Trawler	140202
+			Dredger	140203
+		Law Enforcement Vessel		140300
+		"Leisure Craft, Sailing"		140400
+		"Leisure Craft, Motorized"		140500
+			Rigid–Hull Inflatable Boat (RHIB)	140501
+			Speedboat	140502
+		Jet Ski		140600
+		Unmanned Surface Water Vehicle (USV)		140700
+	Own Ship			150000
+	Fused Track			160000
+	Manual Track			170000
+35	Unspecified			0
+	Military			110000
+		Submarine		110100
+			"Submarine, Surfaced"	110101
+			"Submarine, Snorkeling"	110102
+			"Submarine, Bottomed"	110103
+		Other Submersible		110200
+		Nonsubmarine		110300
+		Autonomous Underwater Vehicle (AUV)/Unmanned Underwater Vehicle (UUV)		110400
+		Diver		110500
+	Civilian			120000
+		Submersible		120100
+		Autonomous Underwater Vehicle (AUV)/ Unmanned Underwater Vehicle (UUV)		120200
+		Diver		120300
+	Weapon			130000
+		Torpedo		130100
+		Improvised Explosive Device (IED)		130200
+		Decoy		130300
+	Echo Tracker Classifier (ETC) / Possible Contact (POSCON)			140000
+	Fused Track			150000
+	Manual Track			160000
+36	Unspecified			0
+	"Sea Mine, General"			110000
+		"Sea Mine, Bottom"		110100
+		"Sea Mine, Moored"		110200
+		"Sea Mine, Floating"		110300
+		"Sea Mine, Rising"		110400
+		"Sea Mine, Other Position"		110500
+		Kingfisher		110600
+		"Small Object, Mine–Like"		110700
+		"Exercise Mine, General"		110800
+			"Exercise Mine, Bottom"	110801
+			"Exercise Mine, Moored"	110802
+			"Exercise Mine, Floating"	110803
+			"Exercise Mine, Rising"	110804
+		"Neutralized Mine, General"		110900
+			"Neutralized Mine, Bottom"	110901
+			"Neutralized Mine, Moored"	110902
+			"Neutralized Mine, Floating"	110903
+			"Neutralized Mine, Rising"	110904
+			"Neutralized Mine, Other Position"	110905
+	Unexploded Ordnance			120000
+	Sea Mine Decoy			130000
+		"Sea Mine Decoy, Bottom"		130100
+		"Sea Mine Decoy, Moored"		130200
+	Mine–Like Contact (MILCO)			140000
+		MILCO - General		140100
+			"MILCO - General, Confidence Level 1"	140101
+			"MILCO - General, Confidence Level 2"	140102
+			"MILCO - General, Confidence Level 3"	140103
+			"MILCO - General, Confidence Level 4"	140104
+			"MILCO - General, Confidence Level 5"	140105
+		MILCO - Bottom		140200
+			"MILCO - Bottom, Confidence Level 1"	140201
+			"MILCO - Bottom, Confidence Level 2"	140202
+			"MILCO - Bottom, Confidence Level 3"	140203
+			"MILCO - Bottom, Confidence Level 4"	140204
+			"MILCO - Bottom, Confidence Level 5"	140205
+		MILCO - Floating		140300
+			"MILCO - Floating, Confidence Level 1"	140301
+			"MILCO - Floating, Confidence Level 2"	140302
+			"MILCO - Floating, Confidence Level 3"	140303
+			"MILCO - Floating, Confidence Level 4"	140304
+			"MILCO - Floating, Confidence Level 5"	140305
+	"Mine–Like Echo (MILEC), General"			150000
+		"Mine–Like Echo, Bottom"		150100
+		"Mine–Like Echo, Moored"		150200
+		"Mine–Like Echo, Floating"		150300
+	"Negative Reacquisition, General"			160000
+		"Negative Reacquisition, Bottom"		160100
+		"Negative Reacquisition, Moored"		160200
+		"Negative Reacquisition, Floating"		160300
+	Obstructor			170000
+		Neutralized Obstructor		170100
+	General Mine Anchor			180000
+	Non-Mine			190000
+	"Mine–Like Object (NMLO), General"			
+		"Non-Mine Mine–Like Object, Bottom"		190100
+		"Non-Mine Mine–Like Object, Moored"		190200
+		"Non-Mine Mine–Like Object, Floating"		190300
+	Environmental Report Location			200000
+	Dive Report Location			210000
+40	Unspecified			0
+	Incident			110000
+		Criminal Activity Incident		110100
+			Arrest	110101
+			Arson	110102
+			Attempted Criminal Activity	110103
+			Drive-by Shooting	110104
+			Drug Related	110105
+			Extortion	110106
+			Graffiti	110107
+			Killing	110108
+			Poisoning	110109
+			Civil Rioting	110110
+			Booby Trap	110111
+			Home Eviction	110112
+			Black Marketing	110113
+			Vandalism/Loot/Ransack/Plunder	110114
+			Jail Break	110115
+			Robbery	110116
+			Theft	110117
+			Burglary	110118
+			Smuggling	110119
+			Rock Throwing	110120
+			Dead Body	110121
+			Sabotage	110122
+			Suspicious Activity	110123
+		Bomb/Bombing		110200
+			Bomb Threat	110201
+		IED Event		110300
+			IED Explosion	110301
+			Premature IED Explosion	110302
+			IED Cache	110303
+			IED Suicide Bomber	110304
+		Shooting		110400
+			Sniping	110401
+		Illegal Drug Operation		110500
+			Trafficking	110501
+			Illegal Drug Lab	110502
+		Explosion		110600
+			Grenade Explosion	110601
+			Incendiary Explosion	110602
+			Mine Explosion	110603
+			Mortar Fire Explosion	110604
+			Rocket Explosion	110605
+			Bomb Explosion	110606
+	Civil Disturbance			120000
+		Demonstration		120100
+	Operation			130000
+		Patrolling		130100
+		Military Information Support Operation (MISO)		130200
+			TV and Radio Propaganda	130201
+		Foraging/Searching		130300
+		Recruitment		130400
+			Willing	130401
+			Unwilling/Coerced	130402
+		Mine Laying		130500
+		Spy		130600
+		Warrant Served		130700
+		Exfiltration		130800
+		Infiltration		130900
+		Meeting		131000
+			Polling Place/Election	131001
+		Raid on House		131100
+		Emergency Operation		131200
+			Emergency Collection Evacuation Point	131201
+			Emergency Food Distribution	131202
+			Emergency Incident Command Center	131203
+			Emergency Operations Center	131204
+			Emergency Public Information Center	131205
+			Emergency Shelter	131206
+			Emergency Staging Area	131207
+			Emergency Water Distribution Center	131208
+		Emergency Medical Operation		131300
+			EMT Station Location	131301
+			Health Department Facility	131302
+			Medical Facilities Outpatient	131303
+			Morgue	131304
+			Pharmacy	131305
+			Triage	131306
+		Fire Fighting Operation		131400
+			Fire Hydrant	131401
+			Fire Station	131402
+			Other Water Supply Location	131403
+		Law Enforcement Operation		131500
+			"Bureau of Alcohol, Tobacco, Firearms and Explosives (ATF) (Department of Justice)"	131501
+			Border Patrol	131502
+			Customs Service	131503
+			Drug Enforcement Administration (DEA)	131504
+			Department of Justice (DOJ)	131505
+			Federal Bureau of Investigation (FBI)	131506
+			Police	131507
+			Prison	131508
+			United States Secret Service(Treas) (USSS)	131509
+			Transportation Security Administration (TSA)	131510
+			Coast Guard	131511
+			US Marshals Service	131512
+			Internal Security Force	131513
+	Fire Event			140000
+		Fire Origin		140100
+		Smoke		140200
+		Hot Spot		140300
+		Non-Residential Fire		140400
+		Residential Fire		140500
+		School Fire		140600
+		Special Needs Fire		140700
+		Wild Fire		140800
+	Hazardous Materials			150000
+		Hazardous Materials Incident		150100
+			Chemical Agent	150101
+			Corrosive Material	150102
+			Hazardous when Wet	150103
+			Explosive Material	150104
+			Flammable Gas	150105
+			Flammable Liquid	150106
+			Flammable Solid	150107
+			Non-Flammable Gas	150108
+			Organic Peroxide	150109
+			Oxidizer	150110
+			Radioactive Material	150111
+			Spontaneously Combustible Material	150112
+			Toxic Gas	150113
+			Toxic Infectious Material	150114
+			Unexploded Ordnance	150115
+	Transportation Incident			160000
+		Air		160100
+		Marine		160200
+		Rail		160300
+		Vehicle		160400
+		Wheeled Vehicle Explosion		160500
+	Natural Event			170000
+		Geologic		170100
+			Aftershock	170101
+			Avalanche	170102
+			Earthquake Epicenter	170103
+			Landslide	170104
+			Subsidence	170105
+			Volcanic Eruption	170106
+			Volcanic Threat	170107
+			Cave Entrance	170108
+		Hydro-Meteorological		170200
+			Drought	170201
+			Flood	170202
+			Tsunami	170203
+		Infestation		170300
+			Bird	170301
+			Insect	170302
+			Microbial	170303
+			Reptile	170304
+			Rodent	170305
+	Individual			180000
+		Religious Leader		180100
+		Speaker		180200
+45	Pressure Systems				110000			
+		Low Pressure Center		Point	110100	Point1	FF0000	
+			Cyclone Center	Point	110101	Point1	FF0000	
+			Tropopause Low	Point	110102	Point1	000000	
+		High Pressure Center		Point	110200	Point1	0000FF	
+			Anticyclone Center	Point	110201	Point1	0000FF	
+			Tropopause High	Point	110202	Point1	000000	
+		Frontal Systems			110300			
+			Cold Front	Line	110301	Line1	0000FF	
+			Upper Cold Front	Line	110302	Line1	0000FF	
+			Cold Frontogenesis	Line	110303	Line1	0000FF	
+			Cold Frontolysis	Line	110304	Line1	0000FF	
+			Warm Front	Line	110305	Line1	FF0000	
+			Upper Warm Front	Line	110306	Line1	FF0000	
+			Warm Frontogenesis	Line	110307	Line1	FF0000	
+			Warm Frontolysis	Line	110308	Line1	FF0000	
+			Occluded Front	Line	110309	Line1	6F3198	E29FFF
+			Upper Occluded Front	Line	110310	Line1	6F3198	
+			Occluded Frontolysis	Line	110311	Line1	6F3198	
+			Stationary Front	Line	110312	Line1	FF0000;0000FF	
+			Upper Stationary Front	Line	110313	Line1	FF0000;0000FF	
+			Stationary Frontogenesis	Line	110314	Line1	FF0000;0000FF	
+			Stationary Frontolysis	Line	110315	Line1	FF0000;0000FF	
+		Lines			110400			
+			Trough Axis	Line	110401	Line1	000000	
+			Upper Trough Axis	Line	110402	Line1	000000	
+			Ridge Axis	Line	110403	Line1	000000	
+			Severe Squall Line	Line	110404	Line2	000000	
+			Instability Line	Line	110405	Line3	000000	
+			Shear Line	Line	110406	Line4	000000	
+			Inter–Tropical Convergence Zone	Line	110407	Line5	FF8000	
+			Convergence Line	Line	110408	Line6	FF8000	
+			Inter–Tropical Discontinuity	Line	110409	Line7	FF0000;0DE927	
+		Pressure Tendency			110500			
+			Rise Then Fall Higher	Point	110501	Point2	0000FF	
+			Rise Then Steady	Point	110502	Point2	0000FF	
+			Rise	Point	110503	Point2	0000FF	
+			Rise Then Rise Higher	Point	110504	Point2	0000FF	
+			Steady	Point	110505	Point2	000000	
+			Fall Then Rise Lower	Point	110506	Point2	91100A	Says red but looks more like reddish brown in template
+			Fall Then Steady	Point	110507	Point2	91100A	Says red but looks more like reddish brown in template
+			Fall	Point	110508	Point2	91100A	Says red but looks more like reddish brown in template
+			Rise Then Fall Lower	Point	110509	Point2	91100A	Says red but looks more like reddish brown in template
+	Turbulence				120000			
+		Light		Point	120100	Point3	0000FF	
+		Moderate		Point	120200	Point3	0000FF	
+		Severe		Point	120300	Point3	0000FF	
+		Extreme		Point	120400	Point3	0000FF	
+		Mountain Waves		Point	120500	Point3	0000FF	
+	Icing				130000			
+		Clear Icing			130100			
+			Light	Point	130101	Point3	7C600D	
+			Moderate	Point	130102	Point3	7C600D	
+			Severe	Point	130103	Point3	7C600D	
+		Rime Icing			130200			
+			Light	Point	130201	Point3	7C600D	
+			Moderate	Point	130202	Point3	7C600D	
+			Severe	Point	130203	Point3	7C600D	
+		Mixed Icing			130300			
+			Light	Point	130301	Point3	7C600D	
+			Moderate	Point	130302	Point3	7C600D	
+			Severe	Point	130303	Point3	7C600D	
+	Winds				140000			
+		Calm Winds		Point	140100	Point4	000000	
+		Wind Plot		Point	140200	Point5	000000	
+		Jet Stream		Line	140300	Line1	FF0000	
+		Stream Line		Line	140400	Line1	000000	
+	Cloud Cover				150000			
+		Cloud Coverage Symbols			150100			
+			Clear Sky	Point	150101	Point6	000000	
+			Few Coverage	Point	150102	Point6	000000	
+			Scattered Coverage	Point	150103	Point6	000000	
+			Broken Coverage	Point	150104	Point6	000000	
+			Overcast Coverage	Point	150105	Point6	000000	
+			Sky Totally or Partially Obscured	Point	150106	Point6	000000	
+	Weather Symbols				160000			
+		Rain			160100			
+			Intermittent Light	Point	160101	Point7	008000	
+			Continuous Light	Point	160102	Point7	008000	
+			Intermittent Moderate	Point	160103	Point7	008000	
+			Intermittent Moderate/ Continuous Moderate	Point	160104	Point7	008000	
+			Intermittent Heavy	Point	160105	Point7	008000	
+			Intermittent Heavy/ Continuous Heavy	Point	160106	Point7	008000	
+		Freezing Rain			160200			
+			Light	Point	160201	Point7	C61021	
+			Moderate/Heavy	Point	160202	Point7	C61021	
+		Rain Showers			160300			
+			Light	Point	160301	Point7	008000	
+			Moderate/Heavy	Point	160302	Point7	008000	
+			Torrential	Point	160303	Point7	008000	
+		Drizzle			160400			
+			Intermittent Light	Point	160401	Point7	008000	
+			Intermittent Light/ Continuous Light	Point	160402	Point7	008000	
+			Intermittent Moderate	Point	160403	Point7	008000	
+			Intermittent Moderate/ Continuous Moderate	Point	160404	Point7	008000	
+			Intermittent Heavy	Point	160405	Point7	008000	
+			Intermittent Heavy/ Continuous Heavy	Point	160406	Point7	008000	
+		Freezing Drizzle			160500			
+			Light	Point	160501	Point7	C61021	
+			Moderate/Heavy	Point	160502	Point7	C61021	
+		Rain and Snow Mixed			160600			
+			Rain or Drizzle and Snow – Light	Point	160601	Point7	008000	
+			Rain or Drizzle and Snow – Moderate/Heavy	Point	160602	Point7	008000	
+			Rain and Snow Showers – Light	Point	160603	Point7	008000	
+			Rain and Snow Showers – Moderate/Heavy	Point	160604	Point7	008000	
+		Snow			160700			
+			Intermittent Light	Point	160701	Point7	008000	
+			Intermittent Light/ Continuous Light	Point	160702	Point7	008000	
+			Intermittent Moderate	Point	160703	Point7	008000	
+			Intermittent Moderate/ Continuous Moderate	Point	160704	Point7	008000	
+			Intermittent Heavy	Point	160705	Point7	008000	
+			Intermittent Heavy/ Continuous Heavy	Point	160706	Point7	008000	
+			Blowing Snow – Light/ Moderate	Point	160707	Point7	008000	
+			Blowing Snow – Heavy	Point	160708	Point7	008000	
+		Snow Grains		Point	160800			
+		Snow Showers			160900			
+			Light	Point	160901	Point7	008000	dark green
+			Moderate/Heavy	Point	160902	Point7	008000	
+		Hail			161000			
+			Light not Associated with Thunder	Point	161001	Point7	C61021	dark red
+			Moderate/Heavy not Associated with Thunder	Point	161002	Point7	C61021	
+		Ice Crystals (Diamond Dust)		Point	161100			
+		Ice Pellets (Sleet)			161200			
+			Light	Point	161201	Point7	C61021	
+			Moderate	Point	161202	Point7	C61021	
+			Heavy	Point	161203	Point7	C61021	
+		Inversion		Point	161300	Point7	000000	black
+		Storms			161400			
+			Thunderstorm – No Precipitation	Point	161401	Point7	C61021	
+			Thunderstorm Light to Moderate with Rain/Snow – No Hail	Point	161402	Point7	C61021	
+			Thunderstorm Heavy with Rain/Snow – No Hail	Point	161403	Point7	C61021	
+			Thunderstorm Light to Moderate – With Hail	Point	161404	Point7	C61021	
+			Thunderstorm Heavy – With Hail	Point	161405	Point7	C61021	
+			Funnel Cloud (Tornado/Waterspout)	Point	161406	Point7	C61021	
+			Squall	Point	161407	Point7	C61021	
+			Lightning	Point	161408	Point7	C61021	
+		Fog			161500			
+			Shallow Patches	Point	161501	Point7	FFFF00	yellow
+			Shallow Continuous	Point	161502	Point7	FFFF00	
+			Patchy	Point	161503	Point7	FFFF00	
+			Sky Visible	Point	161504	Point7	FFFF00	
+			Sky Obscured	Point	161505	Point7	FFFF00	
+			"Freezing, Sky Visible"	Point	161506	Point7	C61021	
+			"Freezing, Sky Obscured"	Point	161507	Point7	C61021	
+		Mist		Point	161600	Point7	FFFF00	
+		Smoke		Point	161700	Point7	AE6C4E	
+		Haze		Point	161800	Point7	AE6C4E	med brown
+		Dust or Sand			161900			
+			Light to Moderate	Point	161901	Point7	AE6C4E	
+			Severe	Point	161902	Point7	AE6C4E	
+			Dust Devil	Point	161903	Point7	AE6C4E	
+			Blowing Dust or Sand	Point	161904	Point7	AE6C4E	
+		Tropical Storm Systems			162000			
+			Tropical Depression	Point	162001	Point8	C61021	Red or Purple - Current and Forecast Position
+			Tropical Storm	Point	162002	Point8	C61021	Black - Past Position
+			Hurricane/Typhoon	Point	162003	Point8	C61021	
+			Tropical Storm Wind Areas and Date/Time Labels	Area	162004	Area1	C61021	US Navy ship avoidance areas can be depicted using Operator-Defined Freeform. 171000
+		Volcanic Eruption		Point	162100	Point7	000000	
+			Volcanic Ash	Point	162101	Point7	000000	
+		Tropopause Level		Point	162200	Point7	000000	
+		Freezing Level		Point	162300	Point7	000000	
+		Precipitation of Unknown Type and Intensity		Point	162400	Point7	008000	
+	Bounded Areas of Weather				170000			
+		Instrument Flight Rule (IFR)		Area	170100	Area2	C61021	
+		Marginal Visual Flight Rule (MVFR)		Area	170200	Area2	0000FF	
+		Turbulence		Area	170300	Area2	0000FF	
+		Icing		Area	170400	Area2	BD9A38	mud
+		Liquid Precipitation – Non-Convective Continuous or Intermittent		Area	170500	Area2	008000	
+			Liquid Precipitation – Convective	Area	170501	Area2	008000	
+		Freezing /Frozen Precipitation		Area	170600	Area2	C61021	
+		Thunderstorm		Area	170700	Area2	C61021	dark red
+		Fog		Area	170800	Area2	FFFF00	yellow
+		Dust or Sand		Area	170900	Area2	AE6C4E	med brown
+		Operator–Defined Freeform		Area	171000	Area2	000000	
+	Isopleths				180000			
+		Isobar – Surface		Line	180100	Line1	000000	
+		Contour – Upper Air		Line	180200	Line1	000000	
+		Isotherm		Line	180300	Line1	C61021	
+		Isotach		Line	180400	Line1	FF409B	neon purple
+		Isodrosotherm		Line	180500	Line1	008000	dark green
+		Thickness		Line	180600	Line1	C61021	
+		Operator–Defined Freeform		Line	180700	Line1	000000	
+	State of the Ground				190000			
+		Without Snow or Measurable Ice Cover			190100			
+			Surface Dry Without Cracks or Appreciable Dust or Loose Sand	Point	190101	Point1	000000	
+			Surface Moist	Point	190102	Point1	000000	
+			"Surface Wet, Standing Water in Small or Large Pools"	Point	190103	Point1	000000	
+			Surface Flooded	Point	190104	Point1	000000	
+			Surface Frozen	Point	190105	Point1	000000	
+			Glaze (Thin Ice) on Ground	Point	190106	Point1	000000	
+			Loose Dry Dust or Sand not Covering Ground Completely	Point	190107	Point1	000000	
+			Thin Loose Dry Dust or Sand Covering Ground Completely	Point	190108	Point1	000000	
+			Moderate/Thick Loose Dry Dust or Sand Covering Ground Completely	Point	190109	Point1	000000	
+			Extremely Dry with Cracks	Point	190110	Point1	000000	
+		With Snow or Measurable Ice Cover			190200			
+			Predominately Ice Covered	Point	190201	Point1	000000	
+			Compact or Wet Snow (with or without Ice) Covering Less Than One–Half of Ground	Point	190202	Point1	000000	
+			"Compact or Wet Snow (with or without Ice) Covering at Least One–Half of Ground, but Ground not Completely Covered"	Point	190203	Point1	000000	
+			Even Layer of Compact or Wet Snow Covering Ground Completely	Point	190204	Point1	000000	
+			Uneven Layer of Compact or Wet Snow Covering Ground Completely	Point	190205	Point1	000000	
+			Loose Dry Snow Covering Less Than One–Half of Ground	Point	190206	Point1	000000	
+			"Loose Dry Snow Covering at Least One–Half of Ground, but Ground not Completely Covered"	Point	190207	Point1	000000	
+			Even Layer of Loose Dry Snow Covering Ground Completely	Point	190208	Point1	000000	
+			Uneven Layer of Loose Dry Snow Covering Ground Completely	Point	190209	Point1	000000	
+			"Snow Covering Ground Completely, Deep Drifts"	Point	190210	Point1	000000	
+46	Ice Systems				110000			
+		Icebergs			110100			
+			Many Icebergs	Point	110101	Point3	000000	
+			Belts and Strips	Point	110102	Point3	000000	
+			General	Point	110103	Point3	000000	
+			Many Icebergs – General	Point	110104	Point3	000000	
+			Bergy Bit	Point	110105	Point3	000000	
+			Many Bergy Bits	Point	110106	Point3	000000	
+			Growler	Point	110107	Point3	000000	
+			Many Growlers	Point	110108	Point3	000000	
+			Floeberg	Point	110109	Point3	000000	
+			Ice Island	Point	110110	Point3	000000	
+		Ice Concentration			110200			
+			Bergy Water	Point	110201	Point3	000000	
+			Water with Radar Targets	Point	110202	Point3	000000	
+			Ice Free	Point	110203	Point3	000000	
+		Dynamic Processes			110300			
+			Convergence	Point	110301	Point3	000000	
+			Divergence	Point	110302	Point3	000000	
+			Shearing or Shear Zone	Point	110303	Point3	000000	
+			Ice Drift (Direction)	Point	110304	Point3	000000	
+		Sea Ice			110400			
+			Ice Thickness (Observed)	Point	110401	Point3	000000	
+			Ice Thickness (Estimated)	Point	110402	Point3	000000	
+			Melt Puddles or Flooded Ice	Point	110403	Point3	000000	
+		Limits			110500			
+			Limits of Visual Observation	Line	110501	Line1	000000	
+			Limits of Under Cast	Line	110502	Line1	000000	
+			Limits of Radar Observation	Line	110503	Line1	000000	
+			Observed Ice Edge or Boundary	Line	110504	Line1	000000	
+			Estimated Ice Edge or Boundary	Line	110505	Line1	000000	
+			Ice Edge or Boundary From Radar	Line	110506	Line1	000000	
+		Openings in the Ice			110600			
+			Cracks	Line	110601	Line1	000000	
+			Cracks at a Specific Location	Line	110602	Line1	000000	
+			Lead	Line	110603	Line1	000000	
+			Frozen Lead	Line	110604	Line1	000000	
+		Snow Cover		Point	110700	Point3	000000	
+			Sastrugi (with Orientation)	Point	110701	Point3	000000	
+		Topographical Features			110800			
+			Ridges or Hummocks	Point	110801	Point3	000000	
+			Rafting	Point	110802	Point3	000000	
+			Jammed Brash Barrier	Point	110803	Point3	000000	
+	Hydrography				120000			
+		Depth			120100			
+			Soundings	Point	120101	Point3	000000	
+			Depth Curve	Line	120102	Line1	000000	
+			Depth Contour	Line	120103	Line1	000000	
+			Depth Area	Area	120104	Area2	000000	
+		Coastal Hydrography			120200			
+			Coastline	Line	120201	Line1	000000	
+			Island	Area	120202	Area2	000000	
+			Beach	Area	120203	Area2	000000	
+			Water	Area	120204	Area2	000000	
+			Foreshore – Line	Line	120205	Line1	000000	
+			Foreshore – Area	Area	120206	Area2	000000	
+		Ports and Harbors			120300			
+			Ports		120301			
+			Berths (Onshore)	Point	120302	Point1	000000	
+			Berths (Anchor)	Point	120303	Point1	000000	
+			Anchorage – Point	Point	120304	Point1	000000	
+			Anchorage – Line	Line	120305	Line8	000000	
+			Anchorage – Area	Area	120306	Area2	000000	
+			Call in Point	Point	120307	Point1	000000	
+			Pier/Wharf/Quay	Line	120308	Line1	000000	
+			Fishing Harbor – Point	Point	120309	Point1	000000	
+			Fish Weirs – Point	Point	120310	Point1	000000	
+			Fish Stakes – Point	Point	120311	Point1	000000	
+			Fish Traps – Area	Area	120312	Area2	000000	
+			Facilities		120313			
+			Drydock	Area	120314	Area2	000000	
+			Landing Place	Point	120315	Point1	000000	
+			Offshore Loading Facility – Point	Point	120316	Point1	000000	
+			Offshore Loading Facility – Line	Line	120317	Line1	000000	
+			Offshore Loading Facility – Area	Area	120318	Area2	000000	
+			Ramp – Above Water	Line	120319	Line1	000000	
+			Ramp – Below Water	Line	120320	Line1	000000	
+			Landing Ring	Point	120321	Point1	943000;000000	brown/red
+			Ferry Crossing	Point	120322	Point1	FF00FF	magenta
+			Cable Ferry Crossing	Point	120323	Point1	000000	
+			Dolphin	Point	120324	Point1	943000;000000	
+			Shoreline Protection		120325			
+			Breakwater/Groin/Jetty – Above Water	Line	120326	Line1	000000	
+			Breakwater/Groin/Jetty – Below Water	Line	120327	Line1	000000	
+			Seawall	Line	120328	Line1	000000	
+		Aids to Navigation			120400			
+			Beacon	Point	120401	Point1	000000	
+			Buoy Default	Point	120402	Point1	000000;FF00FF	
+			Marker	Point	120403	Point1	FF00FF	
+			Perches/Stakes – Point	Point	120404	Point1	000000	
+			Perches/Stakes – Area	Area	120405	Area2	0000FF;00000	
+			Light	Point	120406	Point1	FF00FF	
+			Leading Line	Line	120407	Line1	000000	
+			Light Vessel/Light Ship	Point	120408	Point1	000000	
+			Lighthouse	Point	120409	Point1	000000	
+		Dangers/Hazards			120500			
+			Rock Submerged	Point	120501	Point1	00CCFF;000000	light blue
+			Rock Awashed	Point	120502	Point1	000000	
+			Underwater Danger/Hazard	Area	120503	Area2	00CCFF;000000	
+			Foul Ground – Point	Point	120504	Point1	808080	gray
+			Foul Ground – Area	Area	120505	Area2	808080	
+			Kelp/Seaweed – Point	Point	120506	Point1	808080	
+			Kelp/Seaweed – Area	Area	120507	Area2	808080	
+			Snags/Stumps	Point	120508	Point1	00CCFF;000000	Is this really a point?  Maybe an area?
+			Wreck (Uncovers)	Point	120509	Point1	808080	
+			Wreck (Submerged)	Point	120510	Point1	00CCFF;000000	
+			Breakers	Line	120511	Line1	808080	
+			Reef	Line	120512	Line1	000000	
+			Eddies/Overfalls/Tide Rips	Point	120513	Point1	808080	
+			Discolored Water	Area	120514	Area2	00CCFF;000000	
+		Bottom Features			120600			
+			Bottom Characteristics - Sand	Point	120601	Point3	000000	
+			Bottom Characteristics - Mud	Point	120602	Point3	000000	
+			Bottom Characteristics - Clay	Point	120603	Point3	000000	
+			Bottom Characteristics - Silt	Point	120604	Point3	000000	
+			Bottom Characteristics - Stones	Point	120605	Point3	000000	
+			Bottom Characteristics - Gravel	Point	120606	Point3	000000	
+			Bottom Characteristics - Pebbles	Point	120607	Point3	000000	
+			Bottom Characteristics - Cobbles	Point	120608	Point3	000000	
+			Bottom Characteristics - Rock	Point	120609	Point3	000000	
+			Bottom Characteristics - Coral	Point	120610	Point3	000000	
+			Bottom Characteristics - Shell	Point	120611	Point3	000000	
+			Qualifying Terms - Fine	Point	120612	Point3	000000	
+			Qualifying Terms - Medium	Point	120613	Point3	000000	
+			Qualifying Terms - Coarse	Point	120614	Point3	000000	
+		Tide and Current			120700			
+			Water Turbulence	Point	120701	Point1	808080	gray
+			Current Flow – Ebb	Line	120702	Line1	C0C0C0	light gray
+			Current Flow – Flood	Line	120703	Line1	C0C0C0	
+			Tide Data Point	Point	120704	Point1	808080	
+			Tide Gauge	Point	120705	Point1	FF00FF;D2B06A	magenta and light brown
+	Oceanography				130000			
+		Bioluminescence			130100			
+			Visual Detection Ratio (VDR) Level 1–2	Area	130101	Area2	1A994D	Dark Green
+			VDR Level 2–3	Area	130102	Area2	1ACC4D	Light Green
+			VDR Level 3–4	Area	130103	Area2	80FF33	Lime Green
+			VDR Level 4–5	Area	130104	Area2	CCFF1A	Yellow Green
+			VDR Level 5–6	Area	130105	Area2	FFFF00	Yellow
+			VDR Level 6–7	Area	130106	Area2	FFCC00	Gold
+			VDR Level 7–8	Area	130107	Area2	FF8000	Light Orange
+			VDR Level 8–9	Area	130108	Area2	FF4D00	Dark Orange
+			VDR Level 9–10	Area	130109	Area2	FF0000	Red
+		Beach Slope			130200			
+			Flat	Area	130201	Area2	C0C0C0	
+			Gentle	Area	130202	Area2	808080	
+			Moderate	Area	130203	Area2	C0C0C0	
+			Steep	Area	130204	Area2	808080	
+	"Geophysics/Acoustics"				140000			
+		Mine Warfare (MIW) Bottom Descriptors			140100			
+			MIW Bottom Sediments - Solid Rock	Area	140101	Area2	FF00FF	Magenta
+			MIW Bottom Sediments - Clay	Area	140102	Area2	6482FF	Perwinkle
+			MIW Bottom Sediments - Very Coarse Sand	Area	140103	Area2	FFB400	Gold
+			MIW Bottom Sediments - Coarse Sand	Area	140104	Area2	FFD700	Light Gold
+			MIW Bottom Sediments - Medium Sand	Area	140105	Area2	FFEB00	mostly yellow
+			MIW Bottom Sediments - Fine Sand	Area	140106	Area2	FFFF8C	light yellow
+			MIW Bottom Sediments - Very Fine Sand	Area	140107	Area2	FFFFDC	pale yellow
+			MIW Bottom Sediments - Very Fine Silt	Area	140108	Area2	00D7FF	turquoise
+			MIW Bottom Sediments - Fine Silt	Area	140109	Area2	19FFE6	Aquamarine
+			MIW Bottom Sediments - Medium Silt	Area	140110	Area2	00FF00	Green
+			MIW Bottom Sediments - Coarse Silt	Area	140111	Area2	C8FF69	Lime Green
+			MIW Bottom Sediments - Boulders	Area	140112	Area2	FF0000	Red
+			"MIW Bottom Sediments - Cobbles, Oyster Shells"	Area	140113	Area2	FF9696	Dark Peach
+			"MIW Bottom Sediments - Pebbles, Shells"	Area	140114	Area2	FFBEBE	Peach
+			MIW Bottom Sediments - Sand and Shells	Area	140115	Area2	FFDCDC	Light Peach
+			MIW Bottom Sediment - Land	Area	140116	Area2	DCDCDC	Lighter Gray
+			MIW Bottom Sediment - No Data	Area	140117	Area2	E6E6E6	Ligheterer Gray
+			Bottom Roughness - Smooth	Area	140118	Area2	00FF00	Green
+			Bottom Roughness - Moderate	Area	140119	Area2	FFFF00	Yellow
+			Bottom Roughness - Rough	Area	140120	Area2	FF0000	Red
+			Clutter (Bottom) - Low	Area	140121	Area2	00FF00	Green
+			Clutter (Bottom) - Medium	Area	140122	Area2	FFFF00	Yellow
+			Clutter (Bottom) - High	Area	140123	Area2	FF0000	Red
+			Impact Burial - 0%	Area	140124	Area2	0000FF	Blue
+			Impact Burial - 0–10%	Area	140125	Area2	00FF00	Green
+			Impact Burial - 10–20%	Area	140126	Area2	FFFF00	Yellow
+			Impact Burial - 20–75%	Area	140127	Area2	FF8000	Orange
+			Impact Burial - >75%	Area	140128	Area2	FF0000	Red
+			MIW Bottom Category A	Area	140129	Area2	00FF00	Green
+			MIW Bottom Category B	Area	140130	Area2	FFFF00	Yellow
+			MIW Bottom Category C	Area	140131	Area2	FF0000	Red
+			MIW Bottom Type - A1	Area	140132	Area2	30FF00	green
+			MIW Bottom Type - A2	Area	140133	Area2	7FFF00	light green
+			MIW Bottom Type - A3	Area	140134	Area2	AFFF00	Lime Green
+			MIW Bottom Type - B1	Area	140135	Area2	CFFF00	Yellow-Green
+			MIW Bottom Type - B2	Area	140136	Area2	FFFF00	Yellow
+			MIW Bottom Type - B3	Area	140137	Area2	FFCF00	Gold
+			MIW Bottom Type - C1	Area	140138	Area2	FF8000	Orange
+			MIW Bottom Type - C2	Area	140139	Area2	FF5000	Dark Orange
+			MIW Bottom Type - C3	Area	140140	Area2	FF3000	Orange-Red
+	Limits				150000			
+		Maritime Limit Boundary		Line	150100	Line1	FF00FF	Magenta
+		Maritime Area		Area	150200	Area2	FF00FF	
+		Restricted Area		Line	150300	Line1	FF00FF	
+		Swept Area		Area	150400	Area2	FF00FF	
+		Training Area		Area	150500	Area2	FF00FF	
+		Operator–Defined		Area	150600	Area2	FF8000	Orange
+	Man–Made Structures				160000			
+		Submarine Cable		Line	160100	Line1	FF00FF	
+		Submerged Crib		Area	160200	Area2	0000FF;00000	
+		Canal		Line	160300	Line1	000000	
+		Ford		Point	160400	Point1	000000	
+		Lock		Point	160500	Point1	000000	
+		Oil/Gas Rig		Point	160600	Point1	000000	
+		Oil/Gas Rig Field		Area	160700	Area2	C0C0C0	light gray
+		Pipelines/Pipe		Line	160800	Line1	C0C0C0	
+		Pile/Piling/Post		Point	160900	Point1	000000	
+47	Space				110000
+50	Unspecified			0
+	Signal Intercept			110000
+		Communications		110100
+		Jammer		110200
+		Radar		110300
+51	Unspecified			0
+	Signal Intercept			110000
+		Communications		110100
+		Jammer		110200
+		Radar		110300
+52	Unspecified			0
+	Signal Intercept			110000
+		Communications		110100
+		Jammer		110200
+		Radar		110300
+53	Unspecified			0
+	Signal Intercept			110000
+		Communications		110100
+		Jammer		110200
+		Radar		110300
+54	Unspecified			0
+	Signal Intercept			110000
+		Communications		110100
+		Jammer		110200
+		Radar		110300
+60	Unspecified			0
+	Mission Force			110000
+		Combat Mission Team		110100
+		National Mission Team		110200
+		Cyber Protection Team		110300
+		Nation State Cyber Threat Actor		110400
+		Non Nation State Cyber Threat Actor		110500

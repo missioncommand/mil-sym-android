@@ -48,6 +48,18 @@ public class MilStdIconRenderer
                 SinglePointLookup.getInstance().init(context);
                 TacticalGraphicLookup.getInstance().init(context);
 
+                //test SVGLookup
+                /*SVGLookup.getInstance().init(context);
+                SVGLInfo oct = SVGLookup.getInstance().getSVGLInfo("octagon");
+                System.out.println(oct.toString());//*/
+
+                //test MSLookup
+                /*MSLookup.getInstance().init(context);
+                MSLInfo msli = MSLookup.getInstance().getMSLInfo("50110100");//
+                msli = MSLookup.getInstance().getMSLInfo("36190100");//
+                System.out.println(msli.getPath());
+                System.out.println(msli.getName());//*/
+
                 // PROTOTYPE SVG////////////////////////////////////////
                 // works, but half speed
                 /*
