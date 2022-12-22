@@ -7,7 +7,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import armyc2.c2sd.singlepointrenderer.R;
@@ -19,6 +21,7 @@ public class MSLookup {
 
     private static Map<String, MSLInfo> _MSLookup = null;
     private String TAG = "MSLookup";
+    private List<String> _IDList = new ArrayList<String>();
 
 
     /*
@@ -101,6 +104,7 @@ public class MSLookup {
                         {//Everything else
                             _MSLookup.put(id, new MSLInfo(ss, e, et, est, ec));
                         }
+                        _IDList.add(id);
                     }
 
 
@@ -127,5 +131,14 @@ public class MSLookup {
             return _MSLookup.get(id);
         else
             return null;
+    }
+
+    /**
+     * returns a list of all the keys in the order they are listed in the MilStd 2525D document.
+     * @return
+     */
+    public List<String> getIDList()
+    {
+        return _IDList;
     }
 }
