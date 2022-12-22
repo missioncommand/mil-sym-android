@@ -77,19 +77,19 @@ public class MSLookup {
                         est = temp[3];
                     if(temp.length < 3)
                         et = "";
-                    else if(est.equals("")==true)
+                    else if(est.equals(""))
                         et = temp[2];
                     if(temp.length < 2)
                         e = "";
-                    else if(et.equals("")==true)
+                    else if(et.equals(""))
                         e = temp[1];
 
-                    if(temp[0].equals("")==false)
+                    if(!temp[0].equals(""))
                     ss = temp[0];
 
                     id = ss + ec;
 
-                    if(ec.equals("000000")==false)
+                    if(!ec.equals("000000"))
                     {
                         if (temp.length >= 7)
                         {//Control Measures and METOCS
