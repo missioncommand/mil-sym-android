@@ -63,6 +63,8 @@ public class MSLookup {
                 String ec = null;
                 String g = null;
                 String dr = null;
+                String m = null;
+                String[] modifiers = null;
 
                 String line = br.readLine();
                 while (line != null) {
@@ -96,9 +98,16 @@ public class MSLookup {
                     {
                         if (temp.length >= 7)
                         {//Control Measures and METOCS
+                            if(temp.length >= 8)
+                            {
+                                m = temp[7];
+                                if(m != null)
+                                    //m = m.replace("\"","");
+                                    modifiers = m.split(",");
+                            }
                             g = temp[5];
                             dr = temp[6];
-                            _MSLookup.put(id, new MSLInfo(ss, e, et, est, ec, g, dr));
+                            _MSLookup.put(id, new MSLInfo(ss, e, et, est, ec, g, dr, modifiers));
                         }
                         else
                         {//Everything else

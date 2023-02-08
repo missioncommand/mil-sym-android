@@ -56,7 +56,10 @@ public class MilStdIconRenderer
                 //test MSLookup
                 /*MSLookup.getInstance().init(context);
                 MSLInfo msli = MSLookup.getInstance().getMSLInfo("50110100");//
-                msli = MSLookup.getInstance().getMSLInfo("36190100");//
+                msli = MSLookup.getInstance().getMSLInfo("36190100");//"Non-Mine Mine–Like Object, Bottom"
+                System.out.println(msli.getPath());
+                System.out.println(msli.getName());
+                msli = MSLookup.getInstance().getMSLInfo("01110300");//"Unmanned Aircraft (UA) / Unmanned Aerial Vehicle (UAV) / Unmanned Aircraft System (UAS) / Remotely Piloted Vehicle (RPV)"
                 System.out.println(msli.getPath());
                 System.out.println(msli.getName());//*/
 

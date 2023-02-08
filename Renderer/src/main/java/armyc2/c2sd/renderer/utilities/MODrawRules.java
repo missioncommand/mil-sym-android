@@ -7,6 +7,12 @@ package armyc2.c2sd.renderer.utilities;
 public class MODrawRules {
 
     /**
+     * Usually an entry in the MilStd that is just a category containing other symbols
+     * and not something that gets drawn itself.
+     */
+    public static final int DONOTDRAW = 0;
+
+    /**
      * Anchor Points: This graphic requires at least three anchor points to
      * define the boundary of the area. Add as many points as necessary to
      * accurately reflect the area's size and shape.
