@@ -36,10 +36,10 @@ subprojects  {
 
 
     ext {
-        android_minSdkVersion     = 19//15
-        android_targetSdkVersion  = 19//19
-        android_compileSdkVersion = 28//19
-        android_buildToolsVersion = "30.0.3"
+        android_minSdkVersion     = 21//19
+        android_targetSdkVersion  = 30//21//19
+        android_compileSdkVersion = 30//33//28//going to 33 requires JDK11
+        android_buildToolsVersion = "30.0.3"//"33.0.2" //"30.0.3"
     }
 
     group = "mil.army.missioncommand"
