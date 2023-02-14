@@ -1,7 +1,6 @@
 package armyc2.c2sd.renderer.utilities;
 
 import android.content.Context;
-import android.graphics.RectF;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,7 +18,7 @@ public class MSLookup {
     private static MSLookup _instance = null;
     private static Boolean _initCalled = false;
 
-    private static Map<String, MSLInfo> _MSLookup = null;
+    private static Map<String, MSInfo> _MSLookup = null;
     private String TAG = "MSLookup";
     private List<String> _IDList = new ArrayList<String>();
 
@@ -107,11 +106,11 @@ public class MSLookup {
                             }
                             g = temp[5];
                             dr = temp[6];
-                            _MSLookup.put(id, new MSLInfo(ss, e, et, est, ec, g, dr, modifiers));
+                            _MSLookup.put(id, new MSInfo(ss, e, et, est, ec, g, dr, modifiers));
                         }
                         else
                         {//Everything else
-                            _MSLookup.put(id, new MSLInfo(ss, e, et, est, ec));
+                            _MSLookup.put(id, new MSInfo(ss, e, et, est, ec));
                         }
                         _IDList.add(id);
                     }
@@ -134,7 +133,7 @@ public class MSLookup {
      * @param id SymbolSet + Entity code like 50110100
      * @return
      */
-    public MSLInfo getMSLInfo(String id)
+    public MSInfo getMSLInfo(String id)
     {
         if(_MSLookup.containsKey(id))
             return _MSLookup.get(id);

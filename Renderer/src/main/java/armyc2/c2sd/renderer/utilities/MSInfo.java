@@ -1,9 +1,10 @@
 package armyc2.c2sd.renderer.utilities;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class MSLInfo {
+public class MSInfo {
 
     private String _ID = null;
     private String _Name = null;
@@ -14,7 +15,7 @@ public class MSLInfo {
     private String _EntitySubType = null;
     private String _EntityCode = null;
     private String _Geometry = "point";
-    private String[] _Modifiers = null;
+    private ArrayList<String> _Modifiers = null;
     private int _MinPointCount = 0;
     private int _MaxPointCount = 0;
     private int _DrawRule = 0;
@@ -27,7 +28,7 @@ public class MSLInfo {
      * @param entitySubType  descriptor
      * @param entityCode characters 11 - 16 in the symbol code
      */
-    public MSLInfo(String symbolSet, String entity, String entityType, String entitySubType, String entityCode)
+    public MSInfo(String symbolSet, String entity, String entityType, String entitySubType, String entityCode)
     {
         _ID = symbolSet + entityCode;
         _SymbolSet = parseSymbolSetName(symbolSet);
@@ -78,7 +79,7 @@ public class MSLInfo {
      * @param geometry "point", "line", "area"
      * @param drawRule as defined in 2525D for Control Measures and METOC (i.e. "Point1")
      */
-    public MSLInfo(String symbolSet, String entity, String entityType, String entitySubType, String entityCode, String geometry, String drawRule, String[] modifiers)
+    public MSInfo(String symbolSet, String entity, String entityType, String entitySubType, String entityCode, String geometry, String drawRule, String[] modifiers)
     {
         _ID = symbolSet + entityCode;
         _SymbolSet = parseSymbolSetName(symbolSet);
@@ -120,11 +121,11 @@ public class MSLInfo {
 
         if(modifiers != null)
         {
-            _Modifiers = modifiers;
+            _Modifiers = new ArrayList<String>(Arrays.asList(modifiers));
         }
         else if(getSymbolSetInt() != SymbolID.SymbolSet_ControlMeasure)
         {
-            _Modifiers = (String[])getModifierList().toArray();
+            _Modifiers = populateModifierList();
         }
     }
 
@@ -661,9 +662,12 @@ public class MSLInfo {
         return _MaxPointCount;
     }
 
-    public String[] getModifiers() { return _Modifiers; }
+    public ArrayList<String> getModifiers()
+    {
+        return _Modifiers;
+    }
 
-    private List<String> getModifierList()
+    private ArrayList<String> populateModifierList()
     {
         ArrayList<String> modifiers = new ArrayList<String>();
 

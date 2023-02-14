@@ -5,6 +5,8 @@ import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
+import java.util.ArrayList;
+
 import armyc2.c2sd.graphics2d.Point2D;
 
 /**
@@ -16,84 +18,16 @@ public class SymbolUtilitiesD {
 
     public static Boolean hasModifier(String symbolID, String modifier)
     {
-        int ss = SymbolID.getSymbolSet(symbolID);
+        MSInfo msi = MSLookup.getInstance().getMSLInfo(symbolID);
 
-        if(ss == SymbolID.SymbolSet_ControlMeasure)
-        {
-            return hasModifierControlMeasure(symbolID, modifier);
-        }
+        ArrayList<String> modifiers = msi.getModifiers();
+
+        if(ModifiersD.GetModifierList().contains(modifier) &&  //If modifier is a valid modifier
+            modifiers.contains(modifier)) //and modifier is in the list of modifiers
+            return true;//return true
         else
-        {
-            return hasModifierUnit(symbolID, modifier);
-        }
-    }
+            return false;
 
-    public static Boolean hasModifierControlMeasure(String symbolID, String modifier)
-    {
-        return true;
-    }
-
-    public static Boolean hasModifierUnit(String symbolID, String modifier)
-    {
-        int ss = SymbolID.getSymbolSet(symbolID);
-        Boolean has = false;
-
-        if(ss == SymbolID.SymbolSet_LandUnit || ss == SymbolID.SymbolSet_LandCivilianUnit_Organization)
-        {
-            switch (modifier)
-            {
-                case ModifiersD.A_SYMBOL_ICON:
-                case ModifiersD.AA_SPECIAL_C2_HQ:
-                case ModifiersD.AO_ENGAGEMENT_BAR:
-                case ModifiersD.B_ECHELON:
-                case ModifiersD.D_TASK_FORCE_INDICATOR:
-                case ModifiersD.F_REINFORCED_REDUCED:
-                case ModifiersD.G_STAFF_COMMENTS:
-                case ModifiersD.H_ADDITIONAL_INFO_1:
-                case ModifiersD.J_EVALUATION_RATING:
-                case ModifiersD.K_COMBAT_EFFECTIVENESS:
-                case ModifiersD.M_HIGHER_FORMATION:
-                case ModifiersD.P_IFF_SIF_AIS:
-                case ModifiersD.Q_DIRECTION_OF_MOVEMENT:
-                case ModifiersD.S_HQ_STAFF_INDICATOR:
-                case ModifiersD.T_UNIQUE_DESIGNATION_1:
-                case ModifiersD.W1_DTG_2:
-                case ModifiersD.X_ALTITUDE_DEPTH:
-                case ModifiersD.Y_LOCATION:
-                case ModifiersD.Z_SPEED:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-        switch(modifier)
-        {
-            case ModifiersD.B_ECHELON:
-                if(ss == 10 || ss == 40)
-                {
-                    has = true;
-                }
-            case ModifiersD.T_UNIQUE_DESIGNATION_1:
-                if((ss > 0 && ss < 21) || (ss > 29 && ss < 41) || (ss > 49 && ss < 55))//All but METOC and CM
-                {
-                    has = true;
-                }
-                break;
-            case ModifiersD.H_ADDITIONAL_INFO_1:
-                if((ss > 0 && ss < 21) || (ss > 29 && ss < 41) || (ss > 49 && ss < 55))//All but METOC and CM
-                {
-                    has = true;
-                }
-                break;
-            case ModifiersD.G_STAFF_COMMENTS:
-                if((ss > 0 && ss < 21) || (ss > 29 && ss < 41) || (ss > 49 && ss < 55))//All but METOC and CM
-                {
-                    has = true;
-                }
-                break;
-        }
-
-        return has;
     }
 
     private static String convert(int integer)
@@ -326,7 +260,76 @@ public class SymbolUtilitiesD {
         return false;
     }
 
-    public static Point getSymbolCenter(String symbolID, RectF bounds)
+    /**
+     * Checks if this is a single point control measure graphic with a unique layout.
+     * Basically anything that's not an action point style graphic with modifiers
+     * @param symbolID
+     * @return
+     */
+    public static boolean isSPCMWithSpecialModifierLayout(String symbolID)
+    {
+        int ss = SymbolID.getSymbolSet(symbolID);
+        int ec = SymbolID.getEntityCode(symbolID);
+
+        if(ss == SymbolID.SymbolSet_ControlMeasure)
+        {
+            switch(ec)
+            {
+                case 130500: //Control Point
+                case 130700: //Decision Point
+                case 131300: //Point of Interest
+                case 131800: //Waypoint
+                case 131900: //Airfield (AEGIS Only)
+                case 132000: //Target Handover
+                case 132100: //Key Terrain
+                case 160300: //Target Point Reference
+                case 180100: //Air Control Point
+                case 180200: //Communications Check Point
+                case 180600: //TACAN
+                case 210300: //Defended Asset
+                case 210600: //Air Detonation
+                case 210800: //Impact Point
+                case 211000: //Launched Torpedo
+                case 212800: //Harbor
+                case 213500: //Sonobuoy
+                case 213501: //Ambient Noise Sonobuoy
+                case 213502: //Air Transportable Communication (ATAC) (Sonobuoy)
+                case 213503: //Barra (Sonobuoy)
+                case 213505:
+                case 213506:
+                case 213507:
+                case 213508:
+                case 213509:
+                case 213510:
+                case 213511:
+                case 213512:
+                case 213513:
+                case 213514:
+                case 213515:
+                case 214900: //General Sea Subsurface Station
+                case 215600: //General Sea Station
+                case 217000: //Shore Control Station
+                case 240601: //Point or Single Target
+                case 240602: //Nuclear Target
+                case 240900: //Fire Support Station
+                case 250600: //Known Point
+                case 270701: //Static Depiction
+                case 282001: //Tower, Low
+                case 282002: //Tower, High
+                case 281300: //Chemical Event
+                case 281400: //Biological Event
+                case 281500: //Nuclear Event
+                case 281600: //Nuclear Fallout Producing Event
+                case 281700: //Radiological Event
+                    return true;
+                default:
+                    return false;
+            }
+        }
+        return false;
+    }
+
+    public static Point getCMSymbolAnchorPoint(String symbolID, RectF bounds)
     {
 
         PointF center = new PointF();
@@ -334,7 +337,8 @@ public class SymbolUtilitiesD {
         double centerY = bounds.height()/2;
 
         int ss = SymbolID.getSymbolSet(symbolID);
-        MSLInfo msi = null;
+        int ec = SymbolID.getEntityCode(symbolID);
+        MSInfo msi = null;
         int drawRule = 0;
 
         //center/anchor point is always half width and half height except for control measures
@@ -342,7 +346,7 @@ public class SymbolUtilitiesD {
         if(ss == SymbolID.SymbolSet_ControlMeasure)
         {
             drawRule = MSLookup.getInstance().getMSLInfo(symbolID).getDrawRule();
-            switch(drawRule)
+            switch(drawRule)//here we check the 'Y' value for the anchor point
             {
                 case DrawRules.POINT1://action points //bottom center
                 case DrawRules.POINT5://entry point
@@ -366,6 +370,15 @@ public class SymbolUtilitiesD {
                     centerY = (bounds.height() * 0.95);//TODO: check!
                     break;
                 default:
+            }
+
+            switch (ec)
+            //have to adjust center X as some graphics have integrated text outside the symbol
+            {
+                case 180400: //Pickup Point (PUP)
+                    centerX = bounds.width() * 0.31;
+                case 240900: //Fire Support Station
+                    centerX = bounds.width() * 0.38;
             }
         }
 
@@ -644,63 +657,6 @@ public class SymbolUtilitiesD {
         return points;
     }
 
-    // <editor-fold desc="hasModifier functions" defaultstate="collapsed">
-    public static boolean hasModifier2(String symbolID, String modifier)
-    {
-        int symbolSet = SymbolID.getSymbolSet(symbolID);
-
-        switch (symbolSet) {
-            case SymbolID.SymbolSet_LandUnit:
-                break;
-            case SymbolID.SymbolSet_LandCivilianUnit_Organization:
-                break;
-            case SymbolID.SymbolSet_LandEquipment:
-                break;
-            case SymbolID.SymbolSet_LandInstallation:
-                break;
-            case SymbolID.SymbolSet_ControlMeasure:
-                break;
-            case SymbolID.SymbolSet_Air:
-                break;
-            case SymbolID.SymbolSet_AirMissile:
-                break;
-            case SymbolID.SymbolSet_MineWarfare:
-                break;
-            case SymbolID.SymbolSet_Activities:
-                break;
-            case SymbolID.SymbolSet_SeaSurface:
-                break;
-            case SymbolID.SymbolSet_SeaSubsurface:
-                break;
-            case SymbolID.SymbolSet_SignalsIntelligence_Land:
-                break;
-            case SymbolID.SymbolSet_SignalsIntelligence_Air:
-                break;
-            case SymbolID.SymbolSet_SignalsIntelligence_SeaSurface:
-                break;
-            case SymbolID.SymbolSet_SignalsIntelligence_SeaSubsurface:
-                break;
-            case SymbolID.SymbolSet_SignalsIntelligence_Space:
-                break;
-            case SymbolID.SymbolSet_CyberSpace:
-                break;
-            case SymbolID.SymbolSet_Atmospheric:
-                break;
-            case SymbolID.SymbolSet_Oceanographic:
-                break;
-            case SymbolID.SymbolSet_MeteorologicalSpace:
-                break;
-            case SymbolID.SymbolSet_Space:
-                break;
-            case SymbolID.SymbolSet_SpaceMissile:
-                break;
-            case SymbolID.SymbolSet_Unknown:
-                break;
-            default:
-                return false;
-        }
-        return false;
-    }
 
     public static Boolean isInstallation(String symbolID)
     {

@@ -2,12 +2,12 @@ package armyc2.c2sd.renderer.utilities;
 
 import android.graphics.RectF;
 
-public class SVGLInfo {
+public class SVGInfo {
 
     private String _ID = null;
     private RectF _Bbox = null;
     private String _SVG = null;
-    public SVGLInfo(String id, RectF measurements, String svg)
+    public SVGInfo(String id, RectF measurements, String svg)
     {
         _ID = id;
         _Bbox = measurements;
