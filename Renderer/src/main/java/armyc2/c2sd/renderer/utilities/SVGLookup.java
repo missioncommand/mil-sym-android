@@ -163,6 +163,11 @@ public class SVGLookup {
 
     public static String getFrameID(String symbolID)
     {
+
+        //SIDC positions 3_456_7
+        String frameID = symbolID.charAt(2) + "_" + symbolID.substring(3, 6) + "_" + symbolID.charAt(6);
+
+        /*//for frames with 4 characters (i.e. 0330)
         String si = symbolID.substring(2, 4);
         String ss = symbolID.substring(4, 6);
         int iss = Integer.valueOf(ss);
@@ -210,7 +215,7 @@ public class SVGLookup {
                 break;
         }
 
-        String frameID = si + ss;
+        String frameID = si + ss;//*/
         return frameID;
     }
 
