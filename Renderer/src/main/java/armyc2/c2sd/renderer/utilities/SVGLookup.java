@@ -75,7 +75,12 @@ public class SVGLookup {
                 //parse first line
                 temp = line.split(delimiter);
                 id = temp[0];
-                bbox = new RectF(Float.parseFloat(temp[1]),Float.parseFloat(temp[2]),Float.parseFloat(temp[3]),Float.parseFloat(temp[4]));
+                float left, top, right, bottom;
+                left = Float.parseFloat(temp[1]);
+                top = Float.parseFloat(temp[2]);
+                right = left + Float.parseFloat(temp[3]);
+                bottom = top + Float.parseFloat(temp[4]);
+                bbox = new RectF(left,top,right,bottom);
 
                 //read 2nd line to get SVG
                 svg = br.readLine();

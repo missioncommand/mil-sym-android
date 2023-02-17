@@ -19,6 +19,9 @@ import android.graphics.Typeface;
 import android.util.Log;
 import android.util.SparseArray;
 
+import com.caverock.androidsvg.SVG;
+import com.caverock.androidsvg.SVGParseException;
+
 import armyc2.c2sd.renderer.utilities.Color;
 import armyc2.c2sd.renderer.utilities.ErrorLogger;
 import armyc2.c2sd.renderer.utilities.ImageInfo;
@@ -26,6 +29,8 @@ import armyc2.c2sd.renderer.utilities.MilStdAttributes;
 import armyc2.c2sd.renderer.utilities.ModifierInfo;
 import armyc2.c2sd.renderer.utilities.ModifiersTG;
 import armyc2.c2sd.renderer.utilities.RendererSettings;
+import armyc2.c2sd.renderer.utilities.SVGInfo;
+import armyc2.c2sd.renderer.utilities.SVGLookup;
 import armyc2.c2sd.renderer.utilities.SVGPath;
 import armyc2.c2sd.renderer.utilities.SinglePointLookup;
 import armyc2.c2sd.renderer.utilities.SinglePointLookupInfo;
@@ -1013,5 +1018,97 @@ public class SinglePointSVGRenderer
 	 * String.valueOf(itr.next()); if(temp != null) message += temp + "\n"; }
 	 * //ErrorLogger.LogMessage(message); return message; }//
 	 */
+
+	public Bitmap AndroidSVGTest()
+	{
+		String lawEnforcement = "30031000002003000000";
+		String frameID = null;
+		String iconID = null;
+		SVGInfo siFrame = null;
+		SVGInfo siIcon = null;
+		SVG mySVG = null;
+		Bitmap bmp = null;
+		Canvas cv = null;
+		Paint myPaint = new Paint();
+		int top = 0;
+		int left = 0;
+		int width = 0;
+		int height = 0;
+		String svgStart = null;
+		String strSVG = null;
+
+		String strSVGFile = "<svg version=\"1.1\" id=\"Version_1.0\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\"" +
+		"y=\"0px\" width=\"612px\" height=\"792px\" viewBox=\"0 0 612 792\" enable-background=\"new 0 0 612 792\" xml:space=\"preserve\">" +
+		"<g id=\"frame\">" +
+		"<ellipse id=\"_x3C_path_x3E_\" fill=\"#80E0FF\" stroke=\"#000000\" stroke-width=\"5\" cx=\"306\" cy=\"396\" rx=\"144\" ry=\"144\"/>" +
+		"</g>" +
+		"</svg>";
+		String strSVGRed = "<svg xmlns:svg=\"http://www.w3.org/2000/svg\" version=\"1.1\"\n" +
+				"     viewBox=\"0 0 100 100\">\n" +
+				"\n" +
+				"   <circle cx=\"50\" cy=\"50\" r=\"50\" fill=\"red\" />\n" +
+				"   \n" +
+				"</svg>";
+		try
+		{
+
+			frameID = SVGLookup.getFrameID(lawEnforcement);
+			iconID = SVGLookup.getMainIconID(lawEnforcement);
+			siFrame = SVGLookup.getInstance().getSVGLInfo(frameID);
+			siIcon = SVGLookup.getInstance().getSVGLInfo(iconID);
+			top = (int)siFrame.getBbox().top;
+			left = (int)siFrame.getBbox().left;
+			width = (int)(siFrame.getBbox().width());
+			height = (int)(siFrame.getBbox().height());
+			if(siFrame.getBbox().bottom > 400)
+				svgStart = "<svg xmlns:svg=\"http://www.w3.org/2000/svg\" version=\"1.1\" viewBox=\"0 0 612 792\">";
+			else
+				svgStart = "<svg xmlns:svg=\"http://www.w3.org/2000/svg\" version=\"1.1\" viewBox=\"0 0 400 400\">";
+
+			strSVG = svgStart + siFrame.getSVG() + siIcon.getSVG() + "</svg>";
+			Log.i(TAG, strSVG);
+
+			//Render Friendly Frame
+			/*mySVG = SVG.getFromString(strSVGFile);
+			bmp = Bitmap.createBitmap(612, 792, Config.ARGB_8888);
+			cv = new Canvas(bmp);
+			myPaint.setColor(Color.LIGHT_GRAY.toInt());
+			cv.drawRect(new RectF(0,0,612,792), myPaint);
+			mySVG.renderToCanvas(cv);//*/
+
+			/*//Render Red Square
+			mySVG = SVG.getFromString(strSVGRed);
+			bmp = Bitmap.createBitmap(100, 100, Config.ARGB_8888);
+			cv = new Canvas(bmp);
+			myPaint.setColor(Color.LIGHT_GRAY.toInt());
+			cv.drawRect(new RectF(0,0,100,100), myPaint);
+			mySVG.renderToCanvas(cv);//*/
+
+			//Render Symbol
+			mySVG = SVG.getFromString(strSVG);
+			bmp = Bitmap.createBitmap(306, 346, Config.ARGB_8888);
+			//bmp = Bitmap.createBitmap(width, height, Config.ARGB_8888);
+			cv = new Canvas(bmp);
+			myPaint.setColor(Color.LIGHT_GRAY.toInt());
+			cv.drawRect(new RectF(0,0,306,346), myPaint);
+			myPaint.setStyle(Paint.Style.STROKE);
+			myPaint.setColor(Color.BLACK.toInt());
+			cv.drawRect(new RectF(0,0,306,346), myPaint);
+			mySVG.setDocumentViewBox(left,top,width,height);
+			mySVG.renderToCanvas(cv);//*/
+			//mySVG.renderToCanvas(cv, si.getBbox());//*/
+		}
+		catch(SVGParseException spe)
+		{
+			Log.e("AndroidSVGTest",spe.getMessage());
+		}
+		catch(Exception exc)
+		{
+			Log.e("AndroidSVGTest",exc.getMessage());
+		}
+			return bmp;
+
+
+	}
 
 }

@@ -49,19 +49,19 @@ public class MilStdIconRenderer
                 TacticalGraphicLookup.getInstance().init(context);
 
                 //test SVGLookup
-                /*SVGLookup.getInstance().init(context);
-                SVGLInfo oct = SVGLookup.getInstance().getSVGLInfo("octagon");
+                SVGLookup.getInstance().init(context);
+                SVGInfo oct = SVGLookup.getInstance().getSVGLInfo("octagon");
                 System.out.println(oct.toString());//*/
 
                 //test MSLookup
-                /*MSLookup.getInstance().init(context);
-                MSLInfo msli = MSLookup.getInstance().getMSLInfo("50110100");//
-                msli = MSLookup.getInstance().getMSLInfo("36190100");//"Non-Mine Mine–Like Object, Bottom"
-                System.out.println(msli.getPath());
-                System.out.println(msli.getName());
-                msli = MSLookup.getInstance().getMSLInfo("01110300");//"Unmanned Aircraft (UA) / Unmanned Aerial Vehicle (UAV) / Unmanned Aircraft System (UAS) / Remotely Piloted Vehicle (RPV)"
-                System.out.println(msli.getPath());
-                System.out.println(msli.getName());//*/
+                MSLookup.getInstance().init(context);
+                MSInfo msi = MSLookup.getInstance().getMSLInfo("50110100");//
+                msi = MSLookup.getInstance().getMSLInfo("36190100");//"Non-Mine Mine–Like Object, Bottom"
+                System.out.println(msi.getPath());
+                System.out.println(msi.getName());
+                msi = MSLookup.getInstance().getMSLInfo("01110300");//"Unmanned Aircraft (UA) / Unmanned Aerial Vehicle (UAV) / Unmanned Aircraft System (UAS) / Remotely Piloted Vehicle (RPV)"
+                System.out.println(msi.getPath());
+                System.out.println(msi.getName());//*/
 
                 // PROTOTYPE SVG////////////////////////////////////////
                 // works, but half speed

@@ -76,11 +76,14 @@ afterEvaluate{
     tasks['preBuild'].dependsOn writeBinaryResources
 }
 
+dependencies {
+    implementation 'com.caverock:androidsvg-aar:1.4'
+}
 
 
 ext {
     PUBLISH_GROUP_ID = 'io.github.missioncommand'
-    PUBLISH_VERSION = '0.1.50'
+    PUBLISH_VERSION = '0.1.51'
     PUBLISH_ARTIFACT_ID = 'mil-sym-android-renderer'
 }
 

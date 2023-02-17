@@ -9,7 +9,7 @@ buildscript {
         //jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.1'
+        classpath 'com.android.tools.build:gradle:4.2.1' //7.4.1 latest version
         classpath "io.spring.gradle:dependency-management-plugin:1.0.9.RELEASE"
 		classpath 'io.github.gradle-nexus:publish-plugin:1.1.0'
         
@@ -36,7 +36,7 @@ subprojects  {
 
 
     ext {
-        android_minSdkVersion     = 21//19
+        android_minSdkVersion     = 24//19//API 24 adds all the vector drawable classes
         android_targetSdkVersion  = 30//21//19
         android_compileSdkVersion = 30//33//28//going to 33 requires JDK11
         android_buildToolsVersion = "30.0.3"//"33.0.2" //"30.0.3"

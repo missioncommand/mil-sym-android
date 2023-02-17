@@ -9,6 +9,7 @@ dependencies {
      implementation  project (path:':mil-sym-android-renderer',configuration:'default')
      implementation          ("com.android.support:support-v4")
      implementation          ("com.android.support:support-annotations")
+    implementation 'com.caverock:androidsvg-aar:1.4'
 }
 
 android {

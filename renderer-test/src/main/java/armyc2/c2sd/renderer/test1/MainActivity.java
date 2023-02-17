@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.Date;
+
+import armyc2.c2sd.renderer.SinglePointSVGRenderer;
 import armyc2.c2sd.renderer.test1.RenderSPThreadTest;
 
 import android.opengl.GLSurfaceView;
@@ -280,7 +282,10 @@ public class MainActivity extends Activity {
 	    	t.setText("Testing font files");
 	    	FontManager.getInstance().testFontFiles();
 	    	t.setText("Done");//*/
- 	
+
+			//Test AndroidSVG
+			testSVGRender();
+
     	}
     	catch(Exception exc)
     	{
@@ -290,6 +295,25 @@ public class MainActivity extends Activity {
     	}
 
     }
+
+	private void testSVGRender()
+
+	{
+		try{
+			ImageView imageView = (ImageView) findViewById(R.id.imageView);
+			Bitmap bmp = SinglePointSVGRenderer.getInstance().AndroidSVGTest();
+			imageView.setImageBitmap(bmp);
+		}
+		catch(Exception exc)
+		{
+			Log.e(TAG, exc.getMessage());
+			String stackTrace = MainActivity.getStackTrace(exc);
+			Log.e(TAG, stackTrace);
+		}
+
+
+
+	}
     
     private void populateModifiersForUnits(SparseArray<String> modifiers)
     {
@@ -467,7 +491,7 @@ public class MainActivity extends Activity {
 	    	msCanvas.drawRect(0, 0, msBmp.getWidth(), msBmp.getHeight(), outline);
 	    	imageView.setImageBitmap(msBmp);//*/
 	    	
-	    	
+
 	    	
     	}
     	catch(Exception exc)
