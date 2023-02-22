@@ -103,7 +103,7 @@ public class SymbolID {
     public static final String Mobility_LongTowedArray = "62";//*/
 
 
-    //Version, 1-2 (Can't start with zero, will be 10 at a minumum)
+    //Version, 1-2 (Can't start with zero, will be 10 at a minimum)
 
     //Standard Identity, First Digit (3)
     public static final int StandardIdentity_Context_Reality = 0;
@@ -247,7 +247,62 @@ public class SymbolID {
         }
     }
 
+    public static String setStandardIdentity(String symbolID, int si)
+    {
+        String strSI = String.valueOf(si);
+
+        if(symbolID != null && symbolID.length() >= 20)
+        {
+            if(si < 10 && strSI.length() == 1)
+                strSI = "0" + strSI;
+            else
+                strSI = String.valueOf(si);
+
+            return symbolID.substring(0,2) + strSI + symbolID.substring(4);
+        }
+        else
+        {
+            return symbolID;
+        }
+    }
+
+
+    /**
+     * Get Context (Reality (0), Exercise (1), Simulation (2))
+     * @param symbolID
+     * @return
+     */
     public static int getContext(String symbolID)
+    {
+        if(symbolID != null && symbolID.length() >= 20)
+        {
+            return Integer.parseInt(symbolID.substring(2,3));
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    /**
+     * Set Context (Reality (0), Exercise (1), Simulation (2))
+     * @param symbolID
+     * @param context
+     * @return
+     */
+    public static String setContext(String symbolID, int context)
+    {
+        if(symbolID != null && symbolID.length() >= 20 && context < 4)
+        {
+            return symbolID.substring(0,2) + String.valueOf(context) + symbolID.substring(3);
+        }
+        else
+        {
+            return symbolID;
+        }
+    }
+
+    public static int getAffiliation(String symbolID)
     {
         if(symbolID != null && symbolID.length() >= 20)
         {
@@ -259,15 +314,16 @@ public class SymbolID {
         }
     }
 
-    public static int getAffiliation(String symbolID)
+    public static String setAffiliation(String symbolID, int affiliation)
     {
         if(symbolID != null && symbolID.length() >= 20)
         {
-            return Integer.parseInt(symbolID.substring(2,4));
+            return symbolID.substring(0,3) + String.valueOf(affiliation) + symbolID.substring(4);
+//            return Integer.parseInt(symbolID.substring(2,4));
         }
         else
         {
-            return 0;
+            return symbolID;
         }
     }
 
@@ -283,6 +339,21 @@ public class SymbolID {
         }
     }
 
+    public static String setSymbolSet(String symbolID, int ss)
+    {
+        String strSS = String.valueOf(ss);
+        if(ss < 10 && strSS.length()==1)
+            strSS = "0" + strSS;
+        if(symbolID != null && symbolID.length() >= 20)
+        {
+            return symbolID.substring(0,4) + strSS + symbolID.substring(6);
+        }
+        else
+        {
+            return symbolID;
+        }
+    }
+
     public static int getStatus(String symbolID)
     {
         if(symbolID != null && symbolID.length() >= 20)
@@ -295,6 +366,20 @@ public class SymbolID {
         }
     }
 
+    public static String setStatus(String symbolID, int status)
+    {
+        String strStatus = String.valueOf(status);
+
+        if(symbolID != null && symbolID.length() >= 20 && strStatus.length() == 1)
+        {
+            return symbolID.substring(0,6) + strStatus + symbolID.substring(7);
+        }
+        else
+        {
+            return symbolID;
+        }
+    }
+
     public static int getHQTFD(String symbolID)
     {
         if(symbolID != null && symbolID.length() >= 20)
@@ -304,6 +389,20 @@ public class SymbolID {
         else
         {
             return 0;
+        }
+    }
+
+    public static String setHQTFD(String symbolID, int HQTFD)
+    {
+        String strHQTFD = String.valueOf(HQTFD);
+
+        if(symbolID != null && symbolID.length() >= 20 && strHQTFD.length() == 1)
+        {
+            return symbolID.substring(0,7) + strHQTFD + symbolID.substring(8);
+        }
+        else
+        {
+            return symbolID;
         }
     }
 
@@ -323,6 +422,29 @@ public class SymbolID {
             return 00;
         }
     }
+
+    /**
+     * set Echelon / Mobility / Towed Array
+     * @param symbolID
+     * @param ad
+     * @return
+     */
+    public static String setAmplifierDescriptor(String symbolID, int ad)
+    {
+        String strAD = String.valueOf(ad);
+        if(ad < 10 && strAD.length() == 1)
+            strAD = "0" + strAD;
+
+        if(symbolID != null && symbolID.length() >= 20 && strAD.length() == 2)
+        {
+            return symbolID.substring(0,8) + strAD + symbolID.substring(10);
+        }
+        else
+        {
+            return symbolID;
+        }
+    }
+
 
     public static int getEntityCode(String symbolID)
     {
