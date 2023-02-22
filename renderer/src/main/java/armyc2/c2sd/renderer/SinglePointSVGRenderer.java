@@ -19,6 +19,7 @@ import android.graphics.Typeface;
 import android.util.Log;
 import android.util.SparseArray;
 
+import com.caverock.androidsvg.RenderOptions;
 import com.caverock.androidsvg.SVG;
 import com.caverock.androidsvg.SVGParseException;
 
@@ -36,7 +37,9 @@ import armyc2.c2sd.renderer.utilities.SinglePointLookup;
 import armyc2.c2sd.renderer.utilities.SinglePointLookupInfo;
 import armyc2.c2sd.renderer.utilities.SymbolDef;
 import armyc2.c2sd.renderer.utilities.SymbolDimensions;
+import armyc2.c2sd.renderer.utilities.SymbolID;
 import armyc2.c2sd.renderer.utilities.SymbolUtilities;
+import armyc2.c2sd.renderer.utilities.SymbolUtilitiesD;
 import armyc2.c2sd.renderer.utilities.UnitFontLookup;
 import armyc2.c2sd.renderer.utilities.UnitFontLookupInfo;
 import armyc2.c2sd.renderer.utilities.UnitSVGTable;
@@ -1022,6 +1025,18 @@ public class SinglePointSVGRenderer
 	public Bitmap AndroidSVGTest()
 	{
 		String lawEnforcement = "30031000002003000000";
+		String spaceStation = "30030500001207000000";
+		String airShip = "30030100001105000000";
+		String howitzerH = "30031500001109030000";
+		String PatrolBoat = "30033000001205020000";
+		String UXO = "30033600001200000000";
+		String ActionPoint = "30032500001301000000";
+		String Ambush = "30032500001301000000";
+		String DecisionPoint = "30032500001307000000";
+		String Drizzle = "30034500001605020000";
+		String IED = "30034000001103000000";
+		String DataManipulation = "30036000001604000000";
+		String symbolID = null;
 		String frameID = null;
 		String iconID = null;
 		SVGInfo siFrame = null;
@@ -1051,15 +1066,16 @@ public class SinglePointSVGRenderer
 				"</svg>";
 		try
 		{
-
-			frameID = SVGLookup.getFrameID(lawEnforcement);
-			iconID = SVGLookup.getMainIconID(lawEnforcement);
+			symbolID = spaceStation;
+			//symbolID = SymbolID.setAffiliation(symbolID, SymbolID.StandardIdentity_Affiliation_Hostile_Faker);
+			frameID = SVGLookup.getFrameID(symbolID);
+			iconID = SVGLookup.getMainIconID(symbolID);
 			siFrame = SVGLookup.getInstance().getSVGLInfo(frameID);
 			siIcon = SVGLookup.getInstance().getSVGLInfo(iconID);
-			top = (int)siFrame.getBbox().top;
-			left = (int)siFrame.getBbox().left;
-			width = (int)(siFrame.getBbox().width());
-			height = (int)(siFrame.getBbox().height());
+			top = Math.round(siFrame.getBbox().top);
+			left = Math.round(siFrame.getBbox().left);
+			width = Math.round(siFrame.getBbox().width());
+			height = Math.round(siFrame.getBbox().height());
 			if(siFrame.getBbox().bottom > 400)
 				svgStart = "<svg xmlns:svg=\"http://www.w3.org/2000/svg\" version=\"1.1\" viewBox=\"0 0 612 792\">";
 			else
@@ -1085,18 +1101,46 @@ public class SinglePointSVGRenderer
 			mySVG.renderToCanvas(cv);//*/
 
 			//Render Symbol
-			mySVG = SVG.getFromString(strSVG);
-			bmp = Bitmap.createBitmap(306, 346, Config.ARGB_8888);
-			//bmp = Bitmap.createBitmap(width, height, Config.ARGB_8888);
+			mySVG = SVG.getFromString(strSVG); //get svg string from lookup
+			int pixelSize = 300;//if icon, same value for width and heigh so it looks nice on a form
+			//for a map in needs to match the shape of the symbol.
+
+			//get ratio to determine new bitmap size
+			float ratio = 1;
+			if (width >= height)
+				ratio = (float)pixelSize / width;
+			else
+				ratio = (float)pixelSize / height;
+
+			int bWidth = Math.round(ratio * width);
+			int bHeight = Math.round(ratio * height);
+
+			//make bitmap based on dimensions of scaled up/down symbol
+			bmp = Bitmap.createBitmap(bWidth, bHeight, Config.ARGB_8888);
+
+			//fill and outline imageView
 			cv = new Canvas(bmp);
 			myPaint.setColor(Color.LIGHT_GRAY.toInt());
-			cv.drawRect(new RectF(0,0,306,346), myPaint);
-			myPaint.setStyle(Paint.Style.STROKE);
-			myPaint.setColor(Color.BLACK.toInt());
-			cv.drawRect(new RectF(0,0,306,346), myPaint);
+			cv.drawRect(new RectF(0,0,bmp.getWidth(), bmp.getHeight()),myPaint);//fill target imageView
+
+			//Draw SVG to Bitmap
 			mySVG.setDocumentViewBox(left,top,width,height);
 			mySVG.renderToCanvas(cv);//*/
-			//mySVG.renderToCanvas(cv, si.getBbox());//*/
+
+			//Color change test
+			//String  hostile = "rect { fill: red; }";
+			//String  hostile = "path { fill: red; }";
+			//RenderOptions renderOpts = RenderOptions.create().css(hostile);
+			//renderOpts.viewPort(siFrame.getBbox().left, siFrame.getBbox().top, siFrame.getBbox().width(), siFrame.getBbox().height());
+			//mySVG.renderToCanvas(cv, renderOpts);//*/
+
+			//draw outline
+			myPaint.setStyle(Paint.Style.STROKE);
+			myPaint.setColor(Color.RED.toInt());
+			cv.drawRect(new RectF(0,0,bWidth-1,bHeight-1), myPaint);//*/
+
+
+
 		}
 		catch(SVGParseException spe)
 		{

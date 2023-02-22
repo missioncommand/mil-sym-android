@@ -272,9 +272,10 @@ public class MainActivity extends Activity {
 
 				//test getBasicSymbolID()
 				//String stemp = SymbolUtilities.getBasicSymbolID("EUF-HB----H----");
-		    	
 		    	if(msBmp != null)
 		    		imageView.setImageBitmap(msBmp);
+
+
 	    	}
 	    	
 	    	//test font file
@@ -302,6 +303,7 @@ public class MainActivity extends Activity {
 		try{
 			ImageView imageView = (ImageView) findViewById(R.id.imageView);
 			Bitmap bmp = SinglePointSVGRenderer.getInstance().AndroidSVGTest();
+			imageView.setBackgroundColor(Color.DKGRAY);
 			imageView.setImageBitmap(bmp);
 		}
 		catch(Exception exc)
