@@ -209,6 +209,60 @@ public class SymbolUtilitiesD {
         return retColor;
     }	// End FillColorOfAffiliation
 
+    /**
+     * For Renderer Use Only
+     * Assumes a fresh SVG String from the SVGLookup with its default values
+     * @param symbolID
+     * @param svg
+     * @param strokeColor hex value like "#FF0000";
+     * @param fillColor hex value like "#FF0000";
+     * @return SVG String
+     */
+    public static String setSVGFrameColors(String symbolID, String svg, String strokeColor, String fillColor)
+    {
+        String returnSVG = null;
+        int affiliation = SymbolID.getAffiliation(symbolID);
+        String defaultFillColor = null;
+        if(strokeColor != null)
+        {
+            returnSVG = svg.replaceAll("#000000","strokeColor");
+        }
+        if(fillColor != null)
+        {
+            switch(affiliation)
+            {
+                case SymbolID.StandardIdentity_Affiliation_Friend:
+                case SymbolID.StandardIdentity_Affiliation_AssumedFriend:
+                    defaultFillColor = "fill=\"#80E0FF\"";//friendly frame fill
+                    break;
+                case SymbolID.StandardIdentity_Affiliation_Hostile_Faker:
+                case SymbolID.StandardIdentity_Affiliation_Suspect_Joker:
+                    defaultFillColor = "fill=\"#FF8080\"";//hostile frame fill
+                    break;
+                case SymbolID.StandardIdentity_Affiliation_Unknown:
+                case SymbolID.StandardIdentity_Affiliation_Pending:
+                    defaultFillColor = "fill=\"#FFFF80\"";//unknown frame fill
+                    break;
+                case SymbolID.StandardIdentity_Affiliation_Neutral:
+                    defaultFillColor = "fill=\"#AAFFAA\"";//neutral frame fill
+                    break;
+                default:
+                    defaultFillColor = "fill=\"#80E0FF\"";//friendly frame fill
+                    break;
+            }
+
+            if(returnSVG == null)
+                return svg.replaceFirst(defaultFillColor, "fill=\"" + fillColor + "\"");
+            else
+                return returnSVG.replaceFirst(defaultFillColor, "fill=\"" + fillColor + "\"");
+        }
+
+        if(returnSVG != null)
+            return returnSVG;
+        else
+            return svg;
+    }
+
     /***
      *
      * @param entity

@@ -1081,7 +1081,11 @@ public class SinglePointSVGRenderer
 			else
 				svgStart = "<svg xmlns:svg=\"http://www.w3.org/2000/svg\" version=\"1.1\" viewBox=\"0 0 400 400\">";
 
-			strSVG = svgStart + siFrame.getSVG() + siIcon.getSVG() + "</svg>";
+			String strSVGFrame = siFrame.getSVG();
+			//change fill color test
+			//String strSVGFrame = SymbolUtilitiesD.setSVGFrameColors(symbolID,siFrame.getSVG(),null,"#FF0000");
+
+			strSVG = svgStart + strSVGFrame + siIcon.getSVG() + "</svg>";
 			Log.i(TAG, strSVG);
 
 			//Render Friendly Frame
@@ -1127,12 +1131,14 @@ public class SinglePointSVGRenderer
 			mySVG.setDocumentViewBox(left,top,width,height);
 			mySVG.renderToCanvas(cv);//*/
 
-			//Color change test
-			//String  hostile = "rect { fill: red; }";
+
+
+			/*//Color change test
+			String  hostile = "Satellite { fill: red; }";
 			//String  hostile = "path { fill: red; }";
-			//RenderOptions renderOpts = RenderOptions.create().css(hostile);
+			RenderOptions renderOpts = RenderOptions.create().css(hostile);
 			//renderOpts.viewPort(siFrame.getBbox().left, siFrame.getBbox().top, siFrame.getBbox().width(), siFrame.getBbox().height());
-			//mySVG.renderToCanvas(cv, renderOpts);//*/
+			mySVG.renderToCanvas(cv, renderOpts);//*/
 
 			//draw outline
 			myPaint.setStyle(Paint.Style.STROKE);
