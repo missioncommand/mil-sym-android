@@ -1,10 +1,12 @@
 package armyc2.c2sd.renderer.utilities;
 
+import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Bitmap.Config;
+import android.os.Build;
 
 public class ImageInfo {
 	
@@ -22,7 +24,8 @@ public class ImageInfo {
 		_imageBounds = new Rect(original.getImageBounds());
 		_byteCount = original.getByteCount();
 	}
-	
+
+	@TargetApi(Build.VERSION_CODES.KITKAT)
 	public ImageInfo(Bitmap image, Point centerPoint, Rect symbolBounds)
 	{
 		_centerPoint = centerPoint;
@@ -30,7 +33,12 @@ public class ImageInfo {
 		_image = image;
 		
 		_imageBounds = RectUtilities.makeRect(0, 0, image.getWidth(), image.getHeight());
-		_byteCount = image.getAllocationByteCount();
+
+
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+			_byteCount = image.getAllocationByteCount();
+		else
+			_byteCount = image.getByteCount();
 	}
 	
 	/**
