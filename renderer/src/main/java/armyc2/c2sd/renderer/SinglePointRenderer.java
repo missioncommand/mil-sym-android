@@ -1291,7 +1291,7 @@ public class SinglePointRenderer implements SettingsChangedEventListener
                         @Override
                         protected int sizeOf(String key, ImageInfo ii)
                         {
-                            return ii.getImage().getByteCount();// / 1024;
+                            return ii.getByteCount();// / 1024;
                         }
                     };
                 }
@@ -1304,7 +1304,7 @@ public class SinglePointRenderer implements SettingsChangedEventListener
                         @Override
                         protected int sizeOf(String key, ImageInfo ii)
                         {
-                            return ii.getImage().getByteCount();// / 1024;
+                            return ii.getByteCount();// / 1024;
                         }
                     };
                 }
