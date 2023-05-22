@@ -25,7 +25,7 @@ public class ImageInfo {
 		_byteCount = original.getByteCount();
 	}
 
-	@TargetApi(Build.VERSION_CODES.KITKAT)
+
 	public ImageInfo(Bitmap image, Point centerPoint, Rect symbolBounds)
 	{
 		_centerPoint = centerPoint;
@@ -33,12 +33,9 @@ public class ImageInfo {
 		_image = image;
 		
 		_imageBounds = RectUtilities.makeRect(0, 0, image.getWidth(), image.getHeight());
+		
+		_byteCount = image.getAllocationByteCount();
 
-
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-			_byteCount = image.getAllocationByteCount();
-		else
-			_byteCount = image.getByteCount();
 	}
 	
 	/**
