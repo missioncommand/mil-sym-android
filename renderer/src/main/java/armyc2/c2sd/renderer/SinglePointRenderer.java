@@ -852,14 +852,14 @@ public class SinglePointRenderer implements SettingsChangedEventListener
             String key = makeCacheKey(symbolID, lineColor.toInt(), intFill, pixelSize, keepUnitRatio, symStd);
 
             //see if it's in the cache
-            if(_tgCache != null)
+            if(_tgCache != null) {
                 ii = _tgCache.get(key);
-            //safety check in case bitmaps are getting recycled while still in the LRU cache
-            if(ii != null && ii.getImage() != null && ii.getImage().isRecycled())
-            {
-                synchronized (_SinglePointCacheMutex) {
-                    _tgCache.remove(key);
-                    ii = null;
+                //safety check in case bitmaps are getting recycled while still in the LRU cache
+                if (ii != null && ii.getImage() != null && ii.getImage().isRecycled()) {
+                    synchronized (_SinglePointCacheMutex) {
+                        _tgCache.remove(key);
+                        ii = null;
+                    }
                 }
             }
             //if not, generate symbol
