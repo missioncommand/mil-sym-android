@@ -80,7 +80,7 @@ afterEvaluate{
 
 ext {
     PUBLISH_GROUP_ID = 'io.github.missioncommand'
-    PUBLISH_VERSION = '0.1.54'
+    PUBLISH_VERSION = '0.1.55'
     PUBLISH_ARTIFACT_ID = 'mil-sym-android-renderer'
 }
 
