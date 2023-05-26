@@ -152,6 +152,7 @@ public class RendererSettings{
     
     private static int _CacheSize = 1024;
     private static int _VMSize = 10240;
+    private static boolean _CacheEnabled = true;
     
     //acevedo - 11/29/2017 - adding option to render only 2 labels.
     private boolean _TwoLabelOnly = true;
@@ -838,7 +839,7 @@ public class RendererSettings{
     
     /**
      * Set the cache size in bytes.
-     * Renderer won't let you set a value greater than10% of the available VM memory.
+     * Renderer won't let you set a value greater than 10% of the available VM memory.
      * @param bytes 
      */
     public void setCacheSize(int bytes)
@@ -852,6 +853,20 @@ public class RendererSettings{
     public int getCacheSize()
     {
         return _CacheSize;
+    }
+
+    public void setCacheEnabled(boolean active)
+    {
+        if(_CacheEnabled != active)
+        {
+            _CacheEnabled = active;
+            throwEvent(new SettingsChangedEvent(SettingsChangedEvent.EventType_CacheToggled));
+        }
+    }
+
+    public boolean getCacheEnabled()
+    {
+        return _CacheEnabled;
     }
     
     /**

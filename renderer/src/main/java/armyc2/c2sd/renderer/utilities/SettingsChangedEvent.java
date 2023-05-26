@@ -3,6 +3,7 @@ package armyc2.c2sd.renderer.utilities;
 public class SettingsChangedEvent {
 
     static public final String EventType_CacheSizeChanged = "CACHE_CHANGED";
+    static public final String EventType_CacheToggled = "CACHE_TOGGLED";
     static public final String EventType_FontChanged = "FONT_CHANGED";
     
     private String _EventType = null;

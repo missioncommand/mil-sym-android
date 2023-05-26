@@ -70,6 +70,7 @@ public class SinglePointRenderer implements SettingsChangedEventListener
     private final int maxMemory = (int) (Runtime.getRuntime().maxMemory());// / 1024);
     private int cacheSize = 5;//RendererSettings.getInstance().getCacheSize() / 2;
     private int maxCachedEntrySize = cacheSize / 5;
+    private boolean cacheEnabled = RendererSettings.getInstance().getCacheEnabled();
 
     private SinglePointRenderer()
     {
@@ -78,11 +79,14 @@ public class SinglePointRenderer implements SettingsChangedEventListener
         _tfTG = FontManager.getInstance().getTypeface(FontManager.FONT_MPTG);
         TacticalGraphicIconRenderer.setTGTypeFace(_tfTG);
         RendererSettings.getInstance().addEventListener(this);
-        
+
+
         //get modifier font values.
         onSettingsChanged(new SettingsChangedEvent(SettingsChangedEvent.EventType_FontChanged));
         //set cache
         onSettingsChanged(new SettingsChangedEvent(SettingsChangedEvent.EventType_CacheSizeChanged));
+
+
         
     }
 
@@ -390,13 +394,15 @@ public class SinglePointRenderer implements SettingsChangedEventListener
             String key = makeCacheKey(symbolID, lineColor.toInt(), fillColor.toInt(), symbol1Paint.getColor(), pixelSize, keepUnitRatio, symStd);
 
             //see if it's in the cache
-            ii = _unitCache.get(key);
-            //safety check in case bitmaps are getting recycled while still in the LRU cache
-            if(ii != null && ii.getImage() != null && ii.getImage().isRecycled())
+            if(_unitCache != null)
             {
-                synchronized (_UnitCacheMutex) {
-                    _unitCache.remove(key);
-                    ii = null;
+                ii = _unitCache.get(key);
+                //safety check in case bitmaps are getting recycled while still in the LRU cache
+                if (ii != null && ii.getImage() != null && ii.getImage().isRecycled()) {
+                    synchronized (_UnitCacheMutex) {
+                        _unitCache.remove(key);
+                        ii = null;
+                    }
                 }
             }
             //if not, generate symbol
@@ -512,11 +518,11 @@ public class SinglePointRenderer implements SettingsChangedEventListener
 
                 ii = new ImageInfo(bmp, centerPoint, symbolBounds);
 
-                if(icon == false && bmp.getByteCount() <= maxCachedEntrySize)
+                if(cacheEnabled && icon == false && bmp.getByteCount() <= maxCachedEntrySize)
                 {
                     synchronized (_UnitCacheMutex)
                     {
-                        if(_unitCache.get(key) == null)
+                        if(_unitCache != null && _unitCache.get(key) == null)
                             _unitCache.put(key, new ImageInfo(bmp, new Point(centerCache), new Rect(symbolBounds)));
                     }
                 }
@@ -846,7 +852,8 @@ public class SinglePointRenderer implements SettingsChangedEventListener
             String key = makeCacheKey(symbolID, lineColor.toInt(), intFill, pixelSize, keepUnitRatio, symStd);
 
             //see if it's in the cache
-            ii = _tgCache.get(key);
+            if(_tgCache != null)
+                ii = _tgCache.get(key);
             //safety check in case bitmaps are getting recycled while still in the LRU cache
             if(ii != null && ii.getImage() != null && ii.getImage().isRecycled())
             {
@@ -949,11 +956,11 @@ public class SinglePointRenderer implements SettingsChangedEventListener
 
                 ii = new ImageInfo(bmp, centerPoint, symbolBounds);
 
-                if(drawAsIcon == false && bmp.getByteCount() <= maxCachedEntrySize)
+                if(cacheEnabled && drawAsIcon == false && bmp.getByteCount() <= maxCachedEntrySize)
                 {
                     synchronized (_SinglePointCacheMutex)
                     {
-                        if(_tgCache.get(key) == null)
+                        if(_tgCache != null && _tgCache.get(key) == null)
                             _tgCache.put(key, ii);
                     }
                 }
@@ -1279,40 +1286,92 @@ public class SinglePointRenderer implements SettingsChangedEventListener
         
         if(sce != null && sce.getEventType().equals(SettingsChangedEvent.EventType_CacheSizeChanged))
         {
+
             int cSize = RendererSettings.getInstance().getCacheSize()/2;
             //adjust unit cache
-            if(cSize != cacheSize)
-            {
-                synchronized(_unitCache)
-                {
-                    _unitCache.evictAll();
-                    _unitCache = new LruCache<String, ImageInfo>(cSize)
-                    {	
-                        @Override
-                        protected int sizeOf(String key, ImageInfo ii)
-                        {
-                            return ii.getByteCount();// / 1024;
-                        }
-                    };
-                }
-                //adjust tg cache
-                synchronized(_tgCache)
-                {
-                    _tgCache.evictAll();
-                    _tgCache = new LruCache<String, ImageInfo>(cSize)
-                    {	
-                        @Override
-                        protected int sizeOf(String key, ImageInfo ii)
-                        {
-                            return ii.getByteCount();// / 1024;
-                        }
-                    };
-                }
+            if(cSize != cacheSize) {
                 cacheSize = cSize;
-                if(cacheSize >= 5)
+                if (cacheSize >= 5)
                     maxCachedEntrySize = cacheSize / 5;
                 else
                     maxCachedEntrySize = 1;
+
+                if(cacheEnabled) //if cache enabled, update cache
+                {
+
+                    synchronized (_UnitCacheMutex) {
+                        if(_unitCache != null)
+                            _unitCache.evictAll();
+                        _unitCache = new LruCache<String, ImageInfo>(cSize) {
+                            @Override
+                            protected int sizeOf(String key, ImageInfo ii) {
+                                return ii.getByteCount();// / 1024;
+                            }
+                        };
+                    }
+                    //adjust tg cache
+                    synchronized (_SinglePointCacheMutex) {
+                        if(_tgCache != null)
+                            _tgCache.evictAll();
+                        _tgCache = new LruCache<String, ImageInfo>(cSize) {
+                            @Override
+                            protected int sizeOf(String key, ImageInfo ii) {
+                                return ii.getByteCount();// / 1024;
+                            }
+                        };
+                    }
+                }
+            }
+
+        }
+
+        if(sce != null && sce.getEventType().equals(SettingsChangedEvent.EventType_CacheToggled))
+        {
+            if(cacheEnabled != RendererSettings.getInstance().getCacheEnabled())
+            {
+                cacheEnabled = RendererSettings.getInstance().getCacheEnabled();
+
+                if (cacheEnabled == false)
+                {
+                    synchronized (_SinglePointCacheMutex)
+                    {
+                        if (_tgCache != null)
+                            _tgCache.evictAll();
+                        _tgCache = null;
+                    }
+                    synchronized (_UnitCacheMutex)
+                    {
+                        if (_unitCache != null)
+                            _unitCache.evictAll();
+                        _unitCache = null;
+                    }
+                }
+                else
+                {
+                    int cSize = RendererSettings.getInstance().getCacheSize() / 2;
+                    synchronized (_SinglePointCacheMutex)
+                    {
+                        if(_tgCache != null)
+                            _tgCache.evictAll();
+                        _tgCache = new LruCache<String, ImageInfo>(cSize) {
+                            @Override
+                            protected int sizeOf(String key, ImageInfo ii) {
+                                return ii.getByteCount();// / 1024;
+                            }
+                        };
+                    }
+                    synchronized (_UnitCacheMutex)
+                    {
+                        if(_unitCache != null)
+                            _unitCache.evictAll();
+                        _unitCache = new LruCache<String, ImageInfo>(cSize) {
+                            @Override
+                            protected int sizeOf(String key, ImageInfo ii) {
+                                return ii.getByteCount();// / 1024;
+                            }
+                        };
+                    }
+                }
             }
         }
     }

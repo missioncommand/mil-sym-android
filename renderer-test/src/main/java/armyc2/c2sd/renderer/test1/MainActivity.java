@@ -367,6 +367,11 @@ public class MainActivity extends Activity {
     		{
     			loadRenderer();
     		}
+
+			if(((CheckBox)findViewById(R.id.cbSVG)).isChecked())
+				RendererSettings.getInstance().setCacheEnabled(true);
+			else
+				RendererSettings.getInstance().setCacheEnabled(false);
     		
 	    	//Intent intent = new Intent(this, DisplayMessageActivity.class);
 	    	EditText editText = (EditText) findViewById(R.id.etSymbolID);
@@ -466,8 +471,8 @@ public class MainActivity extends Activity {
 	    	outline.setColor(Color.RED);
 	    	msCanvas.drawRect(0, 0, msBmp.getWidth(), msBmp.getHeight(), outline);
 	    	imageView.setImageBitmap(msBmp);//*/
-	    	
-	    	
+
+			//RendererSettings.getInstance().setCacheEnabled(false);
 	    	
     	}
     	catch(Exception exc)
