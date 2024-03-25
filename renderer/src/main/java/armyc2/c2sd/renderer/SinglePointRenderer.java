@@ -718,11 +718,6 @@ public class SinglePointRenderer implements SettingsChangedEventListener
                 {
                     pixelSize = Integer.parseInt(attributes.get(MilStdAttributes.PixelSize));
                 }
-                if (attributes.indexOfKey(MilStdAttributes.OutlineSymbol) >= 0)
-                {
-                    if(Boolean.parseBoolean(attributes.get(MilStdAttributes.OutlineSymbol))==false);
-                        symbolOutlineWidth = 0;
-                }
                 else
                 {
                     if(keepUnitRatio == true)
@@ -739,6 +734,11 @@ public class SinglePointRenderer implements SettingsChangedEventListener
                         }
 
                     }
+                }
+                if (attributes.indexOfKey(MilStdAttributes.OutlineSymbol) >= 0)
+                {
+                    if(Boolean.parseBoolean(attributes.get(MilStdAttributes.OutlineSymbol))==false);
+                    symbolOutlineWidth = 0;
                 }
 
 
