@@ -1788,7 +1788,10 @@ public final class clsUtility {
                 //if(Math.round(ptCurrent.x)==Math.round(ptLast.x))
                 if(Math.abs(ptCurrent.x-ptLast.x)<1)
                 {
-                    ptCurrent.x += Math.pow(-1,j);
+                    if (ptCurrent.x>=ptLast.x)
+                        ptCurrent.x += 1;
+                    else
+                        ptCurrent.x -= 1;
                     tg.Pixels.set(j, ptCurrent);
                 }
             }
