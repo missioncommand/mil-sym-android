@@ -10,7 +10,11 @@ import armyc2.c2sd.JavaLineArray.POINT2;
 import armyc2.c2sd.JavaLineArray.TacticalLines;
 import armyc2.c2sd.JavaLineArray.CELineArray;
 import armyc2.c2sd.JavaLineArray.Shape2;
+import armyc2.c2sd.JavaRendererServer.RenderMultipoints.clsRenderer2;
+import armyc2.c2sd.graphics2d.Rectangle2D;
+import armyc2.c2sd.renderer.utilities.Color;
 import armyc2.c2sd.renderer.utilities.ErrorLogger;
+import armyc2.c2sd.renderer.utilities.IPointConversion;
 import armyc2.c2sd.renderer.utilities.RendererException;
 import armyc2.c2sd.JavaLineArray.Channels;
 import armyc2.c2sd.JavaLineArray.lineutility;
@@ -287,6 +291,41 @@ public final class clsChannelUtility {
                     new RendererException("Failed inside DrawSegments", exc));
         }
     }
+
+    private static void DrawLCSingleLineSegments(TGLight tg,
+                                                 double[] pixels2,
+                                                 ArrayList<P1> singleLinePartitions,
+                                                 ArrayList<Shape2> shapes,
+                                                 Rectangle2D clipBounds,
+                                                 IPointConversion converter) {
+        try {
+            for (P1 flotPartition : singleLinePartitions) {
+                int vblSaveCounter = flotPartition.end_Renamed - flotPartition.start + 1;
+                ArrayList<POINT2> flotPixels = new ArrayList<>();
+                for (int i = 0; i < vblSaveCounter; i++)
+                    flotPixels.add(new POINT2(pixels2[2 * (i + flotPartition.start)], pixels2[2 * (i + flotPartition.start) + 1]));
+
+                String flotID = "GHGPGLF---****X";
+                TGLight flotTG = new TGLight();
+                flotTG.set_LineType(TacticalLines.FLOT);
+                flotTG.set_Pixels(flotPixels);
+                flotTG.set_SymbolId(flotID);
+                flotTG.set_LineThickness(tg.get_LineThickness());
+
+                ArrayList<Shape2> flotShapes = clsRenderer2.GetLineArray(flotTG, converter, false, clipBounds);
+
+                if (flotShapes != null) {
+                    for (Shape2 shape : flotShapes)
+                        shape.setLineColor(Color.RED);
+                    shapes.addAll(flotShapes);
+                }
+            }
+        } catch (Exception exc) {
+            ErrorLogger.LogException(_className, "DrawLCFlotSegments",
+                    new RendererException("Failed inside DrawLCFlotSegments", exc));
+        }
+    }
+
     /**
      * Handle symbol too small for line of contact
      * @param tg
@@ -343,6 +382,8 @@ public final class clsChannelUtility {
             TGLight tg,
             ArrayList<Shape2> shapes,
             ArrayList<POINT2> channelPoints,
+                                   Rectangle2D clipBounds,
+                                   IPointConversion converter,
             int rev) {
         try {
             pixels=getLCPixels(tg,pixels);
@@ -361,7 +402,7 @@ public final class clsChannelUtility {
                 pixels2[2 * j] = pixels.get(j).x;
                 pixels2[2 * j + 1] = pixels.get(j).y;
             }
-            DrawChannel2(pixels2, linetype, tg, shapes, channelPoints, rev);
+            DrawChannel2(pixels2, linetype, tg, shapes, channelPoints, clipBounds, converter, rev);
         } catch (Exception exc) {
             //clsUtility.WriteFile("error in clsChanneUtility.DrawSegments");
             ErrorLogger.LogException(_className, "DrawChannel",
@@ -417,6 +458,8 @@ public final class clsChannelUtility {
             TGLight tg,
             ArrayList<Shape2> shapes,
             ArrayList<POINT2> channelPoints,
+                                     Rectangle2D clipBounds,
+                                     IPointConversion converter,
             int rev) {
         try {
             ref<double[]> distanceToChannelPoint = new ref();
@@ -424,7 +467,7 @@ public final class clsChannelUtility {
             int j = 0;
             double[] pixels2 = null;
             int channelWidth = 0;
-            ArrayList partitions = null;
+            ArrayList<P1> partitions = null;
             int n = pixels.length;
             int numPoints = 0;
             //LC and others do not call clsUtility.ChannelWidth, but the
@@ -545,21 +588,26 @@ public final class clsChannelUtility {
                 return;
             }
 
-            double factor = 3;
-
             // Line of contact looks bad with small channel corners extending out
-            if (linetype == TacticalLines.LC || linetype == TacticalLines.LC_HOSTILE)
-            {
-                clsUtility.GetLCSegments(pixels2, segments);
-            }
-            else
+            if (linetype == TacticalLines.LC || linetype == TacticalLines.LC_HOSTILE) {
+                partitions = new ArrayList<>();
+                ArrayList<P1> singleLinePartitions = new ArrayList<>();
+                clsUtility.GetLCPartitions(pixels2, 40, partitions, singleLinePartitions);
+                DrawSegments(pixels2, partitions, tg.get_LineType(), channelWidth, shapes, channelPoints, distanceToChannelPoint.value[0], rev);
+
+                if (singleLinePartitions.size() > 0) {
+                    // Render any small angles that only have side (not channel) as FLOT
+                    DrawLCSingleLineSegments(tg, pixels2, singleLinePartitions, shapes, clipBounds, converter);
+                }
+            } else {
+                double factor = 3;
+
                 clsUtility.GetSegments(pixels2, segments, factor);
+                partitions = new ArrayList<>();
+                GetPartitions(segments, partitions);
 
-            partitions = new ArrayList();
-            GetPartitions(segments, partitions);
-
-            DrawSegments(pixels2, partitions, linetype, channelWidth, shapes, channelPoints, distanceToChannelPoint.value[0], rev);
-
+                DrawSegments(pixels2, partitions, tg.get_LineType(), channelWidth, shapes, channelPoints, distanceToChannelPoint.value[0], rev);
+            }
         } catch (Exception exc) {
             ErrorLogger.LogException(_className, "DrawChannel2",
                     new RendererException("Failed inside DrawChannel2", exc));

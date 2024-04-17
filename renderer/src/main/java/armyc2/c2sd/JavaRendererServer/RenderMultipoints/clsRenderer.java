@@ -1346,6 +1346,9 @@ public final class clsRenderer {
 //            }
             ArrayList<POINT2> origFillPixels = lineutility.getDeepCopy(tg.Pixels);
 
+            if (tg.get_LineType() == TacticalLines.LC || tg.get_LineType() == TacticalLines.LC_HOSTILE)
+                armyc2.c2sd.JavaTacticalRenderer.clsUtility.SegmentLCPoints(tg, converter);
+
 //            boolean shiftLines = Channels.getShiftLines();
 //            if (shiftLines) {
 //                String affiliation = tg.get_Affiliation();

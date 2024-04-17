@@ -176,7 +176,7 @@ public final class clsRenderer2 {
      * @param isTextFlipped
      * @return
      */
-    protected static ArrayList<Shape2> GetLineArray(TGLight tg,
+    public static ArrayList<Shape2> GetLineArray(TGLight tg,
             IPointConversion converter,
             boolean isTextFlipped,
             Object clipBounds)
@@ -336,7 +336,7 @@ public final class clsRenderer2 {
                 }
                 else //channel type
                 {
-                    clsChannelUtility.DrawChannel(tg.Pixels, lineType, tg,shapes, null,rev);
+                    clsChannelUtility.DrawChannel(tg.Pixels, lineType, tg,shapes, null, clipBounds2, converter, rev);
                 }
             }
             //set CELineArray.shapes properties

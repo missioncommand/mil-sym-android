@@ -368,7 +368,7 @@ public final class clsUtility {
         }
     }
 
-    protected static ArrayList<POINT2> PixelsToLatLong(ArrayList<POINT2> pts, IPointConversion converter)
+    public static ArrayList<POINT2> PixelsToLatLong(ArrayList<POINT2> pts, IPointConversion converter)
     {
         int j=0;
         POINT2 pt=null;
