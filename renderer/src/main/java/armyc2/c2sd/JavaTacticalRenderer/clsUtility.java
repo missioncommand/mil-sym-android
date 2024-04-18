@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 import armyc2.c2sd.JavaLineArray.Shape2;
 import java.io.*;
+
+import armyc2.c2sd.renderer.utilities.IPointConversion;
 import armyc2.c2sd.renderer.utilities.SymbolUtilities;
 import armyc2.c2sd.renderer.utilities.ErrorLogger;
 import armyc2.c2sd.renderer.utilities.RendererException;
@@ -1786,7 +1788,10 @@ public final class clsUtility {
                 //if(Math.round(ptCurrent.x)==Math.round(ptLast.x))
                 if(Math.abs(ptCurrent.x-ptLast.x)<1)
                 {
-                    ptCurrent.x += Math.pow(-1,j);
+                    if (ptCurrent.x>=ptLast.x)
+                        ptCurrent.x += 1;
+                    else
+                        ptCurrent.x -= 1;
                     tg.Pixels.set(j, ptCurrent);
                 }
             }
@@ -1912,74 +1917,79 @@ public final class clsUtility {
         }
     }
 
-    /**
-     * Called by clsChannelUtility. The segments are used for managing double-backed segments
-     * for channel types. If the new point is double-backed then the segment at that index will be false.
-     *
-     * @param pixels the client points as 2-tuples x,y in pixels
-     * @param segments OUT - the segments
-     */
-    protected static void GetLCSegments(double[] pixels,
-                                        boolean[] segments) {
+    protected static void GetLCPartitions(double[] pixels,
+                                          double LCChannelWith,
+                                          ArrayList<P1> partitions,
+                                          ArrayList<P1> singleLinePartitions) {
         try
         {
-            int j = 0;
-            ref<double[]> m1 = new ref();
-            ref<double[]> m2 = new ref();
-            long numPoints = 0;
-            boolean bolVertical1 = false;
-            boolean bolVertical2 = false;
-
+            int numPoints = pixels.length / 2;
             POINT2 pt0F = new POINT2(0, 0);
             POINT2 pt1F = new POINT2(0, 0);
             POINT2 pt2F = new POINT2(0, 0);
 
-            segments[0] = true;
-            double[] angles = new double[segments.length];
-            angles[0] = 0f;
-            numPoints = pixels.length / 2;
-            for (j = 0; j < numPoints - 2; j++)
-            {
-                pt0F.x = (double) pixels[2 * j];
-                pt0F.y = (double) pixels[2 * j + 1];
+            P1 nextP = new P1();
+            nextP.start = 0;
 
-                pt1F.x = (double) pixels[2 * j + 2];
-                pt1F.y = (double) pixels[2 * j + 3];
+            //used for debugging
+            double[] angles = new double[numPoints - 1];
 
-                pt2F.x = (double) pixels[2 * j + 4];
-                pt2F.y = (double) pixels[2 * j + 5];
+            for (int i = 0; i < numPoints - 2; i++) {
+                pt0F.x = (double) pixels[2 * i];
+                pt0F.y = (double) pixels[2 * i + 1];
 
-                double angle1 = Math.atan2(pt1F.y - pt0F.y,
-                        pt1F.x - pt0F.x);
-                double angle2 = Math.atan2(pt1F.y - pt2F.y,
-                        pt1F.x - pt2F.x);
+                pt1F.x = (double) pixels[2 * i + 2];
+                pt1F.y = (double) pixels[2 * i + 3];
+
+                pt2F.x = (double) pixels[2 * i + 4];
+                pt2F.y = (double) pixels[2 * i + 5];
+
+                double angle1 = Math.atan2(pt1F.y - pt0F.y, pt1F.x - pt0F.x);
+                double angle2 = Math.atan2(pt1F.y - pt2F.y, pt1F.x - pt2F.x);
                 double angle = angle1-angle2;// * 180/Math.PI;
                 double degrees = angle * 180/Math.PI;
-                //segments[j + 1] = false;
-                //segments[j + 1] = true;
-                if(angle < 0)
-                {
+                if (angle < 0) {
                     degrees = 360 + degrees;
                 }
 
-                if(degrees < 90)
-                {
-                    segments[j + 1] = false;
+                if (degrees > 270) {
+                    boolean angleTooSmall = false;
+
+                    if (lineutility.CalcDistanceDouble(pt0F, pt1F) < lineutility.CalcDistanceDouble(pt1F, pt2F)) {
+                        POINT2 newPt = lineutility.ExtendAlongLineDouble2(pt1F, pt2F, lineutility.CalcDistanceDouble(pt1F, pt0F));
+                        if (lineutility.CalcDistanceDouble(pt0F, newPt) < LCChannelWith)
+                            angleTooSmall = true;
+                    } else {
+                        POINT2 newPt = lineutility.ExtendAlongLineDouble2(pt1F, pt0F, lineutility.CalcDistanceDouble(pt1F, pt2F));
+                        if (lineutility.CalcDistanceDouble(pt2F, newPt) < LCChannelWith)
+                            angleTooSmall = true;
+                    }
+                    if (angleTooSmall) {
+                        // Angle is too small to fit channel, make it a single line partition
+                        nextP.end_Renamed = i - 1;
+                        partitions.add(nextP);
+                        nextP = new P1();
+                        nextP.start = i;
+                        nextP.end_Renamed=i + 2;
+                        singleLinePartitions.add(nextP);
+                        i++;
+                        nextP = new P1();
+                        nextP.start = i + 1;
+                    }
+                } else if(degrees < 90) {
+                    // new Partition
+                    nextP.end_Renamed = i;
+                    partitions.add(nextP);
+                    nextP = new P1();
+                    nextP.start = i + 1;
                 }
-                else
-                    segments[j + 1] = true;
-
-                angles[j+1] = degrees;
-
-            }	//end for
-            //System.out.println(angles);
-        }
-        catch (Exception exc)
-        {
-            //System.out.println(e.getMessage());
-            //clsUtility.WriteFile("Error in clsUtility.GetSegments");
-            ErrorLogger.LogException(_className, "GetLCSegments",
-                    new RendererException("Failed inside GetSegments", exc));
+                angles[i] = degrees;
+            } //end for
+            nextP.end_Renamed = numPoints - 2;
+            partitions.add(nextP);
+        } catch (Exception exc) {
+            ErrorLogger.LogException(_className, "GetLCPartitions",
+                    new RendererException("Failed inside GetLCPartitions", exc));
         }
     }
 
@@ -3111,6 +3121,65 @@ public final class clsUtility {
         catch (Exception exc) {
             ErrorLogger.LogException(_className, "reviseHModifer",
                     new RendererException("Failed inside reviseHModifier", exc));
+        }
+    }
+
+    /**
+     * Adds extra points to LC if there are angles too small to fit the channel
+     * @param tg
+     * @param converter
+     */
+    public static void SegmentLCPoints(TGLight tg, IPointConversion converter) {
+        try {
+            if (tg.get_LineType() != TacticalLines.LC && tg.get_LineType() != TacticalLines.LC_HOSTILE)
+                return;
+
+            ArrayList<POINT2> points = tg.get_Pixels();
+
+            double LCChannelWith = 40;
+
+            for (int i = 0; i < points.size() - 2; i++) {
+                POINT2 ptA = new POINT2(points.get(i).x, points.get(i).y);
+                POINT2 ptB = new POINT2(points.get(i+1).x, points.get(i+1).y);
+                POINT2 ptC = new POINT2(points.get(i+2).x, points.get(i+2).y);
+
+                double angle1 = Math.atan2(ptB.y - ptA.y, ptB.x - ptA.x);
+                double angle2 = Math.atan2(ptB.y - ptC.y, ptB.x - ptC.x);
+                double angle = angle1 - angle2;
+                double degrees = angle * 180/Math.PI;
+
+                if(angle < 0) {
+                    degrees = 360 + degrees;
+                }
+
+                if (degrees > 270) {
+                    // For acute angles where red is the outer line
+                    // Determine shorter segment (BA or BC)
+                    // On longer segment calculate potential new point (newPt) that is length of smaller segment from B
+                    // If distance between smaller segment end point (A or C) and newPt is smaller than the channel width add newPt to points
+                    // In GetLCPartitions() the black line won't be included between the smaller line and newPt since there isn't enough space to fit the channel
+                    if (lineutility.CalcDistanceDouble(ptB, ptA) < lineutility.CalcDistanceDouble(ptB, ptC)) {
+                        // BA is smaller segment
+                        POINT2 newPt = lineutility.ExtendAlongLineDouble2(ptB, ptC, lineutility.CalcDistanceDouble(ptB, ptA));
+                        if (lineutility.CalcDistanceDouble(ptA, newPt) < LCChannelWith) {
+                            points.add(i + 2, new POINT2(newPt.x, newPt.y));
+                            i++;
+                        }
+                    } else {
+                        // BC is smaller segment
+                        POINT2 newPt = lineutility.ExtendAlongLineDouble2(ptB, ptA, lineutility.CalcDistanceDouble(ptB, ptC));
+                        if (lineutility.CalcDistanceDouble(ptC, newPt) < LCChannelWith) {
+                            points.add(i + 1, new POINT2(newPt.x, newPt.y));
+                            i++;
+                        }
+                    }
+                }
+            }
+            tg.Pixels = points;
+            tg.LatLongs = armyc2.c2sd.JavaRendererServer.RenderMultipoints.clsUtility.PixelsToLatLong(points, converter);
+        } catch (Exception exc) {
+            ErrorLogger.LogException(_className, "segmentLCPoints",
+                    new RendererException("Failed inside segmentLCPoints", exc));
         }
     }
     /**
