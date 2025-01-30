@@ -111,7 +111,7 @@ public class ErrorLogger {
         }
         catch(Exception exc)
         {
-        	Log.e("ErrorLogger.getStackTrace", exc.getMessage());
+        	Log.e("EL.getStackTrace", exc.getMessage());
             
             return "Error - couldn't retrieve stack trace";
         }

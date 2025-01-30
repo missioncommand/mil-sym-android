@@ -18,8 +18,10 @@ import android.util.SparseArray;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
 
 import armyc2.c2sd.renderer.utilities.Color;
+import armyc2.c2sd.renderer.utilities.ErrorLogger;
 import armyc2.c2sd.renderer.utilities.ImageInfo;
 import armyc2.c2sd.renderer.utilities.MilStdAttributes;
 import armyc2.c2sd.renderer.utilities.ModifiersTG;
@@ -43,11 +45,14 @@ public class ModifierRenderer
     private static RendererSettings RS = RendererSettings.getInstance();
     private static int tgTextModifierKeys[] = {2,3,4,5,6,9,10,11,12,13,14,15};
 
+    private static final Object _ModifierFontMutex = new Object();
     public static void setModifierFont(Paint font, float height, float descent)
     {
-        _modifierFont = font;
-        _modifierFontHeight = height;
-        _modifierFontDescent = descent;
+        synchronized (_ModifierFontMutex) {
+            _modifierFont = font;
+            _modifierFontHeight = height;
+            _modifierFontDescent = descent;
+        }
     }
 
     public static ImageInfo processUnitDisplayModifiers(ImageInfo ii, String symbolID, SparseArray<String> modifiers, Boolean hasTextModifiers, SparseArray<String> attributes)
@@ -3331,14 +3336,9 @@ public class ModifierRenderer
         int tbm = RS.getTextBackgroundMethod();
         int outlineWidth = RS.getTextOutlineWidth();
 
-        if (color != null)
+        if (color == null)
         {
-            _modifierFont.setColor(color.toInt());
-        }
-        else
-        {
-            _modifierFont.setColor(Color.BLACK.toInt());
-            //_modifierFont.setColor(RS.getLabelForegroundColor());
+            color = Color.BLACK;
         }
 
         Color outlineColor = null;
@@ -3348,49 +3348,44 @@ public class ModifierRenderer
         else
             outlineColor = RendererUtilities.getIdealOutlineColor(color);
 
-        if (tbm == RendererSettings.TextBackgroundMethod_OUTLINE_QUICK)
-        {
-            //draw text outline
-            _modifierFont.setStyle(Style.FILL);
-            _modifierFont.setStrokeWidth(RS.getTextOutlineWidth());
-            _modifierFont.setColor(outlineColor.toInt());
-            if (outlineWidth > 0)
+        try {
+
+            if (tbm == RendererSettings.TextBackgroundMethod_OUTLINE_QUICK)
             {
-                for (int i = 0; i < size; i++)
-                {
-                    TextInfo textInfo = tiArray[i];
-                    if (outlineWidth > 0)
-                    {
-                        for (int j = 1; j <= outlineWidth; j++)
-                        {
-                            if (j % 2 == 1)
-                            {
-                                ctx.drawText(textInfo.getText(), textInfo.getLocation().x - j, textInfo.getLocation().y, _modifierFont);
-                                ctx.drawText(textInfo.getText(), textInfo.getLocation().x + j, textInfo.getLocation().y, _modifierFont);
-                                ctx.drawText(textInfo.getText(), textInfo.getLocation().x - j, textInfo.getLocation().y + j, _modifierFont);
-                                ctx.drawText(textInfo.getText(), textInfo.getLocation().x - j, textInfo.getLocation().y - j, _modifierFont);
-                            }
-                            else
-                            {
-                                ctx.drawText(textInfo.getText(), textInfo.getLocation().x - j, textInfo.getLocation().y - j, _modifierFont);
-                                ctx.drawText(textInfo.getText(), textInfo.getLocation().x + j, textInfo.getLocation().y - j, _modifierFont);
-                                ctx.drawText(textInfo.getText(), textInfo.getLocation().x - j, textInfo.getLocation().y + j, _modifierFont);
-                                ctx.drawText(textInfo.getText(), textInfo.getLocation().x + j, textInfo.getLocation().y + j, _modifierFont);
+                //draw text outline
+                synchronized (_ModifierFontMutex) {
+                    _modifierFont.setStyle(Style.FILL);
+                    _modifierFont.setStrokeWidth(RS.getTextOutlineWidth());
+                    _modifierFont.setColor(outlineColor.toInt());
+                    if (outlineWidth > 0) {
+                        for (int i = 0; i < size; i++) {
+                            TextInfo textInfo = tiArray[i];
+                            if (outlineWidth > 0) {
+                                for (int j = 1; j <= outlineWidth; j++) {
+                                    if (j % 2 == 1) {
+                                        ctx.drawText(textInfo.getText(), textInfo.getLocation().x - j, textInfo.getLocation().y, _modifierFont);
+                                        ctx.drawText(textInfo.getText(), textInfo.getLocation().x + j, textInfo.getLocation().y, _modifierFont);
+                                        ctx.drawText(textInfo.getText(), textInfo.getLocation().x - j, textInfo.getLocation().y + j, _modifierFont);
+                                        ctx.drawText(textInfo.getText(), textInfo.getLocation().x - j, textInfo.getLocation().y - j, _modifierFont);
+                                    } else {
+                                        ctx.drawText(textInfo.getText(), textInfo.getLocation().x - j, textInfo.getLocation().y - j, _modifierFont);
+                                        ctx.drawText(textInfo.getText(), textInfo.getLocation().x + j, textInfo.getLocation().y - j, _modifierFont);
+                                        ctx.drawText(textInfo.getText(), textInfo.getLocation().x - j, textInfo.getLocation().y + j, _modifierFont);
+                                        ctx.drawText(textInfo.getText(), textInfo.getLocation().x + j, textInfo.getLocation().y + j, _modifierFont);
+                                    }
+
+                                }
+
                             }
 
                         }
-
                     }
+                    //draw text
+                    _modifierFont.setColor(color.toInt());
 
-                }
-            }
-            //draw text
-            _modifierFont.setColor(color.toInt());
-
-            for (int j = 0; j < size; j++)
-            {
-                TextInfo textInfo = tiArray[j];
-                ctx.drawText(textInfo.getText(), textInfo.getLocation().x, textInfo.getLocation().y, _modifierFont);
+                    for (int j = 0; j < size; j++) {
+                        TextInfo textInfo = tiArray[j];
+                        ctx.drawText(textInfo.getText(), textInfo.getLocation().x, textInfo.getLocation().y, _modifierFont);
                 /*Paint outline = new Paint();
                  outline.setStyle(Style.STROKE);
                  outline.setColor(Color.red.toInt());
@@ -3399,64 +3394,70 @@ public class ModifierRenderer
                  ctx.drawRect(textInfo.getTextBounds(), outline);
                  outline.setColor(Color.blue.toInt());
                  ctx.drawRect(textInfo.getTextOutlineBounds(), outline);//*/
-            }
-        }
-        else if (tbm == RendererSettings.TextBackgroundMethod_OUTLINE)
-        {
+                    }
+                }
+            } else if (tbm == RendererSettings.TextBackgroundMethod_OUTLINE) {
+                synchronized (_ModifierFontMutex) {
+                    //draw text outline
+                    //draw text outline
+                    _modifierFont.setStyle(Style.STROKE);
+                    _modifierFont.setStrokeWidth(RS.getTextOutlineWidth());
+                    _modifierFont.setColor(outlineColor.toInt());
+                    int i = 0;
 
-        	//draw text outline
-            //draw text outline
-            _modifierFont.setStyle(Style.STROKE);
-            _modifierFont.setStrokeWidth(RS.getTextOutlineWidth());
-            _modifierFont.setColor(outlineColor.toInt());
-            if (outlineWidth > 0)
+                    if (outlineWidth > 0) {
+                        for (i = 0; i < size; i++) {
+                            TextInfo textInfo = tiArray[i];
+                            ctx.drawText(textInfo.getText(), textInfo.getLocation().x, textInfo.getLocation().y, _modifierFont);
+                            //ErrorLogger.LogMessage("Draw outline " + textInfo.getText() + ", " + String.valueOf(i + 1) + " of " + String.valueOf(size) + "\n ", Level.WARNING, false);
+                        }
+                    }
+
+                    //draw text
+                    _modifierFont.setColor(color.toInt());
+                    _modifierFont.setStyle(Style.FILL);
+
+                    for (int j = 0; j < size; j++) {
+                        TextInfo textInfo = tiArray[j];
+                        ctx.drawText(textInfo.getText(), textInfo.getLocation().x, textInfo.getLocation().y, _modifierFont);
+                    }
+                }
+
+            } else if (tbm == RendererSettings.TextBackgroundMethod_COLORFILL) {
+                synchronized (_ModifierFontMutex) {
+                    Paint rectFill = new Paint();
+                    rectFill.setStyle(Paint.Style.FILL);
+                    rectFill.setColor(outlineColor.toARGB());
+
+
+                    //draw rectangle
+                    for (int k = 0; k < size; k++) {
+                        TextInfo textInfo = tiArray[k];
+                        ctx.drawRect(textInfo.getTextOutlineBounds(), rectFill);
+                    }
+                    //draw text
+                    _modifierFont.setColor(color.toInt());
+                    _modifierFont.setStyle(Style.FILL);
+                    for (int j = 0; j < size; j++) {
+                        TextInfo textInfo = tiArray[j];
+                        ctx.drawText(textInfo.getText(), textInfo.getLocation().x, textInfo.getLocation().y, _modifierFont);
+                    }
+                }
+            } else if (tbm == RendererSettings.TextBackgroundMethod_NONE)
             {
-                for (int i = 0; i < size; i++)
-                {
-                    TextInfo textInfo = tiArray[i];
-                    ctx.drawText(textInfo.getText(), textInfo.getLocation().x, textInfo.getLocation().y, _modifierFont);
+                synchronized (_ModifierFontMutex) {
+                    _modifierFont.setColor(color.toInt());
+                    _modifierFont.setStyle(Style.FILL);
+                    for (int j = 0; j < size; j++) {
+                        TextInfo textInfo = tiArray[j];
+                        ctx.drawText(textInfo.getText(), textInfo.getLocation().x, textInfo.getLocation().y, _modifierFont);
+                    }
                 }
             }
-            //draw text
-            _modifierFont.setColor(color.toInt());
-            _modifierFont.setStyle(Style.FILL);
-            for (int j = 0; j < size; j++)
-            {
-                TextInfo textInfo = tiArray[j];
-                ctx.drawText(textInfo.getText(), textInfo.getLocation().x, textInfo.getLocation().y, _modifierFont);
-            }
         }
-        else if (tbm == RendererSettings.TextBackgroundMethod_COLORFILL)
+        catch(Exception exc)
         {
-            Paint rectFill = new Paint();
-            rectFill.setStyle(Paint.Style.FILL);
-            rectFill.setColor(outlineColor.toARGB());
-            
-            
-            //draw rectangle
-            for (int k = 0; k < size; k++)
-            {
-                TextInfo textInfo = tiArray[k];
-                ctx.drawRect(textInfo.getTextOutlineBounds(), rectFill);
-            }
-            //draw text
-            _modifierFont.setColor(color.toInt());
-            _modifierFont.setStyle(Style.FILL);
-            for (int j = 0; j < size; j++)
-            {
-                TextInfo textInfo = tiArray[j];
-                ctx.drawText(textInfo.getText(), textInfo.getLocation().x, textInfo.getLocation().y, _modifierFont);
-            }
-        }
-        else if (tbm == RendererSettings.TextBackgroundMethod_NONE)
-        {
-            _modifierFont.setColor(color.toInt());
-            _modifierFont.setStyle(Style.FILL);
-            for (int j = 0; j < size; j++)
-            {
-                TextInfo textInfo = tiArray[j];
-                ctx.drawText(textInfo.getText(), textInfo.getLocation().x, textInfo.getLocation().y, _modifierFont);
-            }
+            ErrorLogger.LogException("ModifierRenderer","RenderText",exc);
         }
     }
 

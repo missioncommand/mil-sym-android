@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.Date;
+
+import armyc2.c2sd.graphics2d.Font;
 import armyc2.c2sd.renderer.test1.RenderSPThreadTest;
 
 import android.opengl.GLSurfaceView;
@@ -97,8 +99,9 @@ public class MainActivity extends Activity {
             //rs.setTextBackgroundMethod(RendererSettings.TextBackgroundMethod_OUTLINE_QUICK);
 
 
-            //rs.setTextBackgroundMethod(RendererSettings.TextBackgroundMethod_OUTLINE);
-            rs.setTextBackgroundMethod(RendererSettings.TextBackgroundMethod_COLORFILL);
+            rs.setTextBackgroundMethod(RendererSettings.TextBackgroundMethod_OUTLINE);
+            //rs.setTextBackgroundMethod(RendererSettings.TextBackgroundMethod_COLORFILL);
+			//rs.setTextBackgroundMethod(RendererSettings.TextBackgroundMethod_OUTLINE_QUICK);
             //rs.setTextBackgroundMethod(RendererSettings.TextBackgroundMethod_NONE);
     	
     	
@@ -163,6 +166,13 @@ public class MainActivity extends Activity {
                 //attributes.put(MilStdAttributes.TextColor, "FF0000");
                 //attributes.put(MilStdAttributes.TextBackgroundColor, "000000");
 			//attributes.put(MilStdAttributes.Alpha, "150");
+
+			//attributes.put(MilStdAttributes.FillColor,"00000000");
+			//attributes.put(MilStdAttributes.LineColor,"0000FF");
+			//attributes.put(MilStdAttributes.IconColor,"0000FF");
+
+			//attributes.put(MilStdAttributes.PixelSize,"100");
+			//RendererSettings.getInstance().setModifierFont("serif", Font.PLAIN,32);
 
 			//RendererSettings.getInstance().setOperationalConditionModifierType(RendererSettings.OperationalConditionModifierType_SLASH);
 			//attributes.put(MilStdAttributes.KeepUnitRatio,"false");

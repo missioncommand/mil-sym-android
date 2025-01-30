@@ -923,9 +923,10 @@ public class RendererSettings{
      * @param hostileUnitFillColor Color like  Color(255, 255, 255)
      *
      * */
-    public void setHostileUnitFillColor(Color hostileUnitFillColor) {
+    public void setHostileUnitFillColor(Color hostileUnitFillColor)
+    {
         if (hostileUnitFillColor != null)
-        _hostileUnitFillColor = hostileUnitFillColor;
+            _hostileUnitFillColor = hostileUnitFillColor;
     }
     /**
      * get the preferred fill affiliation color for units.
@@ -944,7 +945,7 @@ public class RendererSettings{
      * */
     public void setNeutralUnitFillColor(Color neutralUnitFillColor) {
         if (neutralUnitFillColor != null)
-        _neutralUnitFillColor = neutralUnitFillColor;
+            _neutralUnitFillColor = neutralUnitFillColor;
     }
     /**
      * get the preferred fill affiliation color for units.
