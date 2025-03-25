@@ -52,7 +52,14 @@ afterEvaluate {
                             url = 'https://www.gnu.org/licenses/gpl-3.0.en.html'
                         }
                     }
-
+                    developers {
+                        developer {
+                          id = 'id1'
+                          name = 'C5ISR EDI'
+                          email = 'email'
+                        }
+                        // Add all other devs here...
+                    }
 
                     // Version control info - if you're using GitHub, follow the 
                     // format as seen here
