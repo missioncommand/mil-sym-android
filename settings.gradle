@@ -1,0 +1,13 @@
+rootProject.name = 'mil-sym-android'
+
+include ':renderer'
+project(':renderer').name = 'mil-sym-android-renderer'
+
+include ':renderer-test'
+project(':renderer-test').name = 'mil-sym-android-renderer-test'
+
+include ':renderer-test3'
+project(':renderer-test3').name = 'mil-sym-android-renderer-test3'
+
+include ':symbol-picker'
+project(':symbol-picker').name = 'mil-sym-android-symbol-picker'

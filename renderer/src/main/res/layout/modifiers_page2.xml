@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="armyc2.c5isr.renderer.symbolpicker.SymbolPickerActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="false">
+
+        <LinearLayout
+            android:id="@+id/modifiers_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/attributes_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/attributes_label"
+                    android:textAlignment="center"
+                    android:textAllCaps="true" />
+
+                <CheckBox
+                    android:id="@+id/outline_checkbox"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:checked="false"
+                    android:text="@string/outline_label"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/line_color_label" />
+
+                <EditText
+                    android:id="@+id/edit_LineColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="00FF00"
+                    android:paddingBottom="20dp" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fill_color_label" />
+
+                <EditText
+                    android:id="@+id/edit_FillColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="FF0000"
+                    android:paddingBottom="20dp" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/line_width_label" />
+
+                <EditText
+                    android:id="@+id/edit_LineWidth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="2"
+                    android:paddingBottom="20dp" />
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_color_label" />
+
+                <EditText
+                    android:id="@+id/edit_TextColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="FF00FF"
+                    android:paddingBottom="20dp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/extra_modifiers_label"
+                android:textAlignment="center"
+                android:textAllCaps="true" />
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/modifiers_extra_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/modifiers_dialog_save_button"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:text="@string/save_btn_label" />
+    </LinearLayout>
+</LinearLayout>

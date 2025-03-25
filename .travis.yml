@@ -1,0 +1,65 @@
+sudo: false
+language: android
+android:
+  components:
+    - tools
+    - build-tools-30.0.1 #- build-tools-27.0.1
+    - android-23
+    - android-19
+    - extra-android-m2repository
+
+jdk:
+  - oraclejdk8
+
+env:
+  global:
+    - secure: grWupPU4/kqfM8o4o23MXZEVmn03/3zaY23LFsSoIrIJMtXPFpNlrq7oo92VKuuSySN1a8p2SO3uPMSXc4CRFPbUB5q2qunBybIOxP/oiUAJKaVVWLk+RRxsiItpxSfvma5++664slSqhd0jmx0Ht13TUcLdMiFOuOin6/9B67/RJQY8M3jAik9dkSqOGBJnneUeWvAmFHMykVHSl3k6AtnL/4eUXGSGwZpwEd3EGaz22YlcdIMae4PvQ1Se1xuiUS7aPUXVKxOhHJs4vUKr5s+6T24tIvUUcS31q2t1oQV3nekXhx0pUptfYFrmPJc/hlfVl+JD20A43eQXvNBLlC7gudml+/SsF82hOXVUxs7p91UG4YJhGSfFrxCJPBbgwxQADFKqb8pawq+kFBLRxCnGwNeonqQMtrOawIgPhK3nitSfvct5gc1GtXMVHiLZlTsSMd0L8zJU6awtJgK7bQB+pLleh7r1+womlJEifHxH76yONSUOIUFC4EbJj+efkYY3hotq/FUerkm8H9g+H4ziLEVLcQsWrTn4x2Etm92TiI4Ze1lZnPoh1XoidVQp/B1gh4dBGMvJk4AGe5UVs4+ZSAwSWdOOSLUZTyR+26QhQ0VvSPVwQGLNxiLUOw4fBNObXSa7q4rxC3hZibh3uf4W/7y5HwwUmJYiMHd2cZ0=
+    - secure: EgUyLB7KgqVsxTbRFg54gYEm4+RscEMYE0B28inAczz9RIR0Kje99c5N9pI83DNWl6YA3gv2s47p21IiQXJo1Hc/P5KuOkmCh9M1CexX0X0OduFdAB/47Py5wxmpHjoNQgKz70H1qrNASgeZmmfiloYByaYE/TbNxdx3yNA3u1DDaF10/MzPZL6vQeaRq4NJcFbyQu8b5V5SBvsugKPAWInuKZqYHqS2KHGYFrlZqFxaM+OC1tJxtcV5JKU4sAfEEcFun5+bkgQt4JRGevZsUXO3nJAXQUU/8JqYP/mXXZB8ZdVSWRqg8eAnL4+ntjk28d4NSKvRu5rcT9d7kunddodjJTyGjOX0nlpYFZM4D9dFjYp1Ce4Jb2OLrTnrtx/2gRJ4kEMoOYjrUMrehkVae3N8wx8SBupNTltaVuMJQPYpAqspwK5+pg5pvrQCmpbEFFLOVmN1t9Qv6Rq3xtNzwrSl7yF6sY9XuXAsvNDEwJ9cKNdwr01e3j9Mv9WRPs3eCPVR3t6Jk9+KNugX8Q2zCo/kqkOWqcIzQsOOj9LhrHbLOson3O/ai0bhb7zY31jJB9/FZtxCRSVNEa6fWMqffBghTVyctPxWEQmiZ5kgdvSI0QW/EOSzGPmj0BLtlv85CHY9E02HrRjuJkqX+GHELaYEZ/75AZ2wDGmLWJn8Wpg=
+
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache
+
+before_install:
+  - chmod +x gradlew
+  - chmod +x gradle/release.sh
+  - export GRADLE_OPTS="-Dorg.gradle.daemon=false -Xmx3072m $GRADLE_OPTS"
+  - export DEFAULT_JVM_OPTS=
+
+install: true
+
+script:
+ - ./gradlew build --refresh-dependencies --stacktrace
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+before_deploy:
+  - export PROJECT_VERSION=$(grep "version" gradle.properties|cut -d'=' -f2)
+  - cp renderer/build/outputs/aar/mil-sym-android-renderer-release.aar "renderer/build/outputs/aar/mil-sym-android-renderer-${PROJECT_VERSION}.aar"
+  - cp renderer/build/intermediates/bundles/release/classes.jar "renderer/build/intermediates/bundles/release/mil-sym-android-renderer-${PROJECT_VERSION}.jar"
+  - cp renderer-test/build/outputs/apk/debug/mil-sym-android-renderer-test-debug.apk "renderer-test/build/outputs/apk/mil-sym-android-renderer-test-${PROJECT_VERSION}.apk"
+  - cp renderer-test3/build/outputs/apk/debug/mil-sym-android-renderer-test3-debug.apk "renderer-test3/build/outputs/apk/mil-sym-android-renderer-test3-${PROJECT_VERSION}.apk"
+
+deploy: # travis by default will not invoke this step for PRs
+  - provider: releases
+    skip_cleanup: true
+    api_key: 
+      secure: e0wVMnHUHL9iCK/B2bWphKIvvnv34orkFmfwvLIe8pcEF9DdZYIcAZC4xn00nqDlfTay8J7Jvp5Wt4v3YtBXnw0Q0+1kwJ1mYW5RsTxveObQiszXSjavbxmg1LBpOLQD+BgvqKbIEUsEB8M6bbt3XZUX4TwmZt7rbWuuaNoEbpCof2oRdx6N+5skVUWk5+u/sF/4/lhBPAafJf8qbC0SK8RmVJddmO3oCYmFPwstKH7rrLBWnCwm61H8y4KwXzNPK2AzpusWEo6auk0zc9S+KhzzRNP8gqURnTG5o/dmoNbLN5RxbSS9wRlih9yqIEIeAybun0gQH1k6YJ0efjLzjxw2kD70it00gvDC1coi8JYJ6O+azGQTrAqVdArpQanqa8dYHPC5ZpDjVXnqLvp++mwrRdcxeG9sw/Gf1McUoHlvvKIaSTIFe3IhFnQDh471kHCeMjAKFxzNtYhXEUjA+XhWsPDHCliyKxebjuYDad+fAL9Vx2vnOu6IzEXBjx9VGf3l299VBodXvJ2JuBjS9wv6IJGJF2UjtaejxW2AK9slycxmE3rRCRVF7tP7JyMbOMzEUAF4z2JfMQwV4JA4HPVtxP3x/iAzP3OJg30Kg/ZfqnjKvp2lIQA2ZjRUf2aEqdtjJ6xdRYigakhUUb20YVAZ9tpEYbykEE+HobenT6s=
+    file:
+      - "renderer/build/outputs/aar/mil-sym-android-renderer-${PROJECT_VERSION}.aar"
+      - "renderer/build/intermediates/bundles/release/mil-sym-android-renderer-${PROJECT_VERSION}.jar"
+      - "renderer-test/build/outputs/apk/mil-sym-android-renderer-test-${PROJECT_VERSION}.apk"
+      - "renderer-test3/build/outputs/apk/mil-sym-android-renderer-test3-${PROJECT_VERSION}.apk"
+    on:
+      tags: true
+      condition: "$TRAVIS_TAG =~ ^v[0-9]+.[0-9]+.[0-9]+$"
+  - provider: script
+    skip_cleanup: true
+    script: gradle/release.sh
+    on:
+      tags: true
+      condition: "$TRAVIS_TAG =~ ^v[0-9]+.[0-9]+.[0-9]+$"

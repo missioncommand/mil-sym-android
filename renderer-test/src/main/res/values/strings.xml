@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">C5ISR Renderer Single Point</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="iv_content_description">milstd symbol</string>
+    <string name="symbolid_hint">SFGP------*****</string>
+    <string name="btn_draw_label">Draw</string>
+    <string name="btn_speed_test">Speed Test</string>
+    <string name="btn_thread_test">Thread Test</string>
+    <string name="btn_export_imgs">Export Images</string>
+    <string name="cb_modifiers">Modifiers</string>
+    <string name="cb_svg">SVG Engine</string>
+    <string-array name="size_array">
+    	<item>15</item>
+    	<item>25</item>
+    	<item>35</item>
+    	<item>45</item>
+    	<item>55</item>
+    </string-array>
+    <string-array name="modifier_array">
+    	<item>15</item>
+       <!-- Echelon -->
+        <item>--</item> <!-- NULL -->
+        <item>-A</item> <!-- TEAM/CREW -->
+        <item>-B</item> <!-- SQUAD -->
+        <item>-C</item> <!-- SECTION -->
+        <item>-D</item> <!-- PLATOON/DETACHMENT -->
+        <item>-E</item> <!-- COMAPNY/BATTER/TROOP -->
+        <item>-F</item> <!-- BATTALION/SQUADRON -->
+        <item>-G</item> <!-- REGIMENT/GROUP -->
+        <item>-H</item> <!-- BRIGADE -->
+        <item>-I</item> <!-- DIVISION -->
+        <item>-J</item> <!-- CORPS/MEF -->
+        <item>-K</item> <!-- ARMY -->
+        <item>-L</item> <!-- ARMY GROUP/FRONT -->
+        <item>-M</item> <!-- REGION -->
+        <item>-N</item> <!-- COMMAND -->
+
+        <!-- HQ -->
+        <item>A-</item> <!-- NULL -->
+        <item>AA</item> <!-- TEAM/CREW -->
+        <item>AB</item> <!-- SQUAD -->
+        <item>AC</item> <!-- SECTION -->
+        <item>AD</item> <!-- PLATOON/DETACHMENT -->
+        <item>AE</item> <!-- COMAPNY/BATTER/TROOP -->
+        <item>AF</item> <!-- BATTALION/SQUADRON -->
+        <item>AG</item> <!-- REGIMENT/GROUP -->
+        <item>AH</item> <!-- BRIGADE --> -->
+        <item>AI</item> <!-- DIVISION -->
+        <item>AJ</item> <!-- CORPS/MEF -->
+        <item>AK</item> <!-- ARMY -->
+        <item>AL</item> <!-- ARMY GROUP/FRONT -->
+        <item>AM</item> <!-- REGION -->
+        <item>AN</item> <!-- COMMAN -->
+
+        <!-- Task Force (TF) HQ -->
+        <item>B-</item> <!-- NULL -->
+        <item>BA</item> <!-- TEAM/CREW -->
+        <item>BB</item> <!-- SQUAD -->
+        <item>BC</item> <!-- SECTION -->
+        <item>BD</item> <!-- PLATOON/DETACHMENT -->
+        <item>BE</item> <!-- COMAPNY/BATTER/TROOP -->
+        <item>BF</item> <!-- BATTALION/SQUADRON -->
+        <item>BG</item> <!-- REGIMENT/GROUP -->
+        <item>BH</item> <!-- BRIGADE -->
+        <item>BI</item> <!-- DIVISION -->
+        <item>BJ</item> <!-- CORPS/MEF -->
+        <item>BK</item> <!-- ARMY -->
+        <item>BL</item> <!-- ARMY GROUP/FRONT -->
+        <item>BM</item> <!-- REGION -->
+        <item>BN</item> <!-- COMMAND -->
+ 
+        <!-- Feint Dummy (FD) HQ  -->
+        <item>C-</item> <!-- NULL -->
+        <item>CA</item> <!-- TEAM/CREW -->
+        <item>CB</item> <!-- SQUAD -->
+        <item>CC</item> <!-- SECTION -->
+        <item>CD</item> <!-- PLATOON/DETACHMENT -->
+        <item>CE</item> <!-- COMAPNY/BATTER/TROOP -->
+        <item>CF</item> <!-- BATTALION/SQUADRON -->
+        <item>CG</item> <!-- REGIMENT/GROUP -->
+        <item>CH</item> <!-- BRIGADE -->
+        <item>CI</item> <!-- DIVISION -->
+        <item>CJ</item> <!-- CORPS/MEF -->
+        <item>CK</item> <!-- ARMY -->
+        <item>CL</item> <!-- ARMY GROUP/FRONT -->
+        <item>CM</item> <!-- REGION -->
+        <item>CN</item> <!-- COMMAND -->
+
+        <!-- Feint Dummy / Task Force (FD/TF) HQ -->
+        <item>D-</item> <!-- NULL -->
+        <item>DA</item> <!-- TEAM/CREW -->
+        <item>DB</item> <!-- SQUAD -->
+        <item>DC</item> <!-- SECTION -->
+        <item>DD</item> <!-- PLATOON/DETACHMENT -->
+        <item>DE</item> <!-- COMAPNY/BATTER/TROOP -->
+        <item>DF</item> <!-- BATTALION/SQUADRON -->
+        <item>DG</item> <!-- REGIMENT/GROUP -->
+        <item>DH</item> <!-- BRIGADE -->
+        <item>DI</item> <!-- DIVISION -->
+        <item>DJ</item> <!-- CORPS/MEF -->
+        <item>DK</item> <!-- ARMY -->
+        <item>DL</item> <!-- ARMY GROUP/FRONT -->
+        <item>DM</item> <!-- REGION -->
+        <item>DN</item> <!-- COMMAND -->
+
+        <!--  Task Force (TF) -->
+        <item>E-</item> <!-- NULL -->
+        <item>EA</item> <!-- TEAM/CREW -->
+        <item>EB</item> <!-- SQUAD -->
+        <item>EC</item> <!-- SECTION -->
+        <item>ED</item> <!-- PLATOON/DETACHMENT -->
+        <item>EE</item> <!-- COMAPNY/BATTER/TROOP -->
+        <item>EF</item> <!-- BATTALION/SQUADRON -->
+        <item>EG</item> <!-- REGIMENT/GROUP -->
+        <item>EH</item> <!-- BRIGADE -->
+        <item>EI</item> <!-- DIVISION -->
+        <item>EJ</item> <!-- CORPS/MEF -->
+        <item>EK</item> <!-- ARMY -->
+        <item>EL</item> <!-- ARMY GROUP/FRONT -->
+        <item>EM</item> <!-- REGION -->
+        <item>EN</item> <!-- COMMAND -->
+ 
+        <!-- Feint Dummy (FD) -->
+        <item>F-</item> <!-- NULL -->
+        <item>FA</item> <!-- TEAM/CREW -->
+        <item>FB</item> <!-- SQUAD -->
+        <item>FC</item> <!-- SECTION -->
+        <item>FD</item> <!-- PLATOON/DETACHMENT -->
+        <item>FE</item> <!-- COMAPNY/BATTER/TROOP -->
+        <item>FF</item> <!-- BATTALION/SQUADRON -->
+        <item>FG</item> <!-- REGIMENT/GROUP -->
+        <item>FH</item> <!-- BRIGADE -->
+        <item>FI</item> <!-- DIVISION -->
+        <item>FJ</item> <!-- CORPS/MEF -->
+        <item>FK</item> <!-- ARMY -->
+        <item>FL</item> <!-- ARMY GROUP/FRONT -->
+        <item>FM</item> <!-- REGION -->
+ 
+        <!-- Feint Dummy / Task Force (FD/TF) -->
+        <item>G-</item> <!-- NULL -->
+        <item>GA</item> <!-- TEAM/CREW -->
+        <item>GB</item> <!-- SQUAD -->
+        <item>GC</item> <!-- SECTION -->
+        <item>GD</item> <!-- PLATOON/DETACHMENT --> 
+        <item>GE</item> <!-- COMAPNY/BATTER/TROOP -->
+        <item>GF</item> <!-- BATTALION/SQUADRON -->
+        <item>GG</item> <!-- REGIMENT/GROUP -->
+        <item>GH</item> <!-- BRIGADE -->
+        <item>GI</item> <!-- DIVISION -->
+        <item>GJ</item> <!-- CORPS/MEF -->
+        <item>GK</item> <!-- ARMY -->
+        <item>GL</item> <!-- ARMY GROUP/FRONT -->
+        <item>GM</item> <!-- REGION -->
+        <item>GN</item> <!-- COMMAND -->
+
+        <!-- Other -->
+        <item>H-</item> <!-- INSTALLATION -->
+        <item>HB</item> <!-- FEINT DUMMY INSTALLATION -->
+        <item>NS</item> <!-- TOWED ARRAY (SHORT) -->
+        <item>NL</item> <!-- TOWED ARRAY (LONG) -->
+
+        <!-- Mobility -->
+        <item>MO</item> <!-- MOBILITY WHEELED/LIMITED CROSS COUNTRY -->
+        <item>MP</item> <!-- MOBILITY CROSS COUNTRY -->
+        <item>MQ</item> <!-- MOBILITY TRACKED -->
+        <item>MR</item> <!-- MOBILITY WHEELED AND TRACKED COMBINATION -->
+        <item>MS</item> <!-- MOBILITY TOWED -->
+        <item>MT</item> <!-- MOBILITY RAIL -->
+        <item>MU</item> <!-- MOBILITY OVER THE SNOW -->
+        <item>MV</item> <!-- MOBILITY SLED -->
+        <item>MW</item> <!-- MOBILILTY PACK ANIMALS -->
+        <item>MX</item> <!-- MOBILITY BARGE -->
+        <item>MY</item> <!-- MOBILITY AMPHIBIOUS -->
+    </string-array>
+
+</resources>

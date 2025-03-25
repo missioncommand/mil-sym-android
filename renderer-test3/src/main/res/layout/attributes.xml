@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <TextView
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    />
+       <EditText android:id="@+id/edit_LineColor"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:hint="line color: 00FF00"
+   />        
+       <EditText android:id="@+id/edit_FillColor"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:hint="fill color: FF0000"              
+   />        
+       <EditText android:id="@+id/edit_LineWidth"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:hint="line width: 2"              
+   />        
+    <EditText android:id="@+id/edit_AM"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:hint="AM_DISTANCE: 5000,6000,7000"       
+   />    
+       <EditText android:id="@+id/edit_AN"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:hint="AN_AZIMUTH: 45,315"
+   />        
+       <EditText android:id="@+id/edit_X"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:hint="X_ALTITUDE_DEPTH: 44,78"
+   />        
+       <EditText android:id="@+id/edit_Extents"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:hint="Extents: left,right,top,bottom"
+   />
+       <EditText android:id="@+id/edit_TextColor"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:hint="text color: FF00FF"
+   />
+</LinearLayout>

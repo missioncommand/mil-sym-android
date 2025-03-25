@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+    <TextView
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    />
+    <EditText android:id="@+id/edit_message"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:hint="line type"
+   />    
+    <requestFocus/>    
+       <EditText android:id="@+id/edit_T"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:hint="T"
+   />        
+       <EditText android:id="@+id/edit_T1"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:hint="T1"
+   />        
+       <EditText android:id="@+id/edit_H"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:hint="H"
+   />        
+       <EditText android:id="@+id/edit_H1"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:hint="H1"
+   />        
+       <EditText android:id="@+id/edit_W"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:hint="W"
+   />        
+       <EditText android:id="@+id/edit_W1"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:hint="W1"
+   />
+    <EditText android:id="@+id/edit_V"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:hint="V"
+        />
+    <EditText android:id="@+id/edit_Y"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:hint="Y"
+        />
+
+</LinearLayout>

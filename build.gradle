@@ -1,0 +1,109 @@
+buildscript {
+    repositories {
+        mavenLocal()
+		mavenCentral()
+        google()
+		maven {
+		  url "https://plugins.gradle.org/m2/"
+		}
+        //jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.2.2' //7.4.1 latest version
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.9.RELEASE"
+		classpath 'io.github.gradle-nexus:publish-plugin:1.1.0'
+        
+    }
+}
+
+apply plugin: 'io.github.gradle-nexus.publish-plugin'
+apply from: "${rootDir}/scripts/publish-root.gradle"
+
+ext {
+//    bintrayUser = System.getenv("BINTRAY_USER") ?: project.hasProperty('bintrayUser') ? bintrayUser : ''
+//    bintrayKey  = System.getenv('BINTRAY_KEY') ?: project.hasProperty('bintrayKey') ? bintrayKey : ''
+//
+   sourceCompatibility = JavaVersion.VERSION_1_8
+   targetCompatibility = JavaVersion.VERSION_1_8
+//
+//    git = org.ajoberstar.grgit.Grgit.open(file('.')) // Open the Git repository in the current directory.
+//    revision = git.head().id                         // Get commitId of HEAD.
+}
+
+subprojects  {
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'maven-publish'
+
+
+    ext {
+        android_minSdkVersion     = 24//19//API 24 adds all the vector drawable classes
+        android_targetSdkVersion  = 30//21//19
+        android_compileSdkVersion = 30//33//28//going to 33 requires JDK11
+        android_buildToolsVersion = "30.0.3"//"33.0.2" //"30.0.3"
+    }
+
+    group = "mil.army.missioncommand"
+
+    repositories {
+        mavenLocal()
+		mavenCentral()
+        maven {
+		  url "https://plugins.gradle.org/m2/"
+		}
+        google() //for AAPT2
+    }
+
+    dependencyManagement {
+        dependencies {
+            dependency ("com.android.support:support-v4:28.0.0")
+            dependency ("com.android.support:support-annotations:28.0.0")
+            //dependency ("com.google.android.gms:play-services:12.0.1")
+//            dependency ("com.google.android.gms:play-services:6.5.87")
+//            dependency ("com.google.android.gms:play-services:12.0.1")
+            /*dependency ("com.android.support:support-v4:25.3.1")
+            dependency ("com.android.support:support-annotations:25.3.1")
+            dependency ("com.google.android.gms:play-services:6.5.87")//*/
+        }
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+    }
+}
+
+def updatePom(pom, gradleProject) {
+    pom.withXml { XmlProvider xml ->
+        def root = xml.asNode()
+
+        /*
+         * inject dependencies
+         */
+        def dependencies = root.appendNode('dependencies')
+        gradleProject.configurations.compile.allDependencies.each {
+            def dependency = dependencies.appendNode('dependency')
+            dependency.appendNode('groupId'   , it.group)
+            dependency.appendNode('artifactId', it.name)
+            if (it.version != null) {
+                dependency.appendNode('version', it.version)
+            }
+        }
+
+        /*
+         * inject name/description
+         */
+        root.appendNode('name'       , gradleProject.name)
+        root.appendNode('description', gradleProject.description)
+    }
+}
+
+/*task wrapper(type: Wrapper, description: "Generates gradlew[.bat] scripts") {
+//    gradleVersion = '6.5.1'
+//    gradleVersion = '3.4'
+    //gradleVersion = '4.10.3'
+    gradleVersion = '6.8.3'
+}//*/
+
+//wrapper{
+//    gradleVersion = '6.5.1'
+//    gradleVersion = '4.10.3'
+//}

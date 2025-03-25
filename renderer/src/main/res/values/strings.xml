@@ -1,0 +1,804 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">C5ISR Renderer</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="symbolid_hint">SFGP------*****</string>
+    <string name="btn_draw_label">Draw</string>
+
+    <!-- Symbol Picker page -->
+    <string name="back_btn_label">Back</string>
+    <string name="configure_btn_label">Configure %1$s</string>
+    <string name="hide_children">Hide subtypes</string>
+    <string name="show_children">Show subtypes</string>
+
+    <!-- Modifiers Set A -->
+    <string name="context_label">Context</string>
+    <string name="context_label_reality">Reality</string>
+    <string name="context_label_exercise">Exercise</string>
+    <string name="context_label_simulation">Simulation</string>
+
+    <string name="std_id_label">Standard Identity</string>
+    <string-array name="std_id_array">
+        <item>Pending</item>
+        <item>Unknown</item>
+        <item>Assumed Friend</item>
+        <item>Friend</item>
+        <item>Neutral</item>
+        <item>Suspect/Joker</item>
+        <item>Hostile/Faker</item>
+    </string-array>
+
+    <string name="status_label">Status</string>
+    <string-array name="status_array">
+        <item>Present</item>
+        <item>Planned/Anticipated/Suspect</item>
+        <item>Present/Fully capable</item>
+        <item>Present/Damaged</item>
+        <item>Present/Destroyed</item>
+        <item>Present/Full to capacity</item>
+    </string-array>
+
+    <string name="hq_label">Headquarters/Task Force/Dummy</string>
+    <string-array name="hq_array">
+        <item>Unknown</item>
+        <item>Feint/Decoy/Dummy</item>
+        <item>Headquarters</item>
+        <item>Feint/Dummy Headquarters</item>
+        <item>Task Force</item>
+        <item>Feint/Dummy Task Force</item>
+        <item>Task Force Headquarters</item>
+        <item>Feint/Dummy Task Force Headquarters</item>
+    </string-array>
+
+    <string name="amplifier_category_label">Amplifier Category</string>
+    <string-array name="amplifier_category_array">
+        <item>Unknown</item>
+        <item>Echelon at brigade and below</item>
+        <item>Echelon at division and above</item>
+        <item>Equipment mobility on land</item>
+        <item>Equipment mobility on snow</item>
+        <item>Equipment mobility on water</item>
+        <item>Naval towed array</item>
+    </string-array>
+    <string name="amplifier_type_label">Amplifier Type</string>
+
+    <string-array name="amp0_unknown_array">
+        <item>(N/A)</item>
+    </string-array>
+
+    <!-- Note: the specific amplifier types are 1-indexed when determining the symbol code. -->
+    <string-array name="amp1_echelon_bb_array">
+        <item>Team/Crew</item>
+        <item>Squad</item>
+        <item>Section</item>
+        <item>Platoon/detachment</item>
+        <item>Company/battery/troop</item>
+        <item>Battalion/squadron</item>
+        <item>Regiment/group</item>
+        <item>Brigade</item>
+    </string-array>
+
+    <string-array name="amp2_echelon_da_array">
+        <item>Division</item>
+        <item>Corps/MEF</item>
+        <item>Army</item>
+        <item>Army Group/front</item>
+        <item>Region/Theater</item>
+        <item>Command</item>
+    </string-array>
+
+    <string-array name="amp3_eqp_land_array">
+        <item>Wheeled limited cross country</item>
+        <item>Wheeled cross country</item>
+        <item>Tracked</item>
+        <item>Wheeled and tracked combination</item>
+        <item>Towed</item>
+        <item>Rail</item>
+        <item>Pack animals</item>
+    </string-array>
+
+    <string-array name="amp4_eqp_snow_array">
+        <item>Over snow (prime mover)</item>
+        <item>Sled</item>
+    </string-array>
+
+    <string-array name="amp5_eqp_water_array">
+        <item>Barge</item>
+        <item>Amphibious</item>
+    </string-array>
+
+    <string-array name="amp6_naval_towed_array">
+        <item>Short towed array</item>
+        <item>Long towed Array</item>
+    </string-array>
+
+    <string name="send_btn_label">Pick %1$s</string>
+    <string name="extra_mods_btn_label">Extra\nModifiers</string>
+    <string name="attributes_btn_label">Attributes</string>
+    <string name="save_btn_label">Save</string>
+
+    <!-- Modifiers Set B (Sector 1 and 2 Modifiers) -->
+    <string name="sector_1_label">Sector 1 Modifier</string>
+    <string name="sector_2_label">Sector 2 Modifier</string>
+
+    <!-- Note: sector modifiers are 2 digits so codes 0-9 will have to be padded. -->
+
+    <string-array name="ss_NotApplicable_array">
+        <item>[Not applicable to this symbol.]</item>
+    </string-array>
+
+    <string-array name="ss_Air_sector1_array">
+        <item>Not Applicable</item>
+        <item>Attack/Strike</item>
+        <item>Bomber</item>
+        <item>Cargo</item>
+        <item>Fighter</item>
+        <item>Interceptor</item>
+        <item>Tanker</item>
+        <item>Utility</item>
+        <item>Vertical or Short Take-off and Landing (VSTOL)/ Vertical Take-off and Landing (VTOL)</item>
+        <item>Passenger</item>
+        <item>Ultra Light</item>
+        <item>Airborne Command Post (ACP)</item>
+        <item>Airborne Early Warning (AEW)</item>
+        <item>Government</item>
+        <item>Medical Evacuation (MEDEVAC)</item>
+        <item>Escort</item>
+        <item>Electronic Combat (EC)/Jammer</item>
+        <item>Patrol</item>
+        <item>Reconnaissance</item>
+        <item>Trainer</item>
+        <item>Photographic (Reconnaissance)</item>
+        <item>Personnel Recovery </item>
+        <item>Antisubmarine Warfare</item>
+        <item>Communications</item>
+        <item>Electronic Support (ES)</item>
+        <item>Mine Countermeasures (MCM)</item>
+        <item>Search and Rescue</item>
+        <item>Special Operations Forces</item>
+        <item>Surface Warfare</item>
+        <item>Very Important Person (VIP) Transport</item>
+        <item>Combat Search and Rescue (CSAR)</item>
+        <item>Suppression of Enemy Air Defenses</item>
+        <item>Antisurface Warfare</item>
+        <item>Fighter/Bomber</item>
+        <item>Intensive Care</item>
+        <item>Electronic Attack (EA)</item>
+        <item>Multi-Mission</item>
+        <item>Hijacking/Hijacked</item>
+        <item>ASW Helo- LAMPS</item>
+        <item>ASW Helo – SH-60R</item>
+        <item>Hijacker</item>
+        <item>Cyberspace</item>
+    </string-array>
+    <string-array name="ss_Air_sector2_array">
+        <item>Not Applicable</item>
+        <item>Heavy</item>
+        <item>Medium</item>
+        <item>Light</item>
+        <item>Boom–Only</item>
+        <item>Drogue–Only</item>
+        <item>Boom and Drogue</item>
+        <item>Close Range</item>
+        <item>Short Range</item>
+        <item>Medium Range</item>
+        <item>Long Range</item>
+        <item>Downlinked</item>
+        <item>Cyberspace</item>
+    </string-array>
+
+    <string-array name="ss_AirMissile_sector1_array">
+        <item>Unspecified</item>
+        <item>Air</item>
+        <item>Surface</item>
+        <item>Subsurface</item>
+        <item>Space</item>
+        <item>Anti–Ballistic</item>
+        <item>Ballistic</item>
+        <item>Cruise</item>
+        <item>Interceptor</item>
+    </string-array>
+    <string-array name="ss_AirMissile_sector2_array">
+        <item>Unspecified</item>
+        <item>Air</item>
+        <item>Surface</item>
+        <item>Subsurface</item>
+        <item>Space</item>
+        <item>Launched</item>
+        <item>Missile</item>
+        <item>Patriot</item>
+        <item>Standard Missile-2 (SM-2)</item>
+        <item>Standard Missile-6 (SM-6)</item>
+        <item>Evolved Sea Sparrow Missile (ESSM)</item>
+        <item>Rolling Airframe Missile (RAM)</item>
+        <item>Short Range</item>
+        <item>Medium Range</item>
+        <item>Intermediate Range</item>
+        <item>Long Range</item>
+        <item>Intercontinental</item>
+    </string-array>
+
+    <string-array name="ss_Space_sector1_array">
+        <item>Unspecified</item>
+        <item>Low Earth Orbit (LEO)</item>
+        <item>Medium Earth Orbit  (MEO)</item>
+        <item>High Earth Orbit  (HEO)</item>
+        <item>Geosynchronous Orbit (GSO)</item>
+        <item>Geostationary Orbit (GO)</item>
+        <item>Molniya Orbit (MO)</item>
+        <item>Cyberspace</item>
+    </string-array>
+    <string-array name="ss_Space_sector2_array">
+        <item>Unspecified</item>
+        <item>Optical</item>
+        <item>Infrared</item>
+        <item>Radar</item>
+        <item>Signals Intelligence (SIGINT)</item>
+        <item>Cyberspace</item>
+    </string-array>
+
+    <string-array name="ss_SpaceMissile_sector1_array">
+        <item>Unspecified</item>
+        <item>Ballistic</item>
+        <item>Space</item>
+        <item>Interceptor</item>
+    </string-array>
+    <string-array name="ss_SpaceMissile_sector2_array">
+        <item>Unspecified</item>
+        <item>Short Range</item>
+        <item>Medium Range</item>
+        <item>Intermediate Range</item>
+        <item>Long Range</item>
+        <item>Intercontinental </item>
+        <item>Arrow</item>
+        <item>Ground-Based Interceptor (GBI)</item>
+        <item>Patriot</item>
+        <item>Standard Missile Terminal Phase (SM-T)</item>
+        <item>Standard Missile – 3 (SM-3)</item>
+        <item>Terminal High Altitude Area Defense (THAAD)</item>
+        <item>Space</item>
+        <item>Close Range (CRBM)</item>
+        <item>Debris</item>
+        <item>Unknown</item>
+    </string-array>
+
+    <string-array name="ss_LandUnit_sector1_array">
+        <!-- Note that the ArrayAdapter for this one automatically hides "{Reserved for future use}" items in the Spinner.
+        Do not delete them, because that would make the subsequent indices/codes incorrect. -->
+        <item>Unspecified</item>
+        <item>Tactical Satellite Communications</item>
+        <item>Area</item>
+        <item>Attack</item>
+        <item>Biological</item>
+        <item>Border</item>
+        <item>Bridging</item>
+        <item>Chemical</item>
+        <item>Close Protection</item>
+        <item>Combat</item>
+        <item>Command and Control</item>
+        <item>Communications Contingency Package</item>
+        <item>Construction</item>
+        <item>Cross Cultural Communication</item>
+        <item>Crowd and Riot Control</item>
+        <item>Decontamination</item>
+        <item>Detention</item>
+        <item>Direct Communications</item>
+        <item>Diving</item>
+        <item>Division</item>
+        <item>Dog</item>
+        <item>Drilling</item>
+        <item>Electro–Optical</item>
+        <item>Enhanced</item>
+        <item>Explosive Ordnance Disposal (EOD)</item>
+        <item>Fire Direction Center</item>
+        <item>Force</item>
+        <item>Forward</item>
+        <item>Ground Station Module</item>
+        <item>Landing Support</item>
+        <item>{Reserved for future use}</item>
+        <item>Maintenance</item>
+        <item>Meteorological</item>
+        <item>Mine Countermeasure</item>
+        <item>Missile</item>
+        <item>Mobile Advisor and Support</item>
+        <item>Mobile Subscriber Equipment</item>
+        <item>Mobility Support</item>
+        <item>{Reserved for future use}</item>
+        <item>Multinational</item>
+        <item>Multinational Specialized Unit</item>
+        <item>Multiple Rocket Launcher</item>
+        <item>NATO Medical Role 1 </item>
+        <item>NATO Medical Role 2</item>
+        <item>NATO Medical Role 3</item>
+        <item>NATO Medical Role 4</item>
+        <item>Naval</item>
+        <item>Unmanned Aerial Systems (UAS)</item>
+        <item>Nuclear</item>
+        <item>Operations</item>
+        <item>Radar</item>
+        <item>Radio Frequency Identification (RFID) Interrogator / Sensor</item>
+        <item>Radiological</item>
+        <item>Search and Rescue</item>
+        <item>Security</item>
+        <item>Sensor</item>
+        <item>Weapons</item>
+        <item>Signals Intelligence</item>
+        <item>Armored</item>
+        <item>Single Rocket Launcher</item>
+        <item>Smoke</item>
+        <item>Sniper</item>
+        <item>Sound Ranging</item>
+        <item>Special Operations Forces (SOF)</item>
+        <item>Special Weapons and Tactics</item>
+        <item>Survey</item>
+        <item>Tactical Exploitation</item>
+        <item>Target Acquisition</item>
+        <item>Topographic/Geospatial</item>
+        <item>Utility</item>
+        <item>Video Imagery (Combat Camera)</item>
+        <item>Mobility Assault</item>
+        <item>Amphibious Warfare Ship</item>
+        <item>Load Handling System</item>
+        <item>Palletized Load System</item>
+        <item>Medevac</item>
+        <item>Cyberspace</item>
+        <item>Support</item>
+        <item>Aviation</item>
+        <item>Route, Reconnaissance, and Clearance</item>
+        <item>Tilt-Rotor</item>
+        <item>Command Post Node</item>
+        <item>Joint Network Node</item>
+        <item>Retransmission Site</item>
+        <item>Assault</item>
+        <item>Weapons</item>
+        <item>Criminal Investigation Division</item>
+        <item>Digital</item>
+        <item>Network or Network Operations</item>
+        <item>Airfield, Aerial Port of Debarkation, or Aerial Port of Embarkation</item>
+        <item>Pipeline</item>
+        <item>Postal</item>
+        <item>Water</item>
+        <item>Independent Command</item>
+        <item>Theater</item>
+        <item>Army or Theater Army</item>
+        <item>Corps</item>
+        <item>Brigade</item>
+        <item>Headquarters or headquarters staff element</item>
+    </string-array>
+    <string-array name="ss_LandUnit_sector2_array">
+        <item>Unspecified</item>
+        <item>Airborne</item>
+        <item>Arctic</item>
+        <item>Battle Damage Repair</item>
+        <item>Bicycle Equipped</item>
+        <item>Casualty Staging</item>
+        <item>Clearing</item>
+        <item>Close Range</item>
+        <item>Control</item>
+        <item>Decontamination</item>
+        <item>Demolition</item>
+        <item>Dental</item>
+        <item>Digital</item>
+        <item>Enhanced Position Location Reporting System (EPLRS)</item>
+        <item>Equipment</item>
+        <item>Heavy</item>
+        <item>High Altitude</item>
+        <item>Intermodal</item>
+        <item>Intensive Care</item>
+        <item>Light</item>
+        <item>Laboratory</item>
+        <item>Launcher</item>
+        <item>Long Range</item>
+        <item>Low Altitude</item>
+        <item>Medium</item>
+        <item>Medium Altitude</item>
+        <item>Medium Range</item>
+        <item>Mountain</item>
+        <item>High to Medium Altitude</item>
+        <item>Multi–Channel</item>
+        <item>Optical (Flash)</item>
+        <item>Pack Animal</item>
+        <item>Patient Evacuation Coordination</item>
+        <item>Preventive Maintenance</item>
+        <item>Psychological</item>
+        <item>Radio Relay Line of Sight</item>
+        <item>Railroad</item>
+        <item>Recovery (Unmanned Systems)</item>
+        <item>Recovery (Maintenance)</item>
+        <item>Rescue Coordination Center</item>
+        <item>Riverine</item>
+        <item>Single Channel</item>
+        <item>Ski</item>
+        <item>Short Range</item>
+        <item>Strategic</item>
+        <item>Support</item>
+        <item>Tactical</item>
+        <item>Towed</item>
+        <item>Troop</item>
+        <item>Vertical or Short Take–Off and Landing (VTOL/VSTOL)</item>
+        <item>Veterinary</item>
+        <item>Wheeled</item>
+        <item>High to Low Altitude</item>
+        <item>Medium to Low Altitude</item>
+        <item>Attack</item>
+        <item>Refuel</item>
+        <item>Utility</item>
+        <item>Combat Search and Rescue</item>
+        <item>Guerilla</item>
+        <item>Air Assault</item>
+        <item>Amphibious</item>
+        <item>Very Heavy</item>
+        <item>Supply</item>
+        <item>Cyberspace</item>
+        <item>Navy Barge, Self-Propelled</item>
+        <item>Navy Barge, Not Self-Propelled</item>
+        <item>Launch</item>
+        <item>Landing Craft</item>
+        <item>Landing Ship</item>
+        <item>Service Craft/Yard</item>
+        <item>Tug Harbor</item>
+        <item>Ocean Going Tug Boat</item>
+        <item>Surface Deployment and Distribution Command</item>
+        <item>Noncombatant Generic Vessel</item>
+        <item>Composite</item>
+        <item>Shelter</item>
+        <item>Light and Medium</item>
+        <item>Tracked</item>
+        <item>Security Force Assistance</item>
+    </string-array>
+
+    <string-array name="ss_LandCivilianUnitOrganization_sector1_array">
+        <item>Unspecified</item>
+        <item>Assassination</item>
+        <item>Execution (Wrongful Killing)</item>
+        <item>Murder Victims</item>
+        <item>Hijacking/Hijacked</item>
+        <item>Kidnapping</item>
+        <item>Piracy</item>
+        <item>Rape</item>
+        <item>Civilian</item>
+        <item>Displaced Person(s), Refugee(s) and Evacuee(s)</item>
+        <item>Foreign Fighter(s)</item>
+        <item>Gang Member or Gang</item>
+        <item>Government Organization</item>
+        <item>Leader or Leadership</item>
+        <item>Nongovernmental Organization Member or Nongovernmental Organization</item>
+        <item>Unwilling/Coerced Recruit</item>
+        <item>Willing Recruit</item>
+        <item>Religious or Religious Organization</item>
+        <item>Targeted Individual or Organization</item>
+        <item>Terrorist or Terrorist Organization</item>
+        <item>Speaker</item>
+        <item>Accident</item>
+        <item>Combat</item>
+        <item>Other</item>
+        <item>Loot</item>
+        <item>Hijacker</item>
+        <item>Cyberspace</item>
+    </string-array>
+    <string-array name="ss_LandCivilianUnitOrganization_sector2_array">
+        <item>Unspecified</item>
+        <item>Leader or Leadership</item>
+        <item>Cyberspace</item>
+    </string-array>
+
+    <string-array name="ss_LandEquipment_sector1_array">
+        <item>Unspecified</item>
+        <item>Biological</item>
+        <item>Chemical</item>
+        <item>Early Warning Radar</item>
+        <item>Intrusion</item>
+        <item>Nuclear</item>
+        <item>Radiological</item>
+        <item>Upgraded Early Warning Radar</item>
+        <item>Hijacking/Hijacked</item>
+        <item>Civilian</item>
+        <item>Tilt-Rotor</item>
+        <item>{Reserved for future use}</item>
+        <item>Multi-purpose Blade</item>
+        <item>Tank-width Mine Plow</item>
+        <item>Bridge</item>
+        <item>Cyberspace</item>
+        <item>Armored</item>
+        <item>Attack</item>
+        <item>Cargo</item>
+        <item>Maintenance</item>
+        <item>MedEvac</item>
+        <item>Petroleum, oil, and lubricants (POL)</item>
+        <item>Utility</item>
+        <item>Water</item>
+        <item>Robotic</item>
+    </string-array>
+    <string-array name="ss_LandEquipment_sector2_array">
+        <item>Unspecified</item>
+        <item>Cyberspace</item>
+        <item>Light</item>
+        <item>Medium</item>
+        <item>Railway</item>
+        <item>Tracked</item>
+        <item>Tractor Trailer</item>
+        <item>Wheeled LTD</item>
+        <item>Wheeled X</item>
+        <item>Robotic</item>
+    </string-array>
+
+    <string-array name="ss_LandInstallation_sector1_array">
+        <item>Unspecified</item>
+        <item>Biological</item>
+        <item>Chemical </item>
+        <item>Nuclear</item>
+        <item>Radiological</item>
+        <item>Decontamination</item>
+        <item>Coal</item>
+        <item>Geothermal</item>
+        <item>Hydroelectric</item>
+        <item>Natural Gas</item>
+        <item>Petroleum</item>
+        <item>Civilian </item>
+        <item>Civilian Telephone</item>
+        <item>Civilian Television</item>
+        <item>Cyberspace</item>
+    </string-array>
+    <string-array name="ss_LandInstallation_sector2_array">
+        <item>Unspecified</item>
+        <item>Biological Warfare Production</item>
+        <item>Chemical Warfare Production</item>
+        <item>Nuclear Warfare Production</item>
+        <item>Radiological Warfare Production</item>
+        <item>Atomic Energy Reactor</item>
+        <item>Nuclear Material Production</item>
+        <item>Nuclear Material Storage</item>
+        <item>Weapons Grade Production</item>
+        <item>Cyberspace</item>
+    </string-array>
+
+    <string-array name="ss_ControlMeasure_sector1_array">
+        <item>Unspecified</item>
+        <item>Wheeled limited cross country </item>
+        <item>Wheeled cross country </item>
+        <item>Tracked </item>
+        <item>Wheeled and tracked combination </item>
+        <item>Towed</item>
+        <item>Rail</item>
+        <item>Pack Animals</item>
+        <item>No Vehicles</item>
+        <item>Over snow (prime mover)</item>
+        <item>Sled</item>
+        <item>Barge</item>
+        <item>Amphibious</item>
+        <item>Mine [Specify below]</item>
+    </string-array>
+    <string name="ss_mine_type_label">(Optional) Specify up to 3 mine types:</string>
+    <string name="antipersonnel_mine_label">Antipersonnel Mine</string>
+    <string name="antipersonnel_mine_directional_label">Antipersonnel Mine with Directional Effects</string>
+    <string name="antitank_mine_label">Antitank Mine</string>
+    <string name="antitank_mine_antihandling_label">Antitank Mine with Antihandling Device</string>
+    <string name="wide_area_antitank_mine_label">Wide Area Antitank Mine</string>
+    <string name="mine_cluster_label">Mine Cluster</string>
+
+    <!-- Control Measures don't have Sector 2 modifiers. -->
+
+    <string-array name="ss_SeaSurface_sector1_array">
+        <item>Unspecified</item>
+        <item>Own Ship</item>
+        <item>Antiair Warfare</item>
+        <item>Antisubmarine Warfare</item>
+        <item>Escort</item>
+        <item>Electronic Warfare</item>
+        <item>Intelligence, Surveillance, Reconnaissance</item>
+        <item>Mine Countermeasures</item>
+        <item>Missile Defense</item>
+        <item>Medical</item>
+        <item>Mine Warfare</item>
+        <item>Remote Mult-imission Vehicle (RMV)</item>
+        <item>Special Operations Forces (SOF)</item>
+        <item>Surface Warfare</item>
+        <item>Ballistic Missile </item>
+        <item>Guided Missile </item>
+        <item>Other Guided Missile </item>
+        <item>Torpedo</item>
+        <item>Drone–Equipped</item>
+        <item>Helicopter–Equipped/VSTOL</item>
+        <item>Ballistic Missile Defense, Shooter </item>
+        <item>Ballistic Missile Defense, Long-Range Surveillance and Track (LRS&amp;T)</item>
+        <item>Sea-Base X-Band</item>
+        <item>Hijacking/Hijacked</item>
+        <item>Hijacker</item>
+        <item>Cyberspace</item>
+    </string-array>
+    <string-array name="ss_SeaSurface_sector2_array">
+        <item>Unspecified</item>
+        <item>Nuclear Powered</item>
+        <item>Heavy</item>
+        <item>Light</item>
+        <item>Medium</item>
+        <item>Dock</item>
+        <item>Logistics</item>
+        <item>Tank</item>
+        <item>Vehicle</item>
+        <item>Fast</item>
+        <item>Air–Cushioned (US)</item>
+        <item>Air–Cushioned (NATO)</item>
+        <item>Hydrofoil</item>
+        <item>Autonomous Control</item>
+        <item>Remotely Piloted</item>
+        <item>Expendable</item>
+        <item>Cyberspace</item>
+    </string-array>
+
+    <string-array name="ss_SeaSubsurface_sector1_array">
+        <item>Unspecified</item>
+        <item>Antisubmarine Warfare</item>
+        <item>Auxiliary</item>
+        <item>Command and Control</item>
+        <item>Intelligence, Surveillance, Reconnaissance</item>
+        <item>Mine Countermeasures</item>
+        <item>Mine Warfare</item>
+        <item>Surface Warfare</item>
+        <item>Attack</item>
+        <item>Ballistic Missile </item>
+        <item>Guided Missile </item>
+        <item>Other Guided Missile</item>
+        <item>Special Operations Forces (SOF)</item>
+        <item>Possible Submarine Low 1 </item>
+        <item>Possible Submarine Low 2</item>
+        <item>Possible Submarine High 3</item>
+        <item>Possible Submarine High 4</item>
+        <item>Probable Submarine</item>
+        <item>Certain Submarine</item>
+        <item>Anti-torpedo Torpedo</item>
+        <item>Hijacking/Hijacked</item>
+        <item>Hijacker</item>
+        <item>Cyberspace</item>
+    </string-array>
+    <string-array name="ss_SeaSubsurface_sector2_array">
+        <item>Unspecified</item>
+        <item>Air Independent Propulsion</item>
+        <item>Diesel Electric, General</item>
+        <item>Diesel – Type 1</item>
+        <item>Diesel – Type 2</item>
+        <item>Diesel – Type 3</item>
+        <item>Nuclear Powered, General</item>
+        <item>Nuclear – Type 1</item>
+        <item>Nuclear – Type 2</item>
+        <item>Nuclear – Type 3</item>
+        <item>Nuclear – Type 4</item>
+        <item>Nuclear – Type 5</item>
+        <item>Nuclear – Type 6</item>
+        <item>Nuclear – Type 7</item>
+        <item>Autonomous Control</item>
+        <item>Remotely Piloted</item>
+        <item>Expendable</item>
+        <item>Cyberspace</item>
+    </string-array>
+
+    <string-array name="ss_Activities_sector1_array">
+        <item>Unspecified</item>
+        <item>Assassination</item>
+        <item>Execution (Wrongful Killing)</item>
+        <item>Hijacking/Hijacked</item>
+        <item>House–to–House</item>
+        <item>Kidnapping</item>
+        <item>Murder</item>
+        <item>Piracy</item>
+        <item>Rape</item>
+        <item>Written Military Information Support Operations</item>
+        <item>Pirate</item>
+        <item>False</item>
+        <item>Find</item>
+        <item>Found and Cleared</item>
+        <item>Hoax (Decoy)</item>
+        <item>Attempted</item>
+        <item>Accident</item>
+        <item>Incident</item>
+        <item>Theft</item>
+        <item>Hijacker</item>
+        <item>Cyberspace</item>
+    </string-array>
+    <string-array name="ss_Activities_sector2_array">
+        <item>Unspecified</item>
+        <item>Cyberspace</item>
+        <item>Security Force Assistance</item>
+    </string-array>
+
+    <string-array name="ss_SignalsIntelligence_sector1_array">
+        <item>Unspecified</item>
+        <item>Anti-Aircraft Fire Control</item>
+        <item>Airborne Search and Bombing</item>
+        <item>Airborne Intercept</item>
+        <item>Altimeter</item>
+        <item>Airborne Reconnaissance and Mapping</item>
+        <item>Air Traffic Control</item>
+        <item>Beacon Transponder (not IFF)</item>
+        <item>Battlefield Surveillance</item>
+        <item>Controlled Approach</item>
+        <item>Controlled Intercept</item>
+        <item>Cellular/Mobile</item>
+        <item>Coastal Surveillance</item>
+        <item>Decoy/Mimic</item>
+        <item>Data Transmission</item>
+        <item>Earth Surveillance</item>
+        <item>Early Warning</item>
+        <item>Fire Control</item>
+        <item>Ground Mapping</item>
+        <item>Height Finding</item>
+        <item>Harbor Surveillance</item>
+        <item>Identification, Friend or Foe (Interrogator)</item>
+        <item>Instrument Landing System</item>
+        <item>Ionospheric Sounding</item>
+        <item>Identification, Friend or Foe (Transponder)</item>
+        <item>Barrage Jammer</item>
+        <item>Click Jammer</item>
+        <item>Deceptive Jammer</item>
+        <item>Frequency Swept Jammer</item>
+        <item>Jammer (general)</item>
+        <item>Noise Jammer</item>
+        <item>Pulsed Jammer</item>
+        <item>Repeater Jammer</item>
+        <item>Spot Noise Jammer</item>
+        <item>Transponder Jammer</item>
+        <item>Missile Acquisition</item>
+        <item>Missile Control</item>
+        <item>Missile Downlink</item>
+        <item>Meteorological</item>
+        <item>Multi-Function</item>
+        <item>Missile Guidance</item>
+        <item>Missile Homing</item>
+        <item>Missile Tracking</item>
+        <item>Navigational/General</item>
+        <item>Navigational/Distance Measuring Equipment</item>
+        <item>Navigation/Terrain Following</item>
+        <item>Navigational/Weather Avoidance</item>
+        <item>Omni-Line of Sight (LOS)</item>
+        <item>Proximity Use</item>
+        <item>Point-to-Point Line of Sight (LOS)</item>
+        <item>Instrumentation</item>
+        <item>Range Only</item>
+        <item>Sonobuoy</item>
+        <item>Satellite Downlink</item>
+        <item>Space</item>
+        <item>Surface Search</item>
+        <item>Shell Tracking</item>
+        <item>Satellite Uplink</item>
+        <item>Target Acquisition</item>
+        <item>Target Illumination</item>
+        <item>Tropospheric Scatter</item>
+        <item>Target Tracking</item>
+        <item>Unknown</item>
+        <item>Video Remoting</item>
+        <item>Experimental</item>
+        <item>Cyberspace</item>
+    </string-array>
+    <string-array name="ss_SignalsIntelligence_sector2_array">
+        <item>Unspecified</item>
+        <item>Cyberspace</item>
+    </string-array>
+
+    <string name="outline_label">Draw outline for visibility?</string>
+
+    <!-- Modifiers page 2 -->
+    <string name="extra_modifiers_label">Extra Modifiers</string>
+    <string name="confirm_btn_label">Confirm</string>
+
+    <!-- Country modifier -->
+    <string name="country_label">Country</string>
+    <string name="search_label">Search…</string>
+
+    <!-- Attributes page -->
+    <string name="attributes_label">Attributes</string>
+    <string name="line_color_label">Line Color</string>
+    <string name="fill_color_label">Fill Color</string>
+    <string name="line_width_label">Line Width</string>
+    <string name="text_color_label">Text Color</string>
+
+    <string name="altitude_unit_label">Alt./Depth Units: </string>
+    <string name="altitude_mode_label">Alt./Depth Mode: </string>
+
+    <!-- Datetime selector -->
+    <string name="datetime_now_label">Set to Now</string>
+    <string name="datetime_on_order_label">On Order</string>
+    <string name="datetime_confirm_label">Confirm</string>
+
+</resources>

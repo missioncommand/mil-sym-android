@@ -1,0 +1,113 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="armyc2.c5isr.renderer.test1.MainActivity" >
+
+    <EditText
+        android:id="@+id/etSymbolID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="65dp"
+        android:ems="10"
+        android:hint="@string/symbolid_hint"/>
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etSymbolID"
+        android:layout_below="@+id/etSymbolID"
+        android:layout_marginTop="63dp"
+        android:src="@drawable/ic_launcher" 
+        android:contentDescription="@string/iv_content_description"/>
+
+       <Button
+           android:id="@+id/btnDraw"
+           style="?android:attr/buttonStyleSmall"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentRight="true"
+           android:layout_alignParentTop="true"
+           android:layout_marginRight="15dp"
+           android:layout_marginTop="22dp"
+           android:onClick="drawSymbol"
+           android:text="@string/btn_draw_label" />
+
+       <Button
+           android:id="@+id/btnSpeedTest"
+           style="?android:attr/buttonStyleSmall"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentRight="true"
+           android:layout_below="@+id/btnDraw"
+           android:onClick="speedTest"
+           android:text="@string/btn_speed_test" />
+
+       <Button
+           android:id="@+id/btnThreadTest"
+           style="?android:attr/buttonStyleSmall"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentRight="true"
+           android:layout_below="@+id/btnSpeedTest"
+           android:onClick="threadTest"
+           android:text="@string/btn_thread_test" />
+
+        <Button
+            android:id="@+id/btnExportImgs"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/btnThreadTest"
+            android:onClick="exportImages"
+            android:text="@string/btn_export_imgs" />
+
+       <TextView
+           android:id="@+id/tvStatus"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignParentLeft="true"
+           android:layout_alignParentRight="true"
+           android:layout_alignParentTop="true"
+           android:text="@string/hello_world" />
+
+       <CheckBox
+           android:id="@+id/cbModifiers"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/btnExportImgs"
+           android:layout_alignParentRight="true"
+           android:text="@string/cb_modifiers" />
+       
+       <CheckBox
+           android:id="@+id/cbSVG"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/cbModifiers"
+           android:layout_alignParentRight="true"
+           android:text="@string/cb_svg" />
+       
+       <TextView
+           android:id="@+id/tvPixelSize"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/cbSVG"
+           android:layout_toLeftOf="@+id/etPixelSize"
+           android:text="Pixel Size: " />
+
+       <EditText
+        android:id="@+id/etPixelSize"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cbSVG"
+        android:layout_alignParentRight="true"
+        android:inputType="number"
+        android:ems="10"
+        android:hint="60"/>
+
+
+</RelativeLayout>

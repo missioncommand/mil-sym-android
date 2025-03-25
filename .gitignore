@@ -1,33 +1,28 @@
-# Gradle files
-.gradle/
+/.nb-gradle/
+target/
+gen
 build/
-
-# Local configuration file (sdk path, etc)
-local.properties
-
-# Log/OS Files
-*.log
-
-# Android Studio generated files and folders
-captures/
-.externalNativeBuild/
-.cxx/
-*.apk
-output.json
-
-# IntelliJ
-*.iml
+.gradle/
 .idea/
-misc.xml
-deploymentTargetDropDown.xml
-render.experimental.xml
+**/*.iml
+/Renderer/nbandroid/
+/Renderer/bin/
+/Renderer/gen/
+/Renderer/build/
 
-# Keystore files
-*.jks
-*.keystore
+/RendererTester/nbandroid/
+/RendererTester/bin/
+/RendererTester/gen/
+/RendererTester/build/
 
-# Google Services (e.g. APIs or Firebase)
-google-services.json
+/mapfragment-demo/nbandroid/
+/mapfragment-demo/bin/
+/mapfragment-demo/gen/
+/mapfragment-demo/build/
 
-# Android Profiling
-*.hprof
+/TestAndroidRenderer3/nbandroid/
+/TestAndroidRenderer3/bin/
+/TestAndroidRenderer3/gen/
+/TestAndroidRenderer3/build/
+
+local.properties

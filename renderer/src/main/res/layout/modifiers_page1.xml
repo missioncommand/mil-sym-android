@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="armyc2.c5isr.renderer.symbolpicker.SymbolPickerActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="false">
+
+        <LinearLayout
+            android:id="@+id/modifiers_page1_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="5sp">
+
+            <include
+                android:id="@+id/symbol_picker_modifiers_preview"
+                layout="@layout/symbol_cell" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/context_label" />
+
+            <RadioGroup
+                android:id="@+id/context_radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checkedButton="@id/context_radio_reality"
+                android:orientation="horizontal"
+                android:paddingBottom="20dp">
+
+                <RadioButton
+                    android:id="@+id/context_radio_reality"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/context_label_reality" />
+
+                <RadioButton
+                    android:id="@+id/context_radio_exercise"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/context_label_exercise" />
+
+                <RadioButton
+                    android:id="@+id/context_radio_simulation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/context_label_simulation" />
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/std_id_label" />
+
+            <Spinner
+                android:id="@+id/std_id_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/status_label" />
+
+            <Spinner
+                android:id="@+id/status_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hq_label" />
+
+            <Spinner
+                android:id="@+id/hq_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/amplifier_category_label" />
+
+            <Spinner
+                android:id="@+id/amplifier_category_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="20dp" />
+
+            <LinearLayout
+                android:id="@+id/amplifier_type_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/amplifier_type_label" />
+
+                <Spinner
+                    android:id="@+id/amplifier_type_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="20dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/sectors_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sector_1_label" />
+
+                <Spinner
+                    android:id="@+id/sector_1_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="20dp" />
+
+                <LinearLayout
+                    android:id="@+id/mine_type_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="20dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ss_mine_type_label" />
+
+                    <CheckBox
+                        android:id="@+id/antipersonnel_mine_checkbox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/antipersonnel_mine_label" />
+
+                    <CheckBox
+                        android:id="@+id/antipersonnel_mine_directional_checkbox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/antipersonnel_mine_directional_label" />
+
+                    <CheckBox
+                        android:id="@+id/antitank_mine_checkbox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/antitank_mine_label" />
+
+                    <CheckBox
+                        android:id="@+id/antitank_mine_antihandling_checkbox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/antitank_mine_antihandling_label" />
+
+                    <CheckBox
+                        android:id="@+id/wide_area_antitank_mine_checkbox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/wide_area_antitank_mine_label" />
+
+                    <CheckBox
+                        android:id="@+id/mine_cluster_checkbox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mine_cluster_label" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sector_2_label" />
+
+                <Spinner
+                    android:id="@+id/sector_2_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="20dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/country_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/country_label" />
+
+                <TextView
+                    android:id="@+id/country_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/editbox_background"
+                    android:hint="@string/search_label"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/modifiers_page1_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:gravity="bottom"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/modifiers_page1_back_button"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:text="@string/back_btn_label" />
+
+        <Button
+            android:id="@+id/extra_modifiers_button"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:text="@string/extra_mods_btn_label" />
+
+        <Button
+            android:id="@+id/send_button"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:text="@string/send_btn_label" />
+
+    </LinearLayout>
+
+</LinearLayout>

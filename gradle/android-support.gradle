@@ -1,0 +1,34 @@
+def vc = "${project.version}".tokenize('.');
+def major = vc[0].toInteger() * 1000000
+def minor = vc[1].toInteger() * 1000
+def patch = vc[2].tokenize('-')[0].toInteger()
+
+android {
+    compileSdkVersion android_compileSdkVersion
+    buildToolsVersion android_buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion android_minSdkVersion
+        targetSdkVersion android_targetSdkVersion
+        versionCode (major + minor + patch) // versionCode is an integer and must increase with each release.
+        versionName "${project.version}"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+    buildTypes.each {
+        it.buildConfigField "String", "Implementation_Id", "\"${project.name}\""
+        it.buildConfigField "String", "Implementation_Vendor", "\"mil.army.missioncommand\""
+        it.buildConfigField "String", "Implementation_Title", "\"mil-sym-android ${project.version}\""
+        it.buildConfigField "String", "Implementation_Version", "\"${project.version}\""
+    }
+    compileOptions {
+        sourceCompatibility rootProject.sourceCompatibility
+        targetCompatibility rootProject.targetCompatibility
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
