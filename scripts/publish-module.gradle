@@ -55,7 +55,7 @@ afterEvaluate {
                     developers {
                         developer {
                           id = 'id1'
-                          name = 'C5ISR EDI'
+                          name = 'C5ISR ESI'
                           email = 'email'
                         }
                         // Add all other devs here...
