@@ -112,8 +112,8 @@ dependencies {
 
 ext {
     //TODO: update if we push to open source again
-    PUBLISH_GROUP_ID = 'armyc2.c5isr.renderer'
-    PUBLISH_VERSION = '2.2.0'
+    PUBLISH_GROUP_ID = 'io.github.missioncommand'
+    PUBLISH_VERSION = '2.2.1'
     PUBLISH_ARTIFACT_ID = 'mil-sym-android'
 }
 

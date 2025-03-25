@@ -44,27 +44,15 @@ afterEvaluate {
                 // Mostly self-explanatory metadata
                 pom {
                     name = PUBLISH_ARTIFACT_ID
-                    description = '2525D Renderer'
+                    description = '2525D+ Renderer'
                     url = 'https://github.com/missioncommand/mil-sym-android'
                     licenses {
                         license {
-                            name = 'Apache-2.0 License'
-                            url = 'https://www.apache.org/licenses/LICENSE-2.0'
+                            name = 'GNU General Public License v3.0'
+                            url = 'https://www.gnu.org/licenses/gpl-3.0.en.html'
                         }
                     }
-                    developers {
-                        developer {
-                          id = 'id1'
-                          name = 'Michael Spinelli'
-                          email = 'email'
-                        }
-						developer {
-                          id = 'id2'
-                          name = 'Michael Deutch'
-                          email = 'email'
-                        }
-                        // Add all other devs here...
-                    }
+
 
                     // Version control info - if you're using GitHub, follow the 
                     // format as seen here
