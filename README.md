@@ -2,7 +2,8 @@
 
 ## About
 
-mil-sym-android is an Android port of the Java-based MIL-STD rendering libraries that have been used in US Army Mission Command software for years.  In November 2013 Mission Command was given the approval to release and maintain these libraries as public open source.  Eventually work on the 2525C SEC Renderer ended and the project was retired
+mil-sym-android is an Android port of the Java-based MIL-STD rendering libraries that have been used in US Army Mission Command software for years.  In November 2013 Mission Command was given the approval to release and maintain these libraries as public open source.  Eventually work on the 2525C SEC Renderer ended and the project was retired.
+The Library is still available here: [mil-sym-android-renderer](https://central.sonatype.com/artifact/io.github.missioncommand/mil-sym-android-renderer)
 
 This is a continuation of that effort and is not currently open source until which time we get the proper approvals in place.
 This library aims to support 2525D, 2525E and potentially more future versions.
