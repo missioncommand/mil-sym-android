@@ -10,9 +10,12 @@ This library aims to support 2525D, 2525E and potentially more future versions.
 
 [Wiki](https://github.com/missioncommand/mil-sym-android/wiki)
 
+The old 2525C renderer has been retired but the libraries and usage information are still available here:  
+[2525C Renderer Overview](https://github.com/missioncommand/mil-sym-android/wiki/2525C-Renderer-Overview)
+
 ### MIL-STD-2525
 ---
-The [MIL-STD-2525] standard defines how to visualize military symbology.  This project provides support for the entire MIL-STD-2525D Change 1.
+The [MIL-STD-2525] standard defines how to visualize military symbology.  This project provides support for the entire MIL-STD-2525D Change 1 and 2525E.
 
 ### Project Structure
 ---
