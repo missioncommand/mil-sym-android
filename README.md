@@ -8,7 +8,8 @@ The Library is still available here: [mil-sym-android-renderer](https://central.
 This is a continuation of that effort and is not currently open source until which time we get the proper approvals in place.
 This library aims to support 2525D, 2525E and potentially more future versions.
 
-[Wiki](https://github.com/missioncommand/mil-sym-android/wiki)
+[Wiki](https://github.com/missioncommand/mil-sym-android/wiki)  
+[JavaDocs](https://missioncommand.github.io/javadoc/2525D/android/index.html)
 
 The old 2525C renderer has been retired but the libraries and usage information are still available here:  
 [2525C Renderer Overview](https://github.com/missioncommand/mil-sym-android/wiki/2525C-Renderer-Overview)
