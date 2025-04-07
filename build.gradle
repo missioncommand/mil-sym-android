@@ -12,13 +12,11 @@ buildscript {
 
     dependencies {
         classpath "com.android.tools.build:gradle:$agp_version"
-        classpath "io.spring.gradle:dependency-management-plugin:1.0.9.RELEASE"
+        classpath "io.spring.gradle:dependency-management-plugin:1.1.0"
         classpath "io.github.gradle-nexus:publish-plugin:1.1.0"
     }
 }
 
-apply plugin: 'io.github.gradle-nexus.publish-plugin'
-apply from: "${rootDir}/scripts/publish-root.gradle"
 
 // Java version compatibility
 ext {
@@ -51,7 +49,7 @@ subprojects {
 }
 
 // Function to update Maven POM files
-def updatePom(pom, gradleProject) {
+/*def updatePom(pom, gradleProject) {
     pom.withXml { xml ->
         def root = xml.asNode()
 
@@ -70,4 +68,4 @@ def updatePom(pom, gradleProject) {
         root.appendNode('name', gradleProject.name)
         root.appendNode('description', gradleProject.description)
     }
-}
+}//*/

@@ -3,12 +3,11 @@ description = 'MIL-STD-2525D+ Symbology Renderer'
 apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
-apply from: "${rootDir}/gradle/android-support.gradle"
 
 android {
     namespace "armyc2.c5isr.renderer"
-    // Other configurations
     compileSdk 35
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8// (add compatible version to your project)
         targetCompatibility JavaVersion.VERSION_1_8
@@ -18,10 +17,10 @@ android {
         buildConfig = true
     }
 
-    compileSdkVersion android_compileSdkVersion
     defaultConfig {
         minSdkVersion android_minSdkVersion
         targetSdkVersion android_targetSdkVersion
+        versionName "2.2.3" //Renderer Version Number
     }
 
 }
@@ -89,10 +88,11 @@ task javadoc(type: Javadoc, dependsOn: 'assemble') {
         charSet     = "UTF-8"
         linkSource  = true
 
-        logging.captureStandardError LogLevel.INFO
-        logging.captureStandardOutput LogLevel.INFO
+        //Only necessary when debugging javadoc generation
+        //logging.captureStandardError LogLevel.INFO
+        //logging.captureStandardOutput LogLevel.INFO
 
-        title  = "MIL-STD-2525 Android Symbology Renderer (${project.version})"
+        title  = "MIL-STD-2525 Android Symbology Renderer (${android.defaultConfig.versionName})"
     }
 }
 
@@ -113,7 +113,8 @@ publishing {
         mavenJava(MavenPublication) {
             groupId = 'io.github.missioncommand'
             artifactId = 'mil-sym-android'
-            version = '2.2.3'
+            version = android.defaultConfig.versionName
+
 
             // Include the AAR artifact
             artifact("$buildDir/outputs/aar/${project.name}-release.aar")

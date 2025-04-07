@@ -1,7 +1,6 @@
 description = 'MIL-STD-2525 Symbology Renderer Test app'
 
 apply plugin: 'com.android.application'
-apply from: "${rootDir}/gradle/android-support.gradle"
 
 android {
     namespace "armyc2.c5isr.renderer.test1"
@@ -18,13 +17,15 @@ android {
     defaultConfig {
         minSdkVersion android_minSdkVersion
         targetSdkVersion android_targetSdkVersion
+        versionCode 1
+        versionName "1.0"
     }
 }
 
 dependencies {
 
     implementation project(':mil-sym-android-renderer') // Reference the library module
-    implementation 'androidx.annotation:annotation:1.9.1'
+    //implementation 'androidx.annotation:annotation:1.9.1'
     implementation 'androidx.core:core-ktx:1.15.0'
     implementation 'com.caverock:androidsvg-aar:1.4'
 }
