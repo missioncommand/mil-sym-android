@@ -9,6 +9,7 @@ buildscript {
             url "https://plugins.gradle.org/m2/"
         }
     }
+
     dependencies {
         classpath "com.android.tools.build:gradle:$agp_version"
         classpath "io.spring.gradle:dependency-management-plugin:1.0.9.RELEASE"
@@ -16,77 +17,57 @@ buildscript {
     }
 }
 
-
 apply plugin: 'io.github.gradle-nexus.publish-plugin'
 apply from: "${rootDir}/scripts/publish-root.gradle"
 
+// Java version compatibility
 ext {
-//    bintrayUser = System.getenv("BINTRAY_USER") ?: project.hasProperty('bintrayUser') ? bintrayUser : ''
-//    bintrayKey  = System.getenv('BINTRAY_KEY') ?: project.hasProperty('bintrayKey') ? bintrayKey : ''
-//
-   sourceCompatibility = JavaVersion.VERSION_1_8
-   targetCompatibility = JavaVersion.VERSION_1_8
-//
-//    git = org.ajoberstar.grgit.Grgit.open(file('.')) // Open the Git repository in the current directory.
-//    revision = git.head().id                         // Get commitId of HEAD.
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 subprojects {
-    apply plugin: 'io.spring.dependency-management'
-    apply plugin: 'maven-publish'
-
+    // Common configurations for all subprojects
     ext {
         android_minSdkVersion = 24
-        android_targetSdkVersion = 33
-        android_compileSdkVersion = 33
-        android_buildToolsVersion = "33.0.2"
+        android_targetSdkVersion = 35
+        android_compileSdkVersion = 35
+        android_buildToolsVersion = "35.0.0"
     }
-
-    group = "mil.army.missioncommand"
 
     repositories {
         mavenLocal()
         mavenCentral()
-        google() // Required for Android tools
+        google()
         maven {
             url "https://plugins.gradle.org/m2/"
         }
     }
 
-    dependencyManagement {
-        dependencies {
-            dependency("com.android.support:support-v4:28.0.0")
-            dependency("com.android.support:support-annotations:28.0.0")
-        }
-    }
-
+    // Encoding settings for Java
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
     }
 }
 
-
+// Function to update Maven POM files
 def updatePom(pom, gradleProject) {
-    pom.withXml { XmlProvider xml ->
+    pom.withXml { xml ->
         def root = xml.asNode()
 
-        /*
-         * inject dependencies
-         */
+        // Inject dependencies
         def dependencies = root.appendNode('dependencies')
         gradleProject.configurations.compile.allDependencies.each {
             def dependency = dependencies.appendNode('dependency')
-            dependency.appendNode('groupId'   , it.group)
+            dependency.appendNode('groupId', it.group)
             dependency.appendNode('artifactId', it.name)
             if (it.version != null) {
                 dependency.appendNode('version', it.version)
             }
         }
 
-        /*
-         * inject name/description
-         */
-        root.appendNode('name'       , gradleProject.name)
+        // Inject name and description
+        root.appendNode('name', gradleProject.name)
         root.appendNode('description', gradleProject.description)
     }
 }

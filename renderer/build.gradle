@@ -6,6 +6,22 @@ apply from: "${rootDir}/gradle/android-support.gradle"
 android {
     namespace "armyc2.c5isr.renderer"
     // Other configurations
+    compileSdk 35
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8// (add compatible version to your project)
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    compileSdkVersion android_compileSdkVersion
+    defaultConfig {
+        minSdkVersion android_minSdkVersion
+        targetSdkVersion android_targetSdkVersion
+    }
+
 }
 
 
@@ -88,7 +104,7 @@ task sourceJar(type: Jar) {
 }
 
 
-project.afterEvaluate {
+/*project.afterEvaluate {
     publishing.publications {
         maven(MavenPublication) {
             pom.packaging = "aar"
@@ -105,13 +121,13 @@ project.afterEvaluate {
     javadoc.classpath += files(android.libraryVariants.collect { variant ->
         variant.javaCompileProvider.get().classpath.files
     })
-}
+}//*/
 
 
 dependencies {
     implementation 'com.caverock:androidsvg-aar:1.4'
     implementation 'org.gavaghan:geodesy:1.1.3'
-    implementation          ("com.android.support:support-v4:28.0.0")
+    implementation 'androidx.core:core-ktx:1.15.0'
 }
 
 

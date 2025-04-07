@@ -6,12 +6,12 @@ apply from: "${rootDir}/gradle/android-support.gradle"
 
 android {
     namespace 'armyc2.c5isr.renderer.symbolpicker'
-    compileSdk 33
+    compileSdk 35
 
     defaultConfig {
         applicationId "armyc2.c5isr.renderer.symbolpicker"
         minSdk 24
-        targetSdk 33
+        targetSdk 35
         versionCode 1
         versionName "1.0"
     }
@@ -21,6 +21,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    buildFeatures {
+        buildConfig = true
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -32,8 +35,8 @@ android {
 }
 
 dependencies {
-    implementation          ("com.android.support:support-v4:28.0.0")
-    implementation          ("com.android.support:support-annotations")
+    implementation 'androidx.annotation:annotation:1.9.1'
+    implementation 'androidx.core:core-ktx:1.15.0'
     implementation 'com.caverock:androidsvg-aar:1.4'
     implementation  project (':mil-sym-android-renderer')
 }

@@ -6,13 +6,26 @@ apply from: "${rootDir}/gradle/android-support.gradle"
 android {
     namespace "armyc2.c5isr.renderer.test1"
     // Other configurations
+    defaultConfig {
+        applicationId "armyc2.c5isr.renderer.test1"
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    compileSdkVersion android_compileSdkVersion
+    defaultConfig {
+        minSdkVersion android_minSdkVersion
+        targetSdkVersion android_targetSdkVersion
+    }
 }
 
 dependencies {
 
-     implementation  project (':mil-sym-android-renderer')
-    implementation          ("com.android.support:support-v4:28.0.0")
-     implementation          ("com.android.support:support-annotations")
+    implementation project(':mil-sym-android-renderer') // Reference the library module
+    implementation 'androidx.annotation:annotation:1.9.1'
+    implementation 'androidx.core:core-ktx:1.15.0'
     implementation 'com.caverock:androidsvg-aar:1.4'
 }
 
@@ -22,10 +35,10 @@ android {
     }
 }
 
-publishing.publications {
+/*publishing.publications {
         maven(MavenPublication) {
             artifact ("${buildDir}/outputs/apk/debug/${project.name}-debug.apk")
 
             updatePom(pom, project);
         }
-    }
+    }//*/

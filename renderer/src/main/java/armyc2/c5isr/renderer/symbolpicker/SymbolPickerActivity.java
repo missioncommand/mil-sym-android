@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.widget.TextViewCompat;
+import androidx.core.widget.TextViewCompat;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -37,6 +37,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import androidx.core.widget.TextViewCompat;
 
 import java.io.BufferedReader;
 import java.io.IOException;
