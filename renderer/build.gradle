@@ -1,6 +1,8 @@
 description = 'MIL-STD-2525D+ Symbology Renderer'
 
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
 apply from: "${rootDir}/gradle/android-support.gradle"
 
 android {
@@ -23,7 +25,6 @@ android {
     }
 
 }
-
 
 task javadoc(type: Javadoc, dependsOn: 'assemble') {
     source = android.sourceSets.main.java.srcDirs
@@ -51,7 +52,7 @@ task javadoc(type: Javadoc, dependsOn: 'assemble') {
     exclude 'armyc2/c5isr/renderer/IconRenderer.java'
     exclude 'armyc2/c5isr/renderer/PatternFillRenderer.java'
     exclude 'armyc2/c5isr/renderer/SinglePointRenderer.java'
-	exclude 'armyc2/c5isr/renderer/SinglePointSVGRenderer.java'
+    exclude 'armyc2/c5isr/renderer/SinglePointSVGRenderer.java'
     exclude 'armyc2/c5isr/renderer/utilities/EntityCode.java'
     exclude 'armyc2/c5isr/renderer/utilities/ErrorLogger.java'
     exclude 'armyc2/c5isr/renderer/utilities/GeoPixelConversion3D.java'
@@ -75,7 +76,7 @@ task javadoc(type: Javadoc, dependsOn: 'assemble') {
     //exclude 'armyc2/c5isr/renderer/utilities/SVGInfo.java'
     exclude 'armyc2/c5isr/renderer/utilities/SVGLookup.java'
     exclude 'armyc2/c5isr/renderer/utilities/SVGPath.java'
-	exclude 'armyc2/c5isr/renderer/utilities/Shape2SVG.java'
+    exclude 'armyc2/c5isr/renderer/utilities/Shape2SVG.java'
     exclude 'armyc2/c5isr/renderer/utilities/SymbolDraw.java'
     //exclude 'armyc2/c5isr/renderer/utilities/TextInfo.java'
 
@@ -95,33 +96,85 @@ task javadoc(type: Javadoc, dependsOn: 'assemble') {
     }
 }
 
+// Javadoc and sources tasks
 task javadocJar(type: Jar, dependsOn: 'javadoc') {
     from javadoc.destinationDir
+    archiveClassifier.set("javadoc")
 }
 
 task sourceJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
+    archiveClassifier.set("sources")
 }
 
+// Define publication tasks
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'io.github.missioncommand'
+            artifactId = 'mil-sym-android'
+            version = '2.2.3'
 
-/*project.afterEvaluate {
-    publishing.publications {
-        maven(MavenPublication) {
-            pom.packaging = "aar"
+            // Include the AAR artifact
+            artifact("$buildDir/outputs/aar/${project.name}-release.aar")
 
-            artifact("${buildDir}/outputs/aar/${project.name}-release.aar")
-            artifact("${buildDir}/intermediates/bundles/release/classes.jar")
+            // Include sources and Javadoc
+            artifact(sourceJar) {
+                classifier = "sources"
+            }
+            artifact(javadocJar) {
+                classifier = "javadoc"
+            }
 
-            artifact sourceJar { "sources" }
-            artifact javadocJar { "javadoc" }
-            updatePom(pom, project)
+            pom {
+                name.set('MIL-STD-2525D+ Symbology Renderer')
+                description.set('A library for MIL-STD-2525D symbology rendering.')
+                url.set('https://github.com/missioncommand/mil-sym-android')
+
+                licenses {
+                    license {
+                        name.set('Apache License 2.0')
+                        url.set('http://www.apache.org/licenses/LICENSE-2.0')
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set('1')
+                        name.set('C5ISR ESI')
+                        email.set('email@email.com')
+                    }
+                }
+
+                scm {
+                    connection.set('scm:git:git://github.com/missioncommand/mil-sym-android.git')
+                    developerConnection.set('scm:git:ssh://git@github.com/missioncommand/mil-sym-android.git')
+                    url.set('https://github.com/missioncommand/mil-sym-android')
+                }
+            }
         }
     }
+}
 
-    javadoc.classpath += files(android.libraryVariants.collect { variant ->
-        variant.javaCompileProvider.get().classpath.files
-    })
-}//*/
+// Sign the artifacts
+signing {
+    sign publishing.publications.mavenJava
+}
+
+// Repositories for publishing
+publishing {
+    repositories {
+        maven {
+            name = "sonatype"
+            url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+
+            credentials {
+                username = project.findProperty("sonatypeUsername") ?: System.getenv("SONATYPE_USERNAME")
+                password = project.findProperty("sonatypePassword") ?: System.getenv("SONATYPE_PASSWORD")
+            }
+        }
+    }
+}
 
 
 dependencies {
@@ -131,13 +184,6 @@ dependencies {
 }
 
 
-ext {
-    //TODO: update if we push to open source again
-    PUBLISH_GROUP_ID = 'io.github.missioncommand'
-    PUBLISH_VERSION = '2.2.2'
-    PUBLISH_ARTIFACT_ID = 'mil-sym-android'
-}
 
-//apply from: "${rootProject.projectDir}/scripts/publish-module.gradle"
 
 
