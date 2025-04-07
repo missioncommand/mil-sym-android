@@ -1,20 +1,21 @@
 buildscript {
+    ext.agp_version = '8.9.1'
+
     repositories {
         mavenLocal()
-		mavenCentral()
+        mavenCentral()
         google()
-		maven {
-		  url "https://plugins.gradle.org/m2/"
-		}
-        //jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.2' //7.4.1 latest version
+        classpath "com.android.tools.build:gradle:$agp_version"
         classpath "io.spring.gradle:dependency-management-plugin:1.0.9.RELEASE"
-		classpath 'io.github.gradle-nexus:publish-plugin:1.1.0'
-        
+        classpath "io.github.gradle-nexus:publish-plugin:1.1.0"
     }
 }
+
 
 apply plugin: 'io.github.gradle-nexus.publish-plugin'
 apply from: "${rootDir}/scripts/publish-root.gradle"
@@ -30,39 +31,32 @@ ext {
 //    revision = git.head().id                         // Get commitId of HEAD.
 }
 
-subprojects  {
+subprojects {
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'maven-publish'
 
-
     ext {
-        android_minSdkVersion     = 24//19//API 24 adds all the vector drawable classes
-        android_targetSdkVersion  = 30//21//19
-        android_compileSdkVersion = 30//33//28//going to 33 requires JDK11
-        android_buildToolsVersion = "30.0.3"//"33.0.2" //"30.0.3"
+        android_minSdkVersion = 24
+        android_targetSdkVersion = 33
+        android_compileSdkVersion = 33
+        android_buildToolsVersion = "33.0.2"
     }
 
     group = "mil.army.missioncommand"
 
     repositories {
         mavenLocal()
-		mavenCentral()
+        mavenCentral()
+        google() // Required for Android tools
         maven {
-		  url "https://plugins.gradle.org/m2/"
-		}
-        google() //for AAPT2
+            url "https://plugins.gradle.org/m2/"
+        }
     }
 
     dependencyManagement {
         dependencies {
-            dependency ("com.android.support:support-v4:28.0.0")
-            dependency ("com.android.support:support-annotations:28.0.0")
-            //dependency ("com.google.android.gms:play-services:12.0.1")
-//            dependency ("com.google.android.gms:play-services:6.5.87")
-//            dependency ("com.google.android.gms:play-services:12.0.1")
-            /*dependency ("com.android.support:support-v4:25.3.1")
-            dependency ("com.android.support:support-annotations:25.3.1")
-            dependency ("com.google.android.gms:play-services:6.5.87")//*/
+            dependency("com.android.support:support-v4:28.0.0")
+            dependency("com.android.support:support-annotations:28.0.0")
         }
     }
 
@@ -70,6 +64,7 @@ subprojects  {
         options.encoding = "UTF-8"
     }
 }
+
 
 def updatePom(pom, gradleProject) {
     pom.withXml { XmlProvider xml ->
@@ -95,15 +90,3 @@ def updatePom(pom, gradleProject) {
         root.appendNode('description', gradleProject.description)
     }
 }
-
-/*task wrapper(type: Wrapper, description: "Generates gradlew[.bat] scripts") {
-//    gradleVersion = '6.5.1'
-//    gradleVersion = '3.4'
-    //gradleVersion = '4.10.3'
-    gradleVersion = '6.8.3'
-}//*/
-
-//wrapper{
-//    gradleVersion = '6.5.1'
-//    gradleVersion = '4.10.3'
-//}
