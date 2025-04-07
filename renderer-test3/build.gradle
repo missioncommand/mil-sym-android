@@ -5,13 +5,7 @@ apply from: "${rootDir}/gradle/android-support.gradle"
 
 android {
     namespace "armyc2.c5isr.renderer.test3"
-    // Other configurations
-    ext {
-        android_minSdkVersion = 24
-        android_targetSdkVersion = 35
-        android_compileSdkVersion = 35
-        android_buildToolsVersion = "33.0.2"
-    }
+
     buildFeatures {
         buildConfig = true
     }

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">C5ISR Renderer 3</string>
+    <string name="menuDraw">DRAW</string>
+    <string name="menuAttributes">Attributes</string>
+    <string name="menuModifiers">Modifiers</string>
+    <string name="menuClear">Clear Fields</string>
 </resources>

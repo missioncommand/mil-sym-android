@@ -1,5 +1,6 @@
 package armyc2.c5isr.renderer.test3;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -93,11 +94,12 @@ public class MainActivity extends Activity {
         editText.setText(Y);
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater inflator = new MenuInflater(this);
-        inflator.inflate(R.layout.menu, menu);
+        inflator.inflate(R.menu.menu, menu);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -168,54 +170,54 @@ public class MainActivity extends Activity {
             editor.putString("Y", Y);
             editor.apply();
         }
-        switch (item.getItemId()) {
-            case R.id.DRAW:
-                lastContext = "draw";
-                setContentView(myView);
-                break;
-            case R.id.MODIFIERS:
-                lastContext = "modifiers";
-                setContentView(R.layout.main);
-                editText = (EditText) findViewById(R.id.edit_message);
-                editText.setText(lineType);
-                editText = (EditText) findViewById(R.id.edit_T);
-                editText.setText(T);
-                editText = (EditText) findViewById(R.id.edit_T1);
-                editText.setText(T1);
-                editText = (EditText) findViewById(R.id.edit_H);
-                editText.setText(H);
-                editText = (EditText) findViewById(R.id.edit_H1);
-                editText.setText(H1);
-                editText = (EditText) findViewById(R.id.edit_W);
-                editText.setText(W);
-                editText = (EditText) findViewById(R.id.edit_W1);
-                editText.setText(W1);
-                editText = (EditText) findViewById(R.id.edit_V);
-                editText.setText(V);
-                editText = (EditText) findViewById(R.id.edit_Y);
-                editText.setText(Y);
-                break;
-            case R.id.ATTRIBUTES:
-                lastContext = "attributes";
-                setContentView(R.layout.attributes);
-                editText = (EditText) findViewById(R.id.edit_LineColor);
-                editText.setText(lineColor);
-                editText = (EditText) findViewById(R.id.edit_TextColor);
-                editText.setText(textColor);
-                editText = (EditText) findViewById(R.id.edit_FillColor);
-                editText.setText(fillColor);
-                editText = (EditText) findViewById(R.id.edit_LineWidth);
-                editText.setText(lineWidth);
-                editText = (EditText) findViewById(R.id.edit_AM);
-                editText.setText(AM);
-                editText = (EditText) findViewById(R.id.edit_AN);
-                editText.setText(AN);
-                editText = (EditText) findViewById(R.id.edit_X);
-                editText.setText(X);
-                editText = (EditText) findViewById(R.id.edit_Extents);
-                editText.setText(extents);
-                break;
-            case R.id.CLEAR_FIELDS:
+        if(item.getItemId()==R.id.DRAW) {
+            lastContext = "draw";
+            setContentView(myView);
+        }
+         else if(item.getItemId()==R.id.MODIFIERS) {
+            lastContext = "modifiers";
+            setContentView(R.layout.main);
+            editText = (EditText) findViewById(R.id.edit_message);
+            editText.setText(lineType);
+            editText = (EditText) findViewById(R.id.edit_T);
+            editText.setText(T);
+            editText = (EditText) findViewById(R.id.edit_T1);
+            editText.setText(T1);
+            editText = (EditText) findViewById(R.id.edit_H);
+            editText.setText(H);
+            editText = (EditText) findViewById(R.id.edit_H1);
+            editText.setText(H1);
+            editText = (EditText) findViewById(R.id.edit_W);
+            editText.setText(W);
+            editText = (EditText) findViewById(R.id.edit_W1);
+            editText.setText(W1);
+            editText = (EditText) findViewById(R.id.edit_V);
+            editText.setText(V);
+            editText = (EditText) findViewById(R.id.edit_Y);
+            editText.setText(Y);
+        }
+         else if(item.getItemId()==R.id.ATTRIBUTES) {
+            lastContext = "attributes";
+            setContentView(R.layout.attributes);
+            editText = (EditText) findViewById(R.id.edit_LineColor);
+            editText.setText(lineColor);
+            editText = (EditText) findViewById(R.id.edit_TextColor);
+            editText.setText(textColor);
+            editText = (EditText) findViewById(R.id.edit_FillColor);
+            editText.setText(fillColor);
+            editText = (EditText) findViewById(R.id.edit_LineWidth);
+            editText.setText(lineWidth);
+            editText = (EditText) findViewById(R.id.edit_AM);
+            editText.setText(AM);
+            editText = (EditText) findViewById(R.id.edit_AN);
+            editText.setText(AN);
+            editText = (EditText) findViewById(R.id.edit_X);
+            editText.setText(X);
+            editText = (EditText) findViewById(R.id.edit_Extents);
+            editText.setText(extents);
+        }
+         else if (item.getItemId()==R.id.CLEAR_FIELDS)
+        {
                 lineType = "";
                 fillColor = "";
                 lineColor = "";
@@ -289,8 +291,6 @@ public class MainActivity extends Activity {
                     editText = (EditText) findViewById(R.id.edit_Extents);
                     editText.setText(extents);
                 }
-            default:
-                break;
         }
         return true;
     }
