@@ -57,7 +57,8 @@ public class SymbolPickerTester extends Activity {
 
                 // Example use of selected symbol code
                 TextView resultCodeTv = findViewById(R.id.selected_code_text);
-                resultCodeTv.setText(getString(R.string.selected_code, selectedSymbolID));
+                //TODO: confirm this change didn't break anything.  Had to do it for androidX/target SDK 35 & gradle upgrade.
+                resultCodeTv.setText(selectedSymbolID);//(getString(R.string.selected_code, selectedSymbolID));
                 HashMap<String, String> modifiersFromIntent = (HashMap<String, String>)data.getSerializableExtra(SymbolPickerActivity.modifiersKey);
                 Map<String,String> modifiers = new HashMap<>();
                 for (String i : modifiersFromIntent.keySet()) {
