@@ -2667,7 +2667,7 @@ public class ModifierRenderer
         {
             scc = GENCLookup.getInstance().get3CharCode(cc);
         }
-        if(scc != "")
+        if(!scc.isEmpty())
             modifiers.put(Modifiers.AS_COUNTRY, scc);
 
         //            int y0 = 0;//W            E/F/AS
@@ -2960,15 +2960,15 @@ public class ModifierRenderer
 
             if (F != null && F.equals("") == false)
             {
-                if (F.toUpperCase(Locale.US) == ("R"))
+                if (F.toUpperCase(Locale.US).equals("R"))
                 {
                     F = "(+)";
                 }
-                else if (F.toUpperCase(Locale.US) == ("D"))
+                else if (F.toUpperCase(Locale.US).equals("D"))
                 {
                     F = "(-)";
                 }
-                else if (F.toUpperCase(Locale.US) == ("RD"))
+                else if (F.toUpperCase(Locale.US).equals("RD"))
                 {
                     F = "(" + (char) (177) + ")";
                 }
@@ -3115,7 +3115,7 @@ public class ModifierRenderer
         {
             scc = GENCLookup.getInstance().get3CharCode(cc);
         }
-        if(scc != "")
+        if(!scc.isEmpty())
             modifiers.put(Modifiers.AS_COUNTRY, scc);
 
         //            int y0 = 0;//W            E/F/AS
@@ -3676,7 +3676,7 @@ public class ModifierRenderer
         {
             scc = GENCLookup.getInstance().get3CharCode(cc);
         }
-        if(scc != "")
+        if(!scc.isEmpty())
             modifiers.put(Modifiers.AS_COUNTRY, scc);
 
         //            int y0 = 0;//             T
@@ -3704,7 +3704,7 @@ public class ModifierRenderer
             modifierValue = gm + " " + hm;
             modifierValue = modifierValue.trim();
 
-            if(modifierValue != null && modifierValue.equals("")==false)
+            if(modifierValue != null && !modifierValue.equals(""))
             {
                 tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
                 labelBounds = tiTemp.getTextBounds();
@@ -3819,11 +3819,22 @@ public class ModifierRenderer
                 }
             }
 
-            if (modifiers.containsKey(Modifiers.E_FRAME_SHAPE_MODIFIER))
+            if (modifiers.containsKey(Modifiers.E_FRAME_SHAPE_MODIFIER) ||
+                    modifiers.containsKey(Modifiers.AS_COUNTRY))
             {
-                modifierValue = modifiers.get(Modifiers.E_FRAME_SHAPE_MODIFIER);
+                modifierValue = null;
+                String em = "";
+                String asm = "";
 
-                if(modifierValue != null && modifierValue.equals("") == false)
+                if(modifiers.containsKey(Modifiers.E_FRAME_SHAPE_MODIFIER))
+                    em = modifiers.get(Modifiers.E_FRAME_SHAPE_MODIFIER);
+                if(modifiers.containsKey(Modifiers.AS_COUNTRY))
+                    asm = modifiers.get(Modifiers.AS_COUNTRY);
+
+                modifierValue = em + " " + asm;
+                modifierValue = modifierValue.trim();
+
+                if (modifierValue.equals("") == false)
                 {
                     tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
                     labelBounds = tiTemp.getTextBounds();
@@ -3863,11 +3874,22 @@ public class ModifierRenderer
                 }
             }
 
-            if (modifiers.containsKey(Modifiers.E_FRAME_SHAPE_MODIFIER))
+            if (modifiers.containsKey(Modifiers.E_FRAME_SHAPE_MODIFIER) ||
+                    modifiers.containsKey(Modifiers.AS_COUNTRY))
             {
-                modifierValue = modifiers.get(Modifiers.E_FRAME_SHAPE_MODIFIER);
+                modifierValue = null;
+                String em = "";
+                String asm = "";
 
-                if(modifierValue != null && modifierValue.equals("") == false)
+                if(modifiers.containsKey(Modifiers.E_FRAME_SHAPE_MODIFIER))
+                    em = modifiers.get(Modifiers.E_FRAME_SHAPE_MODIFIER);
+                if(modifiers.containsKey(Modifiers.AS_COUNTRY))
+                    asm = modifiers.get(Modifiers.AS_COUNTRY);
+
+                modifierValue = em + " " + asm;
+                modifierValue = modifierValue.trim();
+
+                if (modifierValue.equals("") == false)
                 {
                     tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
                     labelBounds = tiTemp.getTextBounds();
@@ -3948,7 +3970,7 @@ public class ModifierRenderer
         {
             scc = GENCLookup.getInstance().get3CharCode(cc);
         }
-        if(scc != "")
+        if(!scc.isEmpty())
             modifiers.put(Modifiers.AS_COUNTRY, scc);
 
         //            int y0 = 0;//             T
@@ -4096,7 +4118,7 @@ public class ModifierRenderer
             modifierValue = em + " " + asm;
             modifierValue = modifierValue.trim();
 
-            if (modifierValue != null && modifierValue.equals("") == false) {
+            if (modifierValue.equals("") == false) {
                 tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
@@ -4175,7 +4197,7 @@ public class ModifierRenderer
         {
             scc = GENCLookup.getInstance().get3CharCode(cc);
         }
-        if(scc != "")
+        if(!scc.isEmpty())
             modifiers.put(Modifiers.AS_COUNTRY, scc);
         //                                 C
         //            int y0 = 0;//W/AR
@@ -4486,15 +4508,21 @@ public class ModifierRenderer
             }
         }
 
-        if (modifiers.containsKey(Modifiers.E_FRAME_SHAPE_MODIFIER))
+        if (modifiers.containsKey(Modifiers.E_FRAME_SHAPE_MODIFIER) ||
+                modifiers.containsKey(Modifiers.AS_COUNTRY))
         {
             modifierValue = null;
-            String E = null;
+            String E = null,
+                    AS = null;
 
             if (modifiers.containsKey(Modifiers.E_FRAME_SHAPE_MODIFIER))
             {
                 E = modifiers.get(Modifiers.E_FRAME_SHAPE_MODIFIER);
                 modifiers.remove(Modifiers.E_FRAME_SHAPE_MODIFIER);
+            }
+            if (modifiers.containsKey(Modifiers.AS_COUNTRY))
+            {
+                AS = modifiers.get(Modifiers.AS_COUNTRY);
             }
 
             if (E != null && E.equals("") == false)
@@ -4502,7 +4530,19 @@ public class ModifierRenderer
                 modifierValue = E;
             }
 
-            if(modifierValue != null)
+            if (AS != null && AS.equals("") == false)
+            {
+                if (modifierValue != null && modifierValue.equals("") == false)
+                {
+                    modifierValue = modifierValue + " " + AS;
+                }
+                else
+                {
+                    modifierValue = AS;
+                }
+            }
+
+            if(modifierValue != null && !modifierValue.isEmpty())
             {
                 tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
                 labelBounds = tiTemp.getTextBounds();
@@ -4642,7 +4682,7 @@ public class ModifierRenderer
         {
             scc = GENCLookup.getInstance().get3CharCode(cc);
         }
-        if(scc != "")
+        if(!scc.isEmpty())
             modifiers.put(Modifiers.AS_COUNTRY, scc);
         //                                 C
         //            int y0 = 0;//W/AR
@@ -5035,8 +5075,7 @@ public class ModifierRenderer
             }
         }
 
-        if (modifiers.containsKey(Modifiers.F_REINFORCED_REDUCED) ||
-                modifiers.containsKey(Modifiers.E_FRAME_SHAPE_MODIFIER) ||
+        if (modifiers.containsKey(Modifiers.E_FRAME_SHAPE_MODIFIER) ||
                 modifiers.containsKey(Modifiers.AS_COUNTRY))
         {
             modifierValue = null;
@@ -5070,7 +5109,7 @@ public class ModifierRenderer
                 }
             }
 
-            if(modifierValue != null)
+            if(modifierValue != null && !modifierValue.isEmpty())
             {
                 tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
                 labelBounds = tiTemp.getTextBounds();
@@ -5151,7 +5190,7 @@ public class ModifierRenderer
         {
             scc = GENCLookup.getInstance().get3CharCode(cc);
         }
-        if(scc != "")
+        if(!scc.isEmpty())
             modifiers.put(Modifiers.AS_COUNTRY, scc);
         //
         //            int y0 = 0;//
@@ -5340,23 +5379,36 @@ public class ModifierRenderer
             }
         }
 
-        if (modifiers.containsKey(Modifiers.E_FRAME_SHAPE_MODIFIER))
+        if (modifiers.containsKey(Modifiers.AS_COUNTRY)  ||
+                modifiers.containsKey(Modifiers.E_FRAME_SHAPE_MODIFIER))
         {
-            modifierValue = null;
-            String E = null;
+            modifierValue = "";
+            String E = null,
+                    AS = null;
 
-            if (modifiers.containsKey(Modifiers.E_FRAME_SHAPE_MODIFIER))
+            if (modifiers.containsKey(Modifiers.E_FRAME_SHAPE_MODIFIER) )
             {
                 E = modifiers.get(Modifiers.E_FRAME_SHAPE_MODIFIER);
                 modifiers.remove(Modifiers.E_FRAME_SHAPE_MODIFIER);
             }
+            if (modifiers.containsKey(Modifiers.AS_COUNTRY) )
+            {
+                AS = modifiers.get(Modifiers.AS_COUNTRY);
+            }
 
             if (E != null && E.equals("") == false)
             {
-                modifierValue = E;
+                modifierValue += E;
             }
 
-            if(modifierValue != null)
+            if (AS != null && AS.equals("") == false)
+            {
+                modifierValue = modifierValue + " " + AS;
+            }
+
+            modifierValue = modifierValue.trim();
+
+            if(modifierValue.equals("")==false)
             {
                 tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
                 labelBounds = tiTemp.getTextBounds();
@@ -5487,7 +5539,7 @@ public class ModifierRenderer
         {
             scc = GENCLookup.getInstance().get3CharCode(cc);
         }
-        if(scc != "")
+        if(!scc.isEmpty())
             modifiers.put(Modifiers.AS_COUNTRY, scc);
         //
         //            int y0 = 0;// W            AS
@@ -5879,7 +5931,7 @@ public class ModifierRenderer
         {
             scc = GENCLookup.getInstance().get3CharCode(cc);
         }
-        if(scc != "")
+        if(!scc.isEmpty())
             modifiers.put(Modifiers.AS_COUNTRY, scc);
         //
         //            int y0 = 0;//W/           AS
@@ -6327,7 +6379,7 @@ public class ModifierRenderer
         {
             scc = GENCLookup.getInstance().get3CharCode(cc);
         }
-        if(scc != "")
+        if(!scc.isEmpty())
             modifiers.put(Modifiers.AS_COUNTRY, scc);
 
         //            int y0 = 0;//AQ/AR        E/T
@@ -6527,11 +6579,13 @@ public class ModifierRenderer
         }
 
         if (modifiers.containsKey(Modifiers.E_FRAME_SHAPE_MODIFIER) ||
-                modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1))
+                modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1) ||
+                modifiers.containsKey(Modifiers.AS_COUNTRY))
         {
             modifierValue = null;
-            String E = null,
-                    T = null;
+            String E = "",
+                    T = "",
+                    AS = "";
 
             if (modifiers.containsKey(Modifiers.E_FRAME_SHAPE_MODIFIER))
             {
@@ -6542,26 +6596,17 @@ public class ModifierRenderer
             {
                 T = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
             }
-
-
-            if (E != null && E.equals("") == false)
+            if (modifiers.containsKey(Modifiers.AS_COUNTRY))
             {
-                modifierValue = E;
+                T = modifiers.get(Modifiers.AS_COUNTRY);
             }
 
-            if (T != null && T.equals("") == false)
-            {
-                if (modifierValue != null && modifierValue.equals("") == false)
-                {
-                    modifierValue = modifierValue + " " + T;
-                }
-                else
-                {
-                    modifierValue = T;
-                }
-            }
+            modifierValue = E + " " + T;
+            modifierValue = modifierValue.trim() + " " + AS;
+            modifierValue = modifierValue.trim();
 
-            if(modifierValue != null)
+
+            if(modifierValue.equals("")==false)
             {
                 tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
                 labelBounds = tiTemp.getTextBounds();
@@ -6644,7 +6689,7 @@ public class ModifierRenderer
         {
             scc = GENCLookup.getInstance().get3CharCode(cc);
         }
-        if(scc != "")
+        if(!scc.isEmpty())
             modifiers.put(Modifiers.AS_COUNTRY, scc);
 
         //            int y0 = 0;//AQ/AR        E/T
@@ -6976,7 +7021,7 @@ public class ModifierRenderer
         {
             scc = GENCLookup.getInstance().get3CharCode(cc);
         }
-        if(scc != "")
+        if(!scc.isEmpty())
             modifiers.put(Modifiers.AS_COUNTRY, scc);
 
         //            int y0 = 0;//AR           T
@@ -6991,21 +7036,28 @@ public class ModifierRenderer
         TextInfo tiTemp = null;
 
         if (modifiers.containsKey(Modifiers.E_FRAME_SHAPE_MODIFIER) ||
-                modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1))
+                modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1) ||
+                modifiers.containsKey(Modifiers.AS_COUNTRY))
         {
 
             String em = "";
             String tm = "";
+            String asm = "";
             if(modifiers.containsKey(Modifiers.E_FRAME_SHAPE_MODIFIER))
                 em = modifiers.get(Modifiers.E_FRAME_SHAPE_MODIFIER);
 
             if(modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1))
                 tm = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
 
+            if(modifiers.containsKey(Modifiers.AS_COUNTRY))
+                tm = modifiers.get(Modifiers.AS_COUNTRY);
+
             modifierValue = em + " " + tm;
             modifierValue = modifierValue.trim();
+            modifierValue = modifierValue + " " + asm;
+            modifierValue = modifierValue.trim();
 
-            if(modifierValue != null && modifierValue.equals("")==false)
+            if(modifierValue.equals("")==false)
             {
                 tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
                 labelBounds = tiTemp.getTextBounds();
@@ -7195,7 +7247,7 @@ public class ModifierRenderer
         {
             scc = GENCLookup.getInstance().get3CharCode(cc);
         }
-        if(scc != "")
+        if(!scc.isEmpty())
             modifiers.put(Modifiers.AS_COUNTRY, scc);
 
         //            int y0 = 0;//AR        E/T
@@ -7524,7 +7576,7 @@ public class ModifierRenderer
         {
             scc = GENCLookup.getInstance().get3CharCode(cc);
         }
-        if(scc != "")
+        if(!scc.isEmpty())
             modifiers.put(Modifiers.AS_COUNTRY, scc);
 
         //            int y0 = 0;//W            E/AS
@@ -7759,7 +7811,7 @@ public class ModifierRenderer
         {
             scc = GENCLookup.getInstance().get3CharCode(cc);
         }
-        if(scc != "")
+        if(!scc.isEmpty())
             modifiers.put(Modifiers.AS_COUNTRY, scc);
 
         //            int y0 = 0;//W            E/AS
@@ -8028,7 +8080,7 @@ public class ModifierRenderer
         {
             scc = GENCLookup.getInstance().get3CharCode(cc);
         }
-        if(scc != "")
+        if(!scc.isEmpty())
             modifiers.put(Modifiers.AS_COUNTRY, scc);
 
         //            int y0 = 0;//             E/F/AS
@@ -10275,7 +10327,7 @@ public class ModifierRenderer
             }
 
             int cc = SymbolID.getCountryCode(symbolID);
-            if (cc > 0 && GENCLookup.getInstance().get3CharCode(cc) != "")
+            if (cc > 0 && !GENCLookup.getInstance().get3CharCode(cc).isEmpty())
             {
                 return true;
             }//*/

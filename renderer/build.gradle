@@ -28,7 +28,9 @@ android {
 task javadoc(type: Javadoc, dependsOn: 'assemble') {
     source = android.sourceSets.main.java.srcDirs
 
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    //classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    classpath += files(project.android.getBootClasspath())
+    //classpath += files(project.android.getBootClasspath().join(File.pathSeparator))
 
     exclude 'armyc2/c5isr/geo/**'
     exclude 'armyc2/c5isr/graphics2d/**'
@@ -80,9 +82,9 @@ task javadoc(type: Javadoc, dependsOn: 'assemble') {
     //exclude 'armyc2/c5isr/renderer/utilities/TextInfo.java'
 
     options {
-        if (JavaVersion.current().isJava8Compatible()) { // disable lint for java8
+
             addStringOption('Xdoclint:none', '-quiet')
-        }
+
         encoding    = "UTF-8"
         docEncoding = "UTF-8"
         charSet     = "UTF-8"

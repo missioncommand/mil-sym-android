@@ -504,11 +504,11 @@ public class RendererSettings{
      * Value from 0 to 255. The closer to 0 the lighter the text color has to be
      * to have the outline be black. Default value is 160.
      * @param value
-     *//*
+     */
     public void setTextBackgroundAutoColorThreshold(int value)
     {
         _TextBackgroundAutoColorThreshold = value;
-    }*/
+    }
 
     /**
      * Value from 0 to 255. The closer to 0 the lighter the text color has to be
