@@ -385,6 +385,7 @@ public class MSLookup {
                     modifiers.add(Modifiers.T_UNIQUE_DESIGNATION_1);
                     modifiers.add(Modifiers.W_DTG_1);
                     modifiers.add(Modifiers.Y_LOCATION);
+                    modifiers.add(Modifiers.AB_FEINT_DUMMY_INDICATOR);
                     modifiers.add(Modifiers.AS_COUNTRY);
                     break;
                 case SymbolID.SymbolSet_CyberSpace:
@@ -402,6 +403,7 @@ public class MSLookup {
                     modifiers.add(Modifiers.V_EQUIP_TYPE);
                     modifiers.add(Modifiers.W_DTG_1);
                     modifiers.add(Modifiers.Y_LOCATION);
+                    modifiers.add(Modifiers.AB_FEINT_DUMMY_INDICATOR);
                     modifiers.add(Modifiers.AO_ENGAGEMENT_BAR);
                     modifiers.add(Modifiers.AS_COUNTRY);
                     break;
@@ -606,6 +608,7 @@ public class MSLookup {
                     modifiers.add(Modifiers.Q_DIRECTION_OF_MOVEMENT);
                     modifiers.add(Modifiers.W_DTG_1);
                     modifiers.add(Modifiers.Y_LOCATION);
+                    modifiers.add(Modifiers.AB_FEINT_DUMMY_INDICATOR);
                     modifiers.add(Modifiers.AS_COUNTRY);
                     break;
                 case SymbolID.SymbolSet_CyberSpace:
@@ -623,6 +626,7 @@ public class MSLookup {
                     modifiers.add(Modifiers.V_EQUIP_TYPE);
                     modifiers.add(Modifiers.W_DTG_1);
                     modifiers.add(Modifiers.Y_LOCATION);
+                    modifiers.add(Modifiers.AB_FEINT_DUMMY_INDICATOR);
                     modifiers.add(Modifiers.AO_ENGAGEMENT_BAR);
                     modifiers.add(Modifiers.AS_COUNTRY);
                     break;
