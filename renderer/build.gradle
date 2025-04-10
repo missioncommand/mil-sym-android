@@ -203,11 +203,12 @@ publishing {
     repositories {
         maven {
             name = "sonatype"
-            url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
-
+            url = version.endsWith("-SNAPSHOT")
+                    ? uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+                    : uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
             credentials {
-                username = project.findProperty("sonatypeUsername") ?: System.getenv("SONATYPE_USERNAME")
-                password = project.findProperty("sonatypePassword") ?: System.getenv("SONATYPE_PASSWORD")
+                username = project.findProperty("ossrhUsername") ?: ""
+                password = project.findProperty("ossrhPassword") ?: ""
             }
         }
     }
