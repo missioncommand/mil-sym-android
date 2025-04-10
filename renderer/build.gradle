@@ -18,20 +18,46 @@ android {
     }
 
     defaultConfig {
+        //minSdkVersion 24
+        //targetSdkVersion 35
         minSdkVersion android_minSdkVersion
         targetSdkVersion android_targetSdkVersion
         versionName "2.2.3" //Renderer Version Number
     }
+    buildToolsVersion '35.0.0'
 
 }
 
+println "Android SDK Directory: ${android.sdkDirectory}"
+println "Compile SDK Version: ${android.compileSdkVersion}"
+
+configurations {
+    javadocClasspath {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+    dependencies {
+        javadocClasspath.extendsFrom configurations.implementation
+        javadocClasspath.extendsFrom configurations.compileOnly
+    }
+}
+
+
+configurations.javadocClasspath {
+    dependencies {
+        implementation 'com.caverock:androidsvg-aar:1.4'
+        implementation 'org.gavaghan:geodesy:1.1.3'
+        implementation 'androidx.core:core-ktx:1.15.0'
+    }
+}
+
+
 task javadoc(type: Javadoc, dependsOn: 'assemble') {
     source = android.sourceSets.main.java.srcDirs
+    classpath += files("${android.sdkDirectory}/platforms/android-${android.compileSdkVersion.replace('android-', '')}/android.jar")
+    classpath += configurations.javadocClasspath
 
-    //classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    classpath += files(project.android.getBootClasspath())
-    //classpath += files(project.android.getBootClasspath().join(File.pathSeparator))
-
+    /*//Excludes break it for some reason
     exclude 'armyc2/c5isr/geo/**'
     exclude 'armyc2/c5isr/graphics2d/**'
     exclude 'armyc2/c5isr/JavaLineArray/**'
@@ -80,23 +106,31 @@ task javadoc(type: Javadoc, dependsOn: 'assemble') {
     exclude 'armyc2/c5isr/renderer/utilities/Shape2SVG.java'
     exclude 'armyc2/c5isr/renderer/utilities/SymbolDraw.java'
     //exclude 'armyc2/c5isr/renderer/utilities/TextInfo.java'
+    //*/
 
     options {
-
-            addStringOption('Xdoclint:none', '-quiet')
-
-        encoding    = "UTF-8"
-        docEncoding = "UTF-8"
-        charSet     = "UTF-8"
-        linkSource  = true
-
-        //Only necessary when debugging javadoc generation
-        //logging.captureStandardError LogLevel.INFO
-        //logging.captureStandardOutput LogLevel.INFO
-
-        title  = "MIL-STD-2525 Android Symbology Renderer (${android.defaultConfig.versionName})"
+        encoding = 'UTF-8'
+        charSet = 'UTF-8'
+        docEncoding = 'UTF-8'
+        addStringOption('Xdoclint:none', '-quiet')
+        links 'https://developer.android.com/reference/'
+        linkSource = true
+        title = "MIL-STD-2525 Android Symbology Renderer (${android.defaultConfig.versionName})"
     }
 }
+
+
+
+
+
+afterEvaluate {
+    println "Javadoc classpath after evaluation: ${javadoc.classpath.asPath}"
+    javadoc.classpath += files(android.libraryVariants.collect { variant ->
+        variant.javaCompileProvider.get().classpath.files
+    })
+    println "Updated Javadoc classpath: ${javadoc.classpath.asPath}"
+}
+
 
 // Javadoc and sources tasks
 task javadocJar(type: Jar, dependsOn: 'javadoc') {
@@ -178,15 +212,4 @@ publishing {
         }
     }
 }
-
-
-dependencies {
-    implementation 'com.caverock:androidsvg-aar:1.4'
-    implementation 'org.gavaghan:geodesy:1.1.3'
-    implementation 'androidx.core:core-ktx:1.15.0'
-}
-
-
-
-
 
