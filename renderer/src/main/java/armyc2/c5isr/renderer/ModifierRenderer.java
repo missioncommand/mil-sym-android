@@ -1027,7 +1027,7 @@ public class ModifierRenderer
                 if (ociShape != null)
                 {
                     Rect temp = new Rect(ociShape);
-                    RectUtilities.grow(temp, 2);
+                    RectUtilities.grow(temp, 1);
                     ociBounds = temp;
                     imageBounds.union(ociBounds);
                 }

@@ -595,7 +595,10 @@ public class SinglePointSVGRenderer implements SettingsChangedEventListener
                     pixelSize = RendererSettings.getInstance().getDefaultPixelSize();
                 }
                 if (keepUnitRatio == true && msi.getSymbolSet() == SymbolID.SymbolSet_ControlMeasure && msi.getGeometry().equalsIgnoreCase("point")) {
-                    pixelSize = (pixelSize / 3) * 4;//try to scale to be somewhat in line with units
+                    if(msi.getDrawRule() == DrawRules.POINT1)//Action Points
+                        pixelSize = (int)Math.ceil((pixelSize/1.5f) * 1.5f);
+                    else
+                        pixelSize = (int)Math.ceil((pixelSize/1.5f) * 1.1f);
                 }
 
                 if (attributes.containsKey(MilStdAttributes.OutlineSymbol))

@@ -21,6 +21,7 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -52,6 +53,38 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+		// Find the view
+		View myView = findViewById(android.R.id.content).getRootView();
+
+		// Add the code snippet here to get the dimensions
+		myView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+			@Override
+			public void onGlobalLayout() {
+				//actual values
+				int pxWidth = myView.getWidth();
+				int pxHeight = myView.getHeight();
+				int dpi = (int)(myView.getContext().getResources().getDisplayMetrics().density * 160);
+
+				//device independent
+				float density = myView.getContext().getResources().getDisplayMetrics().density; //small float
+				float dpWidth = pxWidth / density;
+				float dpHeight = pxHeight / density;
+
+				Log.d("Dimensions", "Width in dp: " + dpWidth + ", Height in dp: " + dpHeight);
+
+				//RendererSettings.getInstance().setDeviceDPI(dpi);
+
+				/*if(dpWidth > 0 && dpHeight > 0) {
+					RendererSettings.getInstance().setDeviceDPI(dpi);
+					RendererSettings.getInstance().setDeviceWidth((int) dpWidth);
+					RendererSettings.getInstance().setDeviceHeight((int) dpHeight);
+				}//*/
+
+				myView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+			}
+		});
+
         loadRenderer();
     }
 
@@ -111,6 +144,18 @@ public class MainActivity extends Activity {
 			getWindowManager().getDefaultDisplay().getMetrics(metrics);
             int dpi = metrics.densityDpi;
             //RendererSettings.getInstance().setDeviceDPI(dpi);
+			View myView = findViewById(android.R.id.content).getRootView();
+			int pxWidth = myView.getWidth();
+			int pxHeight = myView.getHeight();
+			float density = this.getResources().getDisplayMetrics().density;
+			float dpWidth = pxWidth / density;
+			float dpHeight = pxHeight / density;
+			if(dpWidth > 0 && dpHeight > 0) {
+				RendererSettings.getInstance().setDeviceDPI((int) density);
+				RendererSettings.getInstance().setDeviceWidth((int) dpWidth);
+				RendererSettings.getInstance().setDeviceHeight((int) dpHeight);
+			}
+
 
 			//Test adding of custom symbol
 			//test with code: 130310000016570000000000000000

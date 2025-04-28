@@ -34,13 +34,15 @@ public class RectUtilities {
 	
 	public static void grow(Rect rect, int size)
 	{
-		rect.set(rect.left - size, rect.top - size, rect.right + (size*2), rect.bottom + (size*2));
+		rect.set(rect.left - size, rect.top - size, (rect.right - size) + (size*2), (rect.bottom - size) + (size*2));
+		//rect.set(rect.left - size, rect.top - size, rect.right + (size*2), rect.bottom + (size*2));
 		//return new Rect(rect.left - size, rect.top - size, rect.right + size, rect.bottom + size);
 	}
 	
 	public static void grow(RectF rect, int size)
 	{
-		rect.set(rect.left - size, rect.top - size, rect.right + (size*2), rect.bottom + (size*2));
+		rect.set(rect.left - size, rect.top - size, (rect.right - size) + (size*2), (rect.bottom - size) + (size*2));
+		//rect.set(rect.left - size, rect.top - size, rect.right + (size*2), rect.bottom + (size*2));
 	}
 
 	public static void grow(Rectangle rect, int size) {

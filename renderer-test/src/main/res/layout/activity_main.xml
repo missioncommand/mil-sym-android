@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="armyc2.c5isr.renderer.test1.MainActivity" >
+    tools:context="armyc2.c5isr.renderer.test1.MainActivity">
 
     <EditText
         android:id="@+id/etSymbolID"
@@ -12,17 +12,17 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="65dp"
         android:ems="10"
-        android:hint="@string/symbolid_hint"/>
+        android:hint="@string/symbolid_hint" />
 
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/etSymbolID"
         android:layout_below="@+id/etSymbolID"
+        android:layout_alignLeft="@+id/etSymbolID"
         android:layout_marginTop="63dp"
-        android:src="@drawable/ic_launcher" 
-        android:contentDescription="@string/iv_content_description"/>
+        android:contentDescription="@string/iv_content_description"
+        android:src="@drawable/ic_launcher" />
 
     <Button
         android:id="@+id/btnDraw"
