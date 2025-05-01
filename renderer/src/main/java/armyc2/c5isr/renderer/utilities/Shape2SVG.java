@@ -22,10 +22,10 @@ public class Shape2SVG {
      * @param dashArray "4 1 2 3"
      * @return
      */
-    public static String Convert(Object shape,String stroke, String fill, String strokeWidth, String strokeOpacity, String fillOpacity, String dashArray)
+    public static String Convert(Object shape,String stroke, String fill, String strokeWidth, String strokeOpacity, String fillOpacity, String dashArray, String lineCap)
     {
         if(shape instanceof SVGPath)
-            return convertSVGPath((SVGPath)shape, stroke, fill, strokeWidth, strokeOpacity, fillOpacity, dashArray);
+            return convertSVGPath((SVGPath)shape, stroke, fill, strokeWidth, strokeOpacity, fillOpacity, dashArray, lineCap);
         else if(shape instanceof Rect)
             return convertRect((Rect)shape, stroke, fill, strokeWidth, strokeOpacity, fillOpacity, dashArray);
         else if(shape instanceof RectF)
@@ -269,11 +269,11 @@ public class Shape2SVG {
      * @param dashArray "4 1 2 3", will override dashArray currently specified in the SVGPath object
      * @return
      */
-    private static String convertSVGPath(SVGPath svgPath, String stroke, String fill, String strokeWidth, String strokeOpacity, String fillOpacity, String dashArray)
+    private static String convertSVGPath(SVGPath svgPath, String stroke, String fill, String strokeWidth, String strokeOpacity, String fillOpacity, String dashArray, String lineCap)
     {
         if(dashArray != null)
             svgPath.setLineDash(dashArray);
-        return svgPath.toSVGElement(stroke,Float.parseFloat(strokeWidth),fill,Float.parseFloat(strokeOpacity),Float.parseFloat(fillOpacity));
+        return svgPath.toSVGElement(stroke,Float.parseFloat(strokeWidth),fill,Float.parseFloat(strokeOpacity),Float.parseFloat(fillOpacity),lineCap);
     }
 
     private static String convertRect(Rect rect, String stroke, String fill, String strokeWidth, String strokeOpacity, String fillOpacity, String dashArray)

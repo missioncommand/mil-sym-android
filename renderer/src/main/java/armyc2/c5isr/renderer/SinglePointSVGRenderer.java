@@ -541,13 +541,15 @@ public class SinglePointSVGRenderer implements SettingsChangedEventListener
             drawRule = msi.getDrawRule();
         }
         boolean hasAPFill = false;
-        if (SymbolUtilities.isActionPoint(symbolID) || //action points
-                drawRule == DrawRules.POINT10 || //Sonobuoy
-                ec == 180100 || ec == 180200 || ec == 180400) //ACP, CCP, PUP
-        {
-            if (SymbolID.getSymbolSet(symbolID) == SymbolID.SymbolSet_ControlMeasure) {
-                lineColor = Color.BLACK;
-                hasAPFill = true;
+        if(RendererSettings.getInstance().getActionPointDefaultFill()) {
+            if (SymbolUtilities.isActionPoint(symbolID) || //action points
+                    drawRule == DrawRules.POINT10 || //Sonobuoy
+                    ec == 180100 || ec == 180200 || ec == 180400) //ACP, CCP, PUP
+            {
+                if (SymbolID.getSymbolSet(symbolID) == SymbolID.SymbolSet_ControlMeasure) {
+                    lineColor = Color.BLACK;
+                    hasAPFill = true;
+                }
             }
         }
 
@@ -598,7 +600,7 @@ public class SinglePointSVGRenderer implements SettingsChangedEventListener
                     if(msi.getDrawRule() == DrawRules.POINT1)//Action Points
                         pixelSize = (int)Math.ceil((pixelSize/1.5f) * 1.5f);
                     else
-                        pixelSize = (int)Math.ceil((pixelSize/1.5f) * 1.1f);
+                        pixelSize = (int)Math.ceil((pixelSize/1.5f) * 1.2f);
                 }
 
                 if (attributes.containsKey(MilStdAttributes.OutlineSymbol))
@@ -683,10 +685,6 @@ public class SinglePointSVGRenderer implements SettingsChangedEventListener
                 String strSVGIcon = null;
 
 
-                if (drawRule == DrawRules.POINT1) //action points and a few others
-                {//TODO: move this stroke width adjustment to the external took that makes 2525D.SVG & 2525E.SVG
-                    siIcon = new SVGInfo(siIcon.getID(), siIcon.getBbox(), siIcon.getSVG().replaceAll("stroke-width=\"4\"", "stroke-width=\"6\""));
-                }
                 if (hasAPFill) //action points and a few others //Sonobuoy //ACP, CCP, PUP
                 {
                     String apFill;

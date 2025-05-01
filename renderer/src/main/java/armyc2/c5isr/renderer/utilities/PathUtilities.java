@@ -67,6 +67,21 @@ public class PathUtilities {
 		RectF oval = new RectF(x-r, y-r, x+r, y+r);
 		path.arcTo(oval, sAngle, eAngle, moveTo);
 	}
+
+	/**
+	 *
+	 * @param path
+	 * @param x
+	 * @param y
+	 * @param r radius
+	 * @param sAngle start angle in degrees
+	 * @param eAngle how many degrees relative to sAngle
+	 */
+	public static void addArc(Path path, float x, float y, float r, float sAngle, float eAngle)
+	{
+		RectF oval = new RectF(x-r, y-r, x+r, y+r);
+		path.addArc(oval, sAngle, eAngle);
+	}
 	
 	public static void addRoundedRect(Path path, float x, float y, float w, float h, float rw, float rh)
 	{

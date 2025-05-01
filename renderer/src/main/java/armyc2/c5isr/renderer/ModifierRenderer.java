@@ -120,7 +120,7 @@ public class ModifierRenderer
 
 
         // <editor-fold defaultstate="collapsed" desc="Build Mobility Modifiers">
-        int strokeWidthBasedOnDPI = Math.round(RendererSettings.getInstance().getDeviceDPI()/96f*1f);
+        int strokeWidthBasedOnDPI = Math.round(RendererSettings.getInstance().getDeviceDPI()/96f);
         if(strokeWidthBasedOnDPI < 2)
             strokeWidthBasedOnDPI = 2;
 
@@ -937,6 +937,7 @@ public class ModifierRenderer
 
             ebRectangle = RectUtilities.makeRect(ebLeft,ebTop,ebWidth,ebHeight);
             ebBounds = new Rect(ebRectangle);
+            RectUtilities.grow(ebBounds,(int)Math.ceil(strokeWidthBasedOnDPI/2f));
 
             imageBounds.union(ebBounds);
         }
@@ -1027,7 +1028,7 @@ public class ModifierRenderer
                 if (ociShape != null)
                 {
                     Rect temp = new Rect(ociShape);
-                    RectUtilities.grow(temp, 1);
+                    RectUtilities.grow(temp, 2);
                     ociBounds = temp;
                     imageBounds.union(ociBounds);
                 }
@@ -1172,7 +1173,7 @@ public class ModifierRenderer
                 svgtemp = new SVGPath();
                 svgtemp.moveTo(pt1HQ.x, pt1HQ.y);
                 svgtemp.lineTo(pt2HQ.x, pt2HQ.y);
-                svgtemp.toSVGElement(svgStroke,Float.parseFloat(svgStrokeWidth),null,Float.parseFloat(svgAlpha),Float.parseFloat(svgAlpha));
+                svgtemp.toSVGElement(svgStroke,Float.parseFloat(svgStrokeWidth),null,Float.parseFloat(svgAlpha),Float.parseFloat(svgAlpha),null);
             }
             if (echelonBounds != null)
             {
@@ -1184,23 +1185,31 @@ public class ModifierRenderer
             }
             if (tfBounds != null)
             {
-                sbSVG.append(Shape2SVG.Convert(tfRectangle, svgStroke, null, svgStrokeWidth, svgAlpha, svgAlpha, null));
+                sbSVG.append(Shape2SVG.Convert(tfRectangle, svgStroke, null, svgStrokeWidth, svgAlpha, svgAlpha, null,null));
             }
             if(ebBounds != null)
             {
                 String svgEBFill = RendererUtilities.colorToHexString(ebColor,false);
                 //create fill and outline
-                sbSVG.append(Shape2SVG.Convert(ebRectangle, svgStroke, svgEBFill, svgStrokeWidth, svgAlpha, svgAlpha, null));
+                sbSVG.append(Shape2SVG.Convert(ebRectangle, svgStroke, svgEBFill, svgStrokeWidth, svgAlpha, svgAlpha, null,null));
                 //create internal text
                 sbSVG.append(Shape2SVG.Convert(ebText, null, "#000000", null, svgAlpha, svgAlpha, null));
             }
             if (fdiBounds != null)
             {
-                int dpi = RendererSettings.getInstance().getDeviceDPI();
+                /*int dpi = RendererSettings.getInstance().getDeviceDPI();
                 int lineLength = dpi / 96 * 6;
                 int lineGap = dpi / 96 * 4;
+                String svgFDIDashArray = "" + lineLength + " " + lineGap;//*/
 
+                /// ///////////////////////////////////
+                //Divide line in 14 parts. line is 3 parts to 2 parts gap
+                float distance = RendererUtilities.getDistanceBetweenPoints(fdiTop,fdiLeft);
+                //distance = distance / 14f;
+                int lineGap = (int)((distance / 14f) * 2);
+                int lineLength = (int)((distance / 14f) * 3);
                 String svgFDIDashArray = "" + lineLength + " " + lineGap;
+                /// //////////////////////////////////
 
                 SVGPath fdiPath = new SVGPath();
 
@@ -1209,7 +1218,7 @@ public class ModifierRenderer
                 fdiPath.moveTo(fdiTop.x, fdiTop.y);
                 fdiPath.lineTo(fdiRight.x, fdiRight.y);//*/
 
-                sbSVG.append(Shape2SVG.Convert(fdiPath, svgStroke, null, svgStrokeWidth, svgAlpha, svgAlpha, svgFDIDashArray));
+                sbSVG.append(Shape2SVG.Convert(fdiPath, svgStroke, null, svgStrokeWidth, svgAlpha, svgAlpha, svgFDIDashArray,"round"));
 
             }
             if (liBounds != null)
@@ -1220,7 +1229,7 @@ public class ModifierRenderer
                 svgliPath.moveTo(liTop.x, liTop.y);
                 svgliPath.lineTo(liRight.x, liRight.y);
 
-                sbSVG.append(svgliPath.toSVGElement(svgStroke,strokeWidthBasedOnDPI,null,Float.parseFloat(svgAlpha),Float.parseFloat(svgAlpha)));
+                sbSVG.append(svgliPath.toSVGElement(svgStroke,strokeWidthBasedOnDPI,null,Float.parseFloat(svgAlpha),Float.parseFloat(svgAlpha),"round"));
                 //sbSVG.append(Shape2SVG.Convert(liPath, svgStroke, null, String.valueOf(liStrokeWidth), svgAlpha, svgAlpha, null));
             }
             if (ociBounds != null && ociShape != null)
@@ -1251,8 +1260,8 @@ public class ModifierRenderer
                 }
 
                 String svgOCIStatusColor = RendererUtilities.colorToHexString(statusColor,false);
-                sbSVG.append(Shape2SVG.Convert(ociBounds, null, svgStroke, svgStrokeWidth, svgAlpha, svgAlpha, null));
-                sbSVG.append(Shape2SVG.Convert(ociShape, null, svgOCIStatusColor, svgStrokeWidth, svgAlpha, svgAlpha, null));
+                sbSVG.append(Shape2SVG.Convert(ociBounds, null, svgStroke, svgStrokeWidth, svgAlpha, svgAlpha, null,null));
+                sbSVG.append(Shape2SVG.Convert(ociShape, null, svgOCIStatusColor, svgStrokeWidth, svgAlpha, svgAlpha, null,null));
 
                 ociBounds = null;
                 ociShape = null;
@@ -1263,7 +1272,7 @@ public class ModifierRenderer
                 if(svgMobilityGroup != null)
                     sbSVG.append(svgMobilityGroup);
                 else if (svgMobilityPath != null)
-                    sbSVG.append(svgMobilityPath.toSVGElement(svgStroke,strokeWidthBasedOnDPI,null,Float.parseFloat(svgAlpha),Float.parseFloat(svgAlpha)));
+                    sbSVG.append(svgMobilityPath.toSVGElement(svgStroke,strokeWidthBasedOnDPI,null,Float.parseFloat(svgAlpha),Float.parseFloat(svgAlpha),null));
 
                 mobilityBounds = null;
             }
@@ -1283,7 +1292,7 @@ public class ModifierRenderer
                 if (ociStrokeWidth < 1f)
                     ociStrokeWidth = 1f;
 
-                sbSVG.append(svgociSlash.toSVGElement(svgStroke,ociStrokeWidth,null,Float.parseFloat(svgAlpha),Float.parseFloat(svgAlpha)));
+                sbSVG.append(svgociSlash.toSVGElement(svgStroke,ociStrokeWidth,null,Float.parseFloat(svgAlpha),Float.parseFloat(svgAlpha),null));
                 //sbSVG.append(Shape2SVG.Convert(ociSlashShape, svgStroke, null, String.valueOf(ociStrokeWidth), svgAlpha, svgAlpha, null));
                 ociBounds = null;
                 ociSlashShape = null;
@@ -1304,7 +1313,7 @@ public class ModifierRenderer
                     domPath.lineTo(domPoints[2].x, domPoints[2].y);
                 }
                 //sbSVG.append(Shape2SVG.Convert(domPath, svgStroke, null, svgStrokeWidth, svgAlpha, svgAlpha, null));
-                sbSVG.append(domPath.toSVGElement(svgStroke, Float.parseFloat(svgStrokeWidth), null,Float.parseFloat(svgAlpha), Float.parseFloat(svgAlpha)));
+                sbSVG.append(domPath.toSVGElement(svgStroke, Float.parseFloat(svgStrokeWidth), null,Float.parseFloat(svgAlpha), Float.parseFloat(svgAlpha),null));
 
 
                 //domPath.reset();
@@ -1313,8 +1322,8 @@ public class ModifierRenderer
                 domPath.moveTo(domPoints[3].x, domPoints[3].y);
                 domPath.lineTo(domPoints[4].x, domPoints[4].y);
                 domPath.lineTo(domPoints[5].x, domPoints[5].y);
-                sbSVG.append(Shape2SVG.Convert(domPath, "none", svgStroke, "0", svgAlpha, svgAlpha, null));
-                sbSVG.append(domPath.toSVGElement("none", 0f, svgStroke,Float.parseFloat(svgAlpha), Float.parseFloat(svgAlpha)));
+                sbSVG.append(Shape2SVG.Convert(domPath, "none", svgStroke, "0", svgAlpha, svgAlpha, null,null));
+                sbSVG.append(domPath.toSVGElement("none", 0f, svgStroke,Float.parseFloat(svgAlpha), Float.parseFloat(svgAlpha),null));
 
                 domBounds = null;
                 domPoints = null;
@@ -1415,9 +1424,18 @@ public class ModifierRenderer
                     fdiPaint.setAlpha(alpha);
                 fdiPaint.setStyle(Style.STROKE);
 
-                int dpi = RendererSettings.getInstance().getDeviceDPI();
+                /*int dpi = RendererSettings.getInstance().getDeviceDPI();
+
                 int lineLength = dpi / 96 * 6;
-                int lineGap = dpi / 96 * 4;
+                int lineGap = dpi / 96 * 4;//*/
+
+                /// ///////////////////////////////////
+                //Divide line in 14 parts. line is 3 parts to 2 parts gap
+                float distance = RendererUtilities.getDistanceBetweenPoints(fdiTop,fdiLeft);
+                //distance = distance / 14f;
+                int lineGap = (int)((distance / 14f) * 2);
+                int lineLength = (int)((distance / 14f) * 3);
+                /// //////////////////////////////////
 
                 fdiPaint.setPathEffect(new DashPathEffect(new float[]
                         {
@@ -1425,7 +1443,7 @@ public class ModifierRenderer
                         }, 0));
 
 
-                fdiPaint.setStrokeCap(Cap.BUTT);
+                fdiPaint.setStrokeCap(Cap.ROUND);
                 fdiPaint.setStrokeJoin(Join.MITER);
                 fdiPaint.setStrokeWidth(strokeWidthBasedOnDPI);
 
@@ -8649,8 +8667,19 @@ public class ModifierRenderer
                         arrMods.add(ti);
                     }
                 }
+                strText = null;
                 if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1) && (ec == 160300 || ec == 132000)) {
                     strText = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
+                    if (strText != null) {
+                        ti = new TextInfo(strText, 0, 0, _modifierFont);
+
+                        x = RectUtilities.getCenterX(bounds) + (int) (bounds.width() * 0.15f);
+                        y = bounds.top + (int) (bounds.height() * 0.25f);
+                        y = y + (int) (labelHeight * 0.5f);
+
+                        ti.setLocation(Math.round(x), Math.round(y));
+                        arrMods.add(ti);
+                    }
                 }
                 if (ec == 240601 || ec == 240602)
                 {
@@ -8663,22 +8692,17 @@ public class ModifierRenderer
                         else
                             strText = modifiers.get(Modifiers.AP1_TARGET_NUMBER_EXTENSION);
                     }
+                    if (strText != null) {
+                        ti = new TextInfo(strText, 0, 0, _modifierFont);
+
+                        x = RectUtilities.getCenterX(bounds) + (int) (bounds.width() * 0.15f);
+                        y = bounds.top + (int) (bounds.height() * 0.25f);
+                        y = y + (int) (labelHeight * 0.5f);
+
+                        ti.setLocation(Math.round(x), Math.round(y));
+                        arrMods.add(ti);
+                    }
                 }
-
-
-                if (strText != null) {
-                    ti = new TextInfo(strText, 0, 0, _modifierFont);
-
-                    x = RectUtilities.getCenterX(bounds) + (int) (bounds.width() * 0.15f);
-//                  x = x - (labelBounds.width * 0.5);
-                    y = bounds.top + (int) (bounds.height() * 0.25f);
-                    y = y + (int) (labelHeight * 0.5f);
-
-                    ti.setLocation(Math.round(x), Math.round(y));
-                    arrMods.add(ti);
-                }
-
-
             }
             else if (ec == 132100)//Key Terrain
             {
@@ -9362,6 +9386,14 @@ public class ModifierRenderer
                     int lineLength = dpi / 96 * 6;
                     int lineGap = dpi / 96 * 4;
 
+                    /// ///////////////////////////////////
+                    //Divide line in 14 parts. line is 3 parts to 2 parts gap
+                    float distance = RendererUtilities.getDistanceBetweenPoints(fdiTop,fdiLeft);
+                    //distance = distance / 14f;
+                    lineGap = (int)((distance / 14f) * 2);
+                    lineLength = (int)((distance / 14f) * 3);
+                    /// //////////////////////////////////
+
                     fdiPaint.setPathEffect(new DashPathEffect(new float[]
                             {
                                     lineLength, lineGap
@@ -9371,7 +9403,7 @@ public class ModifierRenderer
                     if (fdiStrokeWidth < 2)
                         fdiStrokeWidth = 2;
 
-                    fdiPaint.setStrokeCap(Cap.BUTT);
+                    fdiPaint.setStrokeCap(Cap.ROUND);
                     fdiPaint.setStrokeJoin(Join.MITER);
                     fdiPaint.setStrokeWidth(fdiStrokeWidth);
 
@@ -9418,14 +9450,14 @@ public class ModifierRenderer
                     {
                         domPath.lineTo(domPoints[2].x, domPoints[2].y);
                     }
-                    sbSVG.append(domPath.toSVGElement(svgStroke,Float.parseFloat(svgStrokeWidth),null,1f,1f));
+                    sbSVG.append(domPath.toSVGElement(svgStroke,Float.parseFloat(svgStrokeWidth),null,1f,1f,null));
 
                     domPath = new SVGPath();
 
                     domPath.moveTo(domPoints[3].x, domPoints[3].y);
                     domPath.lineTo(domPoints[4].x, domPoints[4].y);
                     domPath.lineTo(domPoints[5].x, domPoints[5].y);
-                    sbSVG.append(domPath.toSVGElement(null,0f,svgStroke,1f,1f));
+                    sbSVG.append(domPath.toSVGElement(null,0f,svgStroke,1f,1f,null));
 
                     domBounds = null;
                     domPoints = null;
@@ -9436,11 +9468,19 @@ public class ModifierRenderer
                 if (fdiBounds != null)
                 {
 
-                    int dpi = RendererSettings.getInstance().getDeviceDPI();
+                    /*int dpi = RendererSettings.getInstance().getDeviceDPI();
                     int lineLength = dpi / 96 * 6;
                     int lineGap = dpi / 96 * 4;
+                    String svgFDIDashArray = "" + lineLength + " " + lineGap;//*/
 
+                    /// ///////////////////////////////////
+                    //Divide line in 14 parts. line is 3 parts to 2 parts gap
+                    float distance = RendererUtilities.getDistanceBetweenPoints(fdiTop,fdiLeft);
+                    //distance = distance / 14f;
+                    int lineGap = (int)((distance / 14f) * 2);
+                    int lineLength = (int)((distance / 14f) * 3);
                     String svgFDIDashArray = "" + lineLength + " " + lineGap;
+                    /// //////////////////////////////////
 
                     SVGPath fdiPath = new SVGPath();
                     fdiPath.moveTo(fdiTop.x, fdiTop.y);
@@ -9450,7 +9490,7 @@ public class ModifierRenderer
 
                     fdiPath.setLineDash(svgFDIDashArray);
 
-                    sbSVG.append(fdiPath.toSVGElement(svgStroke,Float.parseFloat(svgStrokeWidth),null,1f,1f));
+                    sbSVG.append(fdiPath.toSVGElement(svgStroke,Float.parseFloat(svgStrokeWidth),null,1f,1f,"round"));
                     //sbSVG.append(Shape2SVG.Convert(fdiPath, svgStroke, null, svgStrokeWidth, svgAlpha, svgAlpha, svgFDIDashArray));
                 }
                 //</editor-fold>
@@ -9848,6 +9888,14 @@ public class ModifierRenderer
                     int lineLength = dpi / 96 * 6;
                     int lineGap = dpi / 96 * 4;
 
+                    /// ///////////////////////////////////
+                    //Divide line in 14 parts. line is 3 parts to 2 parts gap
+                    float distance = RendererUtilities.getDistanceBetweenPoints(fdiTop,fdiLeft);
+                    //distance = distance / 14f;
+                    lineGap = (int)((distance / 14f) * 2);
+                    lineLength = (int)((distance / 14f) * 3);
+                    /// //////////////////////////////////
+
                     fdiPaint.setPathEffect(new DashPathEffect(new float[]
                             {
                                     lineLength, lineGap
@@ -9857,7 +9905,7 @@ public class ModifierRenderer
                     if (fdiStrokeWidth < 2)
                         fdiStrokeWidth = 2;
 
-                    fdiPaint.setStrokeCap(Cap.BUTT);
+                    fdiPaint.setStrokeCap(Cap.ROUND);
                     fdiPaint.setStrokeJoin(Join.MITER);
                     fdiPaint.setStrokeWidth(fdiStrokeWidth);
 
@@ -9891,11 +9939,19 @@ public class ModifierRenderer
                 //<editor-fold defaultstate="collapsed" desc="Draw FDI">
                 if (fdiBounds != null)
                 {
-                    int dpi = RendererSettings.getInstance().getDeviceDPI();
+                    /*int dpi = RendererSettings.getInstance().getDeviceDPI();
                     int lineLength = dpi / 96 * 6;
                     int lineGap = dpi / 96 * 4;
+                    String svgFDIDashArray = "" + lineLength + " " + lineGap;//*/
 
+                    /// ///////////////////////////////////
+                    //Divide line in 14 parts. line is 3 parts to 2 parts gap
+                    float distance = RendererUtilities.getDistanceBetweenPoints(fdiTop,fdiLeft);
+                    //distance = distance / 14f;
+                    int lineGap = (int)((distance / 14f) * 2);
+                    int lineLength = (int)((distance / 14f) * 3);
                     String svgFDIDashArray = "" + lineLength + " " + lineGap;
+                    /// //////////////////////////////////
 
                     SVGPath fdiPath = new SVGPath();
                     fdiPath.moveTo(fdiTop.x, fdiTop.y);
@@ -9904,7 +9960,7 @@ public class ModifierRenderer
                     fdiPath.lineTo(fdiRight.x, fdiRight.y);//*/
 
                     fdiPath.setLineDash(svgFDIDashArray);
-                    sbSVG.append(fdiPath.toSVGElement(svgStroke,Float.parseFloat(svgStrokeWidth),null,1f,1f));
+                    sbSVG.append(fdiPath.toSVGElement(svgStroke,Float.parseFloat(svgStrokeWidth),null,1f,1f,"round"));
                     //sbSVG.append(Shape2SVG.Convert(fdiPath, svgStroke, null, svgStrokeWidth, svgAlpha, svgAlpha, svgFDIDashArray));
                 }
                 //</editor-fold>

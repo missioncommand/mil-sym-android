@@ -4,10 +4,11 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
+
     <TextView
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    />
+        android:layout_width="fill_parent"
+        android:layout_height="166dp" />
+
     <EditText android:id="@+id/edit_message"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -49,10 +50,11 @@
         android:layout_width="match_parent"
         android:hint="V"
         />
-    <EditText android:id="@+id/edit_Y"
-        android:layout_height="wrap_content"
+
+    <EditText
+        android:id="@+id/edit_Y"
         android:layout_width="match_parent"
-        android:hint="Y"
-        />
+        android:layout_height="wrap_content"
+        android:hint="Y" />
 
 </LinearLayout>

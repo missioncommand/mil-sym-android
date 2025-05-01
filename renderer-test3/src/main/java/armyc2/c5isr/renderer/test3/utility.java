@@ -30,6 +30,7 @@ import armyc2.c5isr.renderer.utilities.Modifiers;
 import armyc2.c5isr.renderer.utilities.PointConversion;
 import armyc2.c5isr.renderer.utilities.RendererException;
 import armyc2.c5isr.renderer.utilities.RendererSettings;
+import armyc2.c5isr.renderer.utilities.RendererUtilities;
 import armyc2.c5isr.renderer.utilities.ShapeInfo;
 import armyc2.c5isr.web.render.GeoPixelConversion;
 import armyc2.c5isr.web.render.MultiPointHandler;
@@ -195,6 +196,8 @@ public final class utility {
 
             String strGeoJSON = WebRenderer.RenderSymbol("ID", "name", "description", symbolCode, controlPtsStr, altitudeMode , scale, rectStr, modifiers, attributes,WebRenderer.OUTPUT_FORMAT_GEOJSON);
             Log.i(symbolCode, strGeoJSON);
+            String strGeoSVG = WebRenderer.RenderSymbol("ID", "name", "description", symbolCode, controlPtsStr, altitudeMode , scale, rectStr, modifiers, attributes,WebRenderer.OUTPUT_FORMAT_GEOSVG);
+            Log.i(symbolCode, strGeoSVG);
 
             if (canRender.equals("true")) {
                 // drawControlPoints(g2d, mss.getCoordinates(), converter);
@@ -425,9 +428,16 @@ public final class utility {
                     if (textColor != null)
                         paint.setColor(textColor.toARGB());
                     paint.setTextSize(size);
-                    paint.setStyle(Paint.Style.FILL_AND_STROKE);
+                    //Outline
+                    paint.setColor(RendererUtilities.getIdealOutlineColor(textColor).toARGB());
+                    paint.setStyle(Paint.Style.STROKE);
                     str = spec.getModifierString();
                     g2d.drawText(str, x, y, paint);
+                    //Fill
+                    paint.setColor(textColor.toARGB());
+                    paint.setStyle(Paint.Style.FILL);
+                    g2d.drawText(str, x, y, paint);
+
                     //g2d.drawText(spec.getModifierString(), (float)position.getX(), (float)position.getY(),paint);
                     //g2d.rotate(-(float)stringAngle);
                     g2d.restore();

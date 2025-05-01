@@ -3,6 +3,7 @@ package armyc2.c5isr.renderer.utilities;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.Point;
 import android.util.SparseArray;
 
 import java.util.TreeSet;
@@ -459,6 +460,12 @@ public class RendererUtilities {
             largest = strokeWidths.descendingSet().first();
         }
         return largest * OUTLINE_SCALING_FACTOR;
+    }
+
+    public static int getDistanceBetweenPoints(Point pt1, Point pt2)
+    {
+        int distance = (int)(Math.sqrt(Math.pow((pt2.x - pt1.x) ,2) + Math.pow((pt2.y - pt1.y) ,2)));
+        return distance;
     }
 
     // Overloaded method to return non-outline symbols as normal.

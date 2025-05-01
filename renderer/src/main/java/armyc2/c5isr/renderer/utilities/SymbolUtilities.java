@@ -502,7 +502,7 @@ public class SymbolUtilities {
                 {
                     //Obstacles/Protection Graphics, some are green obstacles and we need to
                     //check for those.
-                    retColor = new Color(0,166,81);//Color.GREEN;
+                    retColor = AffiliationColors.ObstacleGreen;
                 }
                 //just do color by affiliation if no other color has been set yet.
                 if(retColor == null)

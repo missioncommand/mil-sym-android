@@ -267,7 +267,7 @@ public class SVGPath {
     /**
      * Arc and ArcTo do not covert currently
      */
-    public String toSVGElement(String stroke, float strokeWidth, String fill, float strokeOpacity, float fillOpacity)
+    public String toSVGElement(String stroke, float strokeWidth, String fill, float strokeOpacity, float fillOpacity, String lineCap)
     {
         int format = 1;
 
@@ -343,9 +343,15 @@ public class SVGPath {
                     line += " stroke-opacity=\"" + strokeOpacity + "\"";
                 }
 
-                //line += ' stroke-linejoin="round"';
-                line += " stroke-linecap=\"round\"";
-                //line += ' stroke-linecap="square"';
+                if(lineCap != null &&
+                        (lineCap.equalsIgnoreCase("butt") ||
+                                lineCap.equalsIgnoreCase("round") ||
+                                lineCap.equalsIgnoreCase("square")))
+                {
+                    line += " stroke-linecap=\"" + lineCap + "\"";
+                }
+                else
+                    line += " stroke-linecap=\"round\"";
             }
 
             if (this._dashArray != null)

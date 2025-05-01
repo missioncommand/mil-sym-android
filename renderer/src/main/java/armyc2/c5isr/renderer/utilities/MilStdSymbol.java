@@ -592,6 +592,12 @@ public class MilStdSymbol
    public void setTextColor(Color value)
    {
        _TextColor = value;
+       if(RendererSettings.getInstance().getTextBackgroundMethod() != RendererSettings.TextBackgroundMethod_NONE && _TextBackgroundColor == null)
+       {
+           //If text background enabled and a background color has not been set yet:
+          _TextBackgroundColor = RendererUtilities.getIdealOutlineColor(_TextColor);
+       }
+
    }
 
    /**
@@ -647,7 +653,7 @@ public class MilStdSymbol
     public void setLineColor(Color value)
     {
     	if (SymbolUtilities.isGreenProtectionGraphic(getSymbolID())) {
-            _LineColor = new Color(0,166,81); // Green from SymbolUtilities.getLineColorOfAffiliation()
+            _LineColor = AffiliationColors.ObstacleGreen;// new Color(0,166,81); // Green from SymbolUtilities.getLineColorOfAffiliation()
         } else if (value != null) {
     		_LineColor = value;
     	}
