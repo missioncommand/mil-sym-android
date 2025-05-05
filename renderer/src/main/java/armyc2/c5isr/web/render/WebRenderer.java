@@ -29,6 +29,7 @@ import armyc2.c5isr.web.json.utilities.JSONObject;
 //@SuppressWarnings("unused")
 public final class WebRenderer /* extends Applet */ {
 
+    public static final int OUTPUT_FORMAT_KML = 0;
     @Deprecated
     public static final int OUTPUT_FORMAT_JSON = 1;
     public static final int OUTPUT_FORMAT_GEOJSON = 2;
