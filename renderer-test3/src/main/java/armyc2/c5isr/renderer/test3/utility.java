@@ -32,6 +32,7 @@ import armyc2.c5isr.renderer.utilities.RendererException;
 import armyc2.c5isr.renderer.utilities.RendererSettings;
 import armyc2.c5isr.renderer.utilities.RendererUtilities;
 import armyc2.c5isr.renderer.utilities.ShapeInfo;
+import armyc2.c5isr.renderer.utilities.SymbolID;
 import armyc2.c5isr.web.render.GeoPixelConversion;
 import armyc2.c5isr.web.render.MultiPointHandler;
 import armyc2.c5isr.web.render.WebRenderer;
@@ -148,6 +149,13 @@ public final class utility {
                 (int) displayHeight, upperLatitude, leftLongitude,
                 lowerLatitude, rightLongitude);
         ArrayList<POINT2> pts2 = PixelsToLatLong(pts, converter);
+
+        if (symbolCode.length() >= 2 && symbolCode.length() <= 8) {
+            symbolCode = "" + SymbolID.Version_2525Dch1 + SymbolID.StandardIdentity_Context_Reality +
+                    SymbolID.StandardIdentity_Affiliation_Friend + symbolCode.substring(0,2) +
+                    SymbolID.Status_Present + SymbolID.HQTFD_Unknown + SymbolID.Echelon_Team_Crew +
+                    symbolCode.substring(2);
+        }
 
         while (symbolCode.length() < 30) {
             symbolCode += "0";
