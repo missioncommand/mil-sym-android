@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Point;
+import android.graphics.RectF;
 import android.util.SparseArray;
 
 import java.util.TreeSet;
@@ -460,6 +461,31 @@ public class RendererUtilities {
             largest = strokeWidths.descendingSet().first();
         }
         return largest * OUTLINE_SCALING_FACTOR;
+    }
+
+    public static SVGInfo scaleIcon(String symbolID, SVGInfo icon)
+    {
+        SVGInfo retVal= icon;
+        //safe square inside octagon:  <rect x="220" y="310" width="170" height="170"/>
+        double maxSize = 170;
+        RectF bbox =  icon.getBbox();
+        double length = Math.max(bbox.width(),bbox.height());
+        if(length < 100 &&
+                SymbolID.getCommonModifier1(symbolID)==0 &&
+                SymbolID.getCommonModifier2(symbolID)==0 &&
+                SymbolID.getModifier1(symbolID)==0 &&
+                SymbolID.getModifier2(symbolID)==0)//if largest side smaller than 100 and there are no section mods, make it bigger
+        {
+            double ratio = maxSize / length;
+            double transx = ((bbox.left + (bbox.width()/2)) * ratio) - (bbox.left + (bbox.width()/2));
+            double transy = ((bbox.top + (bbox.height()/2)) * ratio) - (bbox.top + (bbox.height()/2));
+            String transform = " transform=\"translate(-" + transx + ",-" + transy + ") scale(" + ratio + " " + ratio + ")\">";
+            String svg = icon.getSVG();
+            svg = svg.replaceFirst(">",transform);
+            RectF newBbox = RectUtilities.makeRectF((float)(bbox.left - transx),(float)(bbox.top - transy),(float)(bbox.width() * ratio), (float) (bbox.height() * ratio));
+            retVal = new SVGInfo(icon.getID(),newBbox,svg);
+        }
+        return retVal;
     }
 
     public static int getDistanceBetweenPoints(Point pt1, Point pt2)

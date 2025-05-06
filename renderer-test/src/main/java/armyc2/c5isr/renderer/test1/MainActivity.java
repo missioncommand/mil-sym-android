@@ -127,6 +127,7 @@ public class MainActivity extends Activity {
 			rs.setModifierFont("Arial", Typeface.BOLD, 32);
 			rs.setMPLabelFont("Arial", Typeface.BOLD, 32);
 
+			rs.setScaleMainIcon(true);
 
 			//rs.setTextBackgroundMethod(RendererSettings.TextBackgroundMethod_OUTLINE_QUICK);
             //rs.setTextBackgroundMethod(RendererSettings.TextBackgroundMethod_OUTLINE);
