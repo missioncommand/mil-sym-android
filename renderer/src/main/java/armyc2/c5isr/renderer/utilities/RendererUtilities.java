@@ -470,7 +470,7 @@ public class RendererUtilities {
         double maxSize = 170;
         RectF bbox =  icon.getBbox();
         double length = Math.max(bbox.width(),bbox.height());
-        if(length < 100 &&
+        if(length < 100 && length > 0 &&
                 SymbolID.getCommonModifier1(symbolID)==0 &&
                 SymbolID.getCommonModifier2(symbolID)==0 &&
                 SymbolID.getModifier1(symbolID)==0 &&

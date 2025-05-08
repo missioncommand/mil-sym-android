@@ -617,9 +617,15 @@ public class RendererSettings{
      */
     public void setModifierFont(String name, int type, int size, Boolean kerning, float tracking)
     {
-        _ModifierFontName = name;
-        _ModifierFontType = type;
-        _ModifierFontSize = size;
+        if(!(_ModifierFontName.equals(name) &&
+                _ModifierFontType == type &&
+                _ModifierFontSize == size))
+        {
+            _ModifierFontName = name;
+            _ModifierFontType = type;
+            _ModifierFontSize = size;
+            throwEvent(new SettingsChangedEvent(SettingsChangedEvent.EventType_FontChanged));
+        }
         /*if(kerning==false)
             _ModifierFontKerning = 0;
         else
@@ -635,10 +641,15 @@ public class RendererSettings{
      */
     public void setModifierFont(String name, int type, int size)
     {
-        _ModifierFontName = name;
-        _ModifierFontType = type;
-        _ModifierFontSize = size;
-        throwEvent(new SettingsChangedEvent(SettingsChangedEvent.EventType_FontChanged));
+        if(!(_ModifierFontName.equals(name) &&
+                _ModifierFontType == type &&
+                _ModifierFontSize == size))
+        {
+            _ModifierFontName = name;
+            _ModifierFontType = type;
+            _ModifierFontSize = size;
+            throwEvent(new SettingsChangedEvent(SettingsChangedEvent.EventType_FontChanged));
+        }
     }
     
     
@@ -654,7 +665,7 @@ public class RendererSettings{
         _MPLabelFontType = type;
         _MPLabelFontSize = size;
         _KMLLabelScale = 1.0f;
-        throwEvent(new SettingsChangedEvent(SettingsChangedEvent.EventType_FontChanged));
+        throwEvent(new SettingsChangedEvent(SettingsChangedEvent.EventType_MPFontChanged));
     }
     
     /**
@@ -670,7 +681,7 @@ public class RendererSettings{
         _MPLabelFontType = type;
         _MPLabelFontSize = Math.round(size * kmlScale);
         _KMLLabelScale = kmlScale;
-        throwEvent(new SettingsChangedEvent(SettingsChangedEvent.EventType_FontChanged));
+        throwEvent(new SettingsChangedEvent(SettingsChangedEvent.EventType_MPFontChanged));
     }
 
 

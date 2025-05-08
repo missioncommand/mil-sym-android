@@ -1740,7 +1740,7 @@ public class ModifierRenderer
 
         pt1 = new Point(x1, y1);
 
-        if (SymbolUtilities.canSymbolHaveModifier(symbolID, Modifiers.Q_DIRECTION_OF_MOVEMENT ) &&
+        if (SymbolUtilities.hasModifier(symbolID, Modifiers.Q_DIRECTION_OF_MOVEMENT ) &&
             SymbolUtilities.isCBRNEvent(symbolID) || SymbolUtilities.isLand(symbolID))
         {
             //drawStaff = true;
@@ -1806,70 +1806,81 @@ public class ModifierRenderer
         x2 = Math.round(dx2);
         y2 = Math.round(dy2);
 
-        //create arrowhead//////////////////////////////////////////////////////
-        float arrowWidth = 16.0f,//8.0f,//6.5f;//7.0f;//6.5f;//10.0f//default
-                theta = 0.423f;//higher value == shorter arrow head//*/
 
-        if (length < 50)
+        //UPDATED ARROWHEAD CODE
+        Point[] head = null;
+        Point endPoint = new Point((int) x2, (int) y2);
+        if(pt2 != null)
+            head = createDOMArrowHead(pt2, endPoint);//pt3);
+        else
+            head = createDOMArrowHead(pt1, endPoint);//pt3);
+
+        if(head != null)
         {
-            theta = 0.55f;
+            arrowPoints[0] = pt1;
+            arrowPoints[1] = pt2;
+            arrowPoints[2] = pt3;
+            arrowPoints[3] = head[0];
+            arrowPoints[4] = head[1];
+            arrowPoints[5] = head[2];
+
+            //adjusted endpoint
+            if(head.length >= 4 && head[3] != null)
+            {
+                arrowPoints[2] = head[3];
+            }
         }
 
-        //Adjust based on DPI, potentially replace code above.  Need to try on different screens.
-        arrowWidth = RendererSettings.getInstance().getDeviceDPI()/96f * 5.5f;
-        theta = RendererSettings.getInstance().getDeviceDPI()/96f / 10f + 3.4f;
-        //theta = 3.8f;//arrowWidth / 6;
+        return arrowPoints;
 
-        /*float arrowWidth = length * .09f,// 16.0f,//8.0f,//6.5f;//7.0f;//6.5f;//10.0f//default
-         theta = length * .0025f;//0.423f;//higher value == shorter arrow head
-         if(arrowWidth < 8)
-         arrowWidth = 8f;//*/
+    }
 
-        int[] xPoints = new int[3];//3
-        int[] yPoints = new int[3];//3
-        int[] vecLine = new int[2];//2
-        int[] vecLeft = new int[2];//2
-        double fLength;
-        double th;
-        double ta;
-        double baseX, baseY;
+    private static Point[] createDOMArrowHead(Point lpt1, Point lpt2)
+    {
+        Point[] arrowPoints = new Point[6];
+        Point pt1 = null;
+        Point pt2 = null;
+        Point pt3 = null;
 
-        xPoints[0] = x2;
-        yPoints[0] = y2;
+        int x1 = lpt1.x;
+        int y1 = lpt1.y;
+        int x2 = lpt2.x;
+        int y2 = lpt2.y;
 
-        //build the line vector
-        vecLine[0] = (xPoints[0] - x1);
-        vecLine[1] = (yPoints[0] - y1);
+        // Compute direction vector
+        double dx = x2 - x1;
+        double dy = y2 - y1;
+        double length = Math.sqrt(dx * dx + dy * dy);
 
-        //build the arrow base vector - normal to the line
-        vecLeft[0] = -vecLine[1];
-        vecLeft[1] = vecLine[0];
+        // Scale triangle size
+        double scale = length * 0.1;  // Scaling factor for size
+        double offset = scale * 1.5;  // Move triangle further down the line
 
-        //setup length parameters
-        fLength = Math.sqrt(vecLine[0] * vecLine[0] + vecLine[1] * vecLine[1]);
-        th = arrowWidth / (2.0 * fLength);
-        ta = arrowWidth / (2.0 * (Math.tan(theta) / 2.0) * fLength);
+        // Normalize direction vector
+        double unitX = dx / length;
+        double unitY = dy / length;
 
-        //find base of the arrow
-        baseX = (xPoints[0] - ta * vecLine[0]);
-        baseY = (yPoints[0] - ta * vecLine[1]);
+        // Compute perpendicular vector for triangle base
+        double nx = -unitY;
+        double ny = unitX;
 
-        //build the points on the sides of the arrow
-        xPoints[1] = (int) Math.round(baseX + th * vecLeft[0]);
-        yPoints[1] = (int) Math.round(baseY + th * vecLeft[1]);
-        xPoints[2] = (int) Math.round(baseX - th * vecLeft[0]);
-        yPoints[2] = (int) Math.round(baseY - th * vecLeft[1]);
+        // Compute adjusted triangle vertices
+        int tipX = x2;
+        int tipY = y2;
+        int baseX1 = (int) (x2 - offset * unitX + scale * nx);
+        int baseY1 = (int) (y2 - offset * unitY + scale * ny);
+        int baseX2 = (int) (x2 - offset * unitX - scale * nx);
+        int baseY2 = (int) (y2 - offset * unitY - scale * ny);
 
-        //line.lineTo((int)baseX, (int)baseY);
-        pt3 = new Point((int) Math.round(baseX), (int) Math.round(baseY));
 
         //arrowHead = new Polygon(xPoints, yPoints, 3);
-        arrowPoints[0] = pt1;
-        arrowPoints[1] = pt2;
-        arrowPoints[2] = pt3;
-        arrowPoints[3] = new Point(xPoints[0], yPoints[0]);
-        arrowPoints[4] = new Point(xPoints[1], yPoints[1]);
-        arrowPoints[5] = new Point(xPoints[2], yPoints[2]);
+        arrowPoints[0] = new Point(tipX,tipY);
+        arrowPoints[1] = new Point(baseX1,baseY1);
+        arrowPoints[2] = new Point(baseX2,baseY2);
+        // Adjust line endpoint to be the middle of the base line of the arrowhead
+        int adjustedX2 = (baseX1 + baseX2) / 2;
+        int adjustedY2 = (baseY1 + baseY2) / 2;
+        arrowPoints[3] = new Point(adjustedX2,adjustedY2);
 
         return arrowPoints;
 
@@ -1883,6 +1894,7 @@ public class ModifierRenderer
 
 
         Paint domPaint = new Paint();
+        domPaint.setAntiAlias(true);
         domPaint.setStrokeCap(Cap.BUTT);
         domPaint.setStrokeJoin(Join.MITER);
         domPaint.setStrokeWidth(domStrokeWidth);//3

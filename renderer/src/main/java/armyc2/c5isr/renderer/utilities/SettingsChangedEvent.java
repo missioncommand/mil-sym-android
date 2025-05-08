@@ -6,6 +6,7 @@ public class SettingsChangedEvent {
     static public final String EventType_CacheToggled = "CACHE_TOGGLED";
     static public final String EventType_FontChanged = "FONT_CHANGED";
 
+    static public final String EventType_MPFontChanged = "MP_FONT_CHANGED";
     
     private String _EventType = null;
     public SettingsChangedEvent(String eventType)

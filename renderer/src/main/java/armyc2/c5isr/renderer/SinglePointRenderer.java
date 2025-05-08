@@ -45,6 +45,7 @@ public class SinglePointRenderer implements SettingsChangedEventListener
     private final Object _SinglePointCacheMutex = new Object();
     private final Object _UnitCacheMutex = new Object();
 
+    private final Object _modifierFontMutex = new Object();
     private Paint _modifierFont = new Paint();
     private Paint _modifierOutlineFont = new Paint();
     private float _modifierDescent = 2;
@@ -1271,7 +1272,7 @@ public class SinglePointRenderer implements SettingsChangedEventListener
 
         if(sce != null && sce.getEventType().equals(SettingsChangedEvent.EventType_FontChanged))
         {
-            synchronized (_modifierFont)
+            synchronized (_modifierFontMutex)
             {
                 _modifierFont = RendererSettings.getInstance().getModiferFont();
                 _modifierOutlineFont = RendererSettings.getInstance().getModiferFont();
