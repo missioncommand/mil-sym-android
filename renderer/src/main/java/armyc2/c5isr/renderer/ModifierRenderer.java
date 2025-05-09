@@ -1725,7 +1725,7 @@ public class ModifierRenderer
             else
                 length = (int)Math.round(bounds.height() * 0.7);
         }
-        else if(bounds.height() >= 100)
+        else// if(bounds.height() >= 100)
         {
             length = (int)Math.round(bounds.height() * 0.7);
         }
