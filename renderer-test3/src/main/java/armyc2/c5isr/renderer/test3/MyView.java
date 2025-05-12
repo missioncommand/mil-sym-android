@@ -27,6 +27,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import armyc2.c5isr.renderer.utilities.RendererSettings;
+import armyc2.c5isr.renderer.utilities.SymbolID;
 import armyc2.c5isr.web.render.GeoPixelConversion;
 import armyc2.c5isr.web.render.PointConverter;
 
@@ -80,6 +81,13 @@ public class MyView extends View {
             displayGeo(event);
 
             String symbolID  = MainActivity.lineType;
+            if (symbolID.length() >= 2 && symbolID.length() <= 8) {
+                symbolID = "" + SymbolID.Version_2525Dch1 + SymbolID.StandardIdentity_Context_Reality +
+                        SymbolID.StandardIdentity_Affiliation_Friend + symbolID.substring(0,2) +
+                        SymbolID.Status_Present + SymbolID.HQTFD_Unknown + SymbolID.Echelon_Team_Crew +
+                        symbolID.substring(2);
+            }
+
             while (symbolID.length() < 30) {
                 symbolID += "0";
             }
