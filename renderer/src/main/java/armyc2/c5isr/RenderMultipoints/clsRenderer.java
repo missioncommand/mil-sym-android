@@ -139,6 +139,7 @@ public final class clsRenderer {
             milStd.setLineColor(tg.get_LineColor());
             milStd.setLineWidth(tg.get_LineThickness());
             milStd.setFillStyle(tg.get_TexturePaint());
+            milStd.setPatternScale(tg.get_patternScale());
         } catch (Exception exc) {
             ErrorLogger.LogException("clsRenderer", "createMilStdSymboFromTGLight",
                     new RendererException("Failed to set geo points or pixels for " + tg.get_SymbolId(), exc));
@@ -183,6 +184,7 @@ public final class clsRenderer {
             tg.set_LineColor(milStd.getLineColor());
             tg.set_LineThickness(milStd.getLineWidth());
             tg.set_TexturePaint(milStd.getFillStyle());
+            tg.set_patternScale(milStd.getPatternScale());
 
             tg.set_IconSize(milStd.getUnitSize());
             tg.set_KeepUnitRatio(milStd.getKeepUnitRatio());
@@ -676,6 +678,7 @@ public final class clsRenderer {
             tg.set_LineColor(milStd.getLineColor());
             tg.set_LineThickness(milStd.getLineWidth());
             tg.set_TexturePaint(milStd.getFillStyle());
+            tg.set_patternScale(milStd.getPatternScale());
             tg.set_FontBackColor(Color.WHITE);
             tg.set_TextColor(milStd.getTextColor());
 
