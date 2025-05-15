@@ -68,6 +68,7 @@ import armyc2.c5isr.renderer.utilities.MSInfo;
 import armyc2.c5isr.renderer.utilities.MSLookup;
 import armyc2.c5isr.renderer.utilities.MilStdAttributes;
 import armyc2.c5isr.renderer.utilities.Modifiers;
+import armyc2.c5isr.renderer.utilities.RendererSettings;
 import armyc2.c5isr.renderer.utilities.SVGInfo;
 import armyc2.c5isr.renderer.utilities.SVGLookup;
 import armyc2.c5isr.renderer.utilities.SymbolID;
@@ -84,7 +85,7 @@ public class SymbolPickerActivity extends Activity {
     public static final String supportedVersionsKey = "supportedVersionsKey";
     private static final String searchNodeName = "searchResults";
     private boolean activeSearch = false;
-    private final int cellSize = 300; // in px
+    private final int cellSize = 85 * RendererSettings.getInstance().getDeviceDPI() / 96; // in px
     private Stack<Node> pageTrail; // top of stack is current page
     private SymbolGVAdapter symbolTableAdapter;
     private Button configureButton;

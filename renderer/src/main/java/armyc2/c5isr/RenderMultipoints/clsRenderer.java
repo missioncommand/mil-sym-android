@@ -139,6 +139,7 @@ public final class clsRenderer {
             milStd.setLineColor(tg.get_LineColor());
             milStd.setLineWidth(tg.get_LineThickness());
             milStd.setFillStyle(tg.get_TexturePaint());
+            milStd.setPatternScale(tg.get_patternScale());
         } catch (Exception exc) {
             ErrorLogger.LogException("clsRenderer", "createMilStdSymboFromTGLight",
                     new RendererException("Failed to set geo points or pixels for " + tg.get_SymbolId(), exc));
@@ -183,6 +184,7 @@ public final class clsRenderer {
             tg.set_LineColor(milStd.getLineColor());
             tg.set_LineThickness(milStd.getLineWidth());
             tg.set_TexturePaint(milStd.getFillStyle());
+            tg.set_patternScale(milStd.getPatternScale());
 
             tg.set_IconSize(milStd.getUnitSize());
             tg.set_KeepUnitRatio(milStd.getKeepUnitRatio());
@@ -676,6 +678,7 @@ public final class clsRenderer {
             tg.set_LineColor(milStd.getLineColor());
             tg.set_LineThickness(milStd.getLineWidth());
             tg.set_TexturePaint(milStd.getFillStyle());
+            tg.set_patternScale(milStd.getPatternScale());
             tg.set_FontBackColor(Color.WHITE);
             tg.set_TextColor(milStd.getTextColor());
 
@@ -1098,7 +1101,7 @@ public final class clsRenderer {
 //            }
             ArrayList<POINT2> origFillPixels = lineutility.getDeepCopy(tg.Pixels);
 
-            if (tg.get_LineType() == TacticalLines.LC || tg.get_LineType() == TacticalLines.LC_HOSTILE)
+            if (tg.get_LineType() == TacticalLines.LC)
                 armyc2.c5isr.JavaTacticalRenderer.clsUtility.SegmentLCPoints(tg, converter);
 
 //            boolean shiftLines = Channels.getShiftLines();
@@ -1152,7 +1155,6 @@ public final class clsRenderer {
             Boolean isTextFlipped = false;
             ArrayList<Shape2> shapes = null;   //use this to collect all the shapes
             clsUtilityGE.setSplineLinetype(tg);
-            setHostileLC(tg);
 
             clsUtilityCPOF.SegmentGeoPoints(tg, converter, zoomFactor);
             if (clipBounds != null || clipPoints != null) {
@@ -1408,55 +1410,6 @@ public final class clsRenderer {
 
         }
     }
-    /**
-     * to follow right hand rule for LC when affiliation is hostile. also fixes
-     * MSDZ point order and maybe various other wayward symbols
-     *
-     * @param tg
-     */
-    private static void setHostileLC(TGLight tg) {
-        try {
-            Boolean usas1314 = true;
-            ArrayList<POINT2> pts = new ArrayList();
-            int j = 0;
-            switch (tg.get_LineType()) {
-                case TacticalLines.LC:
-                    if (usas1314 == false) {
-                        break;
-                    }
-                    if (!tg.isHostile()) {
-                        break;
-                    }
-                    pts = (ArrayList<POINT2>) tg.Pixels.clone();
-                    for (j = 0; j < tg.Pixels.size(); j++) {
-                        tg.Pixels.set(j, pts.get(pts.size() - j - 1));
-                    }
-                    //reverse the latlongs also
-                    pts = (ArrayList<POINT2>) tg.LatLongs.clone();
-                    for (j = 0; j < tg.LatLongs.size(); j++) {
-                        tg.LatLongs.set(j, pts.get(pts.size() - j - 1));
-                    }
-                    break;
-                case TacticalLines.LINE:    //CPOF client requests reverse orientation
-                    pts = (ArrayList<POINT2>) tg.Pixels.clone();
-                    for (j = 0; j < tg.Pixels.size(); j++) {
-                        tg.Pixels.set(j, pts.get(pts.size() - j - 1));
-                    }
-                    //reverse the latlongs also
-                    pts = (ArrayList<POINT2>) tg.LatLongs.clone();
-                    for (j = 0; j < tg.LatLongs.size(); j++) {
-                        tg.LatLongs.set(j, pts.get(pts.size() - j - 1));
-                    }
-                    break;
-                default:
-                    return;
-            }
-        } catch (Exception exc) {
-            ErrorLogger.LogException(_className, "setHostileLC",
-                    new RendererException("Failed inside setHostileLC", exc));
-
-        }
-    }
 
     /**
      * set the clip rectangle as an arraylist or a Rectangle2D depending on the
@@ -1550,8 +1503,6 @@ public final class clsRenderer {
             int linetype = tg.get_LineType();
             //replace calls to MovePixels
             clsUtility.RemoveDuplicatePoints(tg);
-
-            setHostileLC(tg);
 
             BufferedImage bi = new BufferedImage(8, 8, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d = bi.createGraphics();
@@ -2318,6 +2269,7 @@ public final class clsRenderer {
                 case TacticalLines.SINGLEC:
                 case TacticalLines.DOUBLEC:
                 case TacticalLines.TRIPLE:
+                case TacticalLines.LINE:
                     if (tg.Pixels != null) {
                         Collections.reverse(tg.Pixels);
                     }

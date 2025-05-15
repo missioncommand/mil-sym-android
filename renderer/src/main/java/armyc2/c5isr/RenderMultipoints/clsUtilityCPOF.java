@@ -1092,7 +1092,7 @@ public final class clsUtilityCPOF {
                 case TacticalLines.BRDGHD:
                 case TacticalLines.BRDGHD_GE:
                 case TacticalLines.NFL:
-                    minSpikeDistance = arraysupport.getScaledSize(5, tg.get_LineThickness());
+                    minSpikeDistance = arraysupport.getScaledSize(5, tg.get_LineThickness(), tg.get_patternScale());
                     segmented = false;
                     break;
                 case TacticalLines.ATDITCH:
@@ -1103,7 +1103,7 @@ public final class clsUtilityCPOF {
                 case TacticalLines.FORT:
                 case TacticalLines.FORTL:
                 case TacticalLines.STRONG:
-                    minSpikeDistance = arraysupport.getScaledSize(25, tg.get_LineThickness());
+                    minSpikeDistance = arraysupport.getScaledSize(25, tg.get_LineThickness(), tg.get_patternScale());
                     break;
                 case TacticalLines.LC:
                 case TacticalLines.OBSAREA:
@@ -1122,12 +1122,12 @@ public final class clsUtilityCPOF {
                 case TacticalLines.SINGLEC:
                 case TacticalLines.DOUBLEC:
                 case TacticalLines.TRIPLE:
-                    minSpikeDistance = arraysupport.getScaledSize(35, tg.get_LineThickness());
+                    minSpikeDistance = arraysupport.getScaledSize(35, tg.get_LineThickness(), tg.get_patternScale());
                     break;
                 case TacticalLines.ICE_EDGE_RADAR:  //METOCs
                 case TacticalLines.ICE_OPENINGS_FROZEN:
                 case TacticalLines.CRACKS_SPECIFIC_LOCATION:
-                    minSpikeDistance = arraysupport.getScaledSize(35, tg.get_LineThickness());
+                    minSpikeDistance = arraysupport.getScaledSize(35, tg.get_LineThickness(), tg.get_patternScale());
                     break;
                 default:
                     return;
@@ -1339,6 +1339,7 @@ public final class clsUtilityCPOF {
                 case TacticalLines.IFF_ON:
                 case TacticalLines.GENERIC_LINE:
                 case TacticalLines.CFL:
+                case TacticalLines.TRIP:
                 case TacticalLines.OVERHEAD_WIRE:
                 case TacticalLines.NFL:
                 case TacticalLines.MFP:
@@ -1482,6 +1483,7 @@ public final class clsUtilityCPOF {
             case TacticalLines.IFF_ON:
             case TacticalLines.GENERIC_LINE:
             case TacticalLines.CFL:
+            case TacticalLines.TRIP:
             case TacticalLines.NFL:
             case TacticalLines.MFP:
             case TacticalLines.RFL:
