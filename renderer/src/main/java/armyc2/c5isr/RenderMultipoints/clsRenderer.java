@@ -2262,7 +2262,6 @@ public final class clsRenderer {
                 return;
             }
             switch (tg.get_LineType()) {
-                case TacticalLines.LC:
                 case TacticalLines.UNSP:
                 case TacticalLines.LWFENCE:
                 case TacticalLines.HWFENCE:
