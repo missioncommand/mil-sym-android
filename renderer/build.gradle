@@ -22,7 +22,7 @@ android {
         //targetSdkVersion 35
         minSdkVersion android_minSdkVersion
         targetSdkVersion android_targetSdkVersion
-        versionName "2.3.4" //Renderer Version Number
+        versionName "2.3.5" //Renderer Version Number
     }
     buildToolsVersion '35.0.0'
 
