@@ -325,6 +325,11 @@ public class MainActivity extends Activity {
 				String svg = si.getSVG();
 				Log.i(symbolID,svg);
 			}
+			//base land unit test
+			//MSInfo msiBase = MSLookup.getInstance().getMSLInfo("10011000000000000000");
+			//si = mir.RenderSVG("10011000000000000000", modifiers, attributes);
+			//Log.i("10011000000000000000",si.getSVG());
+
 	    	//test font file
 	    	/*TextView t = (TextView)findViewById(R.id.tvStatus);
 	    	t.setText("Testing font files");
