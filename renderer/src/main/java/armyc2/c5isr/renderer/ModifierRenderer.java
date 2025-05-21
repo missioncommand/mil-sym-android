@@ -8735,6 +8735,58 @@ public class ModifierRenderer
                     }
                 }
             }
+            else if(ec == 182600)//Isolated Personnel Location
+            {
+                if (modifiers.containsKey(Modifiers.C_QUANTITY)) {
+                    strText = modifiers.get(Modifiers.C_QUANTITY);
+                    if (strText != null) {
+                        ti = new TextInfo(strText, 0, 0, _modifierFont);
+                        labelWidth = (int)Math.round(ti.getTextBounds().width());
+                        //subset of NBC, just nuclear
+                        x = (int)(bounds.left + (bounds.width() * 0.5));
+                        x = x - (int) (labelWidth * 0.5);
+                        y = (int)bounds.top - descent;
+                        ti.setLocation(Math.round(x), Math.round(y));
+                        arrMods.add(ti);
+                    }
+                }
+                if (modifiers.containsKey(Modifiers.W_DTG_1)) {
+                    strText = modifiers.get(Modifiers.W_DTG_1);
+                    if (strText != null) {
+                        ti = new TextInfo(strText, 0, 0, _modifierFont);
+                        labelWidth = (int)Math.round(ti.getTextBounds().width());
+
+                        x = (int)bounds.left - labelWidth - bufferXL;
+                        if (!byLabelHeight) {
+                            y = (int)bounds.top + labelHeight - descent;
+                        } else {
+                            //y = bounds.y + ((bounds.getHeight * 0.5) + (labelHeight * 0.5) - (labelHeight + bufferText));
+                            y = (int)(bounds.top + ((bounds.height() * 0.5) - ((labelHeight - descent) * 0.5) + (-descent - bufferText)));
+                        }
+
+                        ti.setLocation(Math.round(x), Math.round(y));
+                        arrMods.add(ti);
+                    }
+                }
+                if (modifiers.containsKey(Modifiers.W1_DTG_2)) {
+                    strText = modifiers.get(Modifiers.W1_DTG_2);
+                    if (strText != null) {
+                        ti = new TextInfo(strText, 0, 0, _modifierFont);
+                        labelWidth = (int)Math.round(ti.getTextBounds().width());
+
+                        x = (int)bounds.left - labelWidth - bufferXL;
+                        if (!byLabelHeight) {
+                            y = (int)bounds.top + labelHeight - descent;
+                        } else {
+                            //y = bounds.y + ((bounds.getHeight * 0.5) + (labelHeight * 0.5) - (labelHeight + bufferText));
+                            y = (int)(bounds.top + ((bounds.height() * 0.5) - (((labelHeight * 2) - descent) * 0.5) + (-descent - bufferText)));
+                        }
+
+                        ti.setLocation(Math.round(x), Math.round(y));
+                        arrMods.add(ti);
+                    }
+                }
+            }
             else if (SymbolUtilities.isCBRNEvent(symbolID)) //CBRN
             {
                 if (modifiers.containsKey(Modifiers.N_HOSTILE)) {
