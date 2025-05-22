@@ -303,8 +303,8 @@ public class MainActivity extends Activity {
         //t.setText("Initializing Renderer");
         //depending on screen size and DPI you may want to change the font size.
         RendererSettings rs = RendererSettings.getInstance();
-        rs.setModifierFont("Arial", Typeface.BOLD, 18);
-        rs.setMPLabelFont("Arial", Typeface.BOLD, 18);
+        rs.setModifierFont("Arial", Typeface.BOLD, 48);
+        rs.setMPLabelFont("Arial", Typeface.BOLD, 48);
 
         //rs.setTextBackgroundMethod(RendererSettings.TextBackgroundMethod_COLORFILL);
 
