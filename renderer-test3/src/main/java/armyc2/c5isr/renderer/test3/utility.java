@@ -151,6 +151,16 @@ public final class utility {
                 lowerLatitude, rightLongitude);
         ArrayList<POINT2> pts2 = PixelsToLatLong(pts, converter);
 
+        if (symbolCode.length() >= 2 && symbolCode.length() <= 8) {
+            symbolCode = "" + SymbolID.Version_2525Ech1 + SymbolID.StandardIdentity_Context_Reality +
+                    SymbolID.StandardIdentity_Affiliation_Friend + symbolCode.substring(0,2) +
+                    SymbolID.Status_Present + SymbolID.HQTFD_Unknown + SymbolID.Echelon_Team_Crew +
+                    symbolCode.substring(2);
+        }
+
+        while (symbolCode.length() < 30) {
+            symbolCode += "0";
+        }
         boolean useDashArray=true;
         //uncomment the line to allow renderer to calculate the dashes
         //comment following line if client intends to calculate dashed lines to improve performance

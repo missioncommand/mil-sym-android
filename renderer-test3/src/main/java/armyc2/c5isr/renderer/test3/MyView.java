@@ -85,7 +85,7 @@ public class MyView extends View {
             String symbolID  = MainActivity.lineType;
             if (SymbolUtilities.isNumber(symbolID)) {
                 if (symbolID.length() >= 2 && symbolID.length() <= 8) {
-                    symbolID = "" + SymbolID.Version_2525Dch1 + SymbolID.StandardIdentity_Context_Reality +
+                    symbolID = "" + SymbolID.Version_2525Ech1 + SymbolID.StandardIdentity_Context_Reality +
                             SymbolID.StandardIdentity_Affiliation_Friend + symbolID.substring(0, 2) +
                             SymbolID.Status_Present + SymbolID.HQTFD_Unknown + SymbolID.Echelon_Team_Crew +
                             symbolID.substring(2);
