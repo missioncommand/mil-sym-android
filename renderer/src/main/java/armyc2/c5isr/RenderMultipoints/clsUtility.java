@@ -496,6 +496,7 @@ public final class clsUtility {
             case TacticalLines.BOUNDARY:
             case TacticalLines.WDRAWUP:
             case TacticalLines.WITHDRAW:
+            case TacticalLines.DISENGAGE:
             case TacticalLines.RETIRE:
             case TacticalLines.FPOL:
             case TacticalLines.RPOL:
