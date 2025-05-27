@@ -181,6 +181,9 @@ public class Modifier2 {
                 case TacticalLines.SEIZE:
                     label = "S";
                     break;
+                case TacticalLines.EVACUATE:
+                    label = "E";
+                    break;
                 case TacticalLines.RETAIN:
                     label = "R";
                     break;
@@ -3491,6 +3494,7 @@ public class Modifier2 {
                 case TacticalLines.SECURE:
                 case TacticalLines.CONTAIN:
                 case TacticalLines.SEIZE:
+                case TacticalLines.EVACUATE:
                 case TacticalLines.CORDONKNOCK:
                 case TacticalLines.CORDONSEARCH:
                 case TacticalLines.FOLLA:
@@ -3675,6 +3679,7 @@ public class Modifier2 {
                     }
                     break;
                 case TacticalLines.SEIZE:
+                case TacticalLines.EVACUATE:
                     pt0 = tg.Pixels.get(26);
                     pt1 = tg.Pixels.get(27);
                     //pt1=lineutility.ExtendAlongLineDouble(pt1, pt0, -10);
