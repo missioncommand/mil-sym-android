@@ -67,7 +67,7 @@ public class TreeManager {
         String symbolSet = "";
 
         InputStream is;
-        if (version == SymbolID.Version_2525E) {
+        if (version >= SymbolID.Version_2525E) {
             is = context.getResources().openRawResource(R.raw.mse);
         } else {
             is = context.getResources().openRawResource(R.raw.msd);

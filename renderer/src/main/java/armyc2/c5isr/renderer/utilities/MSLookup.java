@@ -86,7 +86,7 @@ public class MSLookup {
 
         try
         {
-            if(version == SymbolID.Version_2525E) {
+            if(version >= SymbolID.Version_2525E) {
                 lookup = _MSLookupE;
                 list = _IDListE;
             }
@@ -709,7 +709,7 @@ public class MSLookup {
         int length = basicID.length();
         if(length == 8)
         {
-            if(version == SymbolID.Version_2525E)
+            if(version >= SymbolID.Version_2525E)
                 return _MSLookupE.getOrDefault(basicID, null);
             else if (version == SymbolID.Version_2525D && basicID.equals("25272100"))
                 // MSDZ can have extra point in D
@@ -735,7 +735,7 @@ public class MSLookup {
     {
         if(version < SymbolID.Version_2525E)
             return _IDListD;
-        else if(version == SymbolID.Version_2525E)
+        else if(version >= SymbolID.Version_2525E)
             return _IDListE;
         else
             return _IDListD;
@@ -763,7 +763,7 @@ public class MSLookup {
                 else
                     ErrorLogger.LogMessage("Symbol Set and Entity Code combination already exist: " + msInfo.getBasicSymbolID(), Level.INFO,false);
             }
-            else if (version == SymbolID.Version_2525E)
+            else if (version >= SymbolID.Version_2525E)
             {
                 if(this._IDListE.indexOf(msInfo.getBasicSymbolID()) == -1)
                 {
