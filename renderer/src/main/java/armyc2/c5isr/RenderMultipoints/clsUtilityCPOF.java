@@ -1442,6 +1442,7 @@ public final class clsUtilityCPOF {
                 case TacticalLines.ROUTE_ALT:
                 case TacticalLines.DHA_REVD:
                 case TacticalLines.DHA:
+                case TacticalLines.KILL_ZONE:
                 case TacticalLines.EPW:
                 case TacticalLines.FARP:
                 case TacticalLines.RHA:
