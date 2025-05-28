@@ -291,6 +291,9 @@ public final class countsupport
                 case TacticalLines.CORDONSEARCH:
                     count = 50;
                     break;
+                case TacticalLines.AREA_DEFENSE:
+                    count = 67;
+                    break;
                 case TacticalLines.OCCUPY:
                     count = 32;
                     break;
