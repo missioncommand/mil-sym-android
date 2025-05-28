@@ -11,6 +11,8 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.regex.Pattern;
 
+import armyc2.c5isr.JavaLineArray.TacticalLines;
+
 /**
  * Has various utility functions for prcessing the symbol code.
  * See {@link SymbolID} for additional functions related to parsing the symbol code.
@@ -1770,4 +1772,29 @@ public class SymbolUtilities {
         return rw;
     }
 
+    /**
+     * @param linetype the line type
+     * @return true if the line is a basic shape
+     */
+    public static boolean isBasicShape(int linetype) {
+        switch (linetype) {
+            case TacticalLines.BS_AREA:
+            case TacticalLines.BS_LINE:
+            case TacticalLines.BS_CROSS:
+            case TacticalLines.BS_ELLIPSE:
+            case TacticalLines.PBS_ELLIPSE:
+            case TacticalLines.PBS_CIRCLE:
+            case TacticalLines.PBS_SQUARE:
+            case TacticalLines.PBS_RECTANGLE:
+            case TacticalLines.BS_RECTANGLE:
+            case TacticalLines.BBS_AREA:
+            case TacticalLines.BBS_LINE:
+            case TacticalLines.BBS_POINT:
+            case TacticalLines.BBS_RECTANGLE:
+            case TacticalLines.BS_BBOX:
+                return true;
+            default:
+                return false;
+        }
+    }
 }

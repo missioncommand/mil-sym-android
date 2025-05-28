@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import armyc2.c5isr.JavaLineArray.BasicShapes;
 import armyc2.c5isr.JavaLineArray.POINT2;
 import armyc2.c5isr.JavaLineArray.lineutility;
 import armyc2.c5isr.graphics2d.AffineTransform;
@@ -150,16 +151,6 @@ public final class utility {
                 lowerLatitude, rightLongitude);
         ArrayList<POINT2> pts2 = PixelsToLatLong(pts, converter);
 
-        if (symbolCode.length() >= 2 && symbolCode.length() <= 8) {
-            symbolCode = "" + SymbolID.Version_2525Dch1 + SymbolID.StandardIdentity_Context_Reality +
-                    SymbolID.StandardIdentity_Affiliation_Friend + symbolCode.substring(0,2) +
-                    SymbolID.Status_Present + SymbolID.HQTFD_Unknown + SymbolID.Echelon_Team_Crew +
-                    symbolCode.substring(2);
-        }
-
-        while (symbolCode.length() < 30) {
-            symbolCode += "0";
-        }
         boolean useDashArray=true;
         //uncomment the line to allow renderer to calculate the dashes
         //comment following line if client intends to calculate dashed lines to improve performance
@@ -199,21 +190,74 @@ public final class utility {
             if (!MainActivity.lineWidth.isEmpty())
                 attributes.put(MilStdAttributes.LineWidth, MainActivity.lineWidth);
             attributes.put(MilStdAttributes.UseDashArray, Boolean.toString(useDashArray));
-            MilStdSymbol mss= WebRenderer.RenderMultiPointAsMilStdSymbol("id", "name", "description", symbolCode, controlPtsStr, altitudeMode, scale, rectStr, modifiers, attributes);
-            String canRender = MultiPointHandler.canRenderMultiPoint(symbolCode, modifiers, pts2.size());
 
-            String strGeoJSON = WebRenderer.RenderSymbol("ID", "name", "description", symbolCode, controlPtsStr, altitudeMode , scale, rectStr, modifiers, attributes,WebRenderer.OUTPUT_FORMAT_GEOJSON);
-            Log.i(symbolCode, strGeoJSON);
-            String strGeoSVG = WebRenderer.RenderSymbol("ID", "name", "description", symbolCode, controlPtsStr, altitudeMode , scale, rectStr, modifiers, attributes,WebRenderer.OUTPUT_FORMAT_GEOSVG);
-            Log.i(symbolCode, strGeoSVG);
+         switch (symbolCode) {
+             case "LINE": {
+                 MilStdSymbol mss = WebRenderer.RenderBasicShapeAsMilStdSymbol("id", "name", "description", BasicShapes.LINE, controlPtsStr, altitudeMode, scale, rectStr, modifiers, attributes);
+                 drawShapeInfosGE(g2d, mss.getSymbolShapes(), useDashArray, mss.getSymbolID(), converter);
+                 drawShapeInfosText(g2d, mss.getModifierShapes(), mss.getTextColor(), converter);
+                 break;
+             }
+             case "AREA": {
+                 MilStdSymbol mss = WebRenderer.RenderBasicShapeAsMilStdSymbol("id", "name", "description", BasicShapes.AREA, controlPtsStr, altitudeMode, scale, rectStr, modifiers, attributes);
+                 drawShapeInfosGE(g2d, mss.getSymbolShapes(), useDashArray, mss.getSymbolID(), converter);
+                 drawShapeInfosText(g2d, mss.getModifierShapes(), mss.getTextColor(), converter);
+                 break;
+             }
+             case "ELLIPSE": {
+                 MilStdSymbol mss = WebRenderer.RenderBasicShapeAsMilStdSymbol("id", "name", "description", BasicShapes.ELLIPSE, controlPtsStr, altitudeMode, scale, rectStr, modifiers, attributes);
+                 drawShapeInfosGE(g2d, mss.getSymbolShapes(), useDashArray, mss.getSymbolID(), converter);
+                 drawShapeInfosText(g2d, mss.getModifierShapes(), mss.getTextColor(), converter);
+                 break;
+             }
+             case "CIRCLE": {
+                 MilStdSymbol mss = WebRenderer.RenderBasicShapeAsMilStdSymbol("id", "name", "description", BasicShapes.CIRCLE, controlPtsStr, altitudeMode, scale, rectStr, modifiers, attributes);
+                 drawShapeInfosGE(g2d, mss.getSymbolShapes(), useDashArray, mss.getSymbolID(), converter);
+                 drawShapeInfosText(g2d, mss.getModifierShapes(), mss.getTextColor(), converter);
+                 break;
+             }
+             case "RECTANGLE": {
+                 MilStdSymbol mss = WebRenderer.RenderBasicShapeAsMilStdSymbol("id", "name", "description", BasicShapes.RECTANGLE, controlPtsStr, altitudeMode, scale, rectStr, modifiers, attributes);
+                 drawShapeInfosGE(g2d, mss.getSymbolShapes(), useDashArray, mss.getSymbolID(), converter);
+                 drawShapeInfosText(g2d, mss.getModifierShapes(), mss.getTextColor(), converter);
+                 break;
+             }
+             case "POINT": {
+                 MilStdSymbol mss = WebRenderer.RenderBasicShapeAsMilStdSymbol("id", "name", "description", BasicShapes.POINT, controlPtsStr, altitudeMode, scale, rectStr, modifiers, attributes);
+                 drawShapeInfosGE(g2d, mss.getSymbolShapes(), useDashArray, mss.getSymbolID(), converter);
+                 drawShapeInfosText(g2d, mss.getModifierShapes(), mss.getTextColor(), converter);
+                 break;
+             }
+             default: { // 2525 symbol code
+                 if (symbolCode.length() >= 2 && symbolCode.length() <= 8) {
+                     symbolCode = "" + SymbolID.Version_2525Dch1 + SymbolID.StandardIdentity_Context_Reality +
+                             SymbolID.StandardIdentity_Affiliation_Friend + symbolCode.substring(0, 2) +
+                             SymbolID.Status_Present + SymbolID.HQTFD_Unknown + SymbolID.Echelon_Team_Crew +
+                             symbolCode.substring(2);
+                 }
 
-            if (canRender.equals("true")) {
-                // drawControlPoints(g2d, mss.getCoordinates(), converter);
-                drawShapeInfosGE(g2d, mss.getSymbolShapes(),useDashArray,mss.getSymbolID(),converter);
-                drawShapeInfosText(g2d, mss.getModifierShapes(),mss.getTextColor(),converter);
-            } else {
-                Log.e("Utility", "Cannot Render multipoint: " + canRender);
-            }
+                 while (symbolCode.length() < 30) {
+                     symbolCode += "0";
+                 }
+
+                 MilStdSymbol mss = WebRenderer.RenderMultiPointAsMilStdSymbol("id", "name", "description", symbolCode, controlPtsStr, altitudeMode, scale, rectStr, modifiers, attributes);
+                 String canRender = MultiPointHandler.canRenderMultiPoint(symbolCode, modifiers, pts2.size());
+
+                 String strGeoJSON = WebRenderer.RenderSymbol("ID", "name", "description", symbolCode, controlPtsStr, altitudeMode, scale, rectStr, modifiers, attributes, WebRenderer.OUTPUT_FORMAT_GEOJSON);
+                 Log.i(symbolCode, strGeoJSON);
+                 String strGeoSVG = WebRenderer.RenderSymbol("ID", "name", "description", symbolCode, controlPtsStr, altitudeMode, scale, rectStr, modifiers, attributes, WebRenderer.OUTPUT_FORMAT_GEOSVG);
+                 Log.i(symbolCode, strGeoSVG);
+
+                 if (canRender.equals("true")) {
+                     // drawControlPoints(g2d, mss.getCoordinates(), converter);
+                     drawShapeInfosGE(g2d, mss.getSymbolShapes(), useDashArray, mss.getSymbolID(), converter);
+                     drawShapeInfosText(g2d, mss.getModifierShapes(), mss.getTextColor(), converter);
+                 } else {
+                     Log.e("Utility", "Cannot Render multipoint: " + canRender);
+                 }
+                 break;
+             }
+         }
     }
 
     private static String getRectString(double deltax, double deltay) {
