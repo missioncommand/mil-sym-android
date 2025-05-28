@@ -261,6 +261,9 @@ public class Modifier2 {
                 case TacticalLines.RIP:
                     label = "RIP";
                     break;
+                case TacticalLines.DEMONSTRATE:
+                    label = "DEM";
+                    break;
                 case TacticalLines.WITHDRAW:
                     label = "W";
                     break;
@@ -2123,6 +2126,7 @@ public class Modifier2 {
                 case TacticalLines.TORPEDO:
                 case TacticalLines.OPTICAL:
                 case TacticalLines.RIP:
+                case TacticalLines.DEMONSTRATE:
                 case TacticalLines.BOMB:
                 case TacticalLines.ZONE:
                 case TacticalLines.AT:
@@ -3160,6 +3164,7 @@ public class Modifier2 {
                 case TacticalLines.WDRAWUP:
                 case TacticalLines.FPOL:
                 case TacticalLines.RPOL:
+                case TacticalLines.DEMONSTRATE:
                     AddIntegralModifier(tg, label, aboveMiddle, 0, 0, 1, true);
                     break;
                 case TacticalLines.RIP:
