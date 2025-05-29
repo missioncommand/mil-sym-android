@@ -676,7 +676,7 @@ public class SinglePointRenderer implements SettingsChangedEventListener
                 if(keepUnitRatio == true && msi.getSymbolSet() == SymbolID.SymbolSet_ControlMeasure && msi.getGeometry().equalsIgnoreCase("point"))
                 {
                     if(msi.getDrawRule() == DrawRules.POINT1)//Action Points
-                        pixelSize = (int)Math.ceil((pixelSize/1.5f) * 1.5f);
+                        pixelSize = (int)Math.ceil((pixelSize/1.5f) * 2.0f);
                     else
                         pixelSize = (int)Math.ceil((pixelSize/1.5f) * 1.2f);
                 }
