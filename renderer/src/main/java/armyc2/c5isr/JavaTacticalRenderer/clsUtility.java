@@ -195,6 +195,7 @@ public final class clsUtility {
             case TacticalLines.PENETRATE:
             case TacticalLines.RETIRE:
             case TacticalLines.PURSUIT:
+            case TacticalLines.ENVELOPMENT:
             case TacticalLines.FPOL:
             case TacticalLines.RPOL:
             case TacticalLines.SCREEN:

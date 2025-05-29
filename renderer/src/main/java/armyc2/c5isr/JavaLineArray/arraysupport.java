@@ -3849,6 +3849,9 @@ public final class arraysupport {
                 case TacticalLines.PURSUIT:
                     acCounter = DISMSupport.GetPursuitGraphicDouble(pLinePoints);
                     break;
+                case TacticalLines.ENVELOPMENT:
+                    acCounter = DISMSupport.GetEnvelopmentGraphicDouble(pLinePoints);
+                    break;
                 case TacticalLines.EASY:
                     acCounter = DISMSupport.GetDISMEasyDouble(pLinePoints, lineType);
                     break;
@@ -3905,6 +3908,8 @@ public final class arraysupport {
                 case TacticalLines.MFLANE:
                 case TacticalLines.DIRATKAIR:
                 case TacticalLines.ABATIS:
+                case TacticalLines.MOBILE_DEFENSE:
+                case TacticalLines.ENVELOPMENT:
                     FillPoints(pLinePoints, acCounter, points);
                     break;
                 default:
