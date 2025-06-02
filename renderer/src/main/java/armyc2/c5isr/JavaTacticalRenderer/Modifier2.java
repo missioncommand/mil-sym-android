@@ -599,6 +599,9 @@ public class Modifier2 {
                 case TacticalLines.FRONTAL_ATTACK:
                     label = "A";
                     break;
+                case TacticalLines.TURNING_MOVEMENT:
+                    label = "T";
+                    break;
                 default:
                     break;
             }
@@ -2162,6 +2165,7 @@ public class Modifier2 {
                 case TacticalLines.ANCHORAGE_AREA:
                 case TacticalLines.SPT:
                 case TacticalLines.FRONTAL_ATTACK:
+                case TacticalLines.TURNING_MOVEMENT:
                 case TacticalLines.AIRAOA:
                 case TacticalLines.AAAAA:
                 case TacticalLines.MAIN:
@@ -2465,6 +2469,7 @@ public class Modifier2 {
                     break;
                 case TacticalLines.SPT:
                 case TacticalLines.FRONTAL_ATTACK:
+                case TacticalLines.TURNING_MOVEMENT:
                 case TacticalLines.AIRAOA:
                 case TacticalLines.AAAAA:
                 case TacticalLines.MAIN:
@@ -2489,7 +2494,7 @@ public class Modifier2 {
                         midPt = lineutility.MidPointDouble(pt2, pt3, 0);
                         AddIntegralAreaModifier(tg, tg.get_Name(), aboveMiddle, -csFactor / 2, midPt, midPt, false);
                     }
-                    if (linetype == TacticalLines.FRONTAL_ATTACK) {
+                    if (linetype == TacticalLines.FRONTAL_ATTACK || linetype == TacticalLines.TURNING_MOVEMENT) {
                         midPt=lineutility.ClosestPointOnLine(pt0, pt1, ptLast);
                         AddIntegralAreaModifier(tg, label, aboveMiddle, 0.5 * csFactor, midPt, pt0, true);
                     }

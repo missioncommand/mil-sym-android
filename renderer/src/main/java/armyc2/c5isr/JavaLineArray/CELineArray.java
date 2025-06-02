@@ -77,6 +77,7 @@ public final class CELineArray {
                     lResult = 2 * lElements + 8;
                     break;
                 case TacticalLines.FRONTAL_ATTACK:
+                case TacticalLines.TURNING_MOVEMENT:
                     lResult = 2 * lElements + 10;
                     break;
                 case TacticalLines.CATK:
@@ -134,6 +135,7 @@ public final class CELineArray {
                 case TacticalLines.SPT:
                 case TacticalLines.SPT_STRAIGHT:
                 case TacticalLines.FRONTAL_ATTACK:
+                case TacticalLines.TURNING_MOVEMENT:
                 case TacticalLines.UNSP:
                 case TacticalLines.SFENCE:
                 case TacticalLines.DFENCE:

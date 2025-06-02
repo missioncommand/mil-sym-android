@@ -781,6 +781,7 @@ public final class Channels {
                 case TacticalLines.SPT_STRAIGHT:
                 case TacticalLines.SPT:
                 case TacticalLines.FRONTAL_ATTACK:
+                case TacticalLines.TURNING_MOVEMENT:
                 case TacticalLines.AAAAA:
                 case TacticalLines.AIRAOA:
                 case TacticalLines.CATK:
@@ -840,6 +841,7 @@ public final class Channels {
                 case TacticalLines.SPT:
                 case TacticalLines.SPT_STRAIGHT:
                 case TacticalLines.FRONTAL_ATTACK:
+                case TacticalLines.TURNING_MOVEMENT:
                 case TacticalLines.TRIPLE:
                 case TacticalLines.DOUBLEC:
                 case TacticalLines.SINGLEC:
@@ -1315,6 +1317,7 @@ public final class Channels {
                 case TacticalLines.SPT:
                 case TacticalLines.SPT_STRAIGHT:
                 case TacticalLines.FRONTAL_ATTACK:
+                case TacticalLines.TURNING_MOVEMENT:
                 case TacticalLines.MAIN:
                 case TacticalLines.MAIN_STRAIGHT:
                 case TacticalLines.CATKBYFIRE:	//80
@@ -1342,6 +1345,7 @@ public final class Channels {
                 case TacticalLines.SPT:
                 case TacticalLines.SPT_STRAIGHT:
                 case TacticalLines.FRONTAL_ATTACK:
+                case TacticalLines.TURNING_MOVEMENT:
                 case TacticalLines.CATK:
                 case TacticalLines.CATKBYFIRE:
                 case TacticalLines.TRIPLE:
@@ -1862,6 +1866,7 @@ public final class Channels {
                 case TacticalLines.SPT:
                 case TacticalLines.SPT_STRAIGHT:
                 case TacticalLines.FRONTAL_ATTACK:
+                case TacticalLines.TURNING_MOVEMENT:
                 case TacticalLines.CATK:
                 case TacticalLines.CATKBYFIRE:
                 case TacticalLines.AIRAOA:
@@ -1876,7 +1881,7 @@ public final class Channels {
                     //diagnostic
                     if (vbiDrawThis == (long) TacticalLines.AAAAA) {
                         vblCounter = vblLowerCounter + vblUpperCounter + 19;
-                    } else if (vbiDrawThis == (long) TacticalLines.FRONTAL_ATTACK) {
+                    } else if (vbiDrawThis == (long) TacticalLines.FRONTAL_ATTACK || vbiDrawThis ==  TacticalLines.TURNING_MOVEMENT) {
                         vblCounter = vblLowerCounter + vblUpperCounter + 10;
                     }
 
@@ -2162,6 +2167,15 @@ public final class Channels {
                         pLinePoints[vblLowerCounter + vblUpperCounter + 9] = lineutility.PointRelativeToLine(pt0, pt1, pt1, ptCenter);
                         pLinePoints[vblLowerCounter + vblUpperCounter + 9].style = 5;
                     }
+
+                    if (vbiDrawThis == TacticalLines.TURNING_MOVEMENT) {
+                        pt0 = tg.Pixels.get(tg.Pixels.size()-2);
+                        pt1 = tg.Pixels.get(tg.Pixels.size()-3);
+                        midPt1 = lineutility.MidPointDouble(pt0, pt1, 0);
+                        pLinePoints[vblLowerCounter + vblUpperCounter + 8] = lineutility.ExtendDirectedLine(pt0, pt1, midPt1, lineutility.extend_above, vblChannelWidth / 2, 0);
+                        pLinePoints[vblLowerCounter + vblUpperCounter + 9] = lineutility.ExtendDirectedLine(pt0, pt1, midPt1, lineutility.extend_below, vblChannelWidth / 2, 5);
+                    }
+
                     break;
                 default:
                     break;
@@ -2262,6 +2276,7 @@ public final class Channels {
                     case TacticalLines.SPT_STRAIGHT:
                     case TacticalLines.AIRAOA:
                     case TacticalLines.FRONTAL_ATTACK:
+                    case TacticalLines.TURNING_MOVEMENT:
                         if(beginLine)
                         {
                             if(k>0) //doubled points with linestyle=5
@@ -2517,6 +2532,7 @@ public final class Channels {
                     }
                     break;
                 case TacticalLines.FRONTAL_ATTACK:
+                case TacticalLines.TURNING_MOVEMENT:
                     for(j=0;j<(n-10)/2;j++)
                     {
                         newPts.add(pLinePoints[j]);

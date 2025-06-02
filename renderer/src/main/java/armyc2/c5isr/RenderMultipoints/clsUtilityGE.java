@@ -325,6 +325,7 @@ public final class clsUtilityGE {
                 case TacticalLines.MAIN:
                 case TacticalLines.SPT:
                 case TacticalLines.FRONTAL_ATTACK:
+                case TacticalLines.TURNING_MOVEMENT:
                 
                 case TacticalLines.SARA:
                 case TacticalLines.RANGE_FAN_SECTOR:
