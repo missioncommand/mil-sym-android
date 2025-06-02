@@ -133,6 +133,7 @@ public final class clsChannelUtility {
                 case TacticalLines.SPT:
                 case TacticalLines.FRONTAL_ATTACK:
                 case TacticalLines.TURNING_MOVEMENT:
+                case TacticalLines.MOVEMENT_TO_CONTACT:
                     if (fromSegment == 0) {
                         lineType2 = TacticalLines.CHANNEL_FLARED;
                     } else {
@@ -162,6 +163,7 @@ public final class clsChannelUtility {
                         case TacticalLines.SPT:
                         case TacticalLines.FRONTAL_ATTACK:
                         case TacticalLines.TURNING_MOVEMENT:
+                        case TacticalLines.MOVEMENT_TO_CONTACT:
                             lineType2 = TacticalLines.SPT_STRAIGHT;
                             break;
                         case TacticalLines.MAIN:
@@ -472,6 +474,7 @@ public final class clsChannelUtility {
                 case TacticalLines.SPT:
                 case TacticalLines.FRONTAL_ATTACK:
                 case TacticalLines.TURNING_MOVEMENT:
+                case TacticalLines.MOVEMENT_TO_CONTACT:
                     clsUtility.ReorderPixels(pixels);
                     numPoints = pixels.length / 2;
 

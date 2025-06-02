@@ -894,7 +894,7 @@ public final class DISMSupport
                 for (j = 0; j < 3; j++) {
                     points[counter] = new POINT2(ptsJaggyLine[j]);
                     points[counter].style = 0;
-                    if(linetype==TacticalLines.SARA)
+                    if(linetype==TacticalLines.SARA || linetype==TacticalLines.MOVEMENT_TO_CONTACT)
                     {
                         points[counter].style = 9;
                     }
@@ -903,7 +903,7 @@ public final class DISMSupport
                 }
 
                 points[counter - 1].style = 5;
-                if(linetype==TacticalLines.SARA)
+                if(linetype==TacticalLines.SARA || linetype==TacticalLines.MOVEMENT_TO_CONTACT)
                 {
                     points[counter-1].style = 9;
                     points[counter]=new POINT2(points[counter-3]);
@@ -979,13 +979,13 @@ public final class DISMSupport
                 {
                     points[counter] = new POINT2(ptsJaggyLine[j]);
                     points[counter].style = 0;
-                    if(linetype==TacticalLines.SARA)
+                    if(linetype==TacticalLines.SARA || linetype==TacticalLines.MOVEMENT_TO_CONTACT)
                         points[counter].style = 9;
 
                     counter++;
                 }
                 points[counter - 1].style = 5;
-                if(linetype==TacticalLines.SARA)
+                if(linetype==TacticalLines.SARA || linetype==TacticalLines.MOVEMENT_TO_CONTACT)
                 {
                     points[counter-1].style = 9;
                     points[counter]=new POINT2(points[counter-3]);

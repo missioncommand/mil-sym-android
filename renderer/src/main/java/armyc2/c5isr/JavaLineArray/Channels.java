@@ -782,6 +782,7 @@ public final class Channels {
                 case TacticalLines.SPT:
                 case TacticalLines.FRONTAL_ATTACK:
                 case TacticalLines.TURNING_MOVEMENT:
+                case TacticalLines.MOVEMENT_TO_CONTACT:
                 case TacticalLines.AAAAA:
                 case TacticalLines.AIRAOA:
                 case TacticalLines.CATK:
@@ -842,6 +843,7 @@ public final class Channels {
                 case TacticalLines.SPT_STRAIGHT:
                 case TacticalLines.FRONTAL_ATTACK:
                 case TacticalLines.TURNING_MOVEMENT:
+                case TacticalLines.MOVEMENT_TO_CONTACT:
                 case TacticalLines.TRIPLE:
                 case TacticalLines.DOUBLEC:
                 case TacticalLines.SINGLEC:
@@ -1318,6 +1320,7 @@ public final class Channels {
                 case TacticalLines.SPT_STRAIGHT:
                 case TacticalLines.FRONTAL_ATTACK:
                 case TacticalLines.TURNING_MOVEMENT:
+                case TacticalLines.MOVEMENT_TO_CONTACT:
                 case TacticalLines.MAIN:
                 case TacticalLines.MAIN_STRAIGHT:
                 case TacticalLines.CATKBYFIRE:	//80
@@ -1346,6 +1349,7 @@ public final class Channels {
                 case TacticalLines.SPT_STRAIGHT:
                 case TacticalLines.FRONTAL_ATTACK:
                 case TacticalLines.TURNING_MOVEMENT:
+                case TacticalLines.MOVEMENT_TO_CONTACT:
                 case TacticalLines.CATK:
                 case TacticalLines.CATKBYFIRE:
                 case TacticalLines.TRIPLE:
@@ -1867,6 +1871,7 @@ public final class Channels {
                 case TacticalLines.SPT_STRAIGHT:
                 case TacticalLines.FRONTAL_ATTACK:
                 case TacticalLines.TURNING_MOVEMENT:
+                case TacticalLines.MOVEMENT_TO_CONTACT:
                 case TacticalLines.CATK:
                 case TacticalLines.CATKBYFIRE:
                 case TacticalLines.AIRAOA:
@@ -1883,6 +1888,8 @@ public final class Channels {
                         vblCounter = vblLowerCounter + vblUpperCounter + 19;
                     } else if (vbiDrawThis == (long) TacticalLines.FRONTAL_ATTACK || vbiDrawThis ==  TacticalLines.TURNING_MOVEMENT) {
                         vblCounter = vblLowerCounter + vblUpperCounter + 10;
+                    } else if (vbiDrawThis == (long) TacticalLines.MOVEMENT_TO_CONTACT) {
+                        vblCounter = vblLowerCounter + vblUpperCounter + 24;
                     }
 
                     pLinePoints = new POINT2[vblCounter];
@@ -2176,6 +2183,25 @@ public final class Channels {
                         pLinePoints[vblLowerCounter + vblUpperCounter + 9] = lineutility.ExtendDirectedLine(pt0, pt1, midPt1, lineutility.extend_below, vblChannelWidth / 2, 5);
                     }
 
+                    if (vbiDrawThis == TacticalLines.MOVEMENT_TO_CONTACT) {
+                        midPt1 = lineutility.MidPointDouble(pLinePoints[vblLowerCounter + vblUpperCounter + 1], pLinePoints[vblLowerCounter + vblUpperCounter + 6], 0);
+                        midPt1 = lineutility.ExtendDirectedLine(pLinePoints[vblLowerCounter + vblUpperCounter + 1], pLinePoints[vblLowerCounter + vblUpperCounter + 6], midPt1, lineutility.extend_above, vblChannelWidth / 8.0);
+                        midPt2 = lineutility.MidPointDouble(pLinePoints[vblLowerCounter + vblUpperCounter + 5], pLinePoints[vblLowerCounter + vblUpperCounter + 6], 0);
+                        midPt2 = lineutility.ExtendDirectedLine(pLinePoints[vblLowerCounter + vblUpperCounter + 5], pLinePoints[vblLowerCounter + vblUpperCounter + 6], midPt2, lineutility.extend_below, vblChannelWidth / 8.0);
+
+                        POINT2[] DISMPts = new POINT2[16];
+                        lineutility.InitializePOINT2Array(DISMPts);
+                        DISMPts[0] = lineutility.ExtendDirectedLine(pLinePoints[vblLowerCounter + vblUpperCounter + 1], pLinePoints[vblLowerCounter + vblUpperCounter + 6], midPt1, lineutility.extend_above, vblChannelWidth);
+                        DISMPts[1] = midPt1;
+                        DISMPts[2] = midPt2;
+                        DISMPts[3] = lineutility.ExtendDirectedLine(pLinePoints[vblLowerCounter + vblUpperCounter + 5], pLinePoints[vblLowerCounter + vblUpperCounter + 6], midPt2, lineutility.extend_below, vblChannelWidth);
+
+                        lHowManyThisSegment = DISMSupport.GetDISMCoverDoubleRevC(DISMPts, vbiDrawThis, 4);
+                        for (int i = 0; i < lHowManyThisSegment; i++) {
+                            pLinePoints[vblLowerCounter + vblUpperCounter + 8 + i] = DISMPts[i];
+                        }
+                    }
+
                     break;
                 default:
                     break;
@@ -2298,6 +2324,53 @@ public final class Channels {
                             }
                         }
                         if(k==vblCounter-1) //non-LC should only have one shape
+                        {
+                            if(shape !=null && shape.getShape() != null)
+                            {
+                                shapes.add(shape);
+                            }
+                        }
+                        break;
+                    case TacticalLines.MOVEMENT_TO_CONTACT:
+                        if(beginLine)
+                        {
+                            if(k>0)
+                            {
+                                if(pLinePoints[k].style==5 && pLinePoints[k-1].style==5 && k != vblCounter-1)
+                                    continue;
+                            }
+
+                            if (pLinePoints[k].style == 9 && pLinePoints[k - 1].style != 9)
+                            {
+                                if (!shape.getPoints().isEmpty())
+                                    shapes.add(shape);
+                                shape = new Shape2(Shape2.SHAPE_TYPE_FILL);
+                                shape.set_Style(pLinePoints[k].style);
+                                shape.setFillColor(tg.get_LineColor());
+                                shape.set_Fillstyle(1);
+                            }
+
+                            shape.moveTo(pLinePoints[k]);
+                            beginLine=false;
+                        }
+                        else
+                        {
+                            shape.lineTo(pLinePoints[k]);
+                            if(pLinePoints[k].style==5)
+                            {
+                                beginLine=true;
+                            }
+                            else if (pLinePoints[k].style == 10)
+                            {
+                                if (shape != null && shape.getShape() != null)
+                                {
+                                    shapes.add(0, shape);
+                                    shape = new Shape2(Shape2.SHAPE_TYPE_POLYLINE);
+                                }
+                                beginLine = true;
+                            }
+                        }
+                        if(k==vblCounter-1)
                         {
                             if(shape !=null && shape.getShape() != null)
                             {
@@ -2545,6 +2618,30 @@ public final class Channels {
                     newPts.add(pLinePoints[n-6]);
 
                     for(j=n-11;j>=(n-10)/2;j--)
+                    {
+                        newPts.add(pLinePoints[j]);
+                    }
+                    shape=new Shape2(Shape2.SHAPE_TYPE_FILL);
+                    shape.moveTo(newPts.get(0));
+                    t=newPts.size();
+                    for(j=1;j<t;j++)
+                    {
+                        shape.lineTo(newPts.get(j));
+                    }
+                    break;
+                case TacticalLines.MOVEMENT_TO_CONTACT:
+                    for(j=0;j<(n-24)/2;j++)
+                    {
+                        newPts.add(pLinePoints[j]);
+                    }
+                    //add the arrow outline
+                    newPts.add(pLinePoints[n-22]);
+                    newPts.add(pLinePoints[n-23]);
+                    newPts.add(pLinePoints[n-24]);
+                    newPts.add(pLinePoints[n-19]);
+                    newPts.add(pLinePoints[n-20]);
+
+                    for(j=n-25;j>=(n-24)/2;j--)
                     {
                         newPts.add(pLinePoints[j]);
                     }

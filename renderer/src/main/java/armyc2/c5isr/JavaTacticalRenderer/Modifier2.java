@@ -2166,6 +2166,7 @@ public class Modifier2 {
                 case TacticalLines.SPT:
                 case TacticalLines.FRONTAL_ATTACK:
                 case TacticalLines.TURNING_MOVEMENT:
+                case TacticalLines.MOVEMENT_TO_CONTACT:
                 case TacticalLines.AIRAOA:
                 case TacticalLines.AAAAA:
                 case TacticalLines.MAIN:
@@ -2470,6 +2471,7 @@ public class Modifier2 {
                 case TacticalLines.SPT:
                 case TacticalLines.FRONTAL_ATTACK:
                 case TacticalLines.TURNING_MOVEMENT:
+                case TacticalLines.MOVEMENT_TO_CONTACT:
                 case TacticalLines.AIRAOA:
                 case TacticalLines.AAAAA:
                 case TacticalLines.MAIN:
