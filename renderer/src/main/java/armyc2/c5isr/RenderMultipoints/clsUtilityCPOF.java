@@ -1954,6 +1954,7 @@ public final class clsUtilityCPOF {
                 case TacticalLines.CATKBYFIRE:
                 case TacticalLines.MAIN:
                 case TacticalLines.SPT:
+                case TacticalLines.FRONTAL_ATTACK:
                 case TacticalLines.AIRAOA:
                 case TacticalLines.AAAAA:
                     return false;
