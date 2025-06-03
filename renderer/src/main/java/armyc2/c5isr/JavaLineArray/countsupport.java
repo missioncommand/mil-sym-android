@@ -166,6 +166,7 @@ public final class countsupport
                     break;
                 case TacticalLines.ROADBLK:
                 case TacticalLines.FERRY:
+                case TacticalLines.EXPLOIT:
                     count=8;
                     break;
                 case TacticalLines.NAVIGATION:
