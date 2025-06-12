@@ -4110,10 +4110,8 @@ public final class arraysupport {
                 case TacticalLines.RETIRE:
                 case TacticalLines.FPOL:
                 case TacticalLines.RPOL:
-                    acCounter = DISMSupport.GetDelayGraphicEtcDouble(pLinePoints);
-                    break;
                 case TacticalLines.PURSUIT:
-                    acCounter = DISMSupport.GetPursuitGraphicDouble(pLinePoints);
+                    acCounter = DISMSupport.GetDelayGraphicEtcDouble(pLinePoints, lineType);
                     break;
                 case TacticalLines.ENVELOPMENT:
                     acCounter = DISMSupport.GetEnvelopmentGraphicDouble(pLinePoints);
