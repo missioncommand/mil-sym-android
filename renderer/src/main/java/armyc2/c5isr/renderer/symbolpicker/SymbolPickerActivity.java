@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.core.widget.TextViewCompat;
 import android.text.Editable;
@@ -669,11 +670,13 @@ public class SymbolPickerActivity extends Activity {
                 if (isControlMeasure) {
                     attributesLayout.setVisibility(View.VISIBLE);
                     // restores previous values if dialog was reopened
-                    outlineCheckbox.setChecked(Boolean.parseBoolean(attributesToSend.get(MilStdAttributes.OutlineSymbol)));
-                    lineColorField.setText(attributesToSend.getOrDefault(MilStdAttributes.LineColor, ""));
-                    fillColorField.setText(attributesToSend.getOrDefault(MilStdAttributes.FillColor, ""));
-                    lineWidthField.setText(attributesToSend.getOrDefault(MilStdAttributes.LineWidth, ""));
-                    textColorField.setText(attributesToSend.getOrDefault(MilStdAttributes.TextColor, ""));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        outlineCheckbox.setChecked(Boolean.parseBoolean(attributesToSend.get(MilStdAttributes.OutlineSymbol)));
+                        lineColorField.setText(attributesToSend.getOrDefault(MilStdAttributes.LineColor, ""));
+                        fillColorField.setText(attributesToSend.getOrDefault(MilStdAttributes.FillColor, ""));
+                        lineWidthField.setText(attributesToSend.getOrDefault(MilStdAttributes.LineWidth, ""));
+                        textColorField.setText(attributesToSend.getOrDefault(MilStdAttributes.TextColor, ""));
+                    }
                 }
 
                 // Extra modifiers
@@ -696,7 +699,9 @@ public class SymbolPickerActivity extends Activity {
                     et.setHint(Modifiers.getModifierLetterCode(i) + ": " + Modifiers.getModifierName(i));
                     //et.setId(i);
                     et.setId(convertStringIDtoInt(i));
-                    et.setText(modifiersToSend.getOrDefault(i, "")); // restores previous values if dialog was reopened
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        et.setText(modifiersToSend.getOrDefault(i, "")); // restores previous values if dialog was reopened
+                    }
 
                     // DateTime fields
                     if (i == Modifiers.W_DTG_1 || i == Modifiers.W1_DTG_2) {
@@ -777,8 +782,10 @@ public class SymbolPickerActivity extends Activity {
 
                             // if the calling application passes any invalid values for altitude units or mode, this sets both to the defaults
                             try {
-                                altitudeUnitSpinner.setSelection(AltitudeUnits.valueOf(attributesToSend.getOrDefault(MilStdAttributes.AltitudeUnits, "1,M").split(",")[1]).index);
-                                altitudeModeSpinner.setSelection(AltitudeModes.valueOf(attributesToSend.getOrDefault(MilStdAttributes.AltitudeMode, "AMSL")).index);
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                    altitudeUnitSpinner.setSelection(AltitudeUnits.valueOf(attributesToSend.getOrDefault(MilStdAttributes.AltitudeUnits, "1,M").split(",")[1]).index);
+                                    altitudeModeSpinner.setSelection(AltitudeModes.valueOf(attributesToSend.getOrDefault(MilStdAttributes.AltitudeMode, "AMSL")).index);
+                                }
                             } catch (Exception e) {
                                 altitudeUnitSpinner.setSelection(AltitudeUnits.valueOf("M").index);
                                 altitudeModeSpinner.setSelection(AltitudeModes.valueOf("AMSL").index);
@@ -859,42 +866,45 @@ public class SymbolPickerActivity extends Activity {
      * @param et Datetime EditText field that called this dialog
      */
     private void callDatetimeDialog(EditText et) {
-        Dialog datetimeDialog = new Dialog(this);
-        datetimeDialog.setContentView(R.layout.datetime_selector);
-        datetimeDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        datetimeDialog.show();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Dialog datetimeDialog = new Dialog(this);
+            datetimeDialog.setContentView(R.layout.datetime_selector);
+            datetimeDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            datetimeDialog.show();
 
-        DatePicker datePicker = datetimeDialog.findViewById(R.id.datePicker);
-        TimePicker timePicker = datetimeDialog.findViewById(R.id.timePicker);
-        timePicker.setIs24HourView(true);
+            DatePicker datePicker = datetimeDialog.findViewById(R.id.datePicker);
+            TimePicker timePicker = datetimeDialog.findViewById(R.id.timePicker);
+            timePicker.setIs24HourView(true);
 
-        Button nowButton = datetimeDialog.findViewById(R.id.datetime_now_button);
-        nowButton.setOnClickListener(n -> {
-            Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-            datePicker.init(year, month, day, null);
-            timePicker.setHour(c.get(Calendar.HOUR_OF_DAY));
-            timePicker.setMinute(c.get(Calendar.MINUTE));
-        });
-        nowButton.callOnClick();
+            Button nowButton = datetimeDialog.findViewById(R.id.datetime_now_button);
+            nowButton.setOnClickListener(n -> {
+                Calendar c = Calendar.getInstance();
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
+                datePicker.init(year, month, day, null);
+                timePicker.setHour(c.get(Calendar.HOUR_OF_DAY));
+                timePicker.setMinute(c.get(Calendar.MINUTE));
 
-        Button onOrderButton = datetimeDialog.findViewById(R.id.datetime_on_order_button);
-        onOrderButton.setOnClickListener(o -> {
-            et.setText("O/O");
-            datetimeDialog.dismiss();
-            updateSymbolPreview();
-        });
+            });
+            nowButton.callOnClick();
 
-        Button confirmTimeButton = datetimeDialog.findViewById(R.id.datetime_confirm_button);
-        confirmTimeButton.setOnClickListener(c -> {
-            Calendar myCalendar = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getHour(), timePicker.getMinute());
-            Date selectedDate = myCalendar.getTime();
-            et.setText(SymbolUtilities.getDateLabel(selectedDate));
-            datetimeDialog.dismiss();
-            updateSymbolPreview();
-        });
+            Button onOrderButton = datetimeDialog.findViewById(R.id.datetime_on_order_button);
+            onOrderButton.setOnClickListener(o -> {
+                et.setText("O/O");
+                datetimeDialog.dismiss();
+                updateSymbolPreview();
+            });
+
+            Button confirmTimeButton = datetimeDialog.findViewById(R.id.datetime_confirm_button);
+            confirmTimeButton.setOnClickListener(c -> {
+                Calendar myCalendar = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getHour(), timePicker.getMinute());
+                Date selectedDate = myCalendar.getTime();
+                et.setText(SymbolUtilities.getDateLabel(selectedDate));
+                datetimeDialog.dismiss();
+                updateSymbolPreview();
+            });
+        }
     }
 
     private int getMineBitmask() {
@@ -1124,7 +1134,9 @@ public class SymbolPickerActivity extends Activity {
         symbolPath.setText(pathStr);
 
         // (optional) sort symbols by name
-        symbols.sort(Comparator.comparing(Node::getName));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            symbols.sort(Comparator.comparing(Node::getName));
+        }
 
         symbolTableAdapter.clear();
         symbolTableAdapter.addAll(symbols);
@@ -1229,22 +1241,26 @@ public class SymbolPickerActivity extends Activity {
 
     private class SearchBoxListener implements SearchView.OnQueryTextListener {
         private List<Node> searchSymbolTree(String searchQuery) {
-            // Search by name
-            List<Node> searchResults = treeManager.mil2525Tree.flatten().stream()
-                    .filter(node -> node.getName().trim().toLowerCase(Locale.ROOT).replaceAll("-", " ")
-                            .contains(searchQuery.toLowerCase(Locale.ROOT).replaceAll("-", " "))).collect(Collectors.toList());
-            // Search by entity code with symbol set
-            searchResults.addAll(treeManager.mil2525Tree.flatten().stream()
-                    .filter(node -> (node.getSymbolSetCode() + node.getCode())
-                            .contains(searchQuery)).collect(Collectors.toList()));
-            // Search by entity code
-            searchResults.addAll(treeManager.mil2525Tree.flatten().stream()
-                    .filter(node -> node.getCode().contains(searchQuery)).collect(Collectors.toList()));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                // Search by name
+                List<Node> searchResults = treeManager.mil2525Tree.flatten().stream()
+                        .filter(node -> node.getName().trim().toLowerCase(Locale.ROOT).replaceAll("-", " ")
+                                .contains(searchQuery.toLowerCase(Locale.ROOT).replaceAll("-", " "))).collect(Collectors.toList());
+                // Search by entity code with symbol set
+                searchResults.addAll(treeManager.mil2525Tree.flatten().stream()
+                        .filter(node -> (node.getSymbolSetCode() + node.getCode())
+                                .contains(searchQuery)).collect(Collectors.toList()));
+                // Search by entity code
+                searchResults.addAll(treeManager.mil2525Tree.flatten().stream()
+                        .filter(node -> node.getCode().contains(searchQuery)).collect(Collectors.toList()));
 
-            // Remove duplicates
-            searchResults = searchResults.stream().distinct().collect(Collectors.toList());
+                // Remove duplicates
+                searchResults = searchResults.stream().distinct().collect(Collectors.toList());
 
-            return searchResults;
+                return searchResults;
+            }
+            else
+                return null;
         }
 
         @Override
