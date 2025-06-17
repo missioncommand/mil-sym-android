@@ -4,6 +4,8 @@
  */
 package armyc2.c5isr.graphics2d;
 
+import android.os.Build;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -84,8 +86,24 @@ public class Area extends GeneralPath{
             while (distances.size()>0)
             {
                 //initialize minDistance after an array element was removed
-                minIndex=distances.keySet().stream().findFirst().get();
-                minDistance=distances.get(minIndex);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    minIndex=distances.keySet().stream().findFirst().get();
+                    minDistance=distances.get(minIndex);
+                }
+                else
+                {
+                    //for(j=0;j<pts.size();j++)
+                    for(j=0;j<n;j++)
+                    {
+                        if(distances.containsKey(j))
+                        {
+                            minIndex=j;
+                            minDistance=distances.get(j);
+                            break;
+                        }
+                    }
+                }
+
 
                 //loop through the remaining elements to find the next minimum distance
                 //for(j=0;j<pts.size();j++)

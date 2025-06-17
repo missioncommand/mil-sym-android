@@ -146,10 +146,6 @@ public class SVGLookup {
         return null;
     }
 
-    public SVGInfo getSVGOctagon()
-    {
-        return _SVGLookupD.getOrDefault("octagon", null);
-    }
 
     public static String getFrameID(String symbolID)
     {

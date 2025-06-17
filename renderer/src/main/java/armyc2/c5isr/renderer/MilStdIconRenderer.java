@@ -1,6 +1,7 @@
 package armyc2.c5isr.renderer;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
@@ -71,8 +72,18 @@ public class MilStdIconRenderer
                 System.out.println(msi.getPath());
                 System.out.println(msi.getName());//*/
 
+                //https://stackoverflow.com/questions/3166501/getting-the-screen-density-programmatically-in-android
                 DisplayMetrics dm = new DisplayMetrics();
-                context.getSystemService(WindowManager.class).getDefaultDisplay().getRealMetrics(dm);
+                WindowManager manager;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    manager = context.getSystemService(WindowManager.class);//.getDefaultDisplay().getRealMetrics(dm);
+                }
+                else
+                {
+                    manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+                }
+                manager.getDefaultDisplay().getRealMetrics(dm);
+
                 RendererSettings.getInstance().setDeviceDPI(dm.densityDpi);
                 RendererSettings.getInstance().setDeviceHeight(dm.heightPixels);
                 RendererSettings.getInstance().setDeviceWidth(dm.widthPixels);
@@ -147,7 +158,7 @@ public class MilStdIconRenderer
             ErrorLogger.LogException("MilStdIconRenderer", "CanRender", exc);
         }
         // ErrorLogger.LogMessage(this.getClass().getName(), "CanRender()", message, Level.FINE);
-        Log.d("MilStdIconRenderer.CanRender()", message);
+        Log.d("MilStdIconR.CanRender()", message);
         return false;
     }
 

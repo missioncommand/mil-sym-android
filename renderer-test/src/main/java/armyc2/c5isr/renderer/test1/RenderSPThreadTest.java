@@ -97,18 +97,18 @@ public class RenderSPThreadTest implements Runnable
     public void testRenderer() throws InterruptedException
     {
         /*MilStdIconRenderer renderer = MilStdIconRenderer.getInstance();
-        String symbolCode = "S*A*MFQN--*****";
-        SparseArray<String> modifiers = new SparseArray<String>();
-        SparseArray<String> attributes = new SparseArray<String>();
-        attributes.put(MilStdAttributes.SymbologyStandard, "0");
+        String symbolCode = "110310000012110000000000000000";
+        Map<String,String> modifiers = new HashMap<String,String>();
+        Map<String,String> attributes = new HashMap<String,String>();
+
 
         ImageInfo imageInfo = renderer.RenderIcon(symbolCode, modifiers, attributes);
         Bitmap bitmap = imageInfo.getImage();
         ByteBuffer buffer = ByteBuffer.allocate(bitmap.getByteCount());
         bitmap.copyPixelsToBuffer(buffer);
         byte[] imageBytes = buffer.array();//*/
-        int len = 3136;//imageBytes.length;//3136
-        byte check = -34;//imageBytes[847];//-34
+        int len = 15300;//imageBytes.length;//15300
+        byte check = 56;//imageBytes[941];//56
 
         //RendererSettings.getInstance().setCacheSize(20);
 
@@ -134,6 +134,8 @@ public class RenderSPThreadTest implements Runnable
         doneSignal.await();
         boolean error = false;
         agnosticThread ttemp = null;
+        _successCount = 0;
+        _failCount = 0;
         for (int i = 0; i < threads.size(); i++)
         {
             ttemp = threads.get(i);
@@ -160,8 +162,8 @@ public class RenderSPThreadTest implements Runnable
             }
             Log.i("SUCCESS: ",String.valueOf(_successCount));
             Log.i("----------------","--------------");
-            _successCount = 0;
-            _failCount = 0;
+            //_successCount = 0;
+            //_failCount = 0;
 
         }
 
@@ -175,16 +177,22 @@ public class RenderSPThreadTest implements Runnable
         public byte[] imageBytes;
         private Map<String,String> modifiers = new HashMap<>();
         private Map<String,String> attributes = new HashMap<>();
-        private String symbolCode = "S*A*MFQN--*****";
+        private String symbolCode = "110310000012110000000000000000";
         private MilStdIconRenderer renderer = MilStdIconRenderer.getInstance();
 
         public void setImageInfo()
         {
-            ImageInfo imageInfo = renderer.RenderIcon(symbolCode, modifiers, attributes);
-            Bitmap bitmap = imageInfo.getImage();
-            ByteBuffer buffer = ByteBuffer.allocate(bitmap.getByteCount());
-            bitmap.copyPixelsToBuffer(buffer);
-            imageBytes = buffer.array();
+            try {
+                ImageInfo imageInfo = renderer.RenderIcon(symbolCode, modifiers, attributes);
+                Bitmap bitmap = imageInfo.getImage();
+                ByteBuffer buffer = ByteBuffer.allocate(bitmap.getByteCount());
+                bitmap.copyPixelsToBuffer(buffer);
+                imageBytes = buffer.array();
+            }
+            catch(Exception exc)
+            {
+                exc.printStackTrace();
+            }
         }
 
     }
@@ -228,7 +236,7 @@ public class RenderSPThreadTest implements Runnable
                 {
                     mImage.setImageInfo();
                     lengths[i] = mImage.imageBytes.length;
-                    checks[i] = (mImage.imageBytes[847]);
+                    checks[i] = (mImage.imageBytes[941]);
                 }
             }
             catch (InterruptedException e)

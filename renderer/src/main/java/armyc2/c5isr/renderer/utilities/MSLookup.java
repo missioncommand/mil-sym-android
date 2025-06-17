@@ -1,6 +1,7 @@
 package armyc2.c5isr.renderer.utilities;
 
 import android.content.Context;
+import android.os.Build;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -710,14 +711,26 @@ public class MSLookup {
         if(length == 8)
         {
             if(version >= SymbolID.Version_2525E)
-                return _MSLookupE.getOrDefault(basicID, null);
+            {
+                if(_MSLookupE.containsKey(basicID))
+                    return _MSLookupE.get(basicID);
+                else
+                    return null;
+            }
             else if (version == SymbolID.Version_2525D && basicID.equals("25272100"))
+            {
                 // MSDZ can have extra point in D
                 return new MSInfo(SymbolID.Version_2525D, "25",
                         "Protection Areas", "Minimum Safe Distance Zone", "",
                         "272100", "Area", "Area14", new ArrayList<>());
+            }
             else
-                return _MSLookupD.getOrDefault(basicID, null);
+            {
+                if(_MSLookupD.containsKey(basicID))
+                    return _MSLookupD.get(basicID);
+                else
+                    return null;
+            }
         }
         else if(length >= 20 && length <= 30)//probably got a full id instead of a basic ID.
         {

@@ -27,7 +27,7 @@ ext {
 subprojects {
     // Common configurations for all subprojects
     ext {
-        android_minSdkVersion = 24
+        android_minSdkVersion = 21
         android_targetSdkVersion = 35
         android_compileSdkVersion = 35
         android_buildToolsVersion = "35.0.0"
