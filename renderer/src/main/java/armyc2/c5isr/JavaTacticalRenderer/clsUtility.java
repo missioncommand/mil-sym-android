@@ -371,6 +371,7 @@ public final class clsUtility {
             case TacticalLines.MEZ:
             case TacticalLines.LOMEZ:
             case TacticalLines.HIMEZ:
+            case TacticalLines.WFZ_REVD:
             case TacticalLines.WFZ:
             case TacticalLines.PNO:
             case TacticalLines.BATTLE:
@@ -611,6 +612,7 @@ public final class clsUtility {
                 case TacticalLines.NUC:
                 case TacticalLines.CHEM:
                 case TacticalLines.RAD:
+                case TacticalLines.WFZ_REVD:
                 case TacticalLines.WFZ:
                 //case TacticalLines.OBSAREA:
                     fillStyle=3;
