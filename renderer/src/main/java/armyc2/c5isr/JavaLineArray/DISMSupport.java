@@ -238,14 +238,13 @@ public final class DISMSupport
         }
     }
     /**
-     * Calculates the points for DELAY, WITHDRAW, WDRAWUP, RETIRE
+     * Calculates the points for line24 and line33 (DELAY, WITHDRAW, DISENGAGE, WDRAWUP, RETIRE, FPOL, RPOL, PURSUIT)
      *
      * @param points OUT - the client points, also used for the returned points.
      */
-    protected static int GetDelayGraphicEtcDouble(POINT2[] points) {
+    protected static int GetDelayGraphicEtcDouble(POINT2[] points, int lineType) {
         int counter=0;
         try {
-            POINT2[] pts = new POINT2[2];
             POINT2[] savepoints = new POINT2[3];
             double iLength = 0;
             double iRadius = 0;
@@ -260,11 +259,13 @@ public final class DISMSupport
             POINT2[] deltapoints = new POINT2[4];
             int j = 0;
 
+            // Make arc perpendicular to line
+            points[2] = lineutility.PointRelativeToLine(points[0], points[1], points[1], points[2]);
+
             for (j = 0; j < 3; j++) {
                 savepoints[j] = new POINT2(points[j]);
             }
 
-            lineutility.InitializePOINT2Array(pts);
             lineutility.InitializePOINT2Array(arcpoints);
             lineutility.InitializePOINT2Array(deltapoints);
 
@@ -275,11 +276,15 @@ public final class DISMSupport
             points[counter].style = 5;
             counter++;
 
-            iLength =  Math.sqrt((savepoints[1].x - savepoints[0].x) * (savepoints[1].x - savepoints[0].x) +
+            iLength = Math.sqrt((savepoints[1].x - savepoints[0].x) * (savepoints[1].x - savepoints[0].x) +
                     (savepoints[1].y - savepoints[0].y) * (savepoints[1].y - savepoints[0].y));
-            iRadius =  Math.sqrt((savepoints[2].x - savepoints[1].x) * (savepoints[2].x - savepoints[1].x) +
+            iRadius = Math.sqrt((savepoints[2].x - savepoints[1].x) * (savepoints[2].x - savepoints[1].x) +
                     (savepoints[2].y - savepoints[1].y) * (savepoints[2].y - savepoints[1].y)) / 2;
-            iDiagEOL_length = (iLength + iRadius * 2) / 20;           
+            iDiagEOL_length = (iLength + iRadius * 2) / 20;
+            if (lineType == TacticalLines.PURSUIT)
+                dAngle1 = Math.atan2(points[2].y - points[1].y, points[2].x - points[1].x);
+            else
+                dAngle1 = Math.atan2(points[1].y - points[0].y, points[1].x - points[0].x);
 
             double DPIScaleFactor = RendererSettings.getInstance().getDeviceDPI() / 96.0;
             if ((double) iDiagEOL_length > maxLength * DPIScaleFactor) {
@@ -288,35 +293,40 @@ public final class DISMSupport
             if ((double) iDiagEOL_length < minLength * DPIScaleFactor) {   //was minLength
                 iDiagEOL_length = minLength * DPIScaleFactor;
             }
-                        
-            dAngle1 = Math.atan2(points[1].y - points[0].y, points[1].x - points[0].x);
 
-            iDeltaX1 = (iDiagEOL_length * Math.cos(dAngle1 - CONST_PI / 4));
-            iDeltaY1 = (iDiagEOL_length * Math.sin(dAngle1 - CONST_PI / 4));
-            iDeltaX2 = (iDiagEOL_length * Math.cos(dAngle1 + CONST_PI / 4));
-            iDeltaY2 = (iDiagEOL_length * Math.sin(dAngle1 + CONST_PI / 4));
-            DrawEndpieceDeltasDouble(savepoints[0],
-                    iDeltaX1, iDeltaY1, iDeltaX2, iDeltaY2, deltapoints);
-
-
-            for (j = 0; j < 4; j++) {
-                points[counter] = new POINT2(deltapoints[j]);
-                counter++;
-            }
             // draw the semicircle
             ptArcCenter.x = (savepoints[1].x + savepoints[2].x) / 2;
             ptArcCenter.y = (savepoints[1].y + savepoints[2].y) / 2;
-
-
             boolean reverseArc = ReverseDelayArc(savepoints);
             if (reverseArc == false) {
                 ArcApproximationDouble( (ptArcCenter.x - iRadius), (ptArcCenter.y - iRadius),
                         (ptArcCenter.x + iRadius), (ptArcCenter.y + iRadius),
                         savepoints[1].x, savepoints[1].y, savepoints[2].x, savepoints[2].y, arcpoints);
+                if (lineType == TacticalLines.PURSUIT)
+                    dAngle1 += CONST_PI / 2;
             } else {
                 ArcApproximationDouble((ptArcCenter.x - iRadius), (ptArcCenter.y - iRadius),
                         (ptArcCenter.x + iRadius), (ptArcCenter.y + iRadius),
                         savepoints[2].x, savepoints[2].y, savepoints[1].x, savepoints[1].y, arcpoints);
+                if (lineType == TacticalLines.PURSUIT)
+                    dAngle1 -= CONST_PI / 2;
+            }
+
+            // draw the arrow
+            iDeltaX1 = (iDiagEOL_length * Math.cos(dAngle1 - CONST_PI / 4));
+            iDeltaY1 = (iDiagEOL_length * Math.sin(dAngle1 - CONST_PI / 4));
+            iDeltaX2 = (iDiagEOL_length * Math.cos(dAngle1 + CONST_PI / 4));
+            iDeltaY2 = (iDiagEOL_length * Math.sin(dAngle1 + CONST_PI / 4));
+            if (lineType == TacticalLines.PURSUIT)
+                DrawEndpieceDeltasDouble(savepoints[2],
+                        iDeltaX1, iDeltaY1, iDeltaX2, iDeltaY2, deltapoints);
+            else
+                DrawEndpieceDeltasDouble(savepoints[0],
+                        iDeltaX1, iDeltaY1, iDeltaX2, iDeltaY2, deltapoints);
+
+            for (j = 0; j < 4; j++) {
+                points[counter] = new POINT2(deltapoints[j]);
+                counter++;
             }
 
             for (j = 0; j < 17; j++) {
@@ -324,10 +334,133 @@ public final class DISMSupport
                 points[counter].style = 0;
                 counter++;
             }
+            points[counter-1].style = 5;
 
+            if (lineType == TacticalLines.PURSUIT) {
+                // draw the line perpendicular to arrow
+                points[counter] = lineutility.ExtendAlongLineDouble(savepoints[1], savepoints[2], iRadius * 2 - iDiagEOL_length, 0);
+                counter++;
+                points[counter] = lineutility.ExtendAlongLineDouble(savepoints[1], savepoints[2], iRadius * 2 + iDiagEOL_length, 0);
+                counter++;
+            }
         } catch (Exception exc) {
             ErrorLogger.LogException(_className ,"GetDelayGraphicEtcDouble",
                     new RendererException("Failed inside GetDelayGraphicEtcDouble", exc));
+        }
+        return counter;
+    }
+
+    private static boolean IsEnvelopmentArcReversed(POINT2[] pPoints) {
+        try {
+            if (pPoints.length < 4) {
+                return false;
+            }
+
+            POINT2[] ptsSeize = new POINT2[2];
+            ptsSeize[0] = new POINT2(pPoints[1]);
+            ptsSeize[1] = new POINT2(pPoints[2]);
+            lineutility.CalcClockwiseCenterDouble(ptsSeize);
+            double d = lineutility.CalcDistanceDouble(ptsSeize[0], pPoints[3]);
+
+            ptsSeize[0] = new POINT2(pPoints[2]);
+            ptsSeize[1] = new POINT2(pPoints[1]);
+            lineutility.CalcClockwiseCenterDouble(ptsSeize);
+            double dArcReversed = lineutility.CalcDistanceDouble(ptsSeize[0], pPoints[3]);
+
+            return dArcReversed > d;
+        } catch (Exception exc) {
+            ErrorLogger.LogException(_className, "IsEnvelopmentArcReversed",
+                    new RendererException("IsEnvelopmentArcReversed", exc));
+        }
+        return false;
+    }
+
+    /**
+     * Calculates the points for ENVELOPMENT
+     *
+     * @param points OUT - the client points, also used for the returned points.
+     */
+    protected static int GetEnvelopmentGraphicDouble(POINT2[] points) {
+        int counter=0;
+        try {
+            double iLength = 0;
+            double iRadius = 0;
+            double iDiagEOL_length = 0;
+            double dAngle1 = 0;
+            double iDeltaX1 = 0;
+            double iDeltaY1 = 0;
+            double iDeltaX2 = 0;
+            double iDeltaY2 = 0;
+            POINT2 ptArcCenter = new POINT2();
+            POINT2[] arcpoints = new POINT2[17];
+            POINT2[] deltapoints = new POINT2[4];
+            int j = 0;
+
+            lineutility.InitializePOINT2Array(arcpoints);
+            lineutility.InitializePOINT2Array(deltapoints);
+
+            boolean reverseArc = IsEnvelopmentArcReversed(points);
+
+            points[0].style = 14;
+            counter++;
+            points[1].style = 5;
+            counter++;
+
+            // Place pt3 on line pt1pt2
+            points[2] = lineutility.ClosestPointOnLine(points[0], lineutility.ExtendLine2Double(points[0], points[1], lineutility.CalcDistanceDouble(points[1], points[2]), 0), points[2]);
+
+            iLength =  Math.sqrt((points[1].x - points[0].x) * (points[1].x - points[0].x) +
+                    (points[1].y - points[0].y) * (points[1].y - points[0].y));
+            iRadius =  Math.sqrt((points[2].x - points[1].x) * (points[2].x - points[1].x) +
+                    (points[2].y - points[1].y) * (points[2].y - points[1].y)) / 2;
+            iDiagEOL_length = (iLength + iRadius * 2) / 20;
+            dAngle1 = Math.atan2(points[2].y - points[1].y, points[2].x - points[1].x);
+
+            double DPIScaleFactor = RendererSettings.getInstance().getDeviceDPI() / 96.0;
+            if (iDiagEOL_length > maxLength * DPIScaleFactor) {
+                iDiagEOL_length = maxLength * DPIScaleFactor;
+            }
+            if (iDiagEOL_length < minLength * DPIScaleFactor) {   //was minLength
+                iDiagEOL_length = minLength * DPIScaleFactor;
+            }
+
+            // draw the semicircle
+            ptArcCenter.x = (points[1].x + points[2].x) / 2;
+            ptArcCenter.y = (points[1].y + points[2].y) / 2;
+            if (reverseArc) {
+                ArcApproximationDouble((ptArcCenter.x - iRadius), (ptArcCenter.y - iRadius),
+                        (ptArcCenter.x + iRadius), (ptArcCenter.y + iRadius),
+                        points[1].x, points[1].y, points[2].x, points[2].y, arcpoints);
+                dAngle1 += CONST_PI / 2;
+            } else {
+                ArcApproximationDouble((ptArcCenter.x - iRadius), (ptArcCenter.y - iRadius),
+                        (ptArcCenter.x + iRadius), (ptArcCenter.y + iRadius),
+                        points[2].x, points[2].y, points[1].x, points[1].y, arcpoints);
+                dAngle1 -= CONST_PI / 2;
+            }
+
+            // draw the arrow
+            iDeltaX1 = (iDiagEOL_length * Math.cos(dAngle1 - CONST_PI / 4));
+            iDeltaY1 = (iDiagEOL_length * Math.sin(dAngle1 - CONST_PI / 4));
+            iDeltaX2 = (iDiagEOL_length * Math.cos(dAngle1 + CONST_PI / 4));
+            iDeltaY2 = (iDiagEOL_length * Math.sin(dAngle1 + CONST_PI / 4));
+            DrawEndpieceDeltasDouble(points[2],
+                    iDeltaX1, iDeltaY1, iDeltaX2, iDeltaY2, deltapoints);
+
+            for (j = 0; j < 4; j++) {
+                points[counter] = new POINT2(deltapoints[j]);
+                counter++;
+            }
+
+            for (j = 0; j < 17; j++) {
+                points[counter] = new POINT2(arcpoints[j]);
+                points[counter].style = 0;
+                counter++;
+            }
+            points[counter-1].style = 5;
+        } catch (Exception exc) {
+            ErrorLogger.LogException(_className ,"GetEnvelopmentGraphicDouble",
+                    new RendererException("Failed inside GetEnvelopmentGraphicDouble", exc));
         }
         return counter;
     }
@@ -680,7 +813,7 @@ public final class DISMSupport
                 for (j = 0; j < 3; j++) {
                     points[counter] = new POINT2(ptsJaggyLine[j]);
                     points[counter].style = 0;
-                    if(linetype==TacticalLines.SARA)
+                    if(linetype==TacticalLines.SARA || linetype==TacticalLines.MOVEMENT_TO_CONTACT)
                     {
                         points[counter].style = 9;
                     }
@@ -689,7 +822,7 @@ public final class DISMSupport
                 }
 
                 points[counter - 1].style = 5;
-                if(linetype==TacticalLines.SARA)
+                if(linetype==TacticalLines.SARA || linetype==TacticalLines.MOVEMENT_TO_CONTACT)
                 {
                     points[counter-1].style = 9;
                     points[counter]=new POINT2(points[counter-3]);
@@ -765,13 +898,13 @@ public final class DISMSupport
                 {
                     points[counter] = new POINT2(ptsJaggyLine[j]);
                     points[counter].style = 0;
-                    if(linetype==TacticalLines.SARA)
+                    if(linetype==TacticalLines.SARA || linetype==TacticalLines.MOVEMENT_TO_CONTACT)
                         points[counter].style = 9;
 
                     counter++;
                 }
                 points[counter - 1].style = 5;
-                if(linetype==TacticalLines.SARA)
+                if(linetype==TacticalLines.SARA || linetype==TacticalLines.MOVEMENT_TO_CONTACT)
                 {
                     points[counter-1].style = 9;
                     points[counter]=new POINT2(points[counter-3]);
@@ -2096,35 +2229,38 @@ public final class DISMSupport
             }
             points[counter - 3].style = 5;
             points[counter - 1].style = 5;
+
             // draw the arrowhead on line between savepoints 2 and 3
-            pts[0] = new POINT2(savepoints[2]);
-            pts[1] = new POINT2(savepoints[3]);
-            iLengthPt2Pt3 =  Math.sqrt((pts[1].x - pts[0].x) * (pts[1].x - pts[0].x) +
-                    (pts[1].y - pts[0].y) * (pts[1].y - pts[0].y));
-            iDiagEOL_length = iLengthPt2Pt3 / 8;
+            if (linetype != TacticalLines.MOBILE_DEFENSE) {
+                pts[0] = new POINT2(savepoints[2]);
+                pts[1] = new POINT2(savepoints[3]);
+                iLengthPt2Pt3 =  Math.sqrt((pts[1].x - pts[0].x) * (pts[1].x - pts[0].x) +
+                        (pts[1].y - pts[0].y) * (pts[1].y - pts[0].y));
+                iDiagEOL_length = iLengthPt2Pt3 / 8;
 
-            //M. Deutch 8-19-04
-            if (iDiagEOL_length >  maxLength * DPIScaleFactor) {
-                iDiagEOL_length =  maxLength * DPIScaleFactor;
-            }
-            if (iDiagEOL_length <  minLength * DPIScaleFactor) {
-                iDiagEOL_length =  minLength * DPIScaleFactor;
-            }
+                //M. Deutch 8-19-04
+                if (iDiagEOL_length >  maxLength * DPIScaleFactor) {
+                    iDiagEOL_length =  maxLength * DPIScaleFactor;
+                }
+                if (iDiagEOL_length <  minLength * DPIScaleFactor) {
+                    iDiagEOL_length =  minLength * DPIScaleFactor;
+                }
 
-            dAngle1 = Math.atan2(pts[1].y - pts[0].y, pts[1].x - pts[0].x);
-            iDeltaX1 =  (iDiagEOL_length * Math.cos(dAngle1 - CONST_PI / 4));
-            iDeltaY1 =  (iDiagEOL_length * Math.sin(dAngle1 - CONST_PI / 4));
-            iDeltaX2 =  (iDiagEOL_length * Math.cos(dAngle1 + CONST_PI / 4));
-            iDeltaY2 =  (iDiagEOL_length * Math.sin(dAngle1 + CONST_PI / 4));
-            DrawEndpieceDeltasDouble(pts[0],
-                    iDeltaX1, iDeltaY1, iDeltaX2, iDeltaY2, deltapoints);
-            for (j = 0; j < 4; j++) {
-                points[counter] = new POINT2(deltapoints[j]);
-                points[counter].style = 0;
-                counter++;
+                dAngle1 = Math.atan2(pts[1].y - pts[0].y, pts[1].x - pts[0].x);
+                iDeltaX1 =  (iDiagEOL_length * Math.cos(dAngle1 - CONST_PI / 4));
+                iDeltaY1 =  (iDiagEOL_length * Math.sin(dAngle1 - CONST_PI / 4));
+                iDeltaX2 =  (iDiagEOL_length * Math.cos(dAngle1 + CONST_PI / 4));
+                iDeltaY2 =  (iDiagEOL_length * Math.sin(dAngle1 + CONST_PI / 4));
+                DrawEndpieceDeltasDouble(pts[0],
+                        iDeltaX1, iDeltaY1, iDeltaX2, iDeltaY2, deltapoints);
+                for (j = 0; j < 4; j++) {
+                    points[counter] = new POINT2(deltapoints[j]);
+                    points[counter].style = 0;
+                    counter++;
+                }
+                points[counter - 3].style = 5;
+                points[counter - 1].style = 5;
             }
-            points[counter - 3].style = 5;
-            points[counter - 1].style = 5;
 
             // draw the semicircle
             iRadius =  (Math.sqrt((savepoints[2].x - savepoints[1].x) * (savepoints[2].x - savepoints[1].x) +

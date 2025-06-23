@@ -40,6 +40,7 @@ public final class TacticalLines {
     public static final int WEZ = 25171300;
     public static final int FEZ = 25171400;
     public static final int JEZ = 25171500;
+    public static final int WFZ_REVD = 2517200;
     public static final int WFZ = 22235000;
     public static final int EZ = 22136000;
     public static final int AIRFIELD = 221311000;
@@ -498,5 +499,19 @@ public final class TacticalLines {
     public static final int ROUTE = 25330500;
     public static final int FPOL = 25344100;
     public static final int RPOL = 25344200;
+
+    public static final int AREA_DEFENSE = 25152600;
+    public static final int FRONTAL_ATTACK = 25152700;
+    public static final int TURNING_MOVEMENT = 25152900;
+    public static final int MOBILE_DEFENSE = 25152800;
+    public static final int KILL_ZONE = 25242800;
+    public static final int MOVEMENT_TO_CONTACT = 25342900;
+    public static final int EXPLOIT = 25343100;
+    public static final int DEMONSTRATE = 25343300;
+    public static final int ENVELOPMENT = 25343500;
+    public static final int INFILTRATION = 25343800;
+    public static final int PURSUIT = 25344000;
+    public static final int DISENGAGE = 25344400;
+    public static final int EVACUATE = 25344500;
 }
 

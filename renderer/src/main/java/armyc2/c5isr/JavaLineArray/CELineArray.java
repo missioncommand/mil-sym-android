@@ -76,6 +76,15 @@ public final class CELineArray {
                     //they have an extra 8 points for the arrowhead
                     lResult = 2 * lElements + 8;
                     break;
+                case TacticalLines.FRONTAL_ATTACK:
+                    lResult = 2 * lElements + 15;
+                    break;
+                case TacticalLines.TURNING_MOVEMENT:
+                    lResult = 2 * lElements + 14;
+                    break;
+                case TacticalLines.MOVEMENT_TO_CONTACT:
+                    lResult = 2 * lElements + 24;
+                    break;
                 case TacticalLines.CATK:
                     lResult = 2 * lElements + 8;
                     break;
@@ -130,6 +139,9 @@ public final class CELineArray {
                 case TacticalLines.MAIN_STRAIGHT:
                 case TacticalLines.SPT:
                 case TacticalLines.SPT_STRAIGHT:
+                case TacticalLines.FRONTAL_ATTACK:
+                case TacticalLines.TURNING_MOVEMENT:
+                case TacticalLines.MOVEMENT_TO_CONTACT:
                 case TacticalLines.UNSP:
                 case TacticalLines.SFENCE:
                 case TacticalLines.DFENCE:

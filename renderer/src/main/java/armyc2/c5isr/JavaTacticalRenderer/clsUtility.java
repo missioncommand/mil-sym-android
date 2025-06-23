@@ -178,6 +178,8 @@ public final class clsUtility {
                 break;
             case TacticalLines.SPTBYFIRE:
             case TacticalLines.RIP:
+            case TacticalLines.MOBILE_DEFENSE:
+            case TacticalLines.DEMONSTRATE:
             case TacticalLines.GAP:
             case TacticalLines.ASLTXING:
             case TacticalLines.MSDZ:
@@ -193,13 +195,17 @@ public final class clsUtility {
             case TacticalLines.DISRUPT:
             case TacticalLines.PENETRATE:
             case TacticalLines.RETIRE:
+            case TacticalLines.PURSUIT:
+            case TacticalLines.ENVELOPMENT:
             case TacticalLines.FPOL:
             case TacticalLines.RPOL:
             case TacticalLines.SCREEN:
             case TacticalLines.COVER:
             case TacticalLines.GUARD:
             case TacticalLines.SEIZE:
+            case TacticalLines.EVACUATE:
             case TacticalLines.WITHDRAW:
+            case TacticalLines.DISENGAGE:
             case TacticalLines.WDRAWUP:
             //non task autoshapes
             case TacticalLines.SARA:
@@ -365,6 +371,7 @@ public final class clsUtility {
             case TacticalLines.MEZ:
             case TacticalLines.LOMEZ:
             case TacticalLines.HIMEZ:
+            case TacticalLines.WFZ_REVD:
             case TacticalLines.WFZ:
             case TacticalLines.PNO:
             case TacticalLines.BATTLE:
@@ -410,6 +417,7 @@ public final class clsUtility {
             case TacticalLines.ENCIRCLE:
             case TacticalLines.DHA_REVD:
             case TacticalLines.DHA:
+            case TacticalLines.KILL_ZONE:
             case TacticalLines.EPW:
             case TacticalLines.RHA:
             case TacticalLines.DSA:
@@ -604,6 +612,7 @@ public final class clsUtility {
                 case TacticalLines.NUC:
                 case TacticalLines.CHEM:
                 case TacticalLines.RAD:
+                case TacticalLines.WFZ_REVD:
                 case TacticalLines.WFZ:
                 //case TacticalLines.OBSAREA:
                     fillStyle=3;
@@ -647,6 +656,7 @@ public final class clsUtility {
                 case TacticalLines.EASY:
                 case TacticalLines.BYDIF:
                 case TacticalLines.BYIMP:
+                case TacticalLines.MOBILE_DEFENSE:
                     tg.set_lineCap(BasicStroke.CAP_BUTT);
                     if (shape.getShapeType() == Shape2.SHAPE_TYPE_FILL) {
                         shape.set_Fillstyle(1 /*GraphicProperties.FILL_TYPE_SOLID*/);
@@ -688,6 +698,57 @@ public final class clsUtility {
                             if (shapeStyle != 1 /*GraphicProperties.LINE_TYPE_DASHED*/) {
                                 shape.set_Style(lineStyle);
                             }
+                        }
+                    }
+                    break;
+                case TacticalLines.AREA_DEFENSE:
+                    if (shape.getShapeType() == Shape2.SHAPE_TYPE_FILL) {
+                        shape.set_Fillstyle(tg.get_FillStyle());
+                        shape.setFillColor(tg.get_FillColor());
+                        // If there are 5 points and the first and last are the same this is
+                        // a triangle and should be filled with line color
+                        POINT2 firstPt = shape.getPoints().get(0);
+                        POINT2 lastPt = shape.getPoints().get(shape.getPoints().size() - 1);
+                        if (shape.getPoints().size() == 5 && firstPt.x == lastPt.x && firstPt.y == lastPt.y) {
+                            shape.set_Fillstyle(1);
+                            shape.setFillColor(tg.get_LineColor());
+                        }
+                    }
+                    if (shape.getShapeType() == Shape2.SHAPE_TYPE_POLYLINE) {
+                        shape.setLineColor(tg.get_LineColor());
+                        shape.set_Style(lineStyle);
+                        if (hasFill || clsUtility.isClosedPolygon(lineType) || clsUtility.IsChange1Area(lineType)) {
+                            shape.set_Fillstyle(tg.get_FillStyle());
+                            shape.setFillColor(tg.get_FillColor());
+                        }
+                    }
+                    break;
+                case TacticalLines.MOVEMENT_TO_CONTACT:
+                    if (shape.getShapeType() == Shape2.SHAPE_TYPE_FILL) {
+                        shape.set_Fillstyle(tg.get_FillStyle());
+                        shape.setFillColor(tg.get_FillColor());
+                        // If there are 4 points and the first and last are the same this is
+                        // an arrow at the end of a jaggy line and should be filled with line color
+                        POINT2 firstPt = shape.getPoints().get(0);
+                        POINT2 lastPt = shape.getPoints().get(shape.getPoints().size() - 1);
+                        if (shape.getPoints().size() == 4 && firstPt.x == lastPt.x && firstPt.y == lastPt.y)
+                            shape.setFillColor(tg.get_LineColor());
+                    }
+                    if (shape.getShapeType() == Shape2.SHAPE_TYPE_POLYLINE) {
+                        shape.setLineColor(tg.get_LineColor());
+                        shape.set_Style(lineStyle);
+                    }
+                    break;
+                case TacticalLines.EXPLOIT:
+                    // Some shapes have solid lines some have dashed
+                    if (shape.getShapeType() == Shape2.SHAPE_TYPE_FILL) {
+                        shape.set_Fillstyle(tg.get_FillStyle());
+                        shape.setFillColor(tg.get_FillColor());
+                    }
+                    if (shape.getShapeType() == Shape2.SHAPE_TYPE_POLYLINE) {
+                        shape.setLineColor(tg.get_LineColor());
+                        if (shapeStyle != 1 /*GraphicProperties.LINE_TYPE_DASHED*/) {
+                            shape.set_Style(lineStyle);
                         }
                     }
                     break;
@@ -777,6 +838,8 @@ public final class clsUtility {
                 case TacticalLines.OCCUPY:
                 case TacticalLines.RETAIN:
                 case TacticalLines.SECURE:
+                case TacticalLines.AREA_DEFENSE:
+                case TacticalLines.MOBILE_DEFENSE:
                 case TacticalLines.FLOT:
                 case TacticalLines.LC:
                 case TacticalLines.PL:
@@ -787,6 +850,7 @@ public final class clsUtility {
 //                case TacticalLines.SAAFR:
                 case TacticalLines.DIRATKGND:
                 case TacticalLines.DIRATKSPT:
+                case TacticalLines.INFILTRATION:
                 case TacticalLines.FCL:
                 case TacticalLines.HOLD:
                 case TacticalLines.BRDGHD:
@@ -1011,6 +1075,9 @@ public final class clsUtility {
                     case TacticalLines.AIRAOA:
                     case TacticalLines.AAAAA:
                     case TacticalLines.SPT:
+                    case TacticalLines.FRONTAL_ATTACK:
+                    case TacticalLines.TURNING_MOVEMENT:
+                    case TacticalLines.MOVEMENT_TO_CONTACT:
                     case TacticalLines.MAIN:
                     case TacticalLines.CATKBYFIRE:	//80
                         ArrayList<Shape2> tempShapes=new ArrayList();
@@ -1082,7 +1149,7 @@ public final class clsUtility {
                    stroke = getLineStroke(lineThickness, 0, tg.get_lineCap(), BasicStroke.JOIN_ROUND);
                    arrowHeadShape.setStroke(stroke);
                }
-           } else if (tg.get_LineType() == TacticalLines.DIRATKGND || tg.get_LineType() == TacticalLines.DIRATKSPT) {
+           } else if (tg.get_LineType() == TacticalLines.DIRATKGND || tg.get_LineType() == TacticalLines.DIRATKSPT || tg.get_LineType() == TacticalLines.EXPLOIT || lineType == TacticalLines.INFILTRATION) {
                 // Make arrowhead shape solid even if tg.get_LineStyle() isn't
                 Shape2 arrowHeadShape = shapes.get(1);
                 arrowHeadShape.set_Style(0);
@@ -1460,6 +1527,9 @@ public final class clsUtility {
                 case TacticalLines.AIRAOA:
                 case TacticalLines.AAAAA:
                 case TacticalLines.SPT:
+                case TacticalLines.FRONTAL_ATTACK:
+                case TacticalLines.TURNING_MOVEMENT:
+                case TacticalLines.MOVEMENT_TO_CONTACT:
                 case TacticalLines.LC:
                 case TacticalLines.UNSP:
                 case TacticalLines.DFENCE:
@@ -1844,6 +1914,7 @@ public final class clsUtility {
                 case TacticalLines.DIRATKAIR:
                 case TacticalLines.DIRATKGND:
                 case TacticalLines.DIRATKSPT:
+                case TacticalLines.INFILTRATION:
                     // Direction of attack symbols only have two points but can handle more
                     return false;
                 default:

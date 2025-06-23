@@ -728,6 +728,7 @@ public final class clsRenderer {
                 case TacticalLines.ACA:
                 case TacticalLines.ACA_RECTANGULAR:
                 case TacticalLines.ACA_CIRCULAR:
+                case TacticalLines.WFZ:
                     ArrayList<Double> X = milStd.getModifiers_AM_AN_X(Modifiers.X_ALTITUDE_DEPTH);
                     if (X != null && X.size() > 0) {
                         strXAlt = createAltitudeLabel(X.get(0), altitudeUnit, altitudeLabel);
@@ -1076,6 +1077,9 @@ public final class clsRenderer {
                     case TacticalLines.AIRAOA:
                     case TacticalLines.MAIN:
                     case TacticalLines.SPT:
+                    case TacticalLines.FRONTAL_ATTACK:
+                    case TacticalLines.TURNING_MOVEMENT:
+                    case TacticalLines.MOVEMENT_TO_CONTACT:
                         POINT2 ptPixels = armyc2.c5isr.JavaTacticalRenderer.clsUtility.ComputeLastPoint(tg.Pixels);
                         tg.Pixels.add(ptPixels);
                         //Point pt = clsUtility.POINT2ToPoint(ptPixels);
@@ -1308,13 +1312,21 @@ public final class clsRenderer {
                 POINT2 ptB = new POINT2(points.get(4));
                 POINT2 ptC = new POINT2(points.get(9));
                 shapes.add(DISMSupport.getFDIShape(tg, ptA, ptB, ptC));
-            } else if (lineType == TacticalLines.DIRATKSPT) {
+            } else if (lineType == TacticalLines.DIRATKSPT || lineType == TacticalLines.INFILTRATION) {
                 ArrayList<POINT2> points = shapes.get(1).getPoints();
                 POINT2 ptA = new POINT2(points.get(0));
                 POINT2 ptB = new POINT2(points.get(1));
                 POINT2 ptC = new POINT2(points.get(2));
                 shapes.add(DISMSupport.getFDIShape(tg, ptA, ptB, ptC));
-            } else {
+            }
+            else if (lineType == TacticalLines.EXPLOIT) {
+                ArrayList<POINT2> points = shapes.get(1).getPoints();
+                POINT2 ptA = new POINT2(points.get(0));
+                POINT2 ptB = new POINT2(points.get(1));
+                POINT2 ptC = new POINT2(points.get(2));
+                shapes.add(DISMSupport.getFDIShape(tg, ptA, ptB, ptC));
+            }
+            else {
                 // Shape has no arrow. Put on top of shape
                 POINT2 firstPoint = shapes.get(0).getPoints().get(0);
                 POINT2 ptUl = new POINT2(firstPoint);
@@ -2021,7 +2033,49 @@ public final class clsRenderer {
 
     public static int getCMLineType(int version, int entityCode) {
         // Check if line type is specific to a version
-        if (version == SymbolID.Version_2525E){
+        if (version >= SymbolID.Version_2525Ech1) {
+            switch (entityCode) {
+                // Added in 2525Ech1
+                case 152600:
+                    return TacticalLines.AREA_DEFENSE;
+                case 152700:
+                    return TacticalLines.FRONTAL_ATTACK;
+                case 152900:
+                    return TacticalLines.TURNING_MOVEMENT;
+                case 152800:
+                    return TacticalLines.MOBILE_DEFENSE;
+                case 242800:
+                    return TacticalLines.KILL_ZONE;
+                case 342900:
+                    return TacticalLines.MOVEMENT_TO_CONTACT;
+                case 343100:
+                    return TacticalLines.EXPLOIT;
+                case 343300:
+                    return TacticalLines.DEMONSTRATE;
+                case 343500:
+                    return TacticalLines.ENVELOPMENT;
+                case 343800:
+                    return TacticalLines.INFILTRATION;
+                case 344000:
+                    return TacticalLines.PURSUIT;
+                case 344400:
+                    return TacticalLines.DISENGAGE;
+                case 344500:
+                    return TacticalLines.EVACUATE;
+                // Updated in 2525Ech1
+                case 172000:
+                    return TacticalLines.WFZ;
+                // Removed in 2525Ech1
+                case 240804:
+                    return -1;
+                // Code changed in 2525Ech1
+                case 270504:
+                    return -1; // TacticalLines.TURN in older versions
+                case 344700:
+                    return TacticalLines.TURN;
+            }
+        }
+        if (version >= SymbolID.Version_2525E) {
             switch (entityCode) {
                 // Added in 2525E
                 case 110400:
@@ -2055,6 +2109,9 @@ public final class clsRenderer {
                     return TacticalLines.BCL;
                 case 310100:
                     return TacticalLines.DHA;
+                // Updated in 2525Ech1
+                case 172000:
+                    return TacticalLines.WFZ_REVD;
             }
         } else { // 2525Dchange 1 and older
             switch (entityCode) {
@@ -2069,7 +2126,7 @@ public final class clsRenderer {
                     return TacticalLines.BCL_REVD;
                 case 310100:
                     return TacticalLines.DHA_REVD;
-                    // Removed in 2525E
+                // Removed in 2525E
                 case 150300:
                     return TacticalLines.ASSY;
                 case 241601:
@@ -2078,6 +2135,9 @@ public final class clsRenderer {
                     return TacticalLines.SENSOR_RECTANGULAR;
                 case 241603:
                     return TacticalLines.SENSOR_CIRCULAR;
+                // Updated in 2525Ech1
+                case 172000:
+                    return TacticalLines.WFZ_REVD;
             }
         }
         // Line type isn't specific to a version or doesn't exist
@@ -2234,8 +2294,6 @@ public final class clsRenderer {
                 return TacticalLines.HIMEZ;
             case 171900:
                 return TacticalLines.FAADZ;
-            case 172000:
-                return TacticalLines.WFZ;
             case 200401:
                 return TacticalLines.SHIP_AOI_CIRCULAR;
             case 240804:

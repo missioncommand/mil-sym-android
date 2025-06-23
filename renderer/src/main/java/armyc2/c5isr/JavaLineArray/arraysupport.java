@@ -305,10 +305,6 @@ public final class arraysupport {
             int j = 0, bolVertical = 0;
             int bolVertical2 = 0;
             int nOrientation = 0; //will use 0 for horiz line from left, 1 for vertical line from top
-            int extendLeft = 0;
-            int extendRight = 1;
-            int extendAbove = 2;
-            int extendBelow = 3;
 
             POINT2 pt2 = new POINT2();
             //end declarations. will use this to determine the direction
@@ -409,36 +405,24 @@ public final class arraysupport {
             switch (nInOutCounter % 2) {
                 case 0:
                     if (nOrientation == 0) {
-                        nDirection = extendLeft;
+                        nDirection = lineutility.extend_left;
                     } else {
-                        nDirection = extendAbove;
+                        nDirection = lineutility.extend_above;
                     }
                     break;
                 case 1:
                     if (nOrientation == 0) {
-                        nDirection = extendRight;
+                        nDirection = lineutility.extend_right;
                     } else {
-                        nDirection = extendBelow;
+                        nDirection = lineutility.extend_below;
                     }
                     break;
                 default:
                     break;
             }
             //reverse direction for ICING
-            switch (lineType) {
-                case TacticalLines.ICING:
-                    if (nDirection == extendLeft) {
-                        nDirection = extendRight;
-                    } else if (nDirection == extendRight) {
-                        nDirection = extendLeft;
-                    } else if (nDirection == extendAbove) {
-                        nDirection = extendBelow;
-                    } else if (nDirection == extendBelow) {
-                        nDirection = extendAbove;
-                    }
-                    break;
-                default:
-                    break;
+            if (lineType == TacticalLines.ICING) {
+                nDirection = lineutility.reverseDirection(nDirection);
             }
         } catch (Exception exc) {
             ErrorLogger.LogException(_className, "GetInsideOutsideDouble2",
@@ -487,22 +471,7 @@ public final class arraysupport {
                 switch (lineType) {
                     case TacticalLines.OBSAREA:
                     case TacticalLines.OBSFAREA:
-                        switch (nDirection) {
-                            case 0:	//extend left
-                                nDirection = 1;	//extend right
-                                break;
-                            case 1:	//extend right
-                                nDirection = 0;	//extend left
-                                break;
-                            case 2:	//extend above
-                                nDirection = 3;	//extend below
-                                break;
-                            case 3:	//extgend below
-                                nDirection = 2;	//extend above
-                                break;
-                            default:
-                                break;
-                        }
+                        nDirection = lineutility.reverseDirection(nDirection);
                         break;
                     default:
                         break;
@@ -638,7 +607,7 @@ public final class arraysupport {
             int j = 0, k = 0, l = 0;
             POINT2[] ptsArc = new POINT2[26];
             POINT2[] midPts = new POINT2[7];
-            POINT2[] trianglePts = new POINT2[21];
+            POINT2[] trianglePts = new POINT2[35];
             POINT2[] pArrowPoints = new POINT2[3];
             double dRadius = lineutility.CalcDistanceDouble(pt0, pt1);
             double dLength = Math.abs(dRadius - 20);
@@ -731,6 +700,47 @@ public final class arraysupport {
                     pLinePoints[46].style = 5;
                     for (j = 47; j < 50; j++) {
                         pLinePoints[j] = new POINT2(pArrowPoints[j - 47]);
+                        pLinePoints[j].style = 0;
+                    }
+                    break;
+                case TacticalLines.AREA_DEFENSE:
+                    if (dRadius > 100) {
+                        dLength = 0.8 * dRadius;
+                    }
+                    for (j = 1; j <= 23; j++) {
+                        if (j % 3 == 0) {
+                            midPts[k].x = pt0.x - (long) ((dRadius / dLength) * (pt0.x - ptsArc[j].x));
+                            midPts[k].y = pt0.y - (long) ((dRadius / dLength) * (pt0.y - ptsArc[j].y));
+                            trianglePts[l] = new POINT2(ptsArc[j - 1]);
+                            trianglePts[l].style = 9;
+                            l++;
+                            trianglePts[l] = new POINT2(midPts[k]);
+                            trianglePts[l].style = 9;
+                            l++;
+                            trianglePts[l] = new POINT2(ptsArc[j + 1]);
+                            trianglePts[l].style = 9;
+                            l++;
+                            trianglePts[l] = new POINT2(ptsArc[j]);
+                            trianglePts[l].style = 9;
+                            l++;
+                            trianglePts[l] = new POINT2(ptsArc[j - 1]);
+                            trianglePts[l].style = 10;
+                            l++;
+                            k++;
+                        }
+                    }
+                    for (j = 26; j < 61; j++) {
+                        pLinePoints[j] = new POINT2(trianglePts[j - 26]);
+                    }
+                    for (j = 61; j < 64; j++) {
+                        pLinePoints[j] = new POINT2(pArrowPoints[j - 61]);
+                        pLinePoints[j].style = 0;
+                    }
+
+                    lineutility.GetArrowHead4Double(ptsArc[1], ptsArc[0], (int) d / 7, (int) d / 7, pArrowPoints, 0);
+                    pLinePoints[63].style = 5;
+                    for (j = 64; j < 67; j++) {
+                        pLinePoints[j] = new POINT2(pArrowPoints[j - 64]);
                         pLinePoints[j].style = 0;
                     }
                     break;
@@ -2618,6 +2628,10 @@ public final class arraysupport {
                     GetIsolatePointsDouble(pLinePoints, lineType, converter);
                     acCounter = 50;
                     break;
+                case TacticalLines.AREA_DEFENSE:
+                    GetIsolatePointsDouble(pLinePoints, lineType, converter);
+                    acCounter = 67;
+                    break;
                 case TacticalLines.OCCUPY:
                     GetIsolatePointsDouble(pLinePoints, lineType, converter);
                     acCounter = 32;
@@ -3379,10 +3393,13 @@ public final class arraysupport {
                     acCounter = 14;
                     break;
                 case TacticalLines.DIRATKSPT:
-                    //reverse the points
-                    lineutility.ReversePointsDouble2(
-                            pLinePoints,
-                            vblSaveCounter);
+                case TacticalLines.INFILTRATION:
+                    if (lineType == TacticalLines.DIRATKSPT) {
+                        //reverse the points
+                        lineutility.ReversePointsDouble2(
+                                pLinePoints,
+                                vblSaveCounter);
+                    }
                     if (dMBR / 20 > maxLength * DPIScaleFactor) {
                         dMBR = 20 * maxLength * DPIScaleFactor;
                     }
@@ -3399,6 +3416,23 @@ public final class arraysupport {
                     lineutility.GetArrowHead4Double(pLinePoints[vblCounter - 5], pLinePoints[vblCounter - 4], (int) dMBR / 20, (int) dMBR / 20, pArrowPoints, 0);
                     for (k = 0; k < 3; k++) {
                         pLinePoints[vblCounter - k - 1] = new POINT2(pArrowPoints[k]);
+                    }
+                    acCounter = vblCounter;
+                    break;
+                case TacticalLines.EXPLOIT:
+                    // Convert arrows to 90 degrees with the hypotenuse distance = distance between pt1 and pt2
+                    int triBiSector = (int) (lineutility.CalcDistanceDouble(pt1, pt2) / Math.sqrt(2));
+
+                    // Arrow at pt1
+                    lineutility.GetArrowHead4Double(pt1, pt0, triBiSector, triBiSector * 2, pArrowPoints, 0);
+                    for (k = 0; k < 3; k++) {
+                        pLinePoints[k+2] = new POINT2(pArrowPoints[k]);
+                    }
+
+                    // Dashed tail at pt2
+                    lineutility.GetArrowHead4Double(lineutility.ExtendLineDouble(pt0, pt1, 10), pt1, triBiSector, triBiSector * 2, pArrowPoints, 1);
+                    for (k = 0; k < 3; k++) {
+                        pLinePoints[k+5] = new POINT2(pArrowPoints[k]);
                     }
                     acCounter = vblCounter;
                     break;
@@ -3775,6 +3809,7 @@ public final class arraysupport {
                     acCounter = DISMSupport.GetDISMByDifDouble(pLinePoints, lineType, clipBounds);
                     break;
                 case TacticalLines.SEIZE:
+                case TacticalLines.EVACUATE:
                     double radius = 0;
                     if (vblSaveCounter == 4) {
                         radius = lineutility.CalcDistanceDouble(pLinePoints[0], pLinePoints[1]);
@@ -3788,15 +3823,116 @@ public final class arraysupport {
                     acCounter = DISMSupport.GetDISMFixDouble(pLinePoints, lineType, clipBounds);
                     break;
                 case TacticalLines.RIP:
+                case TacticalLines.DEMONSTRATE:
                     acCounter = DISMSupport.GetDISMRIPDouble(pLinePoints, lineType);
+                    break;
+                case TacticalLines.MOBILE_DEFENSE:
+                    pLinePoints[2] = lineutility.PointRelativeToLine(pt0, pt1, pt1, pt2);
+                    pLinePoints[3] =  lineutility.PointRelativeToLine(pt0, pt1, pt0, pt2);
+                    acCounter = DISMSupport.GetDISMRIPDouble(pLinePoints, lineType);
+                    // Add spikes
+                    POINT2[] trianglePts = new POINT2[18];
+                    lineutility.InitializePOINT2Array(trianglePts);
+                    int l = 0;
+                    dRadius = lineutility.CalcDistanceDouble(pLinePoints[1], pLinePoints[2]) / 2;
+                    POINT2 arcCenter = lineutility.MidPointDouble(pLinePoints[1], pLinePoints[2], 0);
+                    double dLength = Math.abs(dRadius - 20);
+                    if (dRadius < 40) {
+                        dLength = dRadius / 1.5;
+                    }
+                    if (dRadius > 100) {
+                        dLength = 0.8 * dRadius;
+                    }
+
+                    POINT2 tmpPt = new POINT2();
+                    tmpPt.x = arcCenter.x - (long) ((dRadius / dLength) * (arcCenter.x - pLinePoints[10].x));
+                    tmpPt.y = arcCenter.y - (long) ((dRadius / dLength) * (arcCenter.y - pLinePoints[10].y));
+                    trianglePts[l] = new POINT2(pLinePoints[10 - 1]);
+                    trianglePts[l].style = 9;
+                    l++;
+                    trianglePts[l] = new POINT2(tmpPt);
+                    trianglePts[l].style = 9;
+                    l++;
+                    trianglePts[l] = new POINT2(pLinePoints[10 + 1]);
+                    trianglePts[l].style = 9;
+                    l++;
+                    trianglePts[l] = new POINT2(pLinePoints[10]);
+                    trianglePts[l].style = 9;
+                    l++;
+                    trianglePts[l] = new POINT2(pLinePoints[10 - 1]);
+                    trianglePts[l].style = 10;
+                    l++;
+
+                    tmpPt.x = arcCenter.x - (long) ((dRadius / dLength) * (arcCenter.x - pLinePoints[22].x));
+                    tmpPt.y = arcCenter.y - (long) ((dRadius / dLength) * (arcCenter.y - pLinePoints[22].y));
+                    trianglePts[l] = new POINT2(pLinePoints[22 - 1]);
+                    trianglePts[l].style = 9;
+                    l++;
+                    trianglePts[l] = new POINT2(tmpPt);
+                    trianglePts[l].style = 9;
+                    l++;
+                    trianglePts[l] = new POINT2(pLinePoints[22 + 1]);
+                    trianglePts[l].style = 9;
+                    l++;
+                    trianglePts[l] = new POINT2(pLinePoints[22]);
+                    trianglePts[l].style = 9;
+                    l++;
+                    trianglePts[l] = new POINT2(pLinePoints[22 - 1]);
+                    trianglePts[l].style = 10;
+                    l++;
+
+                    double triangleBaseLen = lineutility.CalcDistanceDouble(trianglePts[0], trianglePts[2]);
+                    double triangleHeight = lineutility.CalcDistanceDouble(trianglePts[1], trianglePts[3]);
+                    trianglePts[l] = lineutility.ExtendAlongLineDouble(pLinePoints[3], pLinePoints[2], lineutility.CalcDistanceDouble(pt0, pt1) / 8, 9);
+                    trianglePts[l].style = 9;
+                    l++;
+
+                    trianglePts[l] = lineutility.ExtendAlongLineDouble2(trianglePts[l-1], pLinePoints[2], triangleBaseLen);
+                    trianglePts[l].style = 9;
+                    l++;
+
+                    trianglePts[l] = lineutility.ExtendDirectedLine(trianglePts[l-2], trianglePts[l-1],
+                            lineutility.MidPointDouble(trianglePts[l-2], trianglePts[l-1], 0), lineutility.extend_above, triangleHeight);
+                    trianglePts[l].style = 9;
+                    l++;
+
+                    trianglePts[l] = new POINT2(trianglePts[l-3]);
+                    trianglePts[l].style = 10;
+                    l++;
+
+                    trianglePts[l] = lineutility.ExtendAlongLineDouble(pLinePoints[0], pLinePoints[1], lineutility.CalcDistanceDouble(pt0, pt1) / 8, 9);
+                    trianglePts[l].style = 9;
+                    l++;
+
+                    trianglePts[l] = lineutility.ExtendAlongLineDouble2(trianglePts[l-1], pLinePoints[1], triangleBaseLen);
+                    trianglePts[l].style = 9;
+                    l++;
+
+                    trianglePts[l] = lineutility.ExtendDirectedLine(trianglePts[l-2], trianglePts[l-1],
+                            lineutility.MidPointDouble(trianglePts[l-2], trianglePts[l-1], 0), lineutility.extend_below, triangleHeight);
+                    trianglePts[l].style = 9;
+                    l++;
+
+                    trianglePts[l] = new POINT2(trianglePts[l-3]);
+                    trianglePts[l].style = 10;
+
+                    for (j = 0; j < 18; j++) {
+                        pLinePoints[acCounter] = new POINT2(trianglePts[j]);
+                        acCounter++;
+                    }
                     break;
                 case TacticalLines.DELAY:
                 case TacticalLines.WITHDRAW:
+                case TacticalLines.DISENGAGE:
                 case TacticalLines.WDRAWUP:
                 case TacticalLines.RETIRE:
                 case TacticalLines.FPOL:
                 case TacticalLines.RPOL:
-                    acCounter = DISMSupport.GetDelayGraphicEtcDouble(pLinePoints);
+                case TacticalLines.PURSUIT:
+                    acCounter = DISMSupport.GetDelayGraphicEtcDouble(pLinePoints, lineType);
+                    break;
+                case TacticalLines.ENVELOPMENT:
+                    acCounter = DISMSupport.GetEnvelopmentGraphicDouble(pLinePoints);
                     break;
                 case TacticalLines.EASY:
                     acCounter = DISMSupport.GetDISMEasyDouble(pLinePoints, lineType);
@@ -3839,7 +3975,9 @@ public final class arraysupport {
                 case TacticalLines.PENETRATE:
                 case TacticalLines.RETAIN:
                 case TacticalLines.SECURE:
+                case TacticalLines.AREA_DEFENSE:
                 case TacticalLines.SEIZE:
+                case TacticalLines.EVACUATE:
                 case TacticalLines.BS_RECTANGLE:
                 case TacticalLines.BBS_RECTANGLE:
                 //add these
@@ -3852,6 +3990,8 @@ public final class arraysupport {
                 case TacticalLines.MFLANE:
                 case TacticalLines.DIRATKAIR:
                 case TacticalLines.ABATIS:
+                case TacticalLines.MOBILE_DEFENSE:
+                case TacticalLines.ENVELOPMENT:
                     FillPoints(pLinePoints, acCounter, points);
                     break;
                 default:
@@ -4557,12 +4697,26 @@ public final class arraysupport {
                     addPolyline(secondPoly, 9, shapes); // Arrow and bowtie
                     break;
                 case TacticalLines.DIRATKSPT:
+                case TacticalLines.INFILTRATION:
                     addPolyline(pLinePoints, acCounter - 3, shapes); // Main line
                     secondPoly = new POINT2[3];
                     for (int i = 0; i < 3; i++) {
                         secondPoly[i] = pLinePoints[pLinePoints.length - 3 + i];
                     }
                     addPolyline(secondPoly, 3, shapes); // Arrow
+                    break;
+                case TacticalLines.EXPLOIT:
+                    addPolyline(pLinePoints, 2, shapes); // Main line
+                    secondPoly = new POINT2[3];
+                    for (int i = 0; i < 3; i++) {
+                        secondPoly[i] = pLinePoints[i + 2];
+                    }
+                    addPolyline(secondPoly, 3, shapes); // Arrow at pt1
+                    secondPoly = new POINT2[3];
+                    for (int i = 0; i < 3; i++) {
+                        secondPoly[i] = pLinePoints[i + 5];
+                    }
+                    addPolyline(secondPoly, 3, shapes); // Dashed tail at pt2
                     break;
                 default:
                     addPolyline(pLinePoints, acCounter, shapes);
@@ -4631,6 +4785,8 @@ public final class arraysupport {
                 case TacticalLines.MNFLDFIX:
                 case TacticalLines.TURN:
                 case TacticalLines.MNFLDDIS:
+                case TacticalLines.AREA_DEFENSE:
+                case TacticalLines.MOBILE_DEFENSE:
                     //POINT2 initialFillPt=null;
                     for (k = 0; k < acCounter; k++) {
                         if (k == 0) {
@@ -4654,7 +4810,10 @@ public final class arraysupport {
                         if (pLinePoints[k].style == 10) {
                             shape.lineTo(pLinePoints[k]);
                             if (shape != null && shape.getShape() != null) {
-                                shapes.add(0, shape);
+                                if (lineType == TacticalLines.AREA_DEFENSE)
+                                    shapes.add(shape);
+                                else
+                                    shapes.add(0, shape);
                             }
                         }
                     }//end for
@@ -4664,7 +4823,7 @@ public final class arraysupport {
             }
         } catch (Exception exc) {
             ErrorLogger.LogException(_className, "GetLineArray2Double",
-                    new RendererException("GetLineArray2Dboule " + Integer.toString(tg.get_LineType()), exc));
+                    new RendererException("GetLineArray2Double " + Integer.toString(tg.get_LineType()), exc));
         }
         return points;
     }

@@ -96,6 +96,7 @@ public final class clsUtility {
                     hatchColor = Color.yellow;
                     hatchLineThickness = 3 + (tg.get_LineThickness() - 3) * (float) tg.get_patternScale();
                     break;
+                case TacticalLines.WFZ_REVD:
                 case TacticalLines.WFZ:
                     hatchStyle=Hatch_BackwardDiagonal;
                     if (tg.get_LineColor() == Color.BLACK)
@@ -496,10 +497,13 @@ public final class clsUtility {
             case TacticalLines.BOUNDARY:
             case TacticalLines.WDRAWUP:
             case TacticalLines.WITHDRAW:
+            case TacticalLines.DISENGAGE:
             case TacticalLines.RETIRE:
             case TacticalLines.FPOL:
             case TacticalLines.RPOL:
             case TacticalLines.RIP:
+            case TacticalLines.MOBILE_DEFENSE:
+            case TacticalLines.DEMONSTRATE:
             case TacticalLines.DELAY:
             case TacticalLines.CATK:
             case TacticalLines.CATKBYFIRE:
@@ -739,6 +743,9 @@ public final class clsUtility {
                 case TacticalLines.AIRAOA:
                 case TacticalLines.AAAAA:
                 case TacticalLines.SPT:
+                case TacticalLines.FRONTAL_ATTACK:
+                case TacticalLines.TURNING_MOVEMENT:
+                case TacticalLines.MOVEMENT_TO_CONTACT:
                 case TacticalLines.MAIN:
                     break;
                 default:
@@ -897,6 +904,9 @@ public final class clsUtility {
                 case TacticalLines.AIRAOA:
                 case TacticalLines.AAAAA:
                 case TacticalLines.SPT:
+                case TacticalLines.FRONTAL_ATTACK:
+                case TacticalLines.TURNING_MOVEMENT:
+                case TacticalLines.MOVEMENT_TO_CONTACT:
                 case TacticalLines.MAIN:
                 case TacticalLines.CATKBYFIRE:	//80
                     return;

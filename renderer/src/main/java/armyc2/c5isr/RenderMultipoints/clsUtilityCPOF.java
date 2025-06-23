@@ -1331,6 +1331,7 @@ public final class clsUtilityCPOF {
                 case TacticalLines.MEZ:
                 case TacticalLines.LOMEZ:
                 case TacticalLines.HIMEZ:
+                case TacticalLines.WFZ_REVD:
                 case TacticalLines.WFZ:
                 case TacticalLines.AIRFIELD:
                 case TacticalLines.BATTLE:
@@ -1338,6 +1339,7 @@ public final class clsUtilityCPOF {
                 case TacticalLines.DIRATKAIR:
                 case TacticalLines.DIRATKGND:
                 case TacticalLines.DIRATKSPT:
+                case TacticalLines.INFILTRATION:
                 case TacticalLines.FCL:
                 case TacticalLines.HOLD:
                 case TacticalLines.BRDGHD:
@@ -1442,6 +1444,7 @@ public final class clsUtilityCPOF {
                 case TacticalLines.ROUTE_ALT:
                 case TacticalLines.DHA_REVD:
                 case TacticalLines.DHA:
+                case TacticalLines.KILL_ZONE:
                 case TacticalLines.EPW:
                 case TacticalLines.FARP:
                 case TacticalLines.RHA:
@@ -1508,6 +1511,7 @@ public final class clsUtilityCPOF {
             case TacticalLines.DIRATKAIR:
             case TacticalLines.DIRATKGND:
             case TacticalLines.DIRATKSPT:
+            case TacticalLines.INFILTRATION:
             case TacticalLines.FCL:
             case TacticalLines.HOLD:
             case TacticalLines.BRDGHD:
@@ -1953,6 +1957,9 @@ public final class clsUtilityCPOF {
                 case TacticalLines.CATKBYFIRE:
                 case TacticalLines.MAIN:
                 case TacticalLines.SPT:
+                case TacticalLines.FRONTAL_ATTACK:
+                case TacticalLines.TURNING_MOVEMENT:
+                case TacticalLines.MOVEMENT_TO_CONTACT:
                 case TacticalLines.AIRAOA:
                 case TacticalLines.AAAAA:
                     return false;

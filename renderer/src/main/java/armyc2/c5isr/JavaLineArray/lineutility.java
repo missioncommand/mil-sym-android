@@ -1026,13 +1026,12 @@ public final class lineutility {
      *
      * @param pt0 first point fo the line
      * @param pt1 last point of the line
-     * @param pt2 relative point
-     * @deprecated
+     * @param ptRelative relative point
      * @return 0 if left, 1 if right, 2 if above, 3 if below
      */
     protected static int CalcDirectionFromLine(POINT2 pt0,
             POINT2 pt1,
-            POINT2 pt2) {
+            POINT2 ptRelative) {
         int result = -1;
         try {
             double m2 = 0, b1 = 0, b2 = 0;
@@ -1041,7 +1040,7 @@ public final class lineutility {
             //int direction=-1;
             //handle vertical line
             if (pt0.x == pt1.x) {
-                if (pt2.x < pt0.x) {
+                if (ptRelative.x < pt0.x) {
                     return 0;
                 } else {
                     return 1;
@@ -1049,32 +1048,32 @@ public final class lineutility {
             }
             //handle horizontal line so that we do not have slope = 0.
             if (pt0.y == pt1.y) {
-                if (pt2.y < pt0.y) {
+                if (ptRelative.y < pt0.y) {
                     return 2;
                 } else {
                     return 3;
                 }
             }
             CalcTrueSlopeDouble(pt0, pt1, m1);
-            m2 = -1 / m1.value[0];	//slope for the perpendicular line from the line to pt2
+            m2 = -1 / m1.value[0];	//slope for the perpendicular line from the line to ptRelative
             //b=mx-y line equation for line
             b1 = pt0.y - m1.value[0] * pt0.x;
-            //b=mx-y line equation for perpendicular line which contains pt2
-            b2 = pt2.y - m2 * pt2.x;
+            //b=mx-y line equation for perpendicular line which contains ptRelative
+            b2 = ptRelative.y - m2 * ptRelative.x;
             ptIntersect = CalcTrueIntersectDouble2(m1.value[0], b1, m2, b2, 1, 1, 0, 0);
-            //compare the intersection point with pt2 to get the direction,
+            //compare the intersection point with ptRelative to get the direction,
             //i.e. the direction from the line is the same as the direction
             //from the interseciton point.
             if (m1.value[0] > 1) //line is steep, use left/right
             {
-                if (pt2.x < ptIntersect.x) {
+                if (ptRelative.x < ptIntersect.x) {
                     return 0;
                 } else {
                     return 1;
                 }
             } else //line is not steep, use above/below
             {
-                if (pt2.y < ptIntersect.y) {
+                if (ptRelative.y < ptIntersect.y) {
                     return 2;
                 } else {
                     return 3;
@@ -1155,22 +1154,7 @@ public final class lineutility {
             ref<double[]> X = new ref(), Y = new ref();
             ptResult = new POINT2(pt0);
             if (d < 0) {
-                switch (direction) {
-                    case 0:
-                        direction = extend_right;
-                        break;
-                    case 1:
-                        direction = extend_left;
-                        break;
-                    case 2:
-                        direction = extend_below;
-                        break;
-                    case 3:
-                        direction = extend_above;
-                        break;
-                    default:
-                        break;
-                }
+                direction = reverseDirection(direction);
                 d = Math.abs(d);
             }
             if (pt1.y == pt2.y)//horizontal segment
@@ -2354,6 +2338,7 @@ public final class lineutility {
                 case TacticalLines.ISOLATE:
                 case TacticalLines.CORDONKNOCK:
                 case TacticalLines.CORDONSEARCH:
+                case TacticalLines.AREA_DEFENSE:
                     startangle = M;
                     endangle = startangle + 330 * Math.PI / 180;
                     break;
@@ -2381,6 +2366,7 @@ public final class lineutility {
                     case TacticalLines.ISOLATE:
                     case TacticalLines.CORDONKNOCK:
                     case TacticalLines.CORDONSEARCH:
+                    case TacticalLines.AREA_DEFENSE:
                         startangle = M - Math.PI;
                         endangle = startangle + 330 * Math.PI / 180;
                         break;
@@ -3545,6 +3531,31 @@ public final class lineutility {
     }  // end
 
     /**
+     * Returns the point on line (pt0 to pt1) closest to ptRelative
+     *
+     * @param pt0 the first point on line
+     * @param pt1 the second point on line
+     * @param ptRelative the second point on line
+     * @return the point closest to ptRelative on the line
+     */
+    public static POINT2 ClosestPointOnLine(POINT2 pt0, POINT2 pt1, POINT2 ptRelative) {
+        if (pt0.x == ptRelative.x && pt0.y == ptRelative.y)
+            return new POINT2(pt0);
+        else if (pt1.x == ptRelative.x && pt1.y == ptRelative.y)
+            return new POINT2(pt1);
+        else if (pt0.x == pt1.x && pt0.y == pt1.y)
+            return new POINT2(pt0);
+
+        POINT2 atob = new POINT2(pt1.x - pt0.x,  pt1.y - pt0.y );
+        POINT2 atop = new POINT2(ptRelative.x - pt0.x,  ptRelative.y - pt0.y );
+        double len = atob.x * atob.x + atob.y * atob.y;
+        double dot = atop.x * atob.x + atop.y * atob.y;
+        double t = Math.min( 1, Math.max( 0, dot / len ) );
+
+        return new POINT2(pt0.x + atob.x * t, pt0.y + atob.y * t);
+    }
+
+    /**
      * Returns the point perpendicular to the line (pt0 to pt1) at the midpoint
      * the same distance from (and on the same side of) the the line as
      * ptRelative.
@@ -4135,22 +4146,7 @@ public final class lineutility {
             direction = arraysupport.GetInsideOutsideDouble2(pt0, pt1, pts, vblCounter, index, lineType);
             //reverse the direction if these are interior points
             if (interior == true) {
-                switch (direction) {
-                    case 0:
-                        direction = 1;
-                        break;
-                    case 1:
-                        direction = 0;
-                        break;
-                    case 2:
-                        direction = 3;
-                        break;
-                    case 3:
-                        direction = 2;
-                        break;
-                    default:
-                        break;
-                }
+                direction = reverseDirection(direction);
             }
             //pt00-pt01 will be the interior line inside line pt0-pt1
             //pt00 is inside pt0, pt01 is inside pt1
@@ -4166,22 +4162,7 @@ public final class lineutility {
             direction = arraysupport.GetInsideOutsideDouble2(pt1, pt2, (POINT2[]) pts, vblCounter, index, lineType);
             //reverse the direction if these are interior points
             if (interior == true) {
-                switch (direction) {
-                    case 0:
-                        direction = 1;
-                        break;
-                    case 1:
-                        direction = 0;
-                        break;
-                    case 2:
-                        direction = 3;
-                        break;
-                    case 3:
-                        direction = 2;
-                        break;
-                    default:
-                        break;
-                }
+                direction =reverseDirection(direction);
             }
             pt10 = lineutility.ExtendDirectedLine(pt1, pt2, pt1, direction, dist);
             pt11 = lineutility.ExtendDirectedLine(pt1, pt2, pt2, direction, dist);
@@ -4242,4 +4223,18 @@ public final class lineutility {
         return deepCopy;
     }
 
+    public static int reverseDirection(int direction) {
+        switch (direction) {
+            case extend_left:
+                return extend_right;
+            case extend_right:
+                return extend_left;
+            case extend_above:
+                return extend_below;
+            case extend_below:
+                return extend_above;
+            default:
+                return direction;
+        }
+    }
 }//end lineutility

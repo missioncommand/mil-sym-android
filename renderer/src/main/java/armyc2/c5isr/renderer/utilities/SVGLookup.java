@@ -72,7 +72,7 @@ public class SVGLookup {
     private void loadData(InputStream is, int version)
     {
         Map<String, SVGInfo> lookup;
-        if(version == SymbolID.Version_2525E)
+        if(version >= SymbolID.Version_2525E)
             lookup = _SVGLookupE;
         else
             lookup = _SVGLookupD;
@@ -600,7 +600,7 @@ public class SVGLookup {
                     SVGLookup._SVGLookupD.put(svgInfo.getID(),svgInfo);
                 }
             }
-            else if (version == SymbolID.Version_2525E)
+            else if (version >= SymbolID.Version_2525E)
             {
                 if(SVGLookup._SVGLookupE.containsKey(svgInfo.getID()) == false)
                 {

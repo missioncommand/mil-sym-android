@@ -166,6 +166,7 @@ public final class countsupport
                     break;
                 case TacticalLines.ROADBLK:
                 case TacticalLines.FERRY:
+                case TacticalLines.EXPLOIT:
                     count=8;
                     break;
                 case TacticalLines.NAVIGATION:
@@ -218,20 +219,31 @@ public final class countsupport
                     count = 22;
                     break;
                 case TacticalLines.WITHDRAW:
+                case TacticalLines.DISENGAGE:
                 case TacticalLines.WDRAWUP:
                 case TacticalLines.DELAY:		//extra four points for hash marks on last segment
                 case TacticalLines.RETIRE:
                 case TacticalLines.FPOL:
                 case TacticalLines.RPOL:
+                case TacticalLines.ENVELOPMENT:
                     count = 23;
                     break;
+                case TacticalLines.PURSUIT:
+                    count = 25;
+                    break;
                 case TacticalLines.SEIZE:
+                case TacticalLines.EVACUATE:
                     count = 37;
                     break;
                 case TacticalLines.RIP:
+                case TacticalLines.DEMONSTRATE:
                     count = 29;
                     break;
+                case TacticalLines.MOBILE_DEFENSE:
+                    count = 44;
+                    break;
                 case TacticalLines.DIRATKSPT:
+                case TacticalLines.INFILTRATION:
                     count = vblCounter + 3;
                     break;
                 case TacticalLines.ABATIS:
@@ -284,6 +296,9 @@ public final class countsupport
                 case TacticalLines.CORDONKNOCK:
                 case TacticalLines.CORDONSEARCH:
                     count = 50;
+                    break;
+                case TacticalLines.AREA_DEFENSE:
+                    count = 67;
                     break;
                 case TacticalLines.OCCUPY:
                     count = 32;
@@ -356,6 +371,15 @@ public final class countsupport
                     //points for these need not be bounded
                     //they have an extra 8 points for the arrowhead
                     count=2*vblCounter+8;
+                    break;
+                case TacticalLines.FRONTAL_ATTACK:
+                    count=2*vblCounter+15;
+                    break;
+                case TacticalLines.TURNING_MOVEMENT:
+                    count=2*vblCounter+14;
+                    break;
+                case TacticalLines.MOVEMENT_TO_CONTACT:
+                    count=2*vblCounter+24;
                     break;
                 case TacticalLines.CATKBYFIRE:
                     count=2*vblCounter+17;

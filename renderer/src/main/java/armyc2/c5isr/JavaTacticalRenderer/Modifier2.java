@@ -181,6 +181,9 @@ public class Modifier2 {
                 case TacticalLines.SEIZE:
                     label = "S";
                     break;
+                case TacticalLines.EVACUATE:
+                    label = "E";
+                    break;
                 case TacticalLines.RETAIN:
                     label = "R";
                     break;
@@ -192,6 +195,9 @@ public class Modifier2 {
                     break;
                 case TacticalLines.ISOLATE:
                     label = "I";
+                    break;
+                case TacticalLines.AREA_DEFENSE:
+                    label = "AD";
                     break;
                 case TacticalLines.FIX:
                     label = "F";
@@ -218,6 +224,12 @@ public class Modifier2 {
                     break;
                 case TacticalLines.RETIRE:
                     label = "R";
+                    break;
+                case TacticalLines.PURSUIT:
+                    label = "P";
+                    break;
+                case TacticalLines.ENVELOPMENT:
+                    label = "E";
                     break;
                 case TacticalLines.FPOL:
                     label = "P(F)";
@@ -258,8 +270,17 @@ public class Modifier2 {
                 case TacticalLines.RIP:
                     label = "RIP";
                     break;
+                case TacticalLines.MOBILE_DEFENSE:
+                    label = "MD";
+                    break;
+                case TacticalLines.DEMONSTRATE:
+                    label = "DEM";
+                    break;
                 case TacticalLines.WITHDRAW:
                     label = "W";
+                    break;
+                case TacticalLines.DISENGAGE:
+                    label = "DIS";
                     break;
                 case TacticalLines.WDRAWUP:
                     label = "WP";
@@ -322,6 +343,7 @@ public class Modifier2 {
                 case TacticalLines.HIMEZ:
                     label = "HIMEZ";
                     break;
+                case TacticalLines.WFZ_REVD:
                 case TacticalLines.WFZ:
                     label = "WFZ";
                     break;
@@ -439,7 +461,10 @@ public class Modifier2 {
                 case TacticalLines.ATI:
                 case TacticalLines.ATI_CIRCULAR:
                 case TacticalLines.ATI_RECTANGULAR:
-                    label = "ATI ZONE";
+                    if (SymbolID.getVersion(tg.get_SymbolId()) >= SymbolID.Version_2525Ech1)
+                        label = "ATIZ";
+                    else
+                        label = "ATI ZONE";
                     break;
                 case TacticalLines.PAA:
                 case TacticalLines.PAA_CIRCULAR:
@@ -548,6 +573,9 @@ public class Modifier2 {
                 case TacticalLines.DHA:
                     label = "DHA";
                     break;
+                case TacticalLines.KILL_ZONE:
+                    label = "KILL ZONE";
+                    break;
                 case TacticalLines.FARP:
                     label = "FARP";
                     break;
@@ -571,6 +599,9 @@ public class Modifier2 {
                     break;
                 case TacticalLines.TRIP:
                     label = "t";
+                    break;
+                case TacticalLines.INFILTRATION:
+                    label = "IN";
                     break;
                 default:
                     break;
@@ -1974,6 +2005,7 @@ public class Modifier2 {
                 case TacticalLines.ROUTE_ALT:
                 case TacticalLines.DHA_REVD:
                 case TacticalLines.DHA:
+                case TacticalLines.KILL_ZONE:
                 case TacticalLines.EPW:
                 case TacticalLines.UXO:
                 case TacticalLines.FARP:
@@ -2024,6 +2056,7 @@ public class Modifier2 {
                 case TacticalLines.GENERIC_AREA:
                 case TacticalLines.ATKPOS:
                 case TacticalLines.ASSAULT:
+                case TacticalLines.WFZ_REVD:
                 case TacticalLines.WFZ:
                 case TacticalLines.OBSFAREA:
                 case TacticalLines.OBSAREA:
@@ -2098,9 +2131,11 @@ public class Modifier2 {
                 case TacticalLines.IL:
                 case TacticalLines.DRCL:
                 case TacticalLines.RETIRE:
+                case TacticalLines.PURSUIT:
                 case TacticalLines.FPOL:
                 case TacticalLines.RPOL:
                 case TacticalLines.WITHDRAW:
+                case TacticalLines.DISENGAGE:
                 case TacticalLines.WDRAWUP:
                 case TacticalLines.BEARING:
                 case TacticalLines.BEARING_J:
@@ -2112,6 +2147,7 @@ public class Modifier2 {
                 case TacticalLines.TORPEDO:
                 case TacticalLines.OPTICAL:
                 case TacticalLines.RIP:
+                case TacticalLines.DEMONSTRATE:
                 case TacticalLines.BOMB:
                 case TacticalLines.ZONE:
                 case TacticalLines.AT:
@@ -2130,10 +2166,14 @@ public class Modifier2 {
                 case TacticalLines.ANCHORAGE_LINE:
                 case TacticalLines.ANCHORAGE_AREA:
                 case TacticalLines.SPT:
+                case TacticalLines.FRONTAL_ATTACK:
+                case TacticalLines.TURNING_MOVEMENT:
+                case TacticalLines.MOVEMENT_TO_CONTACT:
                 case TacticalLines.AIRAOA:
                 case TacticalLines.AAAAA:
                 case TacticalLines.MAIN:
                 case TacticalLines.DIRATKSPT:
+                case TacticalLines.INFILTRATION:
                 case TacticalLines.DIRATKGND:
                 case TacticalLines.LAUNCH_AREA:
                 case TacticalLines.DEFENDED_AREA_CIRCULAR:
@@ -2431,7 +2471,13 @@ public class Modifier2 {
                     AddIntegralAreaModifier(tg, tg.get_Name(), aboveMiddle, 0, pt0, midPt, false);
                     addDTG(tg, aboveMiddle, csFactor, 2 * csFactor, pt0, pt1, metrics);
                     break;
+                case TacticalLines.INFILTRATION:
+                    AddIntegralModifier(tg, label, aboveMiddle, 0, middleSegment, middleSegment + 1, true);
+                    break;
                 case TacticalLines.SPT:
+                case TacticalLines.FRONTAL_ATTACK:
+                case TacticalLines.TURNING_MOVEMENT:
+                case TacticalLines.MOVEMENT_TO_CONTACT:
                 case TacticalLines.AIRAOA:
                 case TacticalLines.AAAAA:
                 case TacticalLines.MAIN:
@@ -2456,7 +2502,6 @@ public class Modifier2 {
                         midPt = lineutility.MidPointDouble(pt2, pt3, 0);
                         AddIntegralAreaModifier(tg, tg.get_Name(), aboveMiddle, -csFactor / 2, midPt, midPt, false);
                     }
-                    break;
                 case TacticalLines.LL:
                 case TacticalLines.LOD:
                 case TacticalLines.LDLC:
@@ -2583,8 +2628,9 @@ public class Modifier2 {
                     AddIntegralAreaModifier(tg, tg.get_T1(), area, -2 * csFactor, ptCenter, ptCenter, false);
                     AddIntegralAreaModifier(tg, "MIN ALT: " + tg.get_X(), area, -1 * csFactor, ptCenter, ptCenter, false, "H");
                     AddIntegralAreaModifier(tg, "MAX ALT: " + tg.get_X1(), area, 0, ptCenter, ptCenter, false, "H1");
-                    AddIntegralAreaModifier(tg, tg.get_Location(), area, 1 * csFactor, ptCenter, ptCenter, false, "H2");
-                    addDTG(tg, area, 2 * csFactor, 3 * csFactor, ptCenter, ptCenter, metrics);
+                    AddIntegralAreaModifier(tg, "GRID " + tg.get_Location(), area, 1 * csFactor, ptCenter, ptCenter, false, "H2");
+                    AddModifier2(tg, "EFF " + tg.get_DTG() + WDash, area, 2 * csFactor, ptCenter, ptCenter, false, "W");
+                    AddModifier2(tg, tg.get_DTG1(), area, 3 * csFactor, ptCenter, ptCenter, false, "W1");
                     break;
                 case TacticalLines.MFP:
                     pt0 = tg.Pixels.get(middleSegment);
@@ -2828,6 +2874,7 @@ public class Modifier2 {
                     addNModifier(tg);
                     break;
                 case TacticalLines.DHA:
+                case TacticalLines.KILL_ZONE:
                 case TacticalLines.FARP:
                     AddIntegralAreaModifier(tg, label, area, -0.5 * csFactor, ptCenter, ptCenter, false);
                     AddIntegralAreaModifier(tg, tg.get_Name(), area, 0.5 * csFactor, ptCenter, ptCenter, false);
@@ -3031,11 +3078,19 @@ public class Modifier2 {
                     addModifierBottomSegment(tg, tg.get_EchelonSymbol());
                     addNModifier(tg);
                     break;
-                case TacticalLines.WFZ:
+                case TacticalLines.WFZ_REVD:
                     AddIntegralAreaModifier(tg, label, area, -1.5 * csFactor, ptCenter, ptCenter, true);
                     AddIntegralAreaModifier(tg, tg.get_Name(), area, -0.5 * csFactor, ptCenter, ptCenter, true);
                     AddIntegralAreaModifier(tg, "TIME FROM: " + tg.get_DTG(), area, 0.5 * csFactor, ptCenter, ptCenter, true, "W");
                     AddIntegralAreaModifier(tg, "TIME TO: " + tg.get_DTG1(), area, 1.5 * csFactor, ptCenter, ptCenter, true, "W1");
+                    break;
+                case TacticalLines.WFZ:
+                    AddIntegralAreaModifier(tg, label, area, -2.5 * csFactor, ptCenter, ptCenter, true);
+                    AddIntegralAreaModifier(tg, tg.get_Name(), area, -1.5 * csFactor, ptCenter, ptCenter, true);
+                    AddIntegralAreaModifier(tg, "TIME FROM: " + tg.get_DTG(), area, -0.5 * csFactor, ptCenter, ptCenter, true, "W");
+                    AddIntegralAreaModifier(tg, "TIME TO: " + tg.get_DTG1(), area, 0.5 * csFactor, ptCenter, ptCenter, true, "W1");
+                    AddIntegralAreaModifier(tg, "MIN ALT: " + tg.get_X(), area, 1.5 * csFactor, ptCenter, ptCenter, false, "H");
+                    AddIntegralAreaModifier(tg, "MAX ALT: " + tg.get_X1(), area, 2.5, ptCenter, ptCenter, false, "H1");
                     break;
                 case TacticalLines.OBSFAREA:
                     AddIntegralAreaModifier(tg, label, area, -1.5 * csFactor, ptCenter, ptCenter, false);
@@ -3143,10 +3198,13 @@ public class Modifier2 {
                     AddIntegralModifier(tg, tg.get_Name(), aboveMiddle, 0, 1, 0, false);
                     break;
                 case TacticalLines.RETIRE:
+                case TacticalLines.PURSUIT:
                 case TacticalLines.WITHDRAW:
+                case TacticalLines.DISENGAGE:
                 case TacticalLines.WDRAWUP:
                 case TacticalLines.FPOL:
                 case TacticalLines.RPOL:
+                case TacticalLines.DEMONSTRATE:
                     AddIntegralModifier(tg, label, aboveMiddle, 0, 0, 1, true);
                     break;
                 case TacticalLines.RIP:
@@ -3489,8 +3547,10 @@ public class Modifier2 {
                 case TacticalLines.OCCUPY:
                 case TacticalLines.RETAIN:
                 case TacticalLines.SECURE:
+                case TacticalLines.AREA_DEFENSE:
                 case TacticalLines.CONTAIN:
                 case TacticalLines.SEIZE:
+                case TacticalLines.EVACUATE:
                 case TacticalLines.CORDONKNOCK:
                 case TacticalLines.CORDONSEARCH:
                 case TacticalLines.FOLLA:
@@ -3545,6 +3605,8 @@ public class Modifier2 {
                 case TacticalLines.RADAR_SEARCH:
                 case TacticalLines.SHIP_AOI_CIRCULAR:
                 case TacticalLines.MFLANE:
+                case TacticalLines.ENVELOPMENT:
+                case TacticalLines.MOBILE_DEFENSE:
                     break;
                 default:
                     return;
@@ -3653,6 +3715,7 @@ public class Modifier2 {
                 case TacticalLines.OCCUPY:
                 case TacticalLines.RETAIN:
                 case TacticalLines.SECURE:
+                case TacticalLines.AREA_DEFENSE:
                     pt0 = tg.Pixels.get(13);
                     pt1 = tg.Pixels.get(14);
                     //pt1=lineutility.ExtendAlongLineDouble(pt1, pt0, -10);
@@ -3675,6 +3738,7 @@ public class Modifier2 {
                     }
                     break;
                 case TacticalLines.SEIZE:
+                case TacticalLines.EVACUATE:
                     pt0 = tg.Pixels.get(26);
                     pt1 = tg.Pixels.get(27);
                     //pt1=lineutility.ExtendAlongLineDouble(pt1, pt0, -10);
@@ -3751,8 +3815,8 @@ public class Modifier2 {
                     AddModifier2(tg, tg.get_T1(), aboveMiddle, -2 * csFactor, ptLeft, ptRight, false, "T1");
                     AddModifier2(tg, "MIN ALT: " + tg.get_X(), aboveMiddle, -1 * csFactor, ptLeft, ptRight, false, "H");
                     AddModifier2(tg, "MAX ALT: " + tg.get_X1(), aboveMiddle, 0, ptLeft, ptRight, false, "H1");
-                    AddModifier2(tg, "Grids: " + tg.get_H(), aboveMiddle, 1 * csFactor, ptLeft, ptRight, false, "H2");
-                    AddModifier2(tg, "EFF: " + tg.get_DTG() + WDash, aboveMiddle, 2 * csFactor, ptLeft, ptRight, false, "W");
+                    AddModifier2(tg, "GRID " + tg.get_Location(), aboveMiddle, 1 * csFactor, ptLeft, ptRight, false, "H2");
+                    AddModifier2(tg, "EFF " + tg.get_DTG() + WDash, aboveMiddle, 2 * csFactor, ptLeft, ptRight, false, "W");
                     AddModifier2(tg, tg.get_DTG1(), aboveMiddle, 3 * csFactor, ptLeft, ptRight, false, "W1");
                     break;
                 case TacticalLines.ACA_CIRCULAR:
@@ -3761,8 +3825,8 @@ public class Modifier2 {
                     AddModifier2(tg, tg.get_T1(), area, -2 * csFactor, ptCenter, ptCenter, false, "T1");
                     AddIntegralAreaModifier(tg, "MIN ALT: " + tg.get_X(), area, -1 * csFactor, ptCenter, ptCenter, false, "H");
                     AddIntegralAreaModifier(tg, "MAX ALT: " + tg.get_X1(), area, 0, ptCenter, ptCenter, false, "H1");
-                    AddIntegralAreaModifier(tg, "Grids: " + tg.get_H(), area, 1 * csFactor, ptCenter, ptCenter, false, "H2");
-                    AddIntegralAreaModifier(tg, "EFF: " + tg.get_DTG() + WDash, area, 2 * csFactor, ptCenter, ptCenter, false, "W");
+                    AddIntegralAreaModifier(tg, "GRID " + tg.get_Location(), area, 1 * csFactor, ptCenter, ptCenter, false, "H2");
+                    AddIntegralAreaModifier(tg, "EFF " + tg.get_DTG() + WDash, area, 2 * csFactor, ptCenter, ptCenter, false, "W");
                     AddIntegralAreaModifier(tg, tg.get_DTG1(), area, 3 * csFactor, ptCenter, ptCenter, false, "W1");
                     break;
                 case TacticalLines.FSA_CIRCULAR:
@@ -3958,6 +4022,12 @@ public class Modifier2 {
                 case TacticalLines.RANGE_FAN_SECTOR:
                 case TacticalLines.RADAR_SEARCH:
                     addSectorModifiers(tg, converter);
+                    break;
+                case TacticalLines.ENVELOPMENT:
+                    AddIntegralModifier(tg, label, aboveMiddle, 0, 0, 1, true);
+                    break;
+                case TacticalLines.MOBILE_DEFENSE:
+                    AddIntegralModifier(tg, label, area, 0, 16, 16, true);
                     break;
                 default:
                     break;
@@ -4312,21 +4382,6 @@ public class Modifier2 {
         }
     }
 
-    private static int switchDirection(int direction) {
-        int result = -1;
-        switch (direction) {
-            case 0:
-                return 1;
-            case 1:
-                return 0;
-            case 2:
-                return 3;
-            case 3:
-                return 2;
-        }
-        return result;
-    }
-
     /**
      * Displays the modifiers to a Graphics2D from a BufferedImage
      *
@@ -4431,7 +4486,7 @@ public class Modifier2 {
                         }
 
                         if (lineType == TacticalLines.LC || tg.get_Client().equalsIgnoreCase("ge")) {
-                            direction = switchDirection(direction);
+                            direction = lineutility.reverseDirection(direction);
                         }
 
                         if ((modifier.type == toEnd && x1 < x2) || (modifier.type == aboveEnd && x2 < x1)) {

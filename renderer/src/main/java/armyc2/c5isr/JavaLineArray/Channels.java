@@ -780,6 +780,9 @@ public final class Channels {
             switch (vbiDrawThis) {
                 case TacticalLines.SPT_STRAIGHT:
                 case TacticalLines.SPT:
+                case TacticalLines.FRONTAL_ATTACK:
+                case TacticalLines.TURNING_MOVEMENT:
+                case TacticalLines.MOVEMENT_TO_CONTACT:
                 case TacticalLines.AAAAA:
                 case TacticalLines.AIRAOA:
                 case TacticalLines.CATK:
@@ -838,6 +841,9 @@ public final class Channels {
                 case TacticalLines.MAIN_STRAIGHT:
                 case TacticalLines.SPT:
                 case TacticalLines.SPT_STRAIGHT:
+                case TacticalLines.FRONTAL_ATTACK:
+                case TacticalLines.TURNING_MOVEMENT:
+                case TacticalLines.MOVEMENT_TO_CONTACT:
                 case TacticalLines.TRIPLE:
                 case TacticalLines.DOUBLEC:
                 case TacticalLines.SINGLEC:
@@ -1312,6 +1318,9 @@ public final class Channels {
                 case TacticalLines.AAAAA:
                 case TacticalLines.SPT:
                 case TacticalLines.SPT_STRAIGHT:
+                case TacticalLines.FRONTAL_ATTACK:
+                case TacticalLines.TURNING_MOVEMENT:
+                case TacticalLines.MOVEMENT_TO_CONTACT:
                 case TacticalLines.MAIN:
                 case TacticalLines.MAIN_STRAIGHT:
                 case TacticalLines.CATKBYFIRE:	//80
@@ -1338,6 +1347,9 @@ public final class Channels {
                 case TacticalLines.MAIN_STRAIGHT:
                 case TacticalLines.SPT:
                 case TacticalLines.SPT_STRAIGHT:
+                case TacticalLines.FRONTAL_ATTACK:
+                case TacticalLines.TURNING_MOVEMENT:
+                case TacticalLines.MOVEMENT_TO_CONTACT:
                 case TacticalLines.CATK:
                 case TacticalLines.CATKBYFIRE:
                 case TacticalLines.TRIPLE:
@@ -1857,6 +1869,9 @@ public final class Channels {
                     break;
                 case TacticalLines.SPT:
                 case TacticalLines.SPT_STRAIGHT:
+                case TacticalLines.FRONTAL_ATTACK:
+                case TacticalLines.TURNING_MOVEMENT:
+                case TacticalLines.MOVEMENT_TO_CONTACT:
                 case TacticalLines.CATK:
                 case TacticalLines.CATKBYFIRE:
                 case TacticalLines.AIRAOA:
@@ -1871,6 +1886,12 @@ public final class Channels {
                     //diagnostic
                     if (vbiDrawThis == (long) TacticalLines.AAAAA) {
                         vblCounter = vblLowerCounter + vblUpperCounter + 19;
+                    } else if (vbiDrawThis == (long) TacticalLines.FRONTAL_ATTACK) {
+                        vblCounter = vblLowerCounter + vblUpperCounter + 15;
+                    } else if (vbiDrawThis ==  TacticalLines.TURNING_MOVEMENT) {
+                        vblCounter = vblLowerCounter + vblUpperCounter + 14;
+                    } else if (vbiDrawThis == (long) TacticalLines.MOVEMENT_TO_CONTACT) {
+                        vblCounter = vblLowerCounter + vblUpperCounter + 24;
                     }
 
                     pLinePoints = new POINT2[vblCounter];
@@ -2138,6 +2159,140 @@ public final class Channels {
                             pLinePoints[vblCounter - k - 1].style = 18;
                         }
                     }
+
+                    if (vbiDrawThis == TacticalLines.FRONTAL_ATTACK) {
+                        // Add line on perpendicular to arrow head
+                        pt0 = new POINT2(pLinePoints[vblLowerCounter + vblUpperCounter + 1]); // arrow head left
+                        ptCenter = new POINT2(pLinePoints[vblLowerCounter + vblUpperCounter + 6]); // arrow head tip
+                        pt1 = new POINT2(pLinePoints[vblLowerCounter + vblUpperCounter + 5]); // arrow right
+
+                        // Make distance between pt0 and pt1 vblChannelWidth * 2
+                        midPt1 = lineutility.MidPointDouble(pt0, pt1, 0);
+                        pt0 = lineutility.ExtendAlongLineDouble(pt1, midPt1, vblChannelWidth);
+                        pt1 = lineutility.ExtendAlongLineDouble(pt0, midPt1, vblChannelWidth);
+
+                        pLinePoints[vblLowerCounter + vblUpperCounter + 8] = lineutility.PointRelativeToLine(pt0, pt1, pt0, ptCenter);
+                        pLinePoints[vblLowerCounter + vblUpperCounter + 8].style = 0;
+                        pLinePoints[vblLowerCounter + vblUpperCounter + 9] = lineutility.PointRelativeToLine(pt0, pt1, pt1, ptCenter);
+                        pLinePoints[vblLowerCounter + vblUpperCounter + 9].style = 5;
+                    }
+
+                    if (vbiDrawThis == TacticalLines.TURNING_MOVEMENT) {
+                        if (tg.Pixels.size() == 3) {
+                            pt0 = tg.Pixels.get(1);
+                            pt1 = lineutility.ClosestPointOnLine(tg.Pixels.get(0), tg.Pixels.get(1), tg.Pixels.get(2));
+                        } else { // tg.Pixels.size() > 3
+                            pt0 = tg.Pixels.get(tg.Pixels.size() - 2);
+                            pt1 = tg.Pixels.get(tg.Pixels.size() - 3);
+                        }
+                        midPt1 = lineutility.MidPointDouble(pt0, pt1, 0);
+                        pLinePoints[vblLowerCounter + vblUpperCounter + 8] = lineutility.ExtendDirectedLine(pt0, pt1, midPt1, lineutility.extend_above, vblChannelWidth / 2, 0);
+                        pLinePoints[vblLowerCounter + vblUpperCounter + 9] = lineutility.ExtendDirectedLine(pt0, pt1, midPt1, lineutility.extend_below, vblChannelWidth / 2, 5);
+                    }
+
+                    if (vbiDrawThis == TacticalLines.MOVEMENT_TO_CONTACT) {
+                        pt0 = new POINT2(pLinePoints[vblLowerCounter + vblUpperCounter + 1]); // arrow head left
+                        ptCenter = new POINT2(pLinePoints[vblLowerCounter + vblUpperCounter + 6]); // arrow head tip
+                        pt1 = new POINT2(pLinePoints[vblLowerCounter + vblUpperCounter + 5]); // arrow right
+
+                        int direction1 = lineutility.reverseDirection(lineutility.CalcDirectionFromLine(pt0, ptCenter, pt1));
+                        int direction2 = lineutility.reverseDirection(lineutility.CalcDirectionFromLine(pt1, ptCenter, pt0));
+
+                        midPt1 = lineutility.MidPointDouble(pt0, ptCenter, 0);
+                        midPt1 = lineutility.ExtendDirectedLine(pt0, ptCenter, midPt1, direction1, vblChannelWidth / 8.0);
+                        midPt2 = lineutility.MidPointDouble(pt1, ptCenter, 0);
+                        midPt2 = lineutility.ExtendDirectedLine(pt1, ptCenter, midPt2, direction2, vblChannelWidth / 8.0);
+
+                        POINT2[] DISMPts = new POINT2[16];
+                        lineutility.InitializePOINT2Array(DISMPts);
+                        DISMPts[0] = lineutility.ExtendDirectedLine(pt0, ptCenter, midPt1, direction1, vblChannelWidth);
+                        DISMPts[1] = midPt1;
+                        DISMPts[2] = midPt2;
+                        DISMPts[3] = lineutility.ExtendDirectedLine(pt1, ptCenter, midPt2, direction2, vblChannelWidth);
+
+                        lHowManyThisSegment = DISMSupport.GetDISMCoverDoubleRevC(DISMPts, vbiDrawThis, 4);
+                        for (int i = 0; i < lHowManyThisSegment; i++) {
+                            pLinePoints[vblLowerCounter + vblUpperCounter + 8 + i] = DISMPts[i];
+                        }
+                    }
+
+                    if (vbiDrawThis == TacticalLines.FRONTAL_ATTACK || vbiDrawThis == TacticalLines.TURNING_MOVEMENT) {
+                        pt0 = new POINT2(pLinePoints[vblLowerCounter + vblUpperCounter+2]); // top left
+                        pt1 = lineutility.MidPointDouble(pLinePoints[vblLowerCounter + vblUpperCounter + 1], pLinePoints[vblLowerCounter + vblUpperCounter + 6], 0); // top right
+                        pt2 = new POINT2(pLinePoints[vblLowerCounter + vblUpperCounter+4]); // bottom left
+                        pt3 = lineutility.MidPointDouble(pLinePoints[vblLowerCounter + vblUpperCounter + 5], pLinePoints[vblLowerCounter + vblUpperCounter + 6], 0); // bottom right
+
+                        // Shrink vertically to add spacing between arrow lines
+                        dist = lineutility.CalcDistanceDouble(pt0, pt2) / 4;
+                        pt0 = lineutility.ExtendAlongLineDouble2(pt0, pt2, dist);
+                        pt1 = lineutility.ExtendAlongLineDouble2(pt1, pt3, dist);
+                        pt2 = lineutility.ExtendAlongLineDouble2(pt2, pt0, dist);
+                        pt3 = lineutility.ExtendAlongLineDouble2(pt3, pt1, dist);
+
+                        // Make height twice size of width
+                        if (lineutility.CalcDistanceDouble(pt0, pt2) > 2 * lineutility.CalcDistanceDouble(pt0, pt1)) {
+                            // Shrink vertical
+                            dist = lineutility.CalcDistanceDouble(pt0, pt1);
+
+                            midPt1 = lineutility.MidPointDouble(pt0, pt2, 0);
+                            pt0 = lineutility.ExtendAlongLineDouble2(midPt1, pt0, dist);
+                            pt2 = lineutility.ExtendAlongLineDouble2(midPt1, pt2, dist);
+
+                            midPt1 = lineutility.MidPointDouble(pt1, pt3, 0);
+                            pt1 = lineutility.ExtendAlongLineDouble2(midPt1, pt1, dist);
+                            pt3 = lineutility.ExtendAlongLineDouble2(midPt1, pt3, dist);
+                        } else if (2 * lineutility.CalcDistanceDouble(pt0, pt1) > lineutility.CalcDistanceDouble(pt0, pt2)) {
+                            //Shrink horizontal
+                            dist = lineutility.CalcDistanceDouble(pt0, pt2) / 2;
+                            pt1 = lineutility.ExtendAlongLineDouble2(pt0, pt1, dist);
+                            pt3 = lineutility.ExtendAlongLineDouble2(pt2, pt3, dist);
+                        }
+
+                        // Want actual top / left if arrow head is rotated
+                        if (pt0.y > pt2.y && pt1.y > pt3.y) {
+                            pt4 = pt0;
+                            pt0 = pt2;
+                            pt2 = pt4;
+
+                            pt4 = pt1;
+                            pt1 = pt3;
+                            pt3 = pt4;
+                        }
+                        if (pt0.x > pt1.x && pt2.x > pt3.x) {
+                            pt4 = pt0;
+                            pt0 = pt1;
+                            pt1 = pt4;
+
+                            pt4 = pt2;
+                            pt2 = pt3;
+                            pt3 = pt4;
+                        }
+
+                        if (vbiDrawThis == TacticalLines.FRONTAL_ATTACK) {
+                            // Draw "A"
+                            pLinePoints[vblLowerCounter + vblUpperCounter + 10] = new POINT2(pt2);
+                            pLinePoints[vblLowerCounter + vblUpperCounter + 10].style = 0;
+                            pLinePoints[vblLowerCounter + vblUpperCounter + 11] = lineutility.MidPointDouble(pt0, pt1, 0);
+                            pLinePoints[vblLowerCounter + vblUpperCounter + 11].style = 0;
+                            pLinePoints[vblLowerCounter + vblUpperCounter + 12] = new POINT2(pt3);
+                            pLinePoints[vblLowerCounter + vblUpperCounter + 12].style = 5;
+                            pLinePoints[vblLowerCounter + vblUpperCounter + 13] = lineutility.MidPointDouble(pLinePoints[vblLowerCounter + vblUpperCounter + 10], pLinePoints[vblLowerCounter + vblUpperCounter + 11], 0);
+                            pLinePoints[vblLowerCounter + vblUpperCounter + 13].style = 0;
+                            pLinePoints[vblLowerCounter + vblUpperCounter + 14] = lineutility.MidPointDouble(pLinePoints[vblLowerCounter + vblUpperCounter + 11], pLinePoints[vblLowerCounter + vblUpperCounter + 12], 5);
+                            pLinePoints[vblLowerCounter + vblUpperCounter + 14].style = 5;
+                        } else {
+                            // Draw "T"
+                            pLinePoints[vblLowerCounter + vblUpperCounter + 10] = lineutility.MidPointDouble(pt0, pt1, 0);
+                            pLinePoints[vblLowerCounter + vblUpperCounter + 10].style = 0;
+                            pLinePoints[vblLowerCounter + vblUpperCounter + 11] = lineutility.MidPointDouble(pt2, pt3, 5);
+                            pLinePoints[vblLowerCounter + vblUpperCounter + 11].style = 5;
+                            pLinePoints[vblLowerCounter + vblUpperCounter + 12] = new POINT2(pt0);
+                            pLinePoints[vblLowerCounter + vblUpperCounter + 12].style = 0;
+                            pLinePoints[vblLowerCounter + vblUpperCounter + 13] = new POINT2(pt1);
+                            pLinePoints[vblLowerCounter + vblUpperCounter + 13].style = 5;
+                        }
+                    }
+
                     break;
                 default:
                     break;
@@ -2237,6 +2392,8 @@ public final class Channels {
                     case TacticalLines.SPT:
                     case TacticalLines.SPT_STRAIGHT:
                     case TacticalLines.AIRAOA:
+                    case TacticalLines.FRONTAL_ATTACK:
+                    case TacticalLines.TURNING_MOVEMENT:
                         if(beginLine)
                         {
                             if(k>0) //doubled points with linestyle=5
@@ -2258,6 +2415,53 @@ public final class Channels {
                             }
                         }
                         if(k==vblCounter-1) //non-LC should only have one shape
+                        {
+                            if(shape !=null && shape.getShape() != null)
+                            {
+                                shapes.add(shape);
+                            }
+                        }
+                        break;
+                    case TacticalLines.MOVEMENT_TO_CONTACT:
+                        if(beginLine)
+                        {
+                            if(k>0)
+                            {
+                                if(pLinePoints[k].style==5 && pLinePoints[k-1].style==5 && k != vblCounter-1)
+                                    continue;
+                            }
+
+                            if (pLinePoints[k].style == 9 && pLinePoints[k - 1].style != 9)
+                            {
+                                if (!shape.getPoints().isEmpty())
+                                    shapes.add(shape);
+                                shape = new Shape2(Shape2.SHAPE_TYPE_FILL);
+                                shape.set_Style(pLinePoints[k].style);
+                                shape.setFillColor(tg.get_LineColor());
+                                shape.set_Fillstyle(1);
+                            }
+
+                            shape.moveTo(pLinePoints[k]);
+                            beginLine=false;
+                        }
+                        else
+                        {
+                            shape.lineTo(pLinePoints[k]);
+                            if(pLinePoints[k].style==5)
+                            {
+                                beginLine=true;
+                            }
+                            else if (pLinePoints[k].style == 10)
+                            {
+                                if (shape != null && shape.getShape() != null)
+                                {
+                                    shapes.add(0, shape);
+                                    shape = new Shape2(Shape2.SHAPE_TYPE_POLYLINE);
+                                }
+                                beginLine = true;
+                            }
+                        }
+                        if(k==vblCounter-1)
                         {
                             if(shape !=null && shape.getShape() != null)
                             {
@@ -2486,6 +2690,55 @@ public final class Channels {
                     shape.moveTo(newPts.get(0));
                     t=newPts.size();
                     //for(j=1;j<newPts.size();j++)
+                    for(j=1;j<t;j++)
+                    {
+                        shape.lineTo(newPts.get(j));
+                    }
+                    break;
+                case TacticalLines.FRONTAL_ATTACK:
+                case TacticalLines.TURNING_MOVEMENT:
+                    for(j=0;j<(n-10)/2;j++)
+                    {
+                        newPts.add(pLinePoints[j]);
+                    }
+                    //add the arrow outline
+                    newPts.add(pLinePoints[n-8]);
+                    newPts.add(pLinePoints[n-9]);
+                    newPts.add(pLinePoints[n-10]);
+                    newPts.add(pLinePoints[n-5]);
+                    newPts.add(pLinePoints[n-6]);
+
+                    for(j=n-11;j>=(n-10)/2;j--)
+                    {
+                        newPts.add(pLinePoints[j]);
+                    }
+                    shape=new Shape2(Shape2.SHAPE_TYPE_FILL);
+                    shape.moveTo(newPts.get(0));
+                    t=newPts.size();
+                    for(j=1;j<t;j++)
+                    {
+                        shape.lineTo(newPts.get(j));
+                    }
+                    break;
+                case TacticalLines.MOVEMENT_TO_CONTACT:
+                    for(j=0;j<(n-24)/2;j++)
+                    {
+                        newPts.add(pLinePoints[j]);
+                    }
+                    //add the arrow outline
+                    newPts.add(pLinePoints[n-22]);
+                    newPts.add(pLinePoints[n-23]);
+                    newPts.add(pLinePoints[n-24]);
+                    newPts.add(pLinePoints[n-19]);
+                    newPts.add(pLinePoints[n-20]);
+
+                    for(j=n-25;j>=(n-24)/2;j--)
+                    {
+                        newPts.add(pLinePoints[j]);
+                    }
+                    shape=new Shape2(Shape2.SHAPE_TYPE_FILL);
+                    shape.moveTo(newPts.get(0));
+                    t=newPts.size();
                     for(j=1;j<t;j++)
                     {
                         shape.lineTo(newPts.get(j));

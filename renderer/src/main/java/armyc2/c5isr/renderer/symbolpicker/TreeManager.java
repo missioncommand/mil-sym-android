@@ -29,7 +29,6 @@ public class TreeManager {
             "25343700", // Exfiltrate
             "25343800", // Infiltrate
             "25343900", // Locate
-            "25344000", // Pursue
             "25350000", // Space debris
             "25350100", "25350101", "25350102", "25350103", // Man made space debris
             "25350200", "25350201", "25350202", "25350203", // Natural space debris
@@ -67,7 +66,7 @@ public class TreeManager {
         String symbolSet = "";
 
         InputStream is;
-        if (version == SymbolID.Version_2525E) {
+        if (version >= SymbolID.Version_2525E) {
             is = context.getResources().openRawResource(R.raw.mse);
         } else {
             is = context.getResources().openRawResource(R.raw.msd);
