@@ -245,6 +245,7 @@ public class RendererUtilities {
 
         int affiliation = SymbolID.getAffiliation(symbolID);
         String defaultFillColor = null;
+        returnSVG = svg;
         if(strokeColor != null)
         {
             if(strokeColor.getAlpha() != 255)
@@ -268,7 +269,25 @@ public class RendererUtilities {
                 returnSVG = returnSVG.replace(svgStart,svgStartReplace);
             }
 
+            if((SymbolID.getSymbolSet(symbolID)==SymbolID.SymbolSet_LandInstallation && SymbolID.getFrameShape(symbolID)=='0') ||
+                    SymbolID.getFrameShape(symbolID)==SymbolID.FrameShape_LandInstallation)
+            {
+                int i1 = returnSVG.indexOf("<rect") + 5;
+                if(SymbolID.getAffiliation(symbolID)==SymbolID.StandardIdentity_Affiliation_Neutral)
+                    i1 = returnSVG.indexOf("<rect",i1) + 5;
+                returnSVG = returnSVG.substring(0,i1) + " fill=\"" + hexStrokeColor + "\"" + returnSVG.substring(i1);
+            }
+
         }
+        else if((SymbolID.getSymbolSet(symbolID)==SymbolID.SymbolSet_LandInstallation && SymbolID.getFrameShape(symbolID)=='0') ||
+                SymbolID.getFrameShape(symbolID)==SymbolID.FrameShape_LandInstallation)
+        {
+            int i1 = returnSVG.indexOf("<rect") + 5;
+            if(SymbolID.getAffiliation(symbolID)==SymbolID.StandardIdentity_Affiliation_Neutral)
+                i1 = returnSVG.indexOf("<rect",i1) + 5;
+            returnSVG = returnSVG.substring(0,i1) + " fill=\"#000000\"" + returnSVG.substring(i1);
+        }
+
         if(fillColor != null)
         {
             if(fillColor.getAlpha() != 255)
@@ -305,10 +324,11 @@ public class RendererUtilities {
                     break;
             }
 
-            if(returnSVG == null)
-                returnSVG = svg.replaceFirst(defaultFillColor, "fill=\"" + hexFillColor + "\"" + fillOpacity);
-            else
-                returnSVG = returnSVG.replaceFirst(defaultFillColor, "fill=\"" + hexFillColor + "\"" + fillOpacity);
+            int fillIndex = returnSVG.lastIndexOf(defaultFillColor);
+            if(fillIndex != -1)
+                returnSVG = returnSVG.substring(0,fillIndex) + "fill=\"" + hexFillColor + "\"" + fillOpacity + returnSVG.substring(fillIndex + defaultFillColor.length());
+
+            //returnSVG = returnSVG.replaceFirst(defaultFillColor, "fill=\"" + hexFillColor + "\"" + fillOpacity);
         }
 
         if(returnSVG != null)
