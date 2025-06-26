@@ -761,6 +761,7 @@ public final class arraysupport {
                     pLinePoints[28].style = 5;
                     break;
 
+                case TacticalLines.TURN_REVD:
                 case TacticalLines.TURN:
                     boolean changeArc = IsTurnArcReversed(savepoints);
                     if (changeArc) //swap the points
@@ -2644,6 +2645,7 @@ public final class arraysupport {
                     GetIsolatePointsDouble(pLinePoints, lineType, converter);
                     acCounter = 29;
                     break;
+                case TacticalLines.TURN_REVD:
                 case TacticalLines.TURN:
                     // Switch first and last point. Order changed in 2525C
                     POINT2 swapPt = pLinePoints[0];
@@ -3978,6 +3980,7 @@ public final class arraysupport {
                 case TacticalLines.AREA_DEFENSE:
                 case TacticalLines.SEIZE:
                 case TacticalLines.EVACUATE:
+                case TacticalLines.TURN:
                 case TacticalLines.BS_RECTANGLE:
                 case TacticalLines.BBS_RECTANGLE:
                 //add these
@@ -4783,6 +4786,7 @@ public final class arraysupport {
                 case TacticalLines.ATDITCHC:
                 case TacticalLines.ATDITCHM:
                 case TacticalLines.MNFLDFIX:
+                case TacticalLines.TURN_REVD:
                 case TacticalLines.TURN:
                 case TacticalLines.MNFLDDIS:
                 case TacticalLines.AREA_DEFENSE:

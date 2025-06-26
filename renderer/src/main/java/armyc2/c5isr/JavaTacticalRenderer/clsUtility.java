@@ -218,6 +218,7 @@ public final class clsUtility {
             case TacticalLines.BHL:
             case TacticalLines.MNFLDBLK:
             case TacticalLines.MNFLDDIS:
+            case TacticalLines.TURN_REVD:
             case TacticalLines.TURN:
             case TacticalLines.PLANNED:
             case TacticalLines.ESR1:
@@ -651,6 +652,7 @@ public final class clsUtility {
                 case TacticalLines.FOLSP:
                 case TacticalLines.FERRY:
                 case TacticalLines.MNFLDFIX:
+                case TacticalLines.TURN_REVD:
                 case TacticalLines.TURN:
                 case TacticalLines.MNFLDDIS:
                 case TacticalLines.EASY:
