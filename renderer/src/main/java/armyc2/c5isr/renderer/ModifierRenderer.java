@@ -10166,7 +10166,7 @@ public class ModifierRenderer
             svgStroke = RendererUtilities.colorToHexString(backgroundColor,false);
 
         String svgFill = RendererUtilities.colorToHexString(color,false);
-        String svgStrokeWidth = "2";//String.valueOf(RendererSettings.getInstance().getTextOutlineWidth());
+        String svgStrokeWidth = String.valueOf(RendererSettings.getInstance().getTextOutlineWidth());
         for (TextInfo ti : tiArray) {
             sbSVG.append(Shape2SVG.Convert(ti, svgStroke,svgFill,svgStrokeWidth,null,null,null));
             sbSVG.append("\n");
@@ -10191,7 +10191,7 @@ public class ModifierRenderer
             svgStroke = RendererUtilities.colorToHexString(backgroundColor,false);
 
         String svgFill = RendererUtilities.colorToHexString(color,false);
-        String svgStrokeWidth = "2";//String.valueOf(RendererSettings.getInstance().getTextOutlineWidth());
+        String svgStrokeWidth = String.valueOf(RendererSettings.getInstance().getTextOutlineWidth());
         sbSVG.append("\n<g");
         sbSVG.append(" font-family=\"" + name + '"');
         sbSVG.append(" font-size=\"" + size + "px\"");
