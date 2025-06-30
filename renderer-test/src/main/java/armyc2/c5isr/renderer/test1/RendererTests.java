@@ -3,24 +3,15 @@ package armyc2.c5isr.renderer.test1;
 import android.app.Activity;
 import android.util.SparseArray;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.*;
 import java.util.logging.Level;
 
 import armyc2.c5isr.RenderMultipoints.clsRenderer;
 import armyc2.c5isr.graphics2d.Point2D;
 import armyc2.c5isr.renderer.MilStdIconRenderer;
-import armyc2.c5isr.renderer.utilities.DrawRules;
-import armyc2.c5isr.renderer.utilities.ErrorLogger;
-import armyc2.c5isr.renderer.utilities.ImageInfo;
-import armyc2.c5isr.renderer.utilities.MSInfo;
-import armyc2.c5isr.renderer.utilities.MSLookup;
-import armyc2.c5isr.renderer.utilities.MilStdSymbol;
-import armyc2.c5isr.renderer.utilities.PointConversion;
-import armyc2.c5isr.renderer.utilities.SymbolID;
-import armyc2.c5isr.renderer.utilities.SymbolUtilities;
+import armyc2.c5isr.renderer.utilities.*;
 import armyc2.c5isr.web.render.MultiPointHandler;
 import armyc2.c5isr.web.render.WebRenderer;
 
@@ -126,6 +117,73 @@ public class RendererTests {
         final String defaultID = "100301000011000011110000000000";
         for (int i = 0; i <= 999999; i++) {
             testCode(SymbolID.setEntityCode(defaultID, i));
+        }
+    }
+
+    // Verifies valid output without errors for all multipoint symbols using both expected control points and duplicated control points
+    public static void testMPSymbols() {
+        HashSet<String> allBasicIDs = new HashSet<>();
+        allBasicIDs.addAll(MSLookup.getInstance().getIDList(SymbolID.Version_2525Dch1));
+        allBasicIDs.addAll(MSLookup.getInstance().getIDList(SymbolID.Version_2525Ech1));
+        HashMap<String, String> modifiers = new HashMap<>();
+        modifiers.put(Modifiers.AM_DISTANCE, "1,10");
+        modifiers.put(Modifiers.AN_AZIMUTH, "0,90");
+        HashMap<String, String> attributes = new HashMap<>();
+        final String validControlPtsStr = "50,20 50,21 50,22 49,22 49,21 49,20";
+        final String duplicateControlPtsStr = "50,20 50,20 50,20 50,20 50,20 50,20";
+        final String bbox = "49,20,50,22";
+        for (String basicID : allBasicIDs) {
+            for (int version : new int[]{SymbolID.Version_2525Dch1, SymbolID.Version_2525Ech1}) {
+                final String symbolCode = "" + version + SymbolID.StandardIdentity_Context_Reality +
+                        SymbolID.StandardIdentity_Affiliation_Friend + basicID.substring(0, 2) +
+                        SymbolID.Status_Present + SymbolID.HQTFD_Unknown + SymbolID.Echelon_Team_Crew +
+                        basicID.substring(2) + "0000000000";
+
+                if (SymbolUtilities.isMultiPoint(symbolCode)) {
+                    for (String controlPtsStr : new String[]{validControlPtsStr, duplicateControlPtsStr}) {
+                        ByteArrayOutputStream ErrOutputStream = new ByteArrayOutputStream();
+                        System.setErr(new PrintStream(ErrOutputStream));
+                        MilStdSymbol mss = WebRenderer.RenderMultiPointAsMilStdSymbol("", "", "", symbolCode, controlPtsStr, "", 100, bbox, modifiers, attributes);
+                        if (mss == null)
+                            System.out.println("Unexpected null output");
+                        if (!ErrOutputStream.toString().isEmpty())
+                            System.out.println("Error thrown during render");
+
+                        for (ShapeInfo shape : mss.getSymbolShapes()) {
+                            for (ArrayList<Point2D> polyline : shape.getPolylines()) {
+                                for (Point2D pt : polyline) {
+                                    if (pt == null)
+                                        System.out.println("Unexpected null point");
+                                    if (pt.getX() == 0 && pt.getY() == 0)
+                                        System.out.println("Unexpected point (0,0)");
+                                }
+                            }
+                        }
+                        for (ShapeInfo shape : mss.getModifierShapes()) {
+                            Point2D pt = shape.getModifierPosition();
+                            if (pt == null)
+                                System.out.println("Unexpected null point");
+                            if (pt.getX() == 0 && pt.getY() == 0)
+                                System.out.println("Unexpected point (0,0)");
+                            pt = shape.getGlyphPosition();
+                            if (pt == null)
+                                System.out.println("Unexpected null point");
+                            if (pt.getX() == 0 && pt.getY() == 0)
+                                System.out.println("Unexpected point (0,0)");
+                        }
+
+                        String kml = WebRenderer.RenderSymbol("", "", "", symbolCode, controlPtsStr, "", 100, bbox, modifiers, attributes, WebRenderer.OUTPUT_FORMAT_KML);
+                        if (!kml.startsWith("<Folder id=\"\"><name><![CDATA[]]>"))
+                            System.out.println("Unexpected kml output");
+                        String geojson = WebRenderer.RenderSymbol("", "", "", symbolCode, controlPtsStr, "", 100, bbox, modifiers, attributes, WebRenderer.OUTPUT_FORMAT_GEOJSON);
+                        if (!geojson.startsWith("{\"type\":\"FeatureCollection\",\"features\":"))
+                            System.out.println("Unexpected geojson output");
+                        String svg = WebRenderer.RenderSymbol("", "", "", symbolCode, controlPtsStr, "", 100, bbox, modifiers, attributes, WebRenderer.OUTPUT_FORMAT_GEOSVG);
+                        if (!svg.startsWith("<svg width="))
+                            System.out.println("Unexpected svg output");
+                    }
+                }
+            }
         }
     }
 }
