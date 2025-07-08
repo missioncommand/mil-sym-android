@@ -4,6 +4,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 apply plugin: 'org.jreleaser'
 
+version = "2.4.4"
+
 android {
     namespace "armyc2.c5isr.renderer"
     compileSdk 35
@@ -22,7 +24,7 @@ android {
         //targetSdkVersion 35
         minSdkVersion android_minSdkVersion
         targetSdkVersion android_targetSdkVersion
-        versionName "2.4.3" //Renderer Version Number
+        versionName version//"2.4.3" //Renderer Version Number
     }
     buildToolsVersion '35.0.0'
 
