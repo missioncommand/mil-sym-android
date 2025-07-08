@@ -148,11 +148,15 @@ public class MainActivity extends Activity {
 			View myView = findViewById(android.R.id.content).getRootView();
 			int pxWidth = myView.getWidth();
 			int pxHeight = myView.getHeight();
-			float density = this.getResources().getDisplayMetrics().density;
-			float dpWidth = pxWidth / density;
-			float dpHeight = pxHeight / density;
+			int densityDPI = this.getResources().getDisplayMetrics().densityDpi;
+			//float density = this.getResources().getDisplayMetrics().density;
+			float dpWidth = this.getResources().getDisplayMetrics().widthPixels;
+			float dpHeight = this.getResources().getDisplayMetrics().heightPixels;
+			//float dpWidth = pxWidth / density;
+			//float dpHeight = pxHeight / density;
+			//for testing, already handled by mir.init()
 			if(dpWidth > 0 && dpHeight > 0) {
-				RendererSettings.getInstance().setDeviceDPI((int) density);
+				RendererSettings.getInstance().setDeviceDPI(densityDPI);
 				RendererSettings.getInstance().setDeviceWidth((int) dpWidth);
 				RendererSettings.getInstance().setDeviceHeight((int) dpHeight);
 			}

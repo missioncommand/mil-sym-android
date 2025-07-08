@@ -2,7 +2,7 @@ description = 'MIL-STD-2525D+ Symbology Renderer'
 
 apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
-apply plugin: 'signing'
+apply plugin: 'org.jreleaser'
 
 android {
     namespace "armyc2.c5isr.renderer"
@@ -22,7 +22,7 @@ android {
         //targetSdkVersion 35
         minSdkVersion android_minSdkVersion
         targetSdkVersion android_targetSdkVersion
-        versionName "2.4.1" //Renderer Version Number
+        versionName "2.4.2" //Renderer Version Number
     }
     buildToolsVersion '35.0.0'
 
@@ -146,7 +146,7 @@ task sourceJar(type: Jar) {
 // Define publication tasks
 publishing {
     publications {
-        mavenJava(MavenPublication) {
+        maven(MavenPublication) {
             groupId = 'io.github.missioncommand'
             artifactId = 'mil-sym-android'
             version = android.defaultConfig.versionName
@@ -161,7 +161,7 @@ publishing {
             }
             artifact(javadocJar) {
                 classifier = "javadoc"
-            }
+            }//*/
 
             pom {
                 name.set('MIL-STD-2525D+ Symbology Renderer')
@@ -202,26 +202,20 @@ publishing {
             }
         }
     }
-}
-
-// Sign the artifacts
-signing {
-    sign publishing.publications.mavenJava
-}
-
-// Repositories for publishing
-publishing {
     repositories {
         maven {
-            name = "sonatype"
-            url = version.endsWith("-SNAPSHOT")
-                    ? uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-                    : uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-            credentials {
-                username = project.findProperty("ossrhUsername") ?: ""
-                password = project.findProperty("ossrhPassword") ?: ""
-            }
+            url = layout.buildDirectory.dir('staging-deploy')
         }
     }
 }
 
+jreleaser {
+    configFile = file(".jreleaser.yml")
+    gitRootSearch = true
+    System.setProperty("JRELEASER_PROJECT_VERSION", version.toString())
+}
+
+tasks.named("jreleaserFullRelease") {
+    //dependsOn("jar")
+    //dependsOn("javadocJar", "sourceJar", "jar")
+}
