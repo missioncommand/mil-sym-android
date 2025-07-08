@@ -9,8 +9,8 @@ environment:
   variables: C:\TCE\Code\jreleaser\config.yml
 
 project:
-  name: mil-sym-java
-  version: "2.4.2"
+  name: mil-sym-android
+  version: "2.4.3"
   description: MilStd 2525D+ renderer
   license: Apache-2.0
   authors:
