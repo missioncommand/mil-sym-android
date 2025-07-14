@@ -30,6 +30,8 @@ import armyc2.c5isr.renderer.utilities.PathUtilities;
 import armyc2.c5isr.renderer.utilities.RectUtilities;
 import armyc2.c5isr.renderer.utilities.RendererSettings;
 import armyc2.c5isr.renderer.utilities.RendererUtilities;
+import armyc2.c5isr.renderer.utilities.SVGInfo;
+import armyc2.c5isr.renderer.utilities.SVGLookup;
 import armyc2.c5isr.renderer.utilities.SVGPath;
 import armyc2.c5isr.renderer.utilities.SVGSymbolInfo;
 import armyc2.c5isr.renderer.utilities.Shape2SVG;
@@ -48,7 +50,6 @@ public class ModifierRenderer
     private static float _modifierFontHeight = 10f;
     private static float _modifierFontDescent = 2f;
     private static RendererSettings RS = RendererSettings.getInstance();
-    private static int tgTextModifierKeys[] = {2,3,4,5,6,9,10,11,12,13,14,15};
 
     private static final Object _ModifierFontMutex = new Object();
     public static void setModifierFont(Paint font, float height, float descent)
@@ -587,7 +588,7 @@ public class ModifierRenderer
         String strEchelon = SymbolUtilities.getEchelonText(intEchelon);
 
         if (strEchelon != null
-                && SymbolUtilities.canSymbolHaveModifier(symbolID, Modifiers.B_ECHELON))
+                && SymbolUtilities.hasModifier(symbolID, Modifiers.B_ECHELON))
         {
 
             int echelonOffset = 2,
@@ -906,10 +907,10 @@ public class ModifierRenderer
             {
                 ebTop = echelonBounds.top - ebHeight - 4;
             }
-            else if(SymbolUtilities.canSymbolHaveModifier(symbolID, Modifiers.C_QUANTITY) &&
+            else if(SymbolUtilities.hasModifier(symbolID, Modifiers.C_QUANTITY) &&
                     modifiers.containsKey(Modifiers.C_QUANTITY))
             {
-                ebTop = symbolBounds.top - ebHeight*2 - 8;
+                ebTop = symbolBounds.top - (int)(ebHeight*2.5f);
             }
             else if(ss == SymbolID.SymbolSet_LandInstallation)
             {
@@ -1051,6 +1052,141 @@ public class ModifierRenderer
 
         // </editor-fold>
 
+        // <editor-fold defaultstate="collapsed" desc="Build Restricted Indicator">
+        RectF rBounds = null;
+        Path rPath = null;
+        Path rPath2 = null;
+        SVGPath rsvgPath = null;
+        SVGPath rsvgPath2 = null;
+        PointF rcirclePt = null;
+        PointF rdotPt = null;
+        float rdotRadius = 0;
+        float rStrokeWidth = 3;
+        if(SymbolID.getContext(symbolID) == SymbolID.StandardIdentity_Context_Restricted_Target_Reality)
+        {
+            // <path id="primary" d="M380,320l38,-67l40,67h-78m38,-11v-1m0,-10l0,-20" fill="yellow" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="7" />
+            float nsTx = 0;
+            float nsTy = 0;
+            float ratio = 1;
+            SVGInfo si = SVGLookup.getInstance().getSVGLInfo(SVGLookup.getFrameID(symbolID),SymbolID.getVersion(symbolID));
+            if(symbolBounds.height() > symbolBounds.width())
+            {
+                double sHeight = si.getBbox().height();
+                ratio = (float)(symbolBounds.height() / sHeight);
+            }
+            else
+            {
+                double sWidth = si.getBbox().width();
+                ratio = (float)(symbolBounds.width() / sWidth);
+            }
+
+            nsTx = (float)(si.getBbox().left * ratio) * -1;
+            nsTy = (float)(si.getBbox().top * ratio) * -1;
+
+            //<path d="m373,313l53,-97l57,97l-110,0" fill="yellow" id="triangle" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"/>
+            //<path d="m373,313L426,216L483,313L373,313" fill="yellow" id="triangle" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="6"/>
+            rPath = new Path();//triangle
+            rPath.moveTo(373f * ratio, 313f * ratio);
+            rPath.lineTo(426f * ratio, 216f * ratio);
+            rPath.lineTo(483f * ratio, 313f * ratio);
+            rPath.lineTo(373f * ratio, 313f * ratio);
+            rsvgPath = new SVGPath();//triangle
+            rsvgPath.moveTo(373f * ratio, 313f * ratio);
+            rsvgPath.lineTo(426f * ratio, 216f * ratio);
+            rsvgPath.lineTo(483f * ratio, 313f * ratio);
+            rsvgPath.lineTo(373f * ratio, 313f * ratio);
+
+            //<path d="M426.5,276L426.5,244" fill="none" id="line" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="10"/>
+            rPath2 = new Path();//line
+            rPath2.moveTo(426.5f * ratio, 276f * ratio);
+            rPath2.lineTo(426.5f * ratio, 248f * ratio);
+            rsvgPath2 = new SVGPath();//line
+            rsvgPath2.moveTo(426.5f * ratio, 276f * ratio);
+            rsvgPath2.lineTo(426.5f * ratio, 248f * ratio);
+
+            //<circle cx="426.5" cy="293" r="6" id="dot"/>//DOT
+            rdotPt = new PointF(426.5f * ratio, 293 * ratio);
+            rdotRadius = 5f * ratio;
+
+            //need to shift like we do the frame and main icons since it's based in that space
+            rPath.offset(nsTx, nsTy);
+            rPath2.offset(nsTx, nsTy);
+            rsvgPath.shift(nsTx,nsTy);
+            rsvgPath2.shift(nsTx,nsTy);
+            rdotPt.offset(nsTx,nsTy);
+            //rCircle = (Ellipse2D) txfm.createTransformedShape(rCircle);
+
+
+            //RectF bounds = new RectF();
+            //bounds = rPath.computeBounds(bounds);  //getBounds();//triangle bounds
+            Rect bounds = rsvgPath.getBounds();
+            rBounds = RectUtilities.makeRectF(bounds.left,bounds.top,bounds.width(), bounds.height());
+            rStrokeWidth = (2/66.666667f) * ((float)symbolBounds.height() / SymbolUtilities.getUnitRatioHeight(symbolID));
+            RectUtilities.grow(rBounds,(int)Math.ceil(rStrokeWidth/2));
+            RectUtilities.grow(bounds,(int)Math.ceil(rStrokeWidth/2));
+            imageBounds.union(bounds);
+        }
+        // </editor-fold>
+
+        // <editor-fold defaultstate="collapsed" desc="Build No Strike Indicator">
+        RectF nsBounds = null;
+        PointF nsCirclePt = null;
+        float nsRadius = 0;
+        Path nsLine = null;
+        SVGPath nssvgLine = null;
+        double nsStrokeWidth = 3;
+        if(SymbolID.getContext(symbolID) == SymbolID.StandardIdentity_Context_No_Strike_Entity_Reality)
+        {
+            //octagon~182.08058166503906~272.0794677734375~245.8407440185547~244.85235595703125
+            //restricted~375.44801678047673~248.63298320770264~85.1039714496415~79.36734275822477
+            //no-strike~378.0~248.0~80.0~80.0
+            //<circle cx="418" cy="288" fill="yellow" r="36" stroke="black" stroke-width="8"/>
+            //<line fill="none" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="8" x1="390" x2="446" y1="265" y2="310"/>
+            //nsCircle = new Ellipse(x,y,radius * 2, radius * 2);
+            //nsLine = new Line(390 * ratio, 265 * ratio, 446 * ratio, 310 * ratio);
+            float nsTx = 0;
+            float nsTy = 0;
+            float ratio = 1;
+            SVGInfo si = SVGLookup.getInstance().getSVGLInfo(SVGLookup.getFrameID(symbolID),SymbolID.getVersion(symbolID));
+            if(symbolBounds.height() > symbolBounds.width())
+            {
+                float sHeight = si.getBbox().height();
+                ratio = symbolBounds.height() / sHeight;
+            }
+            else
+            {
+                float sWidth = si.getBbox().width();
+                ratio = symbolBounds.width() / sWidth;
+            }
+
+            nsTx = (si.getBbox().left * ratio) * -1;
+            nsTy = (si.getBbox().top * ratio) * -1;
+
+            float radius = 50f * ratio;
+            float x = 426f * ratio;
+            float y = 267f * ratio;
+            nsCirclePt = new PointF(x,y);
+            nsRadius = radius;
+            nsLine = new Path();
+            nsLine.moveTo(390 * ratio, 235 * ratio);
+            nsLine.lineTo(463 * ratio, 298 * ratio);
+            nssvgLine = new SVGPath();
+            nssvgLine.moveTo(390 * ratio, 235 * ratio);
+            nssvgLine.lineTo(463 * ratio, 298 * ratio);
+
+            //need to shift like we do the frame and main icons since it's based in that space
+            nsCirclePt.offset(nsTx,nsTy);
+            nsLine.offset(nsTx,nsTy);
+            nssvgLine.shift(nsTx,nsTy);
+
+            nsBounds = RectUtilities.makeRectF(nsCirclePt.x - radius, nsCirclePt.y - radius, radius * 2, radius * 2);
+
+            nsStrokeWidth = (2/66.666667) * (symbolBounds.height() / SymbolUtilities.getUnitRatioHeight(symbolID));
+            RectUtilities.grow(nsBounds,(int)Math.ceil(nsStrokeWidth/2));
+            imageBounds.union(RectUtilities.makeRectFromRectF(nsBounds));
+        }
+        // </editor-fold>
+
         // <editor-fold defaultstate="collapsed" desc="Shift Modifiers">
         //adjust points if necessary
         if (sdi instanceof ImageInfo && (imageBounds.left < 0 || imageBounds.top < 0))
@@ -1115,6 +1251,19 @@ public class ModifierRenderer
             {
                 ociBoundsF.offset(shiftX, shiftY);
                 ociSlashShape.offset(shiftX, shiftY);
+            }
+            if(rBounds != null)
+            {
+                rBounds.offset(shiftX, shiftY);//bounds
+                rPath.offset(shiftX, shiftY);//triangle
+                rPath2.offset(shiftX, shiftY);//exclamation
+                rdotPt.offset(shiftX, shiftY);//dot
+            }
+            if(nsBounds != null)
+            {
+                nsBounds.offset(shiftX, shiftY);//bounds
+                nsCirclePt.offset(shiftX, shiftY);//circle
+                nsLine.offset(shiftX, shiftY);//line
             }
             if (domBounds != null)
             {
@@ -1267,6 +1416,7 @@ public class ModifierRenderer
                 ociShape = null;
 
             }
+
             if (mobilityBounds != null)
             {
                 if(svgMobilityGroup != null)
@@ -1296,6 +1446,29 @@ public class ModifierRenderer
                 //sbSVG.append(Shape2SVG.Convert(ociSlashShape, svgStroke, null, String.valueOf(ociStrokeWidth), svgAlpha, svgAlpha, null));
                 ociBounds = null;
                 ociSlashShape = null;
+            }
+
+            if(rBounds != null)
+            {
+                String restrictedGroup = "<g id=\"restricted\" stroke-linecap=\"round\" stroke-linejoin=\"round\">";
+                //triangle
+                restrictedGroup += Shape2SVG.Convert(rsvgPath, "#000000", "#FFFF00", String.valueOf(rStrokeWidth),svgAlpha,svgAlpha,null,null);
+                //exclamation
+                restrictedGroup += Shape2SVG.Convert(rsvgPath2, "#000000", null, String.valueOf(rStrokeWidth * 1.66667),svgAlpha,svgAlpha,null,null);
+                //dot
+                restrictedGroup += Shape2SVG.ConvertCircle(rdotPt, rdotRadius, "#000000", "#000000", String.valueOf(rStrokeWidth),svgAlpha,svgAlpha,null);
+                restrictedGroup += "</g>";
+
+                sbSVG.append(restrictedGroup);
+            }
+
+            if(nsBounds != null)
+            {
+                String noStrikeGroup = "<g id=\"nostrike\">";
+                noStrikeGroup += Shape2SVG.ConvertCircle(nsCirclePt, nsRadius,"#000000", "#FFFF00", String.valueOf(nsStrokeWidth),svgAlpha,svgAlpha,null);
+                noStrikeGroup += Shape2SVG.Convert(nssvgLine, "#000000", null, String.valueOf(nsStrokeWidth),svgAlpha,svgAlpha,null,null);
+                noStrikeGroup += "</g>";
+                sbSVG.append(noStrikeGroup);
             }
 
             if (domBounds != null)
@@ -1549,6 +1722,56 @@ public class ModifierRenderer
             //draw original icon.
             //ctx.drawImage(ii.getImage(),symbolBounds.left, symbolBounds.top);
             ctx.drawBitmap(ii.getImage(), null, symbolBounds, null);
+
+            if(rBounds != null)
+            {
+                Paint rPaint = new Paint();
+                rPaint.setColor(Color.YELLOW.toInt());
+                rPaint.setAlpha(alpha);
+                rPaint.setStrokeCap(Cap.ROUND);
+                rPaint.setStrokeJoin(Join.ROUND);
+                rPaint.setStyle(Style.FILL);
+                //triangle fill
+                ctx.drawPath(rPath, rPaint);
+
+                //triangle outline
+                rPaint.setStrokeWidth(rStrokeWidth);
+                rPaint.setStyle(Style.STROKE);
+                rPaint.setColor(Color.BLACK.toInt());
+                ctx.drawPath(rPath, rPaint);
+
+                //exclamation line
+                rPaint.setStrokeWidth(rStrokeWidth * 1.66667f);
+                ctx.drawPath(rPath2, rPaint);
+
+                //exclamation dot
+                rPaint.setStrokeWidth(rStrokeWidth);
+                rPaint.setStyle(Style.FILL_AND_STROKE);
+                ctx.drawCircle(rdotPt.x,rdotPt.y,rdotRadius,rPaint);
+
+            }
+            if(nsBounds != null)
+            {
+                Paint nsPaint = new Paint();
+                nsPaint.setColor(Color.YELLOW.toInt());
+                nsPaint.setAlpha(alpha);
+                nsPaint.setStrokeCap(Cap.ROUND);
+                nsPaint.setStrokeJoin(Join.ROUND);
+                nsPaint.setStyle(Style.FILL);
+
+                //circle fill
+                ctx.drawCircle(nsCirclePt.x, nsCirclePt.y,nsRadius,nsPaint);
+
+                //circle outline
+                nsPaint.setStyle(Style.STROKE);
+                nsPaint.setColor(Color.BLACK.toInt());
+                nsPaint.setStrokeWidth((float)nsStrokeWidth);
+                ctx.drawCircle(nsCirclePt.x,nsCirclePt.y,nsRadius,nsPaint);
+
+                //draw slash
+                ctx.drawPath(nsLine,nsPaint);
+
+            }
 
             if (domBounds != null) {
                 drawDOMArrow(ctx, domPoints, alpha, lineColor);
@@ -3666,7 +3889,7 @@ public class ModifierRenderer
         int bufferXL = 7;
         int bufferXR = 7;
         int bufferY = 2;
-        int bufferText = 2;
+        int bufferText = 0;
         int x = 0;
         int y = 0;//best y
         SymbolDimensionInfo newsdi = null;
@@ -3720,93 +3943,101 @@ public class ModifierRenderer
         String modifierValue = null;
         TextInfo tiTemp = null;
 
-        if (modifiers.containsKey(Modifiers.G_STAFF_COMMENTS) || modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1))
-        {
-
-            String gm = "";
-            String hm = "";
-            if(modifiers.containsKey(Modifiers.G_STAFF_COMMENTS))
-                gm = modifiers.get(Modifiers.G_STAFF_COMMENTS);
-
-            if(modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1))
-                hm = modifiers.get(Modifiers.H_ADDITIONAL_INFO_1);
-
-            modifierValue = gm + " " + hm;
-            modifierValue = modifierValue.trim();
-
-            if(modifierValue != null && !modifierValue.equals(""))
-            {
-                tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
-                labelBounds = tiTemp.getTextBounds();
-                labelWidth = labelBounds.width();
-
-                //on right
-                x = bounds.left + bounds.width() + bufferXR;
-                //on bottom
-                y = bounds.top + bounds.height();
-
-                tiTemp.setLocation(x, y);
-                tiArray.add(tiTemp);
-
-            }
-        }
-
-        if (modifiers.containsKey(Modifiers.Z_SPEED) || modifiers.containsKey(Modifiers.X_ALTITUDE_DEPTH))
-        {
-            modifierValue = "";
-            String zm = "";
-            String xm = "";
-            if(modifiers.containsKey(Modifiers.Z_SPEED))
-                zm = modifiers.get(Modifiers.Z_SPEED);
-
-            if(modifiers.containsKey(Modifiers.X_ALTITUDE_DEPTH))
-                xm = modifiers.get(Modifiers.X_ALTITUDE_DEPTH);
-
-            modifierValue = zm + " " + xm;
-            modifierValue = modifierValue.trim();
-
-            if(modifierValue != null && modifierValue.equals("")==false)
-            {
-                tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
-                labelBounds = tiTemp.getTextBounds();
-                labelWidth = labelBounds.width();
-
-                //on right
-                x = bounds.left + bounds.width() + bufferXR;
-                //on bottom
-                y = bounds.top + bounds.height() - labelHeight;
-
-                tiTemp.setLocation(x, y);
-                tiArray.add(tiTemp);
-
-            }
-        }
-
-
-
-        if (modifiers.containsKey(Modifiers.V_EQUIP_TYPE))
-        {
-            modifierValue = modifiers.get(Modifiers.V_EQUIP_TYPE);
-
-            if(modifierValue != null && modifierValue.equals("") == false)
-            {
-                tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
-                labelBounds = tiTemp.getTextBounds();
-                labelWidth = labelBounds.width();
-
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
-                //above Z
-                y = bounds.top + bounds.height() - (labelHeight * 2);
-
-                tiTemp.setLocation(x, y);
-                tiArray.add(tiTemp);
-
-            }
-        }
-
         if(SymbolUtilities.isAir(symbolID))
         {
+            if (modifiers.containsKey(Modifiers.G_STAFF_COMMENTS) || modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1))
+            {
+
+                String gm = "";
+                String hm = "";
+                if(modifiers.containsKey(Modifiers.G_STAFF_COMMENTS))
+                    gm = modifiers.get(Modifiers.G_STAFF_COMMENTS);
+
+                if(modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1))
+                    hm = modifiers.get(Modifiers.H_ADDITIONAL_INFO_1);
+
+                modifierValue = gm + " " + hm;
+                modifierValue = modifierValue.trim();
+
+                if(modifierValue != null && !modifierValue.equals(""))
+                {
+                    tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
+                    labelBounds = tiTemp.getTextBounds();
+                    labelWidth = labelBounds.width();
+
+                    //on right
+                    x = bounds.left + bounds.width() + bufferXR;
+                    //below Z
+                    y = (int)(bounds.height());
+                    y = (int)((y * 0.5) + ((labelHeight - descent) * 0.5));
+                    y = y + ((labelHeight + bufferText) * 2);
+                    y = (int) Math.round(bounds.top + y);
+
+                    tiTemp.setLocation(x, y);
+                    tiArray.add(tiTemp);
+
+                }
+            }
+
+            if (modifiers.containsKey(Modifiers.Z_SPEED) || modifiers.containsKey(Modifiers.X_ALTITUDE_DEPTH))
+            {
+                modifierValue = "";
+                String zm = "";
+                String xm = "";
+                if(modifiers.containsKey(Modifiers.Z_SPEED))
+                    zm = modifiers.get(Modifiers.Z_SPEED);
+
+                if(modifiers.containsKey(Modifiers.X_ALTITUDE_DEPTH))
+                    xm = modifiers.get(Modifiers.X_ALTITUDE_DEPTH);
+
+                modifierValue = zm + " " + xm;
+                modifierValue = modifierValue.trim();
+
+                if(modifierValue != null && modifierValue.equals("")==false)
+                {
+                    tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
+                    labelBounds = tiTemp.getTextBounds();
+                    labelWidth = labelBounds.width();
+
+                    //on right
+                    x = bounds.left + bounds.width() + bufferXR;
+                    //just below V
+                    y = (int)(bounds.height());
+                    y = (int) ((y * 0.5) + ((labelHeight - descent) * 0.5));
+                    y = y + ((labelHeight + bufferText));
+                    y = (int)bounds.top + y;
+
+                    tiTemp.setLocation(x, y);
+                    tiArray.add(tiTemp);
+
+                }
+            }
+
+
+
+            if (modifiers.containsKey(Modifiers.V_EQUIP_TYPE))
+            {
+                modifierValue = modifiers.get(Modifiers.V_EQUIP_TYPE);
+
+                if(modifierValue != null && modifierValue.equals("") == false)
+                {
+                    tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
+                    labelBounds = tiTemp.getTextBounds();
+                    labelWidth = labelBounds.width();
+
+                    //right
+                    x = bounds.left + bounds.width() + bufferXR;
+                    //center
+                    y = (int)(bounds.height());
+                    y = (int) ((y * 0.5) + ((labelHeight - descent) * 0.5));
+                    y = (int)bounds.top + y;
+
+                    tiTemp.setLocation(x, y);
+                    tiArray.add(tiTemp);
+
+                }
+            }
+
             if (modifiers.containsKey(Modifiers.P_IFF_SIF_AIS))
             {
                 modifierValue = modifiers.get(Modifiers.P_IFF_SIF_AIS);
@@ -3819,8 +4050,11 @@ public class ModifierRenderer
 
                     //right
                     x = bounds.left + bounds.width() + bufferXR;
-                    //above Z
-                    y = bounds.top + bounds.height() - (labelHeight * 3);
+                    //just above V
+                    y = (int)(bounds.height());
+                    y = (int)((y * 0.5) + ((labelHeight - descent) * 0.5));
+                    y = y - ((labelHeight + bufferText));
+                    y = (int)bounds.top + y;
 
                     tiTemp.setLocation(x, y);
                     tiArray.add(tiTemp);
@@ -3840,8 +4074,11 @@ public class ModifierRenderer
 
                     //right
                     x = bounds.left + bounds.width() + bufferXR;
-                    //above Z
-                    y = bounds.top + bounds.height() - (labelHeight * 4);
+                    //above P
+                    y = (int)(bounds.height());
+                    y = (int)((y * 0.5) + ((labelHeight - descent) * 0.5));
+                    y = y - ((labelHeight + bufferText) * 2);
+                    y = (int)bounds.top + y;
 
                     tiTemp.setLocation(x, y);
                     tiArray.add(tiTemp);
@@ -3872,8 +4109,11 @@ public class ModifierRenderer
 
                     //right
                     x = bounds.left + bounds.width() + bufferXR;
-                    //above Z
-                    y = bounds.top + bounds.height() - (labelHeight * 5);
+                    //above T
+                    y = (int)(bounds.height());
+                    y = (int)((y * 0.5) + ((labelHeight - descent) * 0.5));
+                    y = y - ((labelHeight + bufferText) * 3);
+                    y = (int)bounds.top + y;
 
                     tiTemp.setLocation(x, y);
                     tiArray.add(tiTemp);
@@ -3883,6 +4123,89 @@ public class ModifierRenderer
         }
         else //space
         {
+            if (modifiers.containsKey(Modifiers.G_STAFF_COMMENTS) || modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1))
+            {
+
+                String gm = "";
+                String hm = "";
+                if(modifiers.containsKey(Modifiers.G_STAFF_COMMENTS))
+                    gm = modifiers.get(Modifiers.G_STAFF_COMMENTS);
+
+                if(modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1))
+                    hm = modifiers.get(Modifiers.H_ADDITIONAL_INFO_1);
+
+                modifierValue = gm + " " + hm;
+                modifierValue = modifierValue.trim();
+
+                if(modifierValue != null && !modifierValue.equals(""))
+                {
+                    tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
+                    labelBounds = tiTemp.getTextBounds();
+                    labelWidth = labelBounds.width();
+
+                    //on right
+                    x = bounds.left + bounds.width() + bufferXR;
+                    //below Z/X
+                    y = (int)(bounds.top + (bounds.height() / 2) - descent + ((labelHeight + bufferText) * 2));
+
+                    tiTemp.setLocation(x, y);
+                    tiArray.add(tiTemp);
+
+                }
+            }
+
+            if (modifiers.containsKey(Modifiers.Z_SPEED) || modifiers.containsKey(Modifiers.X_ALTITUDE_DEPTH))
+            {
+                modifierValue = "";
+                String zm = "";
+                String xm = "";
+                if(modifiers.containsKey(Modifiers.Z_SPEED))
+                    zm = modifiers.get(Modifiers.Z_SPEED);
+
+                if(modifiers.containsKey(Modifiers.X_ALTITUDE_DEPTH))
+                    xm = modifiers.get(Modifiers.X_ALTITUDE_DEPTH);
+
+                modifierValue = zm + " " + xm;
+                modifierValue = modifierValue.trim();
+
+                if(modifierValue != null && modifierValue.equals("")==false)
+                {
+                    tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
+                    labelBounds = tiTemp.getTextBounds();
+                    labelWidth = labelBounds.width();
+
+                    //on right
+                    x = bounds.left + bounds.width() + bufferXR;
+                    //just below center
+                    y = (int)(bounds.top + (bounds.height() / 2) - descent + labelHeight + bufferText);
+
+                    tiTemp.setLocation(x, y);
+                    tiArray.add(tiTemp);
+
+                }
+            }
+
+            if (modifiers.containsKey(Modifiers.V_EQUIP_TYPE))
+            {
+                modifierValue = modifiers.get(Modifiers.V_EQUIP_TYPE);
+
+                if(modifierValue != null && modifierValue.equals("") == false)
+                {
+                    tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
+                    labelBounds = tiTemp.getTextBounds();
+                    labelWidth = labelBounds.width();
+
+                    //right
+                    x = bounds.left + bounds.width() + bufferXR;
+                    //above vertical center
+                    y = (int)(bounds.top + ((bounds.height() / 2) - descent));
+
+                    tiTemp.setLocation(x, y);
+                    tiArray.add(tiTemp);
+
+                }
+            }
+
             if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1))
             {
                 modifierValue = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
@@ -3895,8 +4218,8 @@ public class ModifierRenderer
 
                     //right
                     x = bounds.left + bounds.width() + bufferXR;
-                    //above Z
-                    y = bounds.top + bounds.height() - (labelHeight * 3);
+                    //above V
+                    y = (int)(bounds.top + ((bounds.height() / 2) - descent - bufferText - labelHeight));
 
                     tiTemp.setLocation(x, y);
                     tiArray.add(tiTemp);
@@ -3927,8 +4250,8 @@ public class ModifierRenderer
 
                     //right
                     x = bounds.left + bounds.width() + bufferXR;
-                    //above Z
-                    y = bounds.top + bounds.height() - (labelHeight * 4);
+                    //above T
+                    y = (int)(bounds.top + (bounds.height() / 2) - descent - ((bufferText + labelHeight) * 2));
 
                     tiTemp.setLocation(x, y);
                     tiArray.add(tiTemp);
@@ -4003,29 +4326,57 @@ public class ModifierRenderer
         if(!scc.isEmpty())
             modifiers.put(Modifiers.AS_COUNTRY, scc);
 
-        //            int y0 = 0;//             T
-        //            int y1 = 0;//             P
-        //            int y2 =                  V
-        //            int y3 = 0;//             Z/X
-        //            int y4 = 0;//             G/H
+        //                              AO
+        //                              B/C
+        //            int y0 = 0;//W            AS
+        //            int y1 = 0;//AR           T/Y
+        //            int y2 =     AD           V/AF
+        //            int y3 = 0;//             P/X/Z
+        //            int y4 = 0;//             G/H/J
         //
 
         // <editor-fold defaultstate="collapsed" desc="Build Modifiers">
         String modifierValue = null;
         TextInfo tiTemp = null;
 
-        if (modifiers.containsKey(Modifiers.G_STAFF_COMMENTS) || modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1))
+        //if(Modifiers.C_QUANTITY in modifiers
+        int ad = SymbolID.getAmplifierDescriptor(symbolID);
+        if (modifiers.containsKey(Modifiers.C_QUANTITY) && !(ad > 0 && ad < 30))//if C and no echelon
+        {
+            String text = modifiers.get(Modifiers.C_QUANTITY);
+            if(text != null)
+            {
+                //bounds = armyc2.c5isr.renderer.utilities.RendererUtilities.getTextOutlineBounds(_modifierFont, text, new SO.Point(0,0));
+                tiTemp = new TextInfo(text, 0, 0, _modifierFont);
+                labelBounds = tiTemp.getTextBounds();
+                labelWidth = labelBounds.width();
+                x = Math.round((bounds.left + (bounds.width() * 0.5f)) - (labelWidth * 0.5f));
+                y = Math.round(bounds.top - bufferY - descent);
+                tiTemp.setLocation(x, y);
+                tiArray.add(tiTemp);
+            }
+        }
+
+        if (modifiers.containsKey(Modifiers.G_STAFF_COMMENTS) ||
+                modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1) ||
+                modifiers.containsKey(Modifiers.J_EVALUATION_RATING))
         {
 
             String gm = "";
             String hm = "";
+            String jm = "";
             if(modifiers.containsKey(Modifiers.G_STAFF_COMMENTS))
                 gm = modifiers.get(Modifiers.G_STAFF_COMMENTS);
 
             if(modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1))
                 hm = modifiers.get(Modifiers.H_ADDITIONAL_INFO_1);
 
+            if(modifiers.containsKey(Modifiers.J_EVALUATION_RATING))
+                jm = modifiers.get(Modifiers.J_EVALUATION_RATING);
+
             modifierValue = gm + " " + hm;
+            modifierValue = modifierValue.trim();
+            modifierValue += " " + jm;
             modifierValue = modifierValue.trim();
 
             if(modifierValue != null && modifierValue.equals("")==false)
@@ -4036,8 +4387,11 @@ public class ModifierRenderer
 
                 //on right
                 x = bounds.left + bounds.width() + bufferXR;
-                //on bottom
-                y = bounds.top + bounds.height();
+                //below Z
+                y = (int)(bounds.height());
+                y = (int)((y * 0.5) + ((labelHeight - descent) * 0.5));
+                y = y + ((labelHeight + bufferText) * 2);
+                y = (int)Math.round(bounds.top + y);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -4045,18 +4399,27 @@ public class ModifierRenderer
             }
         }
 
-        if (modifiers.containsKey(Modifiers.Z_SPEED) || modifiers.containsKey(Modifiers.X_ALTITUDE_DEPTH))
+        if (modifiers.containsKey(Modifiers.P_IFF_SIF_AIS) ||
+                modifiers.containsKey(Modifiers.Z_SPEED) ||
+                modifiers.containsKey(Modifiers.X_ALTITUDE_DEPTH))
         {
-            modifierValue = "";
+            modifierValue = null;
+            String pm = "";
             String zm = "";
             String xm = "";
+
+            if(modifiers.containsKey(Modifiers.P_IFF_SIF_AIS))
+                pm = modifiers.get(Modifiers.P_IFF_SIF_AIS);
+
             if(modifiers.containsKey(Modifiers.Z_SPEED))
                 zm = modifiers.get(Modifiers.Z_SPEED);
 
             if(modifiers.containsKey(Modifiers.X_ALTITUDE_DEPTH))
                 xm = modifiers.get(Modifiers.X_ALTITUDE_DEPTH);
 
-            modifierValue = xm + " " + zm;
+            modifierValue = pm + " " + xm;
+            modifierValue = modifierValue.trim();
+            modifierValue += " " + zm;
             modifierValue = modifierValue.trim();
 
             if(modifierValue != null && modifierValue.equals("")==false)
@@ -4067,8 +4430,11 @@ public class ModifierRenderer
 
                 //on right
                 x = bounds.left + bounds.width() + bufferXR;
-                //on bottom
-                y = bounds.top + bounds.height() - labelHeight;
+                //just below V
+                y = (int)(bounds.height());
+                y = (int)((y * 0.5) + ((labelHeight - descent) * 0.5));
+                y = y + ((labelHeight + bufferText));
+                y = (int)bounds.top + y;
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -4102,8 +4468,10 @@ public class ModifierRenderer
 
                 //right
                 x = bounds.left + bounds.width() + bufferXR;
-                //above Z
-                y = bounds.top + bounds.height() - (labelHeight * 2);
+                //center
+                y = (int)(bounds.height());
+                y = (int)((y * 0.5) + ((labelHeight - descent) * 0.5));
+                y = (int)bounds.top + y;
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -4124,8 +4492,11 @@ public class ModifierRenderer
 
                 //right
                 x = bounds.left + bounds.width() + bufferXR;
-                //above Z
-                y = bounds.top + bounds.height() - (labelHeight * 3);
+                //just above V
+                y = (int)(bounds.height());
+                y = (int)((y * 0.5) + ((labelHeight - descent) * 0.5));
+                y = y - ((labelHeight + bufferText));
+                y = (int)bounds.top + y;
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -4155,8 +4526,11 @@ public class ModifierRenderer
 
                 //right
                 x = bounds.left + bounds.width() + bufferXR;
-                //above Z
-                y = bounds.top + bounds.height() - (labelHeight * 4);
+                //above T
+                y = (int)(bounds.height());
+                y = (int)((y * 0.5) + ((labelHeight - descent) * 0.5));
+                y = y - ((labelHeight + bufferText) * 2);
+                y = (int)bounds.top + y;
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);

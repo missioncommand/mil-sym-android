@@ -137,7 +137,35 @@ public class MilStdIconRenderer
             */
 
             MSInfo msi = MSLookup.getInstance().getMSLInfo(symbolID);
-            if (msi == null) {
+            if (msi == null)
+            {
+                if(SymbolID.getEntityCode(symbolID)==0)
+                {
+                    switch (SymbolID.getSymbolSet(symbolID))
+                    {
+                        case SymbolID.SymbolSet_Air:
+                        case SymbolID.SymbolSet_AirMissile:
+                        case SymbolID.SymbolSet_Space:
+                        case SymbolID.SymbolSet_SpaceMissile:
+                        case SymbolID.SymbolSet_LandUnit:
+                        case SymbolID.SymbolSet_LandCivilianUnit_Organization:
+                        case SymbolID.SymbolSet_LandEquipment:
+                        //case SymbolID.SymbolSet_ControlMeasure:
+                        case SymbolID.SymbolSet_DismountedIndividuals:
+                        case SymbolID.SymbolSet_SeaSurface:
+                        case SymbolID.SymbolSet_SeaSubsurface:
+                        case SymbolID.SymbolSet_MineWarfare:
+                        case SymbolID.SymbolSet_Activities:
+                        case SymbolID.SymbolSet_CyberSpace:
+                        //case SymbolID.SymbolSet_SignalsIntelligence:
+                        case SymbolID.SymbolSet_SignalsIntelligence_Air:
+                        case SymbolID.SymbolSet_SignalsIntelligence_Land:
+                        case SymbolID.SymbolSet_SignalsIntelligence_Space:
+                        case SymbolID.SymbolSet_SignalsIntelligence_SeaSurface:
+                        case SymbolID.SymbolSet_SignalsIntelligence_SeaSubsurface:
+                            return true;
+                    }
+                }
                 message = String.format("Cannot find %s in MSLookup", lookupID);
             } else if (msi.getDrawRule() == DrawRules.DONOTDRAW) {
                 message = String.format("%s (%s) is DoNotDraw", lookupID, msi.getName());
