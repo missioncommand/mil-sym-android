@@ -895,30 +895,32 @@ public class ModifierRenderer
             ebTextBounds = ebText.getTextBounds();
             ebHeight = ebTextBounds.height() + 4;
 
+            int barOffset = Math.max(RendererSettings.getInstance().getDeviceDPI()/32, 4);
+
             if(fdiBounds != null)//set bar above FDI if present
             {
-                ebTop = fdiBounds.top - ebHeight - 4;
+                ebTop = fdiBounds.top - ebHeight - barOffset;
             }
             else if(tfBounds != null)//set bar above TF if present
             {
-                ebTop = tfBounds.top - ebHeight - 4;
+                ebTop = tfBounds.top - ebHeight - barOffset;
             }
             else if(echelonBounds != null)//set bar above echelon if present
             {
-                ebTop = echelonBounds.top - ebHeight - 4;
+                ebTop = echelonBounds.top - ebHeight - barOffset;
             }
             else if(SymbolUtilities.hasModifier(symbolID, Modifiers.C_QUANTITY) &&
-                    modifiers.containsKey(Modifiers.C_QUANTITY))
+                    modifiers.containsKey(Modifiers.C_QUANTITY) && SymbolID.getSymbolSet(symbolID) != SymbolID.SymbolSet_LandUnit)
             {
                 ebTop = symbolBounds.top - (int)(ebHeight*2.5f);
             }
             else if(ss == SymbolID.SymbolSet_LandInstallation)
             {
-                ebTop = symbolBounds.top - ebHeight - 8;
+                ebTop = symbolBounds.top - ebHeight - (barOffset * 2);
             }
             else//position above symbol
             {
-                ebTop = symbolBounds.top - ebHeight - 4;
+                ebTop = symbolBounds.top - ebHeight - barOffset;
             }
 
             //if text wider than symbol, extend the bar.
@@ -929,8 +931,8 @@ public class ModifierRenderer
             }
             else
             {
-                ebLeft = symbolBounds.left - 2;//leave room for outline
-                ebWidth = symbolBounds.width() + 4;//leave room for outline
+                ebLeft = symbolBounds.left + strokeWidthBasedOnDPI/2;//1;//leave room for outline
+                ebWidth = symbolBounds.width() - strokeWidthBasedOnDPI;//2;//leave room for outline
             }
 
             //set text location within the bar
@@ -3579,9 +3581,24 @@ public class ModifierRenderer
             }
         }
 
-        if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1))
+        if (modifiers.containsKey(Modifiers.C_QUANTITY) ||
+                modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1) )
         {
-            modifierValue = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
+            modifierValue = null;
+
+            String cm = "",
+                    tm = "";
+
+            if (modifiers.containsKey(Modifiers.C_QUANTITY) && SymbolUtilities.hasModifier(symbolID, Modifiers.C_QUANTITY))
+            {
+                cm = modifiers.get(Modifiers.C_QUANTITY);// xm = modifiers.X;
+            }
+            if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1))
+            {
+                tm = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);// ym = modifiers.Y;
+            }
+            modifierValue = cm + "  " + tm;
+            modifierValue = modifierValue.trim();
 
             if(modifierValue != null)
             {
@@ -4538,6 +4555,64 @@ public class ModifierRenderer
             }
         }
 
+        if (modifiers.containsKey(Modifiers.AD_PLATFORM_TYPE)) {
+            modifierValue = modifiers.get(Modifiers.AD_PLATFORM_TYPE);
+
+            if (modifierValue != null && modifierValue.equals("") == false) {
+                tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
+                labelBounds = tiTemp.getTextBounds();
+                labelWidth = (int) labelBounds.width();
+
+                //left
+                x = (int)getLabelXPosition(bounds, labelWidth, bufferXL, false);
+                //center
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 0);
+
+
+                tiTemp.setLocation(x, y);
+                tiArray.add(tiTemp);
+
+            }
+        }
+
+        if (modifiers.containsKey(Modifiers.AR_SPECIAL_DESIGNATOR)) {
+            modifierValue = modifiers.get(Modifiers.AR_SPECIAL_DESIGNATOR);
+
+            if (modifierValue != null && modifierValue.equals("") == false) {
+                tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
+                labelBounds = tiTemp.getTextBounds();
+                labelWidth = (int) labelBounds.width();
+
+                //left
+                x = (int)getLabelXPosition(bounds, labelWidth, bufferXL, false);
+                //just above AD
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 1);
+
+
+                tiTemp.setLocation(x, y);
+                tiArray.add(tiTemp);
+
+            }
+        }
+
+        if (modifiers.containsKey(Modifiers.W_DTG_1)) {
+            modifierValue = modifiers.get(Modifiers.W_DTG_1);
+
+            if (modifierValue != null && modifierValue.equals("") == false) {
+                tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
+                labelBounds = tiTemp.getTextBounds();
+                labelWidth = (int) labelBounds.width();
+
+                //left
+                x = (int)getLabelXPosition(bounds, labelWidth, bufferXL, false);
+                //above AR
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 2);
+
+                tiTemp.setLocation(x, y);
+                tiArray.add(tiTemp);
+
+            }
+        }
 
         // </editor-fold>
 
@@ -5089,11 +5164,11 @@ public class ModifierRenderer
         if(!scc.isEmpty())
             modifiers.put(Modifiers.AS_COUNTRY, scc);
         //                                 C
-        //            int y0 = 0;//W/AR
+        //            int y0 = 0;//W/AR         AS
         //            int y1 = 0;//X/Y          G/AQ
-        //            int y2 = 0;//V/AD/AE      H/AF
-        //            int y3 = 0;//T            J/N/L/P
-        //            int y4 = 0;//Z
+        //            int y2 = 0;//V/AD/AE
+        //            int y3 = 0;//T            H/AF
+        //            int y4 = 0;//Z            J/N/L/P
         //
         // <editor-fold defaultstate="collapsed" desc="Build Modifiers">
         String modifierValue = null;
@@ -5184,12 +5259,10 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = bounds.left + bounds.width() + bufferXR;
-                //just above H
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText));
-                y = bounds.top + y;
+                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                //just above center
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, 1);
+
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -5223,12 +5296,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
-                //center
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + ((labelHeight - descent) * 0.5));
-                y = bounds.top + y;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                //H, below G/AQ
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, -1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -5256,35 +5327,6 @@ public class ModifierRenderer
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
-            }
-        }
-
-        if (modifiers.containsKey(Modifiers.M_HIGHER_FORMATION))
-        {
-            modifierValue = "";
-
-            if (modifiers.containsKey(Modifiers.M_HIGHER_FORMATION))
-            {
-                modifierValue += modifiers.get(Modifiers.M_HIGHER_FORMATION);
-            }
-
-            if(modifierValue.equals("")==false)
-            {
-                tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
-                labelBounds = tiTemp.getTextBounds();
-                labelWidth = labelBounds.width();
-
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
-                //just below H
-                y = (int)(bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText - descent));
-                y = (int)bounds.top + y;
-
-                tiTemp.setLocation(x, y);
-                tiArray.add(tiTemp);
-
             }
         }
 
@@ -5371,13 +5413,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
-                //below M
-                y = (int)(bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText) * 2) - (descent * 2);
-                y = Math.round((int)bounds.top + y);
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                //below H/AF
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, -2);
 
 
                 tiTemp.setLocation(x, y);
@@ -5519,14 +5558,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
-                //above G
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText) * 2);
-                y = bounds.top + y;
-
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                //above G/AQ
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, 2);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -5949,7 +5984,7 @@ public class ModifierRenderer
         //            int y0 = 0;// W            AS
         //            int y1 = 0;//X/Y           G/AQ
         //            int y2 = 0;//              H
-        //            int y3 = 0;//AE            M
+        //            int y3 = 0;//C/AE            M
         //            int y4 = 0;//T             J/K/P
         //
         // <editor-fold defaultstate="collapsed" desc="Build Modifiers">
@@ -6020,9 +6055,21 @@ public class ModifierRenderer
             }
         }
 
-        if (modifiers.containsKey(Modifiers.AE_EQUIPMENT_TEARDOWN_TIME))
+        if (modifiers.containsKey(Modifiers.C_QUANTITY) ||
+                modifiers.containsKey(Modifiers.AE_EQUIPMENT_TEARDOWN_TIME))
         {
-            modifierValue = modifiers.get(Modifiers.AE_EQUIPMENT_TEARDOWN_TIME);
+            modifierValue = "";
+            String mc = "";
+            String mae = "";
+
+            if(modifiers.containsKey(Modifiers.C_QUANTITY))
+                mc = modifiers.get(Modifiers.C_QUANTITY);
+            if(modifiers.containsKey(Modifiers.AE_EQUIPMENT_TEARDOWN_TIME))
+                mae = modifiers.get(Modifiers.AE_EQUIPMENT_TEARDOWN_TIME);
+
+            modifierValue = mc + " " + mae;
+
+            modifierValue = modifierValue.trim();
 
             if(modifierValue != null)
             {
@@ -10735,6 +10782,105 @@ public class ModifierRenderer
                 }
             }
         }
+    }
+
+    /**
+     *
+     * @param bounds bounds of the core icon
+     * @param labelWidth height of the label to be placed
+     * @param buffer additional horizontal spacing buffer between label and symbol if desired
+     * @param onRight if true, label on right side of symbol. On left if false.
+     * @returns
+     */
+    private static double getLabelXPosition(Rect bounds, int labelWidth, int buffer, boolean onRight)
+    {
+        double x = 0;
+        if(onRight)
+        {
+            x = bounds.left + bounds.width() + buffer;
+        }
+        else//left
+        {
+            x = bounds.left - labelWidth - buffer;
+        }
+        return x;
+    }
+
+    /**
+     *
+     * @param bounds bounds of the core icon
+     * @param labelHeight height of the label to be placed
+     * @param descent descent of the label to be placed
+     * @param bufferText spacing buffer if desired
+     * @param centered if true, there will be a center label location identified by 0
+     * @param location positive 1, 2, 3 to be above symbol mid-point or negative values to be below
+     * @returns y position
+     */
+    private static double getLabelYPosition(Rect bounds, int labelHeight, int descent, int bufferText, boolean centered, int location) {
+        double y = 0;
+        if (bounds != null && !bounds.isEmpty())
+        {
+            if(centered)
+            {
+                switch (location)
+                {
+                    case 2://2 above center
+                        y = (bounds.height());
+                        y = ((y * 0.5) + (labelHeight * 0.5));
+                        y = y - ((labelHeight + bufferText) * 2);
+                        y = bounds.top + y;
+                        break;
+                    case 1://1 above center
+                        y = (bounds.height());
+                        y = ((y * 0.5) + (labelHeight * 0.5));
+                        y = y - ((labelHeight + bufferText));
+                        y = bounds.top + y;
+                        break;
+                    case 0: //centered
+                        y = (bounds.height());
+                        y = ((y * 0.5) + ((labelHeight - descent) * 0.5));
+                        y = bounds.top + y;
+                        break;
+                    case -1://1 below center
+                        y = (bounds.height());
+                        y = ((y * 0.5) + (labelHeight * 0.5));
+                        y = y + ((labelHeight + bufferText - descent));
+                        y = bounds.top + y;
+                        break;
+                    case -2://2 below center
+                        y = (bounds.height());
+                        y = ((y * 0.5) + (labelHeight * 0.5));
+                        y = y + ((labelHeight + bufferText) * 2) - (descent * 2);
+                        y = bounds.top + y;
+                        break;
+                }
+            }
+            else//split between top and bottom
+            {
+                switch (location)
+                {
+                    case 3:
+                        y = (bounds.top + ((bounds.height() / 2f) - (bufferText - descent - labelHeight)*2));
+                        break;
+                    case 2:
+                        y = (bounds.top + ((bounds.height() / 2f) - bufferText - descent - labelHeight));
+                        break;
+                    case 1:
+                        y = (bounds.top + ((bounds.height() / 2f) - (bufferText/2f) - descent));
+                        break;
+                    case -1:
+                        y = (bounds.top + ((bounds.height() / 2f) + labelHeight + (bufferText/2f) - descent));
+                        break;
+                    case -2:
+                        y = (bounds.top + ((bounds.height() / 2f) + ((labelHeight - descent + bufferText) * 2)));
+                        break;
+                    case -3:
+                        y = (bounds.top + ((bounds.height() / 2f) + ((labelHeight - descent + bufferText) * 3)));
+                        break;
+                }
+            }
+        }
+        return y;
     }
 
     public static boolean hasDisplayModifiers(String symbolID, Map<String,String> modifiers)
