@@ -910,7 +910,9 @@ public class ModifierRenderer
                 ebTop = echelonBounds.top - ebHeight - barOffset;
             }
             else if(SymbolUtilities.hasModifier(symbolID, Modifiers.C_QUANTITY) &&
-                    modifiers.containsKey(Modifiers.C_QUANTITY) && SymbolID.getSymbolSet(symbolID) != SymbolID.SymbolSet_LandUnit)
+                    modifiers.containsKey(Modifiers.C_QUANTITY) &&
+                    SymbolID.getSymbolSet(symbolID) != SymbolID.SymbolSet_LandUnit &&
+                    SymbolID.getSymbolSet(symbolID) != SymbolID.SymbolSet_LandInstallation)
             {
                 ebTop = symbolBounds.top - (int)(ebHeight*2.5f);
             }
@@ -4497,9 +4499,21 @@ public class ModifierRenderer
         }
 
 
-        if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1))
+        if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1) ||
+                modifiers.containsKey(Modifiers.Y_LOCATION))
         {
-            modifierValue = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
+            String tm = "";
+            String ym = "";
+
+            if(modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1))
+                tm = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
+
+            if(modifiers.containsKey(Modifiers.Y_LOCATION))
+                ym = modifiers.get(Modifiers.Y_LOCATION);
+
+
+            modifierValue = tm + " " + ym;
+            modifierValue = modifierValue.trim();
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
