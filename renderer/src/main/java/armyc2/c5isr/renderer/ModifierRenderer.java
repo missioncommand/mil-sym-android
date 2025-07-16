@@ -1021,7 +1021,7 @@ public class ModifierRenderer
         RectF ociBoundsF = null;
         Rect ociShape = null;
         Path ociSlashShape = null;
-        int ociOffset = 4;
+        int ociOffset = Math.max(RendererSettings.getInstance().getDeviceDPI()/32, 4);
         if (SymbolUtilities.canSymbolHaveModifier(symbolID, Modifiers.AL_OPERATIONAL_CONDITION)) {
             if (mobilityBounds != null)
             {
@@ -2266,8 +2266,9 @@ public class ModifierRenderer
      */
     public static SymbolDimensionInfo processUnknownTextModifiers(SymbolDimensionInfo sdi, String symbolID, Map<String,String> modifiers, Map<String,String> attributes)
     {
-        int bufferXL = 5;
-        int bufferXR = 5;
+        int bufferHorizontal = (int)_modifierFontHeight/2;
+        int bufferXL = bufferHorizontal;
+        int bufferXR = bufferHorizontal;
         int bufferY = 2;
         int bufferText = 2;
         int x = 0;
@@ -2972,8 +2973,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                x = bounds.left - labelBounds.width() - bufferXL;
-                y = bounds.top + ((bounds.height() / 2) - (bufferText/2) - descent);
+                //on left
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
+                //above center
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, 1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -2991,12 +2994,9 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = bounds.left + bounds.width() + bufferXR;
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //just above H
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText));
-                y = bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -3020,12 +3020,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //center
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + ((labelHeight - descent) * 0.5));
-                y = bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 0);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -3043,9 +3041,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //just below center on left
-                x = bounds.left - labelWidth - bufferXL;
-                y = bounds.top + (bounds.height() / 2 + labelHeight + (bufferText/2) - descent);
+                //on left
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
+                //just below center
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, -1);
 
 
                 tiTemp.setLocation(x, y);
@@ -3068,13 +3067,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
-                //just below H
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText - descent));
-                y = bounds.top + y;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //below H
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -3092,9 +3088,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //below T on left
-                x = bounds.left - labelWidth - bufferXL;
-                y = bounds.top + ((bounds.height() / 2) + ((labelHeight - descent + bufferText) * 2));
+                //on left
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
+                //below T
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, -2);
 
 
                 tiTemp.setLocation(x, y);
@@ -3151,13 +3148,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //below M
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText) * 2) - (descent * 2);
-                y = Math.round(bounds.top + y);
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -2);
 
 
                 tiTemp.setLocation(x, y);
@@ -3177,9 +3171,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //above X/Y on left
-                x = bounds.left - labelWidth - bufferXL;
-                y = bounds.top + ((bounds.height() / 2) - (labelHeight - bufferText) );
+                //on left
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
+                //above X/Y
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, 2);
 
 
                 tiTemp.setLocation(x, y);
@@ -3261,13 +3256,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //above G
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText) * 2);
-                y = bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 2);
 
 
                 tiTemp.setLocation(x, y);
@@ -3420,12 +3412,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                x = bounds.left - labelBounds.width() - bufferXL;
-                //just above V
-                y = (int)(bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText));
-                y = (int)bounds.top + y;
+                //on left
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
+                //above center V
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -3468,12 +3458,9 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = bounds.left + bounds.width() + bufferXR;
-                //just above H
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText));
-                y = bounds.top + y;
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //above center H
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -3516,12 +3503,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //center
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + ((labelHeight - descent) * 0.5));
-                y = bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 0);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -3570,12 +3555,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
-                //right
-                x = (int)(bounds.left - labelWidth - bufferXL);
-                //center
-                y = (int)(bounds.height());
-                y = (int) ((y * 0.5) + ((labelHeight - descent) * 0.5));
-                y = (int)bounds.top + y;
+                //on left
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
+                //above center V
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 0);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -3608,13 +3591,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //just below center on left
-                x = bounds.left - labelWidth - bufferXL;
-                //just below V
-                y = (int)(bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText - descent));
-                y = (int)bounds.top + y;
+                //on left
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
+                //below center V
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -1);
 
 
                 tiTemp.setLocation(x, y);
@@ -3637,13 +3617,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
-                //just below H
-                y = (int)(bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText - descent));
-                y = (int)bounds.top + y;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //below center H
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -3661,13 +3638,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //below T on left
-                x = bounds.left - labelWidth - bufferXL;
+                //on left
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //below T
-                y = (int)(bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText) * 2) - (descent * 2);
-                y = Math.round((int)bounds.top + y);
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -2);
 
 
                 tiTemp.setLocation(x, y);
@@ -3734,13 +3708,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //below M
-                y = (int)(bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText) * 2) - (descent * 2);
-                y = Math.round((int)bounds.top + y);
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -2);
 
 
                 tiTemp.setLocation(x, y);
@@ -3760,13 +3731,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //above X/Y on left
-                x = bounds.left - labelWidth - bufferXL;
+                //on left
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //above X/Y
-                y = (int)(bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText) * 2);
-                y = (int)bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 2);
 
 
                 tiTemp.setLocation(x, y);
@@ -3848,13 +3816,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //above G
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText) * 2);
-                y = bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 2);
 
 
                 tiTemp.setLocation(x, y);
@@ -3985,12 +3950,9 @@ public class ModifierRenderer
                     labelWidth = labelBounds.width();
 
                     //on right
-                    x = bounds.left + bounds.width() + bufferXR;
-                    //below Z
-                    y = (int)(bounds.height());
-                    y = (int)((y * 0.5) + ((labelHeight - descent) * 0.5));
-                    y = y + ((labelHeight + bufferText) * 2);
-                    y = (int) Math.round(bounds.top + y);
+                    x = (int)getLabelXPosition(bounds, labelWidth, true);
+                    //below Z/X
+                    y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -2);
 
                     tiTemp.setLocation(x, y);
                     tiArray.add(tiTemp);
@@ -4019,12 +3981,9 @@ public class ModifierRenderer
                     labelWidth = labelBounds.width();
 
                     //on right
-                    x = bounds.left + bounds.width() + bufferXR;
-                    //just below V
-                    y = (int)(bounds.height());
-                    y = (int) ((y * 0.5) + ((labelHeight - descent) * 0.5));
-                    y = y + ((labelHeight + bufferText));
-                    y = (int)bounds.top + y;
+                    x = (int)getLabelXPosition(bounds, labelWidth, true);
+                    //below V
+                    y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -1);
 
                     tiTemp.setLocation(x, y);
                     tiArray.add(tiTemp);
@@ -4044,12 +4003,10 @@ public class ModifierRenderer
                     labelBounds = tiTemp.getTextBounds();
                     labelWidth = labelBounds.width();
 
-                    //right
-                    x = bounds.left + bounds.width() + bufferXR;
+                    //on right
+                    x = (int)getLabelXPosition(bounds, labelWidth, true);
                     //center
-                    y = (int)(bounds.height());
-                    y = (int) ((y * 0.5) + ((labelHeight - descent) * 0.5));
-                    y = (int)bounds.top + y;
+                    y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 0);
 
                     tiTemp.setLocation(x, y);
                     tiArray.add(tiTemp);
@@ -4067,13 +4024,10 @@ public class ModifierRenderer
                     labelBounds = tiTemp.getTextBounds();
                     labelWidth = labelBounds.width();
 
-                    //right
-                    x = bounds.left + bounds.width() + bufferXR;
-                    //just above V
-                    y = (int)(bounds.height());
-                    y = (int)((y * 0.5) + ((labelHeight - descent) * 0.5));
-                    y = y - ((labelHeight + bufferText));
-                    y = (int)bounds.top + y;
+                    //on right
+                    x = (int)getLabelXPosition(bounds, labelWidth, true);
+                    //above V
+                    y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 1);
 
                     tiTemp.setLocation(x, y);
                     tiArray.add(tiTemp);
@@ -4091,13 +4045,10 @@ public class ModifierRenderer
                     labelBounds = tiTemp.getTextBounds();
                     labelWidth = labelBounds.width();
 
-                    //right
-                    x = bounds.left + bounds.width() + bufferXR;
+                    //on right
+                    x = (int)getLabelXPosition(bounds, labelWidth, true);
                     //above P
-                    y = (int)(bounds.height());
-                    y = (int)((y * 0.5) + ((labelHeight - descent) * 0.5));
-                    y = y - ((labelHeight + bufferText) * 2);
-                    y = (int)bounds.top + y;
+                    y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 2);
 
                     tiTemp.setLocation(x, y);
                     tiArray.add(tiTemp);
@@ -4126,13 +4077,10 @@ public class ModifierRenderer
                     labelBounds = tiTemp.getTextBounds();
                     labelWidth = labelBounds.width();
 
-                    //right
-                    x = bounds.left + bounds.width() + bufferXR;
+                    //on right
+                    x = (int)getLabelXPosition(bounds, labelWidth, true);
                     //above T
-                    y = (int)(bounds.height());
-                    y = (int)((y * 0.5) + ((labelHeight - descent) * 0.5));
-                    y = y - ((labelHeight + bufferText) * 3);
-                    y = (int)bounds.top + y;
+                    y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 3);
 
                     tiTemp.setLocation(x, y);
                     tiArray.add(tiTemp);
@@ -4163,9 +4111,9 @@ public class ModifierRenderer
                     labelWidth = labelBounds.width();
 
                     //on right
-                    x = bounds.left + bounds.width() + bufferXR;
+                    x = (int)getLabelXPosition(bounds, labelWidth, true);
                     //below Z/X
-                    y = (int)(bounds.top + (bounds.height() / 2) - descent + ((labelHeight + bufferText) * 2));
+                    y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, -2);
 
                     tiTemp.setLocation(x, y);
                     tiArray.add(tiTemp);
@@ -4194,9 +4142,9 @@ public class ModifierRenderer
                     labelWidth = labelBounds.width();
 
                     //on right
-                    x = bounds.left + bounds.width() + bufferXR;
-                    //just below center
-                    y = (int)(bounds.top + (bounds.height() / 2) - descent + labelHeight + bufferText);
+                    x = (int)getLabelXPosition(bounds, labelWidth, true);
+                    //below center
+                    y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, -1);
 
                     tiTemp.setLocation(x, y);
                     tiArray.add(tiTemp);
@@ -4215,9 +4163,9 @@ public class ModifierRenderer
                     labelWidth = labelBounds.width();
 
                     //right
-                    x = bounds.left + bounds.width() + bufferXR;
+                    x = (int)getLabelXPosition(bounds, labelWidth, true);
                     //above vertical center
-                    y = (int)(bounds.top + ((bounds.height() / 2) - descent));
+                    y = (int)getLabelYPosition(bounds, labelHeight, descent, 0, false, 1);
 
                     tiTemp.setLocation(x, y);
                     tiArray.add(tiTemp);
@@ -4235,10 +4183,10 @@ public class ModifierRenderer
                     labelBounds = tiTemp.getTextBounds();
                     labelWidth = labelBounds.width();
 
-                    //right
-                    x = bounds.left + bounds.width() + bufferXR;
+                    //on right
+                    x = (int)getLabelXPosition(bounds, labelWidth, true);
                     //above V
-                    y = (int)(bounds.top + ((bounds.height() / 2) - descent - bufferText - labelHeight));
+                    y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, 2);
 
                     tiTemp.setLocation(x, y);
                     tiArray.add(tiTemp);
@@ -4267,10 +4215,10 @@ public class ModifierRenderer
                     labelBounds = tiTemp.getTextBounds();
                     labelWidth = labelBounds.width();
 
-                    //right
-                    x = bounds.left + bounds.width() + bufferXR;
+                    //on right
+                    x = (int)getLabelXPosition(bounds, labelWidth, true);
                     //above T
-                    y = (int)(bounds.top + (bounds.height() / 2) - descent - ((bufferText + labelHeight) * 2));
+                    y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, 3);
 
                     tiTemp.setLocation(x, y);
                     tiArray.add(tiTemp);
@@ -4405,12 +4353,9 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = bounds.left + bounds.width() + bufferXR;
-                //below Z
-                y = (int)(bounds.height());
-                y = (int)((y * 0.5) + ((labelHeight - descent) * 0.5));
-                y = y + ((labelHeight + bufferText) * 2);
-                y = (int)Math.round(bounds.top + y);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //below P
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -2);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -4448,12 +4393,9 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = bounds.left + bounds.width() + bufferXR;
-                //just below V
-                y = (int)(bounds.height());
-                y = (int)((y * 0.5) + ((labelHeight - descent) * 0.5));
-                y = y + ((labelHeight + bufferText));
-                y = (int)bounds.top + y;
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //below V
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -4485,12 +4427,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //center
-                y = (int)(bounds.height());
-                y = (int)((y * 0.5) + ((labelHeight - descent) * 0.5));
-                y = (int)bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 0);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -4521,13 +4461,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
-                //just above V
-                y = (int)(bounds.height());
-                y = (int)((y * 0.5) + ((labelHeight - descent) * 0.5));
-                y = y - ((labelHeight + bufferText));
-                y = (int)bounds.top + y;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //above V
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -4555,13 +4492,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //above T
-                y = (int)(bounds.height());
-                y = (int)((y * 0.5) + ((labelHeight - descent) * 0.5));
-                y = y - ((labelHeight + bufferText) * 2);
-                y = (int)bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 2);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -4578,7 +4512,7 @@ public class ModifierRenderer
                 labelWidth = (int) labelBounds.width();
 
                 //left
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXL, false);
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //center
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 0);
 
@@ -4598,7 +4532,7 @@ public class ModifierRenderer
                 labelWidth = (int) labelBounds.width();
 
                 //left
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXL, false);
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //just above AD
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 1);
 
@@ -4618,7 +4552,7 @@ public class ModifierRenderer
                 labelWidth = (int) labelBounds.width();
 
                 //left
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXL, false);
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //above AR
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 2);
 
@@ -4754,12 +4688,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                x = bounds.left - labelBounds.width() - bufferXL;
-                //just above V/AD/AE
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText));
-                y = bounds.top + y;
+                //on left
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
+                //just above center  V/AD/AE
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -4788,12 +4720,9 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = bounds.left + bounds.width() + bufferXR;
-                //just above H
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText));
-                y = bounds.top + y;
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //above center H
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -4827,12 +4756,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //center
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + ((labelHeight - descent) * 0.5));
-                y = bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 0);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -4850,12 +4777,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                x = bounds.left - labelBounds.width() - bufferXL;
-                //just below V
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText - descent));
-                y = bounds.top + y;
+                //on left
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
+                //below V
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -1);
 
 
                 tiTemp.setLocation(x, y);
@@ -4876,12 +4801,9 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on left
-                x = bounds.left - labelWidth - bufferXL;
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //below T
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText) * 2) - (descent * 2);
-                y = Math.round(bounds.top + y);
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -2);
 
 
                 tiTemp.setLocation(x, y);
@@ -4949,13 +4871,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
-                //just below H/AF
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText - descent));
-                y = bounds.top + y;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //below center H
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -1);
 
 
                 tiTemp.setLocation(x, y);
@@ -4988,12 +4907,9 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on left
-                x = bounds.left - labelWidth - bufferXL;
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //above X/Y
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText) * 2);
-                y = bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 2);
 
 
                 tiTemp.setLocation(x, y);
@@ -5041,13 +4957,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //above G/AQ
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText) * 2);
-                y = bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 2);
 
 
                 tiTemp.setLocation(x, y);
@@ -5100,12 +5013,9 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on left
-                x = bounds.left - labelWidth - bufferXL;
-
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //center
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + ((labelHeight - descent) * 0.5));
-                y = bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 0);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -5178,7 +5088,7 @@ public class ModifierRenderer
         if(!scc.isEmpty())
             modifiers.put(Modifiers.AS_COUNTRY, scc);
         //                                 C
-        //            int y0 = 0;//W/AR         AS
+        //            int y0 = 0;//W            AS
         //            int y1 = 0;//X/Y          G/AQ
         //            int y2 = 0;//V/AD/AE
         //            int y3 = 0;//T            H/AF
@@ -5239,12 +5149,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                x = bounds.left - labelBounds.width() - bufferXL;
+                //on left
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //just above V/AD/AE
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText));
-                y = bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -5273,7 +5181,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //just above center
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, 1);
 
@@ -5311,7 +5219,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //H, below G/AQ
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, -1);
 
@@ -5331,12 +5239,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                x = bounds.left - labelBounds.width() - bufferXL;
-                //just below V
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText - descent));
-                y = bounds.top + y;
+                //on left
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
+                //just below V/AD/AE
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -1);
 
 
                 tiTemp.setLocation(x, y);
@@ -5355,12 +5261,9 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on left
-                x = bounds.left - labelWidth - bufferXL;
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //below T
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText) * 2) - (descent * 2);
-                y = Math.round(bounds.top + y);
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -2);
 
 
                 tiTemp.setLocation(x, y);
@@ -5428,7 +5331,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //below H/AF
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, -2);
 
@@ -5440,21 +5343,9 @@ public class ModifierRenderer
 
         }
 
-        if (modifiers.containsKey(Modifiers.W_DTG_1) ||
-                modifiers.containsKey(Modifiers.AR_SPECIAL_DESIGNATOR))
+        if (modifiers.containsKey(Modifiers.W_DTG_1))
         {
-            modifierValue = "";
-            String mw = "";
-            String mar = "";
-            if(modifiers.containsKey(Modifiers.W_DTG_1))
-                mw = modifiers.get(Modifiers.W_DTG_1);
-
-            if(modifiers.containsKey(Modifiers.AR_SPECIAL_DESIGNATOR))
-                mar = modifiers.get(Modifiers.AR_SPECIAL_DESIGNATOR);
-
-            modifierValue = mw + " " + mar;
-
-            modifierValue = modifierValue.trim();
+            modifierValue = modifiers.get(Modifiers.W_DTG_1);
 
             if(modifierValue != null)
             {
@@ -5463,12 +5354,9 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on left
-                x = bounds.left - labelWidth - bufferXL;
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //above X/Y
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText) * 2);
-                y = bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 2);
 
 
                 tiTemp.setLocation(x, y);
@@ -5520,12 +5408,9 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on left
-                x = bounds.left - labelWidth - bufferXL;
-
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //center
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + ((labelHeight - descent) * 0.5));
-                y = bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 0);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -5573,7 +5458,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //above G/AQ
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, 2);
 
@@ -5671,12 +5556,9 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = bounds.left + bounds.width() + bufferXR;
-                //just above H
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText));
-                y = bounds.top + y;
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //above center H
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -5701,12 +5583,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //center
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + ((labelHeight - descent) * 0.5));
-                y = bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 0);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -5724,12 +5604,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                x = bounds.left - labelBounds.width() - bufferXL;
-                //just below V
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText - descent));
-                y = bounds.top + y;
+                //on left
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
+                //below center X/Y
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -1);
 
 
                 tiTemp.setLocation(x, y);
@@ -5788,13 +5666,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
-                //just below H
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText - descent));
-                y = bounds.top + y;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //below center H
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -1);
 
 
                 tiTemp.setLocation(x, y);
@@ -5819,12 +5694,9 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on left
-                x = bounds.left - labelWidth - bufferXL;
-                //above X/Y
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText));
-                y = bounds.top + y;
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
+                //above center X/Y
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 1);
 
 
                 tiTemp.setLocation(x, y);
@@ -5867,13 +5739,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //above G
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText) * 2);
-                y = bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 2);
 
 
                 tiTemp.setLocation(x, y);
@@ -5917,12 +5786,9 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on left
-                x = bounds.left - labelWidth - bufferXL;
-
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //center
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + ((labelHeight - descent) * 0.5));
-                y = bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 0);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -6027,12 +5893,9 @@ public class ModifierRenderer
                 labelWidth = (int)labelBounds.width();
 
                 //on right
-                x = (int)(bounds.left + bounds.width() + bufferXR);
-                //just above H
-                y = (int)(bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText));
-                y = (int)bounds.top + y;
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //above center H
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -6056,12 +5919,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //center
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + ((labelHeight - descent) * 0.5));
-                y = bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 0);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -6092,9 +5953,9 @@ public class ModifierRenderer
                 labelWidth = (int)labelBounds.width();
 
                 //on left
-                x = (int)(bounds.left - labelBounds.width() - bufferXL);
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //just below center
-                y = (int)(bounds.top + (bounds.height() / 2 + labelHeight + (bufferText/2) - descent));
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, -1);
 
 
                 tiTemp.setLocation(x, y);
@@ -6112,9 +5973,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                x = bounds.left - labelBounds.width() - bufferXL;
-                //below AE
-                y = (int)(bounds.top + ((bounds.height() / 2) + ((labelHeight - descent + bufferText) * 2)));
+                //on left
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
+                //below C/AE
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, -2);
 
 
                 tiTemp.setLocation(x, y);
@@ -6133,13 +5995,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
-                //right
-                x = (int)(bounds.left + bounds.width() + bufferXR);
-                //just below H
-                y = (int)(bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText - descent));
-                y = (int)bounds.top + y;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //below center H
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -6197,13 +6056,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //below M
-                y = (int)(bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText) * 2) - (descent * 2);
-                y = Math.round((int)bounds.top + y);
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -2);
 
 
                 tiTemp.setLocation(x, y);
@@ -6228,9 +6084,9 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on left
-                x = bounds.left - labelWidth - bufferXL;
-                //y = (int)(bounds.top + ((bounds.height() / 2) - (labelHeight - bufferText) ));//android
-                y = (int)(bounds.top + ((bounds.height() / 2) - bufferText - descent - labelHeight));
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
+                //above X/Y
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, 2);
 
 
                 tiTemp.setLocation(x, y);
@@ -6273,13 +6129,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
-                //right
-                x = (int)(bounds.left + bounds.width() + bufferXR);
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //above G
-                y = (int)(bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText) * 2);
-                y = (int)bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 2);
 
 
                 tiTemp.setLocation(x, y);
@@ -6323,10 +6176,9 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on left
-                x = bounds.left - labelWidth - bufferXL;
-
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //above vertical center
-                y = (int)(bounds.top + ((bounds.height() / 2) - (bufferText/2) - descent));
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, 1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -6446,12 +6298,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
-                x = (int)(bounds.left - labelBounds.width() - bufferXL);
-                //just above V/AD/AE
-                y = (int)(bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText));
-                y = (int)bounds.top + y;
+                //on left
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
+                //above center V
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -6474,12 +6324,9 @@ public class ModifierRenderer
                 labelWidth = (int)labelBounds.width();
 
                 //on right
-                x = (int)(bounds.left + bounds.width() + bufferXR);
-                //just above H
-                y = (int)(bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText));
-                y = (int)bounds.top + y;
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //above center H
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -6503,12 +6350,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
-                //right
-                x = (int)(bounds.left + bounds.width() + bufferXR);
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //center
-                y = (int)(bounds.height());
-                y = (int) ((y * 0.5) + ((labelHeight - descent) * 0.5));
-                y = (int)bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 0);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -6526,12 +6371,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
-                x = (int)(bounds.left - labelBounds.width() - bufferXL);
-                //just below V
-                y = (int)(bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText - descent));
-                y = (int)bounds.top + y;
+                //on left
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
+                //below center V
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -1);
 
 
                 tiTemp.setLocation(x, y);
@@ -6554,13 +6397,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
-                //right
-                x = (int)(bounds.left + bounds.width() + bufferXR);
-                //just below H
-                y = (int)(bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText - descent));
-                y = (int)bounds.top + y;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //below center H
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -6579,12 +6419,9 @@ public class ModifierRenderer
                 labelWidth = (int)labelBounds.width();
 
                 //on left
-                x = (int)(bounds.left - labelWidth - bufferXL);
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //below T
-                y = (int)(bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText) * 2) - (descent * 2);
-                y = (int) Math.round(bounds.top + y);
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -2);
 
 
                 tiTemp.setLocation(x, y);
@@ -6642,13 +6479,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
-                //right
-                x = (int)(bounds.left + bounds.width() + bufferXR);
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //below M
-                y = (int)(bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText) * 2) - (descent * 2);
-                y = Math.round((int)bounds.top + y);
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -2);
 
 
                 tiTemp.setLocation(x, y);
@@ -6672,12 +6506,9 @@ public class ModifierRenderer
                 labelWidth = (int)labelBounds.width();
 
                 //on left
-                x = (int)(bounds.left - labelWidth - bufferXL);
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //above X/Y
-                y = (int)(bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText) * 2);
-                y = (int)bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 2);
 
 
                 tiTemp.setLocation(x, y);
@@ -6720,12 +6551,9 @@ public class ModifierRenderer
                 labelWidth = (int)labelBounds.width();
 
                 //on left
-                x = (int)(bounds.left - labelWidth - bufferXL);
-
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //center
-                y = (int)(bounds.height());
-                y = (int) ((y * 0.5) + ((labelHeight - descent) * 0.5));
-                y = (int)bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 0);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -6767,13 +6595,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
-                //right
-                x = (int)(bounds.left + bounds.width() + bufferXR);
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //above G
-                y = (int)(bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText) * 2);
-                y = (int)bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 2);
 
 
                 tiTemp.setLocation(x, y);
@@ -6870,12 +6695,9 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = bounds.left + bounds.width() + bufferXR;
-                //just above P
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText));
-                y = bounds.top + y;
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //above center
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, 1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -6899,12 +6721,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
-                //center
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + ((labelHeight - descent) * 0.5));
-                y = bounds.top + y;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //below center
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, -1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -6941,13 +6761,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
-                //just below P
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText - descent));
-                y = bounds.top + y;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //below P
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, -2);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -6991,13 +6808,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
-                //below G/H
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText) * 2) - (descent * 2);
-                y = Math.round(bounds.top + y);
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //below G
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, -3);
 
 
                 tiTemp.setLocation(x, y);
@@ -7005,6 +6819,27 @@ public class ModifierRenderer
 
             }
 
+        }
+
+        if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1))
+        {
+            modifierValue = modifierValue = modifiers.get(Modifiers.P_IFF_SIF_AIS);
+
+            if(modifierValue != null && modifierValue.equals("") == false)
+            {
+                tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
+                labelBounds = tiTemp.getTextBounds();
+                labelWidth = labelBounds.width();
+
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //above V
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, 2);
+
+                tiTemp.setLocation(x, y);
+                tiArray.add(tiTemp);
+
+            }
         }
 
         if (modifiers.containsKey(Modifiers.AQ_GUARDED_UNIT) ||
@@ -7029,14 +6864,18 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //on left
+                /*//on left
                 x = bounds.left - labelWidth - bufferXL;
                 //above V
                 y = (bounds.height());
                 y = (int) ((y * 0.5) + (labelHeight * 0.5));
                 y = y - ((labelHeight + bufferText) * 2);
-                y = bounds.top + y;
+                y = bounds.top + y;//*/
 
+                //on left
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
+                //top left
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 2);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -7044,12 +6883,10 @@ public class ModifierRenderer
         }
 
         if (modifiers.containsKey(Modifiers.E_FRAME_SHAPE_MODIFIER) ||
-                modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1) ||
                 modifiers.containsKey(Modifiers.AS_COUNTRY))
         {
             modifierValue = null;
             String E = "",
-                    T = "",
                     AS = "";
 
             if (modifiers.containsKey(Modifiers.E_FRAME_SHAPE_MODIFIER))
@@ -7057,17 +6894,12 @@ public class ModifierRenderer
                 E = modifiers.get(Modifiers.E_FRAME_SHAPE_MODIFIER);
                 modifiers.remove(Modifiers.E_FRAME_SHAPE_MODIFIER);
             }
-            if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1))
-            {
-                T = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
-            }
             if (modifiers.containsKey(Modifiers.AS_COUNTRY))
             {
-                T = modifiers.get(Modifiers.AS_COUNTRY);
+                AS = modifiers.get(Modifiers.AS_COUNTRY);
             }
 
-            modifierValue = E + " " + T;
-            modifierValue = modifierValue.trim() + " " + AS;
+            modifierValue = E + " " + AS;
             modifierValue = modifierValue.trim();
 
 
@@ -7077,13 +6909,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
-                //above V
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText) * 2);
-                y = bounds.top + y;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //below G
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, 3);
 
 
                 tiTemp.setLocation(x, y);
@@ -7180,9 +7009,9 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = bounds.left + bounds.width() + bufferXR;
-                //above vertical center
-                y = (int)(bounds.top + ((bounds.height() / 2) - (bufferText/2) - descent));
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //above center
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, 1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -7206,10 +7035,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
-                //just below center
-                y = (int)(bounds.top + (bounds.height() / 2 + labelHeight + (bufferText/2) - descent));
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //below center
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, -1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -7246,10 +7075,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //below P
-                y = (int)(bounds.top + ((bounds.height() / 2) + ((labelHeight - descent + bufferText) * 2)));
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, -2);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -7293,10 +7122,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
-                //below G/H
-                y = (int)(bounds.top + ((bounds.height() / 2) + ((labelHeight - descent + bufferText) * 3)));
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //below G
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, -3);
 
 
                 tiTemp.setLocation(x, y);
@@ -7304,6 +7133,27 @@ public class ModifierRenderer
 
             }
 
+        }
+
+        if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1))
+        {
+            modifierValue = modifierValue = modifiers.get(Modifiers.P_IFF_SIF_AIS);
+
+            if(modifierValue != null && modifierValue.equals("") == false)
+            {
+                tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
+                labelBounds = tiTemp.getTextBounds();
+                labelWidth = labelBounds.width();
+
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //above V
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, 2);
+
+                tiTemp.setLocation(x, y);
+                tiArray.add(tiTemp);
+
+            }
         }
 
         if (modifiers.containsKey(Modifiers.AQ_GUARDED_UNIT) ||
@@ -7328,15 +7178,18 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //on left
+                /*//on left
                 x = bounds.left - labelWidth - bufferXL;
-                //oppoiste AS unless that's higher than the top of the symbol
-                y = (int)(bounds.top + ((bounds.height() / 2) - bufferText - descent - (labelHeight * 2)));
-                if(y <= bounds.top + labelHeight)
-                {
-                    y = (int)bounds.top + labelHeight - descent;
-                }
+                //above V
+                y = (bounds.height());
+                y = (int) ((y * 0.5) + (labelHeight * 0.5));
+                y = y - ((labelHeight + bufferText) * 2);
+                y = bounds.top + y;//*/
 
+                //on left
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
+                //top left
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 2);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -7347,8 +7200,8 @@ public class ModifierRenderer
                 modifiers.containsKey(Modifiers.AS_COUNTRY))
         {
             modifierValue = null;
-            String E = null,
-                    AS = null;
+            String E = "",
+                    AS = "";
 
             if (modifiers.containsKey(Modifiers.E_FRAME_SHAPE_MODIFIER))
             {
@@ -7360,63 +7213,21 @@ public class ModifierRenderer
                 AS = modifiers.get(Modifiers.AS_COUNTRY);
             }
 
+            modifierValue = E + " " + AS;
+            modifierValue = modifierValue.trim();
 
-            if (E != null && E.equals("") == false)
-            {
-                modifierValue = E;
-            }
 
-            if (AS != null && AS.equals("") == false)
-            {
-                if (modifierValue != null && modifierValue.equals("") == false)
-                {
-                    modifierValue = modifierValue + " " + AS;
-                }
-                else
-                {
-                    modifierValue = AS;
-                }
-            }
-
-            if(modifierValue != null)
+            if(modifierValue.equals("")==false)
             {
                 tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = (int)(bounds.left+ bounds.width() + bufferXR);
-                //above V
-                //y = (int)(bounds.getY() + ((bounds.getHeight() / 2) - (labelHeight - bufferText) ));//android
-                y = (int)(bounds.top + ((bounds.height() / 2) - bufferText - descent - (labelHeight * 2)));
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //below G
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, 3);
 
-
-                tiTemp.setLocation(x, y);
-                tiArray.add(tiTemp);
-
-            }
-        }
-
-        if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1))
-        {
-            modifierValue = null;
-
-            if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1))
-            {
-                modifierValue = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
-            }
-
-            if(modifierValue != null && modifierValue.equals("") == false)
-            {
-                tiTemp = new TextInfo(modifierValue, 0, 0, _modifierFont);
-                labelBounds = tiTemp.getTextBounds();
-                labelWidth = labelBounds.width();
-
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
-                //above V
-                //y = (int)(bounds.getY() + ((bounds.getHeight() / 2) - (labelHeight - bufferText) ));//android
-                y = (int)(bounds.top + ((bounds.height() / 2) - bufferText - descent - labelHeight));
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -7529,7 +7340,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //on top
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 2);
 
@@ -7553,7 +7364,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //below T
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 1);
 
@@ -7574,7 +7385,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //centered below V
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 0);
 
@@ -7595,7 +7406,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //below X
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -1);
 
@@ -7616,7 +7427,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //below G
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -2);
 
@@ -7640,7 +7451,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on left
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, false);
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //on top
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 2);
 
@@ -7738,7 +7549,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //above vertical center
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, 1);
 
@@ -7775,7 +7586,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //below vertical center
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, -1);
 
@@ -7815,7 +7626,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //below P
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, -2);
 
@@ -7862,7 +7673,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //below G/H
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, -3);
 
@@ -7894,7 +7705,7 @@ public class ModifierRenderer
                 }//*/
 
                 //on left
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, false);
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //below top left
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 2);
 
@@ -7915,7 +7726,7 @@ public class ModifierRenderer
                 labelWidth = (int)labelBounds.width();
 
                 //on left
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, false);
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //below top left
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 1);
 
@@ -7967,7 +7778,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //top right
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, 3);
 
@@ -7992,7 +7803,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //top right
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, 2);
 
@@ -8091,8 +7902,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                x = bounds.left - labelBounds.width() - bufferXL;
-                y = bounds.top + ((bounds.height() / 2) - (bufferText/2) - descent);
+                //on left
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
+                //above center
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, 1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -8110,9 +7923,9 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = bounds.left + bounds.width() + bufferXR;
-                //just above center
-                y = bounds.top + ((bounds.height() / 2) - (bufferText/2) - descent);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //above center
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, 1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -8136,10 +7949,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
-                //just below center
-                y = bounds.top + (bounds.height() / 2 + labelHeight + (bufferText/2) - descent);
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //below center
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, -1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -8163,10 +7976,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //below H
-                y = bounds.top + ((bounds.height() / 2) + ((labelHeight - descent + bufferText) * 2));
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, -2);
 
 
                 tiTemp.setLocation(x, y);
@@ -8186,11 +7999,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //above Y on left
-                x = bounds.left - labelWidth - bufferXL;
+                //on left
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //above Y
-                x = bounds.left - labelWidth - bufferXL;
-                y = bounds.top + ((bounds.height() / 2) - (labelHeight - bufferText) );
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, 2);
 
 
                 tiTemp.setLocation(x, y);
@@ -8224,10 +8036,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //above G
-                y = bounds.top + ((bounds.height() / 2) - (labelHeight - bufferText) );
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, false, 2);
 
 
                 tiTemp.setLocation(x, y);
@@ -8327,7 +8139,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on left
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, false);
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //above vertical center
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 1);
 
@@ -8347,7 +8159,7 @@ public class ModifierRenderer
                 labelWidth = (int)labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //above vertical center
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 1);
 
@@ -8368,7 +8180,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //above vertical center
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 0);
 
@@ -8395,7 +8207,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //below G
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -1);
 
@@ -8422,7 +8234,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //below H
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -2);
 
@@ -8445,7 +8257,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on left
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, false);
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //above Y
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 2);
 
@@ -8466,7 +8278,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on left
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, false);
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //above Y
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -1);
 
@@ -8503,7 +8315,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //below H
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 2);
 
@@ -8578,10 +8390,10 @@ public class ModifierRenderer
         if(!scc.isEmpty())
             modifiers.put(Modifiers.AS_COUNTRY, scc);
 
-        //            int y0 = 0;//             E/F/AS
-        //            int y1 = 0;//W            G
-        //            int y2 =     Y            H
-        //            int y3 = 0;//T/V          M
+        //            int y0 = 0;//W            E/F/AS
+        //            int y1 = 0;//Y            G
+        //            int y2 =     V            H
+        //            int y3 = 0;//T            M
         //            int y4 = 0;//             K/L
         // <editor-fold defaultstate="collapsed" desc="Build Modifiers">
         String modifierValue = null;
@@ -8603,11 +8415,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                x = bounds.left - labelWidth - bufferXL;
-                //center
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + ((labelHeight - descent) * 0.5));
-                y = bounds.top + y;
+                //on left
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
+                //above center V
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 0);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -8625,12 +8436,9 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = bounds.left + bounds.width() + bufferXR;
-                //just above H
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText));
-                y = bounds.top + y;
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //above center V
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -8654,12 +8462,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //center
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + ((labelHeight - descent) * 0.5));
-                y = bounds.top + y;
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 0);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -8670,18 +8476,19 @@ public class ModifierRenderer
         if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1) ||
                 modifiers.containsKey(Modifiers.V_EQUIP_TYPE))
         {
-            modifierValue = "";
+            String tm = null,
+                    vm = null;
 
-            String mt = "",
-                    mv = "";
+            if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1))
+            {
+                tm = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
+            }
+            if (modifiers.containsKey(Modifiers.V_EQUIP_TYPE))
+            {
+                vm = modifiers.get(Modifiers.V_EQUIP_TYPE);
+            }
 
-            if(modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1))
-                mt = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
-
-            if(modifiers.containsKey(Modifiers.V_EQUIP_TYPE))
-                mv = modifiers.get(Modifiers.V_EQUIP_TYPE);
-
-            modifierValue = mt + " " + mv;
+            modifierValue = tm + " " + vm;
             modifierValue = modifierValue.trim();
 
             if(modifierValue != null)
@@ -8690,13 +8497,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //just below center on left
-                x = bounds.left - labelWidth - bufferXL;
-                //just below Y
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText - descent));
-                y = bounds.top + y;
+                //on left
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
+                //below center V
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -1);
 
 
                 tiTemp.setLocation(x, y);
@@ -8719,13 +8523,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
-                //just below H
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText - descent));
-                y = bounds.top + y;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //below center H
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -1);
 
                 tiTemp.setLocation(x, y);
                 tiArray.add(tiTemp);
@@ -8759,13 +8560,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //below M
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y + ((labelHeight + bufferText) * 2) - (descent * 2);
-                y = Math.round(bounds.top + y);
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -2);
 
 
                 tiTemp.setLocation(x, y);
@@ -8785,13 +8583,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //above X/Y on left
-                x = bounds.left - labelWidth - bufferXL;
-                //just above Y
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText));
-                y = bounds.top + y;
+                //on left
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
+                //above Y
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 1);
 
 
                 tiTemp.setLocation(x, y);
@@ -8873,13 +8668,10 @@ public class ModifierRenderer
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
-                //right
-                x = bounds.left + bounds.width() + bufferXR;
-                //above G
-                y = (bounds.height());
-                y = (int) ((y * 0.5) + (labelHeight * 0.5));
-                y = y - ((labelHeight + bufferText) * 2);
-                y = bounds.top + y;
+                //on right
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
+                //top right
+                y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 2);
 
 
                 tiTemp.setLocation(x, y);
@@ -8979,7 +8771,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on left
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, false);
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //above center V
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 1);
 
@@ -8999,7 +8791,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //above center V
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 1);
 
@@ -9026,7 +8818,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //center
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 0);
 
@@ -9047,7 +8839,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on left
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, false);
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //below center V
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -1);
 
@@ -9068,7 +8860,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on left
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, false);
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //below center V
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 0);
 
@@ -9094,7 +8886,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //below center H
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -1);
 
@@ -9131,7 +8923,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //below M
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, -2);
 
@@ -9154,7 +8946,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on left
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, false);
+                x = (int)getLabelXPosition(bounds, labelWidth, false);
                 //above Y
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 2);
 
@@ -9239,7 +9031,7 @@ public class ModifierRenderer
                 labelWidth = labelBounds.width();
 
                 //on right
-                x = (int)getLabelXPosition(bounds, labelWidth, bufferXR, true);
+                x = (int)getLabelXPosition(bounds, labelWidth, true);
                 //top right
                 y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, true, 2);
 
@@ -11194,12 +10986,13 @@ public class ModifierRenderer
      *
      * @param bounds bounds of the core icon
      * @param labelWidth height of the label to be placed
-     * @param buffer additional horizontal spacing buffer between label and symbol if desired
      * @param onRight if true, label on right side of symbol. On left if false.
      * @returns
      */
-    private static double getLabelXPosition(Rect bounds, int labelWidth, int buffer, boolean onRight)
+    private static double getLabelXPosition(Rect bounds, int labelWidth, boolean onRight)
     {
+        int buffer = (int)_modifierFontHeight/2;
+
         double x = 0;
         if(onRight)
         {
