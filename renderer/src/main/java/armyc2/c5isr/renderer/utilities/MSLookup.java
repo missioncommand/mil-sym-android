@@ -347,8 +347,8 @@ public class MSLookup {
                     modifiers.add(Modifiers.V_EQUIP_TYPE);
                     modifiers.add(Modifiers.Y_LOCATION);
                     modifiers.add(Modifiers.Z_SPEED);
-                    modifiers.add(Modifiers.AQ_GUARDED_UNIT);
                     modifiers.add(Modifiers.AB_FEINT_DUMMY_INDICATOR);
+                    modifiers.add(Modifiers.AG_AUX_EQUIP_INDICATOR);
                     modifiers.add(Modifiers.AL_OPERATIONAL_CONDITION);
                     modifiers.add(Modifiers.AO_ENGAGEMENT_BAR);
                     modifiers.add(Modifiers.AQ_GUARDED_UNIT);
@@ -375,6 +375,7 @@ public class MSLookup {
                     break;
                 case SymbolID.SymbolSet_Activities:
                     modifiers.add(Modifiers.A_SYMBOL_ICON);
+                    modifiers.add(Modifiers.C_QUANTITY);
                     modifiers.add(Modifiers.G_STAFF_COMMENTS);
                     modifiers.add(Modifiers.H_ADDITIONAL_INFO_1);
                     modifiers.add(Modifiers.J_EVALUATION_RATING);
@@ -388,7 +389,6 @@ public class MSLookup {
                 case SymbolID.SymbolSet_CyberSpace:
                     modifiers.add(Modifiers.A_SYMBOL_ICON);
                     modifiers.add(Modifiers.B_ECHELON);
-                    modifiers.add(Modifiers.D_TASK_FORCE_INDICATOR);
                     modifiers.add(Modifiers.F_REINFORCED_REDUCED);
                     modifiers.add(Modifiers.G_STAFF_COMMENTS);
                     modifiers.add(Modifiers.H_ADDITIONAL_INFO_1);

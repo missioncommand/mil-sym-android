@@ -417,7 +417,10 @@ public class SinglePointSVGRenderer implements SettingsChangedEventListener
                             newSDI = ModifierRenderer.processActivitiesTextModifiers(si, symbolID, modifiers, attributes);
                         break;
                     case SymbolID.SymbolSet_CyberSpace:
-                        newSDI = ModifierRenderer.processCyberSpaceTextModifiers(si, symbolID, modifiers, attributes);
+                        if(ver >= SymbolID.Version_2525E)
+                            newSDI = ModifierRenderer.processCyberSpaceTextModifiersE(si, symbolID, modifiers, attributes);
+                        else
+                            newSDI = ModifierRenderer.processCyberSpaceTextModifiers(si, symbolID, modifiers, attributes);
                         break;
                     case SymbolID.SymbolSet_MineWarfare:
                         break;//no modifiers

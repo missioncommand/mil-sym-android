@@ -494,7 +494,10 @@ public class SinglePointRenderer implements SettingsChangedEventListener
                             sdiTemp = ModifierRenderer.processActivitiesTextModifiers(ii, symbolID, modifiers, attributes);
                         break;
                     case SymbolID.SymbolSet_CyberSpace:
-                        sdiTemp = ModifierRenderer.processCyberSpaceTextModifiers(ii, symbolID, modifiers, attributes);
+                        if(ver >= SymbolID.Version_2525E)
+                            sdiTemp = ModifierRenderer.processCyberSpaceTextModifiersE(ii, symbolID, modifiers, attributes);
+                        else
+                            sdiTemp = ModifierRenderer.processCyberSpaceTextModifiers(ii, symbolID, modifiers, attributes);
                         break;
                     case SymbolID.SymbolSet_MineWarfare:
                         break;//no modifiers
