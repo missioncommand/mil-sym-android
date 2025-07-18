@@ -227,7 +227,6 @@ public class MSLookup {
                     modifiers.add(Modifiers.AF_COMMON_IDENTIFIER);
                     modifiers.add(Modifiers.AH_AREA_OF_UNCERTAINTY);
                     modifiers.add(Modifiers.AI_DEAD_RECKONING_TRAILER);
-                    modifiers.add(Modifiers.AJ_SPEED_LEADER);
                     modifiers.add(Modifiers.AK_PAIRING_LINE);
                     modifiers.add(Modifiers.AL_OPERATIONAL_CONDITION);
                     modifiers.add(Modifiers.AO_ENGAGEMENT_BAR);
@@ -260,7 +259,6 @@ public class MSLookup {
                     modifiers.add(Modifiers.AG_AUX_EQUIP_INDICATOR);
                     modifiers.add(Modifiers.AH_AREA_OF_UNCERTAINTY);
                     modifiers.add(Modifiers.AI_DEAD_RECKONING_TRAILER);
-                    modifiers.add(Modifiers.AJ_SPEED_LEADER);
                     modifiers.add(Modifiers.AK_PAIRING_LINE);
                     modifiers.add(Modifiers.AL_OPERATIONAL_CONDITION);
                     modifiers.add(Modifiers.AO_ENGAGEMENT_BAR);
@@ -284,7 +282,6 @@ public class MSLookup {
                     modifiers.add(Modifiers.AE_EQUIPMENT_TEARDOWN_TIME);
                     modifiers.add(Modifiers.AH_AREA_OF_UNCERTAINTY);
                     modifiers.add(Modifiers.AI_DEAD_RECKONING_TRAILER);
-                    modifiers.add(Modifiers.AJ_SPEED_LEADER);
                     modifiers.add(Modifiers.AK_PAIRING_LINE);
                     modifiers.add(Modifiers.AL_OPERATIONAL_CONDITION);
                     //modifiers.add(Modifiers.AO_ENGAGEMENT_BAR);
@@ -321,7 +318,7 @@ public class MSLookup {
                     modifiers.add(Modifiers.H_ADDITIONAL_INFO_1);
                     modifiers.add(Modifiers.J_EVALUATION_RATING);
                     modifiers.add(Modifiers.P_IFF_SIF_AIS);
-                    modifiers.add(Modifiers.Q_DIRECTION_OF_MOVEMENT);
+                    //modifiers.add(Modifiers.Q_DIRECTION_OF_MOVEMENT);
                     modifiers.add(Modifiers.T_UNIQUE_DESIGNATION_1);
                     modifiers.add(Modifiers.V_EQUIP_TYPE);
                     modifiers.add(Modifiers.W_DTG_1);
@@ -331,6 +328,7 @@ public class MSLookup {
                     modifiers.add(Modifiers.AB_FEINT_DUMMY_INDICATOR);
                     modifiers.add(Modifiers.AD_PLATFORM_TYPE);
                     modifiers.add(Modifiers.AF_COMMON_IDENTIFIER);
+                    modifiers.add(Modifiers.AJ_SPEED_LEADER);
                     modifiers.add(Modifiers.AL_OPERATIONAL_CONDITION);
                     modifiers.add(Modifiers.AO_ENGAGEMENT_BAR);
                     modifiers.add(Modifiers.AR_SPECIAL_DESIGNATOR);
@@ -341,13 +339,14 @@ public class MSLookup {
                     modifiers.add(Modifiers.G_STAFF_COMMENTS);
                     modifiers.add(Modifiers.H_ADDITIONAL_INFO_1);
                     modifiers.add(Modifiers.P_IFF_SIF_AIS);
-                    modifiers.add(Modifiers.Q_DIRECTION_OF_MOVEMENT);
+                    //modifiers.add(Modifiers.Q_DIRECTION_OF_MOVEMENT);
                     modifiers.add(Modifiers.T_UNIQUE_DESIGNATION_1);
                     modifiers.add(Modifiers.V_EQUIP_TYPE);
                     modifiers.add(Modifiers.Y_LOCATION);
                     modifiers.add(Modifiers.Z_SPEED);
                     modifiers.add(Modifiers.AB_FEINT_DUMMY_INDICATOR);
                     modifiers.add(Modifiers.AG_AUX_EQUIP_INDICATOR);
+                    modifiers.add(Modifiers.AJ_SPEED_LEADER);
                     modifiers.add(Modifiers.AL_OPERATIONAL_CONDITION);
                     modifiers.add(Modifiers.AO_ENGAGEMENT_BAR);
                     modifiers.add(Modifiers.AQ_GUARDED_UNIT);
@@ -359,13 +358,14 @@ public class MSLookup {
                     modifiers.add(Modifiers.G_STAFF_COMMENTS);
                     modifiers.add(Modifiers.H_ADDITIONAL_INFO_1);
                     modifiers.add(Modifiers.P_IFF_SIF_AIS);
-                    modifiers.add(Modifiers.Q_DIRECTION_OF_MOVEMENT);
+                    //modifiers.add(Modifiers.Q_DIRECTION_OF_MOVEMENT);
                     modifiers.add(Modifiers.T_UNIQUE_DESIGNATION_1);
                     modifiers.add(Modifiers.V_EQUIP_TYPE);
                     modifiers.add(Modifiers.X_ALTITUDE_DEPTH);
                     modifiers.add(Modifiers.Y_LOCATION);
                     modifiers.add(Modifiers.Z_SPEED);
                     modifiers.add(Modifiers.AB_FEINT_DUMMY_INDICATOR);
+                    modifiers.add(Modifiers.AJ_SPEED_LEADER);
                     modifiers.add(Modifiers.AL_OPERATIONAL_CONDITION);
                     modifiers.add(Modifiers.AO_ENGAGEMENT_BAR);
                     modifiers.add(Modifiers.AQ_GUARDED_UNIT);
@@ -399,7 +399,6 @@ public class MSLookup {
                     modifiers.add(Modifiers.V_EQUIP_TYPE);
                     modifiers.add(Modifiers.W_DTG_1);
                     modifiers.add(Modifiers.Y_LOCATION);
-                    modifiers.add(Modifiers.AB_FEINT_DUMMY_INDICATOR);
                     modifiers.add(Modifiers.AS_COUNTRY);
                     break;
             /*case SymbolID.SymbolSet_SignalsIntelligence_Air:
@@ -468,7 +467,6 @@ public class MSLookup {
                     modifiers.add(Modifiers.AB_FEINT_DUMMY_INDICATOR);
                     modifiers.add(Modifiers.AH_AREA_OF_UNCERTAINTY);
                     modifiers.add(Modifiers.AI_DEAD_RECKONING_TRAILER);
-                    modifiers.add(Modifiers.AJ_SPEED_LEADER);
                     modifiers.add(Modifiers.AK_PAIRING_LINE);
                     modifiers.add(Modifiers.AL_OPERATIONAL_CONDITION);
                     modifiers.add(Modifiers.AO_ENGAGEMENT_BAR);
@@ -499,7 +497,6 @@ public class MSLookup {
                     modifiers.add(Modifiers.AG_AUX_EQUIP_INDICATOR);
                     modifiers.add(Modifiers.AH_AREA_OF_UNCERTAINTY);
                     modifiers.add(Modifiers.AI_DEAD_RECKONING_TRAILER);
-                    modifiers.add(Modifiers.AJ_SPEED_LEADER);
                     modifiers.add(Modifiers.AK_PAIRING_LINE);
                     modifiers.add(Modifiers.AL_OPERATIONAL_CONDITION);
                     modifiers.add(Modifiers.AO_ENGAGEMENT_BAR);
@@ -522,7 +519,6 @@ public class MSLookup {
                     modifiers.add(Modifiers.AB_FEINT_DUMMY_INDICATOR);
                     modifiers.add(Modifiers.AH_AREA_OF_UNCERTAINTY);
                     modifiers.add(Modifiers.AI_DEAD_RECKONING_TRAILER);
-                    modifiers.add(Modifiers.AJ_SPEED_LEADER);
                     modifiers.add(Modifiers.AK_PAIRING_LINE);
                     modifiers.add(Modifiers.AL_OPERATIONAL_CONDITION);
                     modifiers.add(Modifiers.AO_ENGAGEMENT_BAR);
@@ -621,7 +617,6 @@ public class MSLookup {
                     modifiers.add(Modifiers.V_EQUIP_TYPE);
                     modifiers.add(Modifiers.W_DTG_1);
                     modifiers.add(Modifiers.Y_LOCATION);
-                    modifiers.add(Modifiers.AB_FEINT_DUMMY_INDICATOR);
                     modifiers.add(Modifiers.AO_ENGAGEMENT_BAR);
                     modifiers.add(Modifiers.AS_COUNTRY);
                     break;

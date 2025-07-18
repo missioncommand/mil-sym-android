@@ -661,7 +661,7 @@ public class ModifierRenderer
         // <editor-fold defaultstate="collapsed" desc="Build Task Force">
         Rect tfBounds = null;
         Rect tfRectangle = null;
-        if (SymbolUtilities.isTaskForce(symbolID) && SymbolUtilities.canSymbolHaveModifier(symbolID, Modifiers.D_TASK_FORCE_INDICATOR))
+        if (SymbolUtilities.isTaskForce(symbolID) && SymbolUtilities.hasModifier(symbolID, Modifiers.D_TASK_FORCE_INDICATOR))
         {
 
             int height = Math.round(symbolBounds.height() / 4.0f);
@@ -706,13 +706,13 @@ public class ModifierRenderer
                     tfh = echelonBounds.height()+2;
 
                 }
-                tfRectangle = new Rect((int)tfx,
-                        (int)tfy,// + outlineOffset,
-                        (int)tfw,
-                        (int)tfh);
+                tfRectangle = RectUtilities.makeRect((int)tfx,
+                        tfy,// + outlineOffset,
+                        tfw,
+                        tfh);
 
 
-                tfBounds = new Rect((tfRectangle.left - 1),
+                tfBounds = RectUtilities.makeRect((tfRectangle.left - 1),
                         (tfRectangle.top - 1),
                         (tfRectangle.width() + 2),
                         (tfRectangle.height() + 2));
@@ -987,7 +987,7 @@ public class ModifierRenderer
         Point[] domPoints = null;
         Rect domBounds = null;
         if (modifiers.containsKey(Modifiers.Q_DIRECTION_OF_MOVEMENT)
-                && SymbolUtilities.canSymbolHaveModifier(symbolID, Modifiers.Q_DIRECTION_OF_MOVEMENT))
+                && SymbolUtilities.hasModifier(symbolID, Modifiers.Q_DIRECTION_OF_MOVEMENT))
         {
         	String strQ = modifiers.get(Modifiers.Q_DIRECTION_OF_MOVEMENT);
         	
@@ -1014,6 +1014,94 @@ public class ModifierRenderer
         	}
         }
 
+        // </editor-fold>
+
+        // <editor-fold defaultstate="collapsed" desc="Build Speed Leader">
+        Path slPath = null;
+        SVGPath slSVGPath = null;
+        Rect slBounds = null;
+        if (SymbolUtilities.hasModifier(symbolID, Modifiers.AJ_SPEED_LEADER) &&
+                (modifiers.containsKey(Modifiers.AJ_SPEED_LEADER)))
+        {
+            String aj = modifiers.get(Modifiers.AJ_SPEED_LEADER);
+            String[] values = aj.split(" ");
+            if(values.length >= 3)
+            {
+                int speed = Integer.parseInt(values[0]);
+                String speedUnit = values[1];
+                int angle = 0;
+                if(values[2].length()==3)
+                    angle = Integer.parseInt(values[2])-90;
+                else
+                    angle = (int)(Integer.parseInt(values[2]) * 0.05625)-90;
+
+                if(sdi instanceof ImageInfo)
+                {
+                    slPath = new Path();
+                    slPath.moveTo(symbolCenter.x, symbolCenter.y);
+                }
+
+                slSVGPath = new SVGPath();
+                slSVGPath.moveTo(symbolCenter.x, symbolCenter.y);
+
+                //convert to Knots
+                switch(speedUnit)//KPH, KPS, MPH, NMH, KTS//https://www.aviationhunt.com/speed-converter/
+                {
+                    case "KPH":
+                        speed = (int)(speed * 0.539957);
+                        break;
+                    case "KPS"://https://www.metric-conversions.org/speed/kilometers-per-second-to-knots.htm
+                        speed = (int)(speed * 1943.84);
+                        break;
+                    case "MPH":
+                        speed = (int)(speed * 0.86897);
+                        break;
+                }
+
+                int distance = 0;
+                char frame = SymbolID.getFrameShape(symbolID);
+                int dpi = RendererSettings.getInstance().getDeviceDPI();
+                if(ss == SymbolID.SymbolSet_Air ||
+                        ss == SymbolID.SymbolSet_AirMissile ||
+                        ss == SymbolID.SymbolSet_SignalsIntelligence_Air ||
+                        ss == SymbolID.SymbolSet_SpaceMissile ||
+                        ss == SymbolID.SymbolSet_Space ||
+                        (SymbolID.getVersion(symbolID) <= SymbolID.Version_2525Dch1 && ss == SymbolID.SymbolSet_SignalsIntelligence_Space) ||
+                        (SymbolID.getVersion(symbolID) >= SymbolID.Version_2525E &&
+                                (frame == SymbolID.FrameShape_Air) ||
+                                frame == SymbolID.FrameShape_Space))
+                {//aircraft might be 1/4 inch if its speed is less than 300 knots, 1/2 inch if its speed is between 300 and 600 knots and 3/4 inch if its speed is more than 600 knots.
+                    if(speed < 300)
+                        distance = (int)(dpi * 0.25);
+                    else if (speed < 600)
+                        distance = (int)(dpi * 0.5);
+                    else
+                        distance = (int)(dpi * 0.75);
+                }
+                else//submarine might be 1/4 inch if its speed is less than 15 knots, 1/2 inch if its speed is between 15 and 30 knots and 3/4 inch if its speed is more than 30 knots
+                {
+                    if(speed < 15)
+                        distance = (int)(dpi * 0.25);
+                    else if (speed < 30)
+                        distance = (int)(dpi * 0.5);
+                    else
+                        distance = (int)(dpi * 0.75);
+                }
+                double radians = (angle * (Math.PI / 180));//convert degrees to radians
+                int x2 = (int)(symbolCenter.x + distance * Math.cos(radians));
+                int y2 = (int)(symbolCenter.y + distance * Math.sin(radians));
+
+                if(slPath != null)
+                {
+                    slPath.lineTo(x2,y2);
+                }
+
+                slSVGPath.lineTo(x2,y2);
+                slBounds = slSVGPath.getBounds();
+
+                imageBounds.union(slBounds);
+            }
+        }
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="Build Operational Condition Indicator">
@@ -1281,6 +1369,11 @@ public class ModifierRenderer
                 }
                 domBounds.offset(shiftX, shiftY);
             }
+            if(slBounds != null && slPath != null)
+            {
+                slBounds.offset(shiftX, shiftY);
+                slPath.offset(shiftX, shiftY);
+            }
             if (mobilityBounds != null)
             {
                 //shift mobility points
@@ -1504,6 +1597,10 @@ public class ModifierRenderer
 
                 domBounds = null;
                 domPoints = null;
+            }
+            if(slBounds != null)
+            {
+                sbSVG.append(Shape2SVG.Convert(slPath, svgStroke, "none", svgStrokeWidth, svgAlpha, svgAlpha, null,null));
             }
 
             newsdi = new SVGSymbolInfo(sbSVG.toString(),centerPoint,symbolBounds,imageBounds);
@@ -1784,6 +1881,17 @@ public class ModifierRenderer
                 domPoints = null;
             }
 
+            if(slBounds != null)
+            {
+                Paint slPaint = new Paint();
+                slPaint.setColor(Color.BLACK.toInt());
+                slPaint.setAlpha(alpha);
+                slPaint.setStyle(Style.STROKE);
+                slPaint.setStrokeWidth(strokeWidth);
+
+                ctx.drawPath(slPath, slPaint);
+            }
+
             if (ociBoundsF != null) {
                 Paint ociPaint = new Paint();
                 int size = symbolBounds.width();
@@ -1968,7 +2076,9 @@ public class ModifierRenderer
         pt1 = new Point(x1, y1);
 
         if (SymbolUtilities.hasModifier(symbolID, Modifiers.Q_DIRECTION_OF_MOVEMENT ) &&
-            SymbolUtilities.isCBRNEvent(symbolID) || SymbolUtilities.isLand(symbolID))
+            SymbolUtilities.isCBRNEvent(symbolID) ||
+                SymbolUtilities.isLand(symbolID) ||
+                SymbolID.getSymbolSet(symbolID)==SymbolID.SymbolSet_DismountedIndividuals)
         {
             //drawStaff = true;
             if(SymbolUtilities.isHQ(symbolID)==false)//has HQ staff to start from
