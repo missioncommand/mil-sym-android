@@ -6,11 +6,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.FontMetrics;
 import android.graphics.Point;
-import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
-import android.util.LruCache;
 
 import com.caverock.androidsvg.SVG;
 
@@ -323,8 +321,7 @@ public class SinglePointSVGRenderer implements SettingsChangedEventListener
                 RectUtilities.shift(symbolBounds,0,(int)-symbolBounds.top);
 
                 //Add core symbol to SVGSymbolInfo
-                Point anchor = new Point(symbolBounds.centerX(),symbolBounds.centerY());
-                si =  new SVGSymbolInfo(sbGroupUnit.toString(), anchor,symbolBounds,symbolBounds);
+                si =  new SVGSymbolInfo(sbGroupUnit.toString(), centerPoint,symbolBounds,symbolBounds);
 
                 hasDisplayModifiers = ModifierRenderer.hasDisplayModifiers(symbolID, modifiers);
                 hasTextModifiers = ModifierRenderer.hasTextModifiers(symbolID, modifiers);
@@ -436,6 +433,8 @@ public class SinglePointSVGRenderer implements SettingsChangedEventListener
                 si = (SVGSymbolInfo) newSDI;
             }
             newSDI = null;
+
+            si = (SVGSymbolInfo) ModifierRenderer.processSpeedLeader(si,symbolID,modifiers,attributes);
 
             int widthOffset = 0;
             if(hasTextModifiers)

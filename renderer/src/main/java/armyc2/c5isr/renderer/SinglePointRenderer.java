@@ -515,6 +515,8 @@ public class SinglePointRenderer implements SettingsChangedEventListener
             }
             iiNew = null;
 
+            ii = (ImageInfo) ModifierRenderer.processSpeedLeader(ii,symbolID,modifiers,attributes);
+
             //cleanup///////////////////////////////////////////////////////////
             //bmp.recycle();
             symbolBounds = null;
