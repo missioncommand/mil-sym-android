@@ -41,9 +41,9 @@ public class ExportSPImagesE {
 
     // Unit test IDs is a list of basic IDs with one for each unit set. Symbol is either first in set
     // or a symbol with a smaller icon to make modifiers easier to see.
-    final static String[] unitTestIDs = {"01110000", "02110000", "05110000", "06110000", "10110000", "11110000", "15110000", "20110000", "27110201", "30110000", "35110000", "36110000", "40130500", "50110100", "60110100"};
+    final static String[] unitTestIDs = {"01110100", "02110000", "05110100", "06110000", "10110000", "11110100", "15110100", "20110100", "27110201", "30120100", "35110000", "36110000", "40130500", "50110100", "60110100"};
 
-    private static final int VERSION = SymbolID.Version_2525E;
+    private static final int VERSION = SymbolID.Version_2525Ech1;
 
     public static boolean exportTestImages(Context context) {
         boolean success = true;
@@ -219,8 +219,8 @@ public class ExportSPImagesE {
      * Creates PNG for all units with all modifiers included
      */
     private static void createUnitModTestImages() {
-        Map<String,String> modifiers = new HashMap<>();
-        Map<String,String> attributes = new HashMap<>();
+        Map<String, String> modifiers = new HashMap<>();
+        Map<String, String> attributes = new HashMap<>();
         populateModifiersForUnits(modifiers);
 
         // Mine warfare
@@ -254,8 +254,8 @@ public class ExportSPImagesE {
      * Creates PNG for single point tactical graphics that have modifiers. Includes all modifiers
      */
     private static void createTGModTestImages() {
-        Map<String,String> modifiers = new HashMap<>();
-        Map<String,String> attributes = new HashMap<>();
+        Map<String, String> modifiers = new HashMap<>();
+        Map<String, String> attributes = new HashMap<>();
         populateModifiersForTGs(modifiers);
 
         List<String> idList = MSLookup.getInstance().getIDList(VERSION);
@@ -296,8 +296,8 @@ public class ExportSPImagesE {
      */
     private static void createAffiliationTestImages() {
         // Test units
-        Map<String,String> modifiers = new HashMap<>();
-        Map<String,String> attributes = new HashMap<>();
+        Map<String, String> modifiers = new HashMap<>();
+        Map<String, String> attributes = new HashMap<>();
         modifiers.put(Modifiers.AO_ENGAGEMENT_BAR, "AO:AOA-AO");
         for (int aff : new int[]{0, 1, 2, 3, 4, 5, 6}) {
             for (String basicID : unitTestIDs) {
@@ -556,18 +556,18 @@ public class ExportSPImagesE {
         sector1Mods.put("10", 99);
         sector1Mods.put("11", 24);
         sector1Mods.put("15", 13);
-        sector1Mods.put("20", 13);
+        sector1Mods.put("20", 16);
         sector1Mods.put("25", 50);
         sector1Mods.put("27", 46);
         sector1Mods.put("30", 22);
         sector1Mods.put("35", 19);
         sector1Mods.put("36", -1);
-        sector1Mods.put("40", 22);
+        sector1Mods.put("40", 24);
         sector1Mods.put("45", -1);
         sector1Mods.put("46", -1);
         sector1Mods.put("47", -1);
         sector1Mods.put("50", 64);
-        sector1Mods.put("60", 13);
+        sector1Mods.put("60", 14);
 
         for (String basicID : unitTestIDs) {
             for (int sector1Mod : IntStream.rangeClosed(0, sector1Mods.get(basicID.substring(0, 2))).toArray()) {
@@ -582,6 +582,15 @@ public class ExportSPImagesE {
             }
         }
 
+        // Non integer sector modifiers
+        for (String sector1Mod : new String[]{"A1", "A3", "A4", "A6", "A7"}) {
+            String id = VERSION + "0310000011000000000000000000";
+            id = SymbolID.setModifier1(id, sector1Mod);
+
+            final File modFolder = new File(rootFolder + File.separator + "Sector Mods" + File.separator + "10110000");
+            renderAndSave(modFolder, SVGLookup.getMod1ID(id), id);
+        }
+
         // Static Depiction
         for (int sector1Mod : IntStream.rangeClosed(13, 50).toArray()) {
             String id = VERSION + "0325000027070100000000000000";
@@ -592,7 +601,7 @@ public class ExportSPImagesE {
         }
 
         // Common modifiers
-        for (int sector1Mod : IntStream.rangeClosed(0, 65).toArray()) {
+        for (int sector1Mod : IntStream.rangeClosed(0, 82).toArray()) {
             String id = VERSION + "03100000110100000010000000";
             id = SymbolID.setModifier1(id, sector1Mod);
 
@@ -610,21 +619,21 @@ public class ExportSPImagesE {
         sector2Mods.put("02", 16);
         sector2Mods.put("05", 12);
         sector2Mods.put("06", 15);
-        sector2Mods.put("10", 89);
+        sector2Mods.put("10", 96);
         sector2Mods.put("11", 1);
         sector2Mods.put("15", 6);
-        sector2Mods.put("20", 10);
+        sector2Mods.put("20", 12);
         sector2Mods.put("25", -1);
         sector2Mods.put("27", 38);
         sector2Mods.put("30", 12);
         sector2Mods.put("35", 13);
         sector2Mods.put("36", -1);
-        sector2Mods.put("40", -1);
+        sector2Mods.put("40", 4);
         sector2Mods.put("45", -1);
         sector2Mods.put("46", -1);
         sector2Mods.put("47", -1);
         sector2Mods.put("50", -1);
-        sector2Mods.put("60", 8);
+        sector2Mods.put("60", 10);
 
         for (String basicID : unitTestIDs) {
             for (int sector2Mod : IntStream.rangeClosed(0, sector2Mods.get(basicID.substring(0, 2))).toArray()) {
@@ -640,7 +649,7 @@ public class ExportSPImagesE {
         }
 
         // Common modifiers
-        for (int sector2Mod : IntStream.rangeClosed(0, 25).toArray()) {
+        for (int sector2Mod : IntStream.rangeClosed(0, 35).toArray()) {
             String id = VERSION + "03100000110100000001000000";
             id = SymbolID.setModifier2(id, sector2Mod);
 
@@ -653,8 +662,8 @@ public class ExportSPImagesE {
      * Creates PNG for each unit with custom TextColor, LineColor and FillColor
      */
     private static void createCustomColorTestImages() {
-        Map<String,String> modifiers = new HashMap<>();
-        Map<String,String> attributes = new HashMap<>();
+        Map<String, String> modifiers = new HashMap<>();
+        Map<String, String> attributes = new HashMap<>();
         populateModifiersForUnits(modifiers);
         attributes.put(MilStdAttributes.TextColor, "00FFFF");
         attributes.put(MilStdAttributes.LineColor, "FF00FF");
@@ -696,7 +705,7 @@ public class ExportSPImagesE {
         }
     }
 
-    private static void renderAndSave(File folder, String fileName, String id, Map<String,String> modifiers, Map<String,String> attributes) {
+    private static void renderAndSave(File folder, String fileName, String id, Map<String, String> modifiers, Map<String, String> attributes) {
         if (!folder.exists()) {
             folder.mkdirs();
         }
@@ -725,7 +734,7 @@ public class ExportSPImagesE {
         }
     }
 
-    private static void renderAndSave(File folder, String id, Map<String,String> modifiers, Map<String,String> attributes) {
+    private static void renderAndSave(File folder, String id, Map<String, String> modifiers, Map<String, String> attributes) {
         renderAndSave(folder, SVGLookup.getMainIconID(id), id, modifiers, attributes);
     }
 
@@ -904,7 +913,7 @@ public class ExportSPImagesE {
     }
 
     private static String parseFrameShape(char frameShape) {
-        switch (frameShape){
+        switch (frameShape) {
             case SymbolID.FrameShape_Unknown:
                 return "Default frame";
             case SymbolID.FrameShape_Space:
@@ -917,7 +926,7 @@ public class ExportSPImagesE {
                 return "Sea Surface";
             case SymbolID.FrameShape_LandInstallation:
                 return "Land Installation";
-            case SymbolID.FrameShape_DismountedIndividuals :
+            case SymbolID.FrameShape_DismountedIndividuals:
                 return "Dismounted Individuals";
             case SymbolID.FrameShape_SeaSubsurface:
                 return "Sea Subsurface";
@@ -931,7 +940,7 @@ public class ExportSPImagesE {
     }
 
     // Copied from test1
-    private static void populateModifiersForUnits(Map<String,String> modifiers) {
+    private static void populateModifiersForUnits(Map<String, String> modifiers) {
         modifiers.put(Modifiers.H_ADDITIONAL_INFO_1, "Hj");
         modifiers.put(Modifiers.H1_ADDITIONAL_INFO_2, "H1");
         modifiers.put(Modifiers.X_ALTITUDE_DEPTH, "X");//X
@@ -964,7 +973,7 @@ public class ExportSPImagesE {
     }
 
     // Copied from test1
-    private static void populateModifiersForTGs(Map<String,String> modifiers) {
+    private static void populateModifiersForTGs(Map<String, String> modifiers) {
         modifiers.put(Modifiers.H_ADDITIONAL_INFO_1, "H");
         modifiers.put(Modifiers.H1_ADDITIONAL_INFO_2, "H1");
         modifiers.put(Modifiers.X_ALTITUDE_DEPTH, "X");//X
