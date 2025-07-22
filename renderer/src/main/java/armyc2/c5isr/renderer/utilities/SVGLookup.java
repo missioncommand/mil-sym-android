@@ -101,6 +101,11 @@ public class SVGLookup {
                 height = Float.parseFloat(temp[4]);
                 bbox = RectUtilities.makeRectF(left, top, width, height);
 
+                if(id.startsWith("461206"))//Hydrography Bottom Features
+                {
+                    //grow bbox as android uses a different serif italic font than browsers and windows
+                    bbox = RectUtilities.makeRectF((int)(left + (left * -0.04)), (int)(top + (top * -0.1)), (int)(width * 1.2), (int)(height * 1.1));
+                }
                     /*if(id.equals("25130100"))
                         Log.e("action point",id);//*/
 
