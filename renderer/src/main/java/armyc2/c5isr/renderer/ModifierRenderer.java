@@ -124,11 +124,12 @@ public class ModifierRenderer
             pixelSize = Integer.parseInt(attributes.get(MilStdAttributes.PixelSize));
         }
 
+        //float fontsize = RendererSettings.getInstance().getModiferFont().getTextSize();
 
         // <editor-fold defaultstate="collapsed" desc="Build Mobility Modifiers">
-        int strokeWidthBasedOnDPI = Math.round(RendererSettings.getInstance().getDeviceDPI()/96f);
-        if(strokeWidthBasedOnDPI < 2)
-            strokeWidthBasedOnDPI = 2;
+        float strokeWidthBasedOnDPI = 1;//min//Math.max(RendererSettings.getInstance().getDeviceDPI()/210,1);//min DPI
+        strokeWidthBasedOnDPI = Math.max(pixelSize / 25f,strokeWidthBasedOnDPI);//dpi base on symbol size
+        strokeWidthBasedOnDPI = Math.min(strokeWidthBasedOnDPI,RendererSettings.getInstance().getDeviceDPI()/32f);//max dpi
 
         RectF mobilityBounds = null;
         int ad = SymbolID.getAmplifierDescriptor(symbolID);//echelon/mobility
@@ -935,8 +936,8 @@ public class ModifierRenderer
             }
             else
             {
-                ebLeft = symbolBounds.left + strokeWidthBasedOnDPI/2;//1;//leave room for outline
-                ebWidth = symbolBounds.width() - strokeWidthBasedOnDPI;//2;//leave room for outline
+                ebLeft = symbolBounds.left + (int)Math.ceil(strokeWidthBasedOnDPI/2f);//1;//leave room for outline
+                ebWidth = symbolBounds.width() - (int)Math.ceil(strokeWidthBasedOnDPI);//2;//leave room for outline
             }
 
             //set text location within the bar
