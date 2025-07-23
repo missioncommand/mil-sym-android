@@ -915,7 +915,7 @@ public class ModifierRenderer
             {
                 ebTop = echelonBounds.top - ebHeight - barOffset;
             }
-            else if(isCOnTop(symbolID))//OR frame in air/space
+            else if(isCOnTop(symbolID) && modifiers.containsKey(Modifiers.C_QUANTITY))//OR frame in air/space
             {
                 ebTop = symbolBounds.top - (int)(ebHeight*2.5f);
             }
@@ -2335,18 +2335,18 @@ public class ModifierRenderer
                     if(fast)
                     {//aircraft might be 1/4 inch if its speed is less than 300 knots, 1/2 inch if its speed is between 300 and 600 knots and 3/4 inch if its speed is more than 600 knots.
                         if (speed < 300)
-                            distance = (int) (pixelSize * 0.25);
+                            distance = (int) (pixelSize * 0.25)/300 * speed;
                         else if (speed < 600)
-                            distance = (int) (pixelSize * 0.5);
+                            distance = (int) (pixelSize * 0.5)/600 * speed;
                         else
                             distance = (int) (pixelSize * 0.75);
                     }
                     else//submarine might be 1/4 inch if its speed is less than 15 knots, 1/2 inch if its speed is between 15 and 30 knots and 3/4 inch if its speed is more than 30 knots
                     {
                         if (speed < 15)
-                            distance = (int) (pixelSize * 0.25);
+                            distance = (int) (pixelSize * 0.25)/15 * speed;
                         else if (speed < 30)
-                            distance = (int) (pixelSize * 0.5);
+                            distance = (int) (pixelSize * 0.5)/30 * speed;
                         else
                             distance = (int) (pixelSize * 0.75);
                     }
@@ -11260,17 +11260,19 @@ public class ModifierRenderer
         int ss = SymbolID.getSymbolSet(symbolID);
         char frame = SymbolID.getFrameShape(symbolID);
 
-        if(frame == SymbolID.FrameShape_Air || frame == SymbolID.FrameShape_Space)
-            onTop = true;
-        else if(ss == SymbolID.SymbolSet_Air ||
-                ss == SymbolID.SymbolSet_Space ||
-                ss == SymbolID.SymbolSet_SignalsIntelligence_Air ||
-                (ss == SymbolID.SymbolSet_SignalsIntelligence_Space && version <= SymbolID.Version_2525Dch1) ||
-                (ss == SymbolID.SymbolSet_LandEquipment && version <= SymbolID.Version_2525Dch1))
-        {
-            onTop = true;
+        if(SymbolUtilities.hasModifier(symbolID,Modifiers.C_QUANTITY)) {
+            if (frame == SymbolID.FrameShape_Air || frame == SymbolID.FrameShape_Space)
+                onTop = true;
+            else if(frame == '0')
+            {
+                if (ss == SymbolID.SymbolSet_Air ||
+                        ss == SymbolID.SymbolSet_Space ||
+                        ss == SymbolID.SymbolSet_SignalsIntelligence_Air ||
+                        (ss == SymbolID.SymbolSet_LandEquipment && version <= SymbolID.Version_2525Dch1)) {
+                    onTop = true;
+                }
+            }
         }
-
         return onTop;
     }
     public static boolean hasDisplayModifiers(String symbolID, Map<String,String> modifiers)
