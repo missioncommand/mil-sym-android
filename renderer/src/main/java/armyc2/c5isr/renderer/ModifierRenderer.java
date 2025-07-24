@@ -892,7 +892,7 @@ public class ModifierRenderer
         else
             ebColor = fillColor;
 
-        if(SymbolUtilities.canSymbolHaveModifier(symbolID, Modifiers.AO_ENGAGEMENT_BAR) &&
+        if(SymbolUtilities.hasModifier(symbolID, Modifiers.AO_ENGAGEMENT_BAR) &&
                 modifiers.containsKey(Modifiers.AO_ENGAGEMENT_BAR))
             strAO = modifiers.get(Modifiers.AO_ENGAGEMENT_BAR);
         if(strAO != null)
@@ -2332,23 +2332,27 @@ public class ModifierRenderer
                         fast = true;
                     }
 
+                    float distanceScaler = dpi;//spec does scale by inch, but if the symbol is too big, scale by pixel size
+                    if(dpi < pixelSize)
+                        distanceScaler = pixelSize;
+
                     if(fast)
                     {//aircraft might be 1/4 inch if its speed is less than 300 knots, 1/2 inch if its speed is between 300 and 600 knots and 3/4 inch if its speed is more than 600 knots.
                         if (speed < 300)
-                            distance = (int) (pixelSize * 0.25)/300 * speed;
+                            distance = (int) (distanceScaler * 0.25)/300 * speed;
                         else if (speed < 600)
-                            distance = (int) (pixelSize * 0.5)/600 * speed;
+                            distance = (int) (distanceScaler * 0.5)/600 * speed;
                         else
-                            distance = (int) (pixelSize * 0.75);
+                            distance = (int) (distanceScaler * 0.75);
                     }
                     else//submarine might be 1/4 inch if its speed is less than 15 knots, 1/2 inch if its speed is between 15 and 30 knots and 3/4 inch if its speed is more than 30 knots
                     {
                         if (speed < 15)
-                            distance = (int) (pixelSize * 0.25)/15 * speed;
+                            distance = (int) (distanceScaler * 0.25)/15 * speed;
                         else if (speed < 30)
-                            distance = (int) (pixelSize * 0.5)/30 * speed;
+                            distance = (int) (distanceScaler * 0.5)/30 * speed;
                         else
-                            distance = (int) (pixelSize * 0.75);
+                            distance = (int) (distanceScaler * 0.75);
                     }
                     double radians = (angle * (Math.PI / 180));//convert degrees to radians
                     int x2 = (int) (symbolCenter.x + distance * Math.cos(radians));
@@ -2379,9 +2383,11 @@ public class ModifierRenderer
                     float offsetX = 0;
                     float offsetY = 0;
                     if (imageBounds.left < 0)
-                        offsetX = imageBounds.left;
+                        offsetX = imageBounds.left * -1;
                     if (imageBounds.top < 0)
-                        offsetY = imageBounds.top;
+                        offsetY = imageBounds.top * -1;
+
+                    slPath.offset(offsetX,offsetY);
 
                     slPath.offset(offsetX,offsetY);
                     ctx.drawBitmap(((ImageInfo) sdi).getImage(), offsetX, offsetY, null);
@@ -11193,6 +11199,12 @@ public class ModifierRenderer
             {
                 switch (location)
                 {
+                    case 3://3 above center
+                        y = (bounds.height());
+                        y = ((y * 0.5) + (labelHeight * 0.5));
+                        y = y - ((labelHeight + bufferText) * 3);
+                        y = bounds.top + y;
+                        break;
                     case 2://2 above center
                         y = (bounds.height());
                         y = ((y * 0.5) + (labelHeight * 0.5));
@@ -11266,7 +11278,9 @@ public class ModifierRenderer
             else if(frame == '0')
             {
                 if (ss == SymbolID.SymbolSet_Air ||
+                        ss == SymbolID.SymbolSet_AirMissile ||
                         ss == SymbolID.SymbolSet_Space ||
+                        ss == SymbolID.SymbolSet_SpaceMissile ||
                         ss == SymbolID.SymbolSet_SignalsIntelligence_Air ||
                         (ss == SymbolID.SymbolSet_LandEquipment && version <= SymbolID.Version_2525Dch1)) {
                     onTop = true;
