@@ -55,7 +55,7 @@ public class RectUtilities {
 		rect.offset(x, y);
 	}
 	
-	public static void shift(RectF rect, int x, int y)
+	public static void shift(RectF rect, float x, float y)
 	{
 		rect.offset(x, y);
 	}

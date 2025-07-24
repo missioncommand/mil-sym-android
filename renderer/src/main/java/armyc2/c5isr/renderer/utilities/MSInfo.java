@@ -71,7 +71,7 @@ public class MSInfo {
 
         //Only Control Measures and METOC categories have draw rules so everything else shows up in here if we
         //here if we don't check for them.
-        if(!entityCode.equals("000000") &&
+        if(/*!entityCode.equals("000000") && */ //commented out to allow top-level unspecified
                 !(_SymbolSetInt == SymbolID.SymbolSet_ControlMeasure ||
                         _SymbolSetInt == SymbolID.SymbolSet_Atmospheric ||
                         _SymbolSetInt == SymbolID.SymbolSet_Oceanographic ||

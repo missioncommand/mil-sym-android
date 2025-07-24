@@ -124,6 +124,8 @@ public class SymbolID {
     public static final int StandardIdentity_Context_Reality = 0;
     public static final int StandardIdentity_Context_Exercise = 1;
     public static final int StandardIdentity_Context_Simulation = 2;
+    public static final int StandardIdentity_Context_Restricted_Target_Reality = 3;
+    public static final int StandardIdentity_Context_No_Strike_Entity_Reality = 4;
 
     //Standard Identity, Second Digit (4)
     public static final int StandardIdentity_Affiliation_Pending = 0;
@@ -667,7 +669,15 @@ public class SymbolID {
     {
         if(symbolID != null && symbolID.length() >= 20)
         {
-            return Integer.parseInt(symbolID.substring(16, 18),16);
+            String mod = symbolID.substring(16, 18);
+            if(SymbolUtilities.isNumber(symbolID))
+            {
+                return Integer.parseInt(mod);
+            }
+            else
+            {
+                return Integer.parseInt(mod,16);
+            }
         }
         else
         {
@@ -683,9 +693,15 @@ public class SymbolID {
      */
     public static String setModifier1(String symbolID, int mod1)
     {
-        if(mod1 >=0 && mod1 <=255)
+        String temp = null;
+        if(mod1 < 100)
         {
-            String mod = Integer.toHexString(mod1);
+            temp = String.valueOf(mod1);
+            return setModifier1(symbolID,temp);
+        }
+        else if(mod1 >= 161 && mod1 <= 255)
+        {
+            String mod = Integer.toHexString(mod1).toUpperCase();
             return setModifier1(symbolID,mod);
         }
         else
@@ -700,21 +716,17 @@ public class SymbolID {
      */
     public static String setModifier1(String symbolID, String mod1)
     {
-        int num = Integer.parseInt(mod1,16);
-        if(num >= 0 && num <= 255)
+        String newID = symbolID;
+        String mod = mod1;
+        if(mod == null || mod1.isEmpty() || mod.length() > 2)
+            mod = "00";
+        else if(mod.length()==1)
+            mod = "0" + mod;
+        if(symbolID != null && symbolID.length() >= 20)
         {
-            String newID = new String(symbolID);
-            String mod = mod1;
-            if(mod.length()==1)
-                mod = "0" + mod;
-            if(symbolID != null && symbolID.length() >= 20)
-            {
-                newID = newID.substring(0,16) + mod + newID.substring(18);
-            }
-            return newID;
+            newID = newID.substring(0,16) + mod + newID.substring(18);
         }
-        else
-            return symbolID;
+        return newID;
     }
 
     /**
@@ -764,7 +776,15 @@ public class SymbolID {
     {
         if(symbolID != null && symbolID.length() >= 20)
         {
-            return Integer.parseInt(symbolID.substring(18, 20),16);
+            String mod = symbolID.substring(18, 20);
+            if(SymbolUtilities.isNumber(symbolID))
+            {
+                return Integer.parseInt(mod);
+            }
+            else
+            {
+                return Integer.parseInt(mod,16);
+            }
         }
         else
         {
@@ -780,9 +800,15 @@ public class SymbolID {
      */
     public static String setModifier2(String symbolID, int mod2)
     {
-        if(mod2 >=0 && mod2 <=255)
+        String temp = null;
+        if(mod2 < 100)
         {
-            String mod = Integer.toHexString(mod2);
+            temp = String.valueOf(mod2);
+            return setModifier2(symbolID,temp);
+        }
+        else if(mod2 >= 161 && mod2 <= 255)
+        {
+            String mod = Integer.toHexString(mod2).toUpperCase();
             return setModifier2(symbolID,mod);
         }
         else

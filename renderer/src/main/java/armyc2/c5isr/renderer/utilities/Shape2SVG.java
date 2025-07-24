@@ -337,4 +337,35 @@ public class Shape2SVG {
         else
             return null;
     }
+
+    public static String ConvertCircle(PointF point, float radius, String stroke, String fill, String strokeWidth, String strokeOpacity, String fillOpacity, String dashArray)
+    {
+        StringBuilder sb = new StringBuilder();
+        if(point != null)
+        {
+            sb.append("<ellipse cx=\"" + point.x + "\" cy=\"" + point.y);
+            sb.append("\" rx=\"" + radius + "\" ry=\"" + radius + "\"");
+
+            if(stroke != null)
+            {
+                sb.append(" stroke=\"" + stroke + "\"");
+
+                if(strokeWidth != null)
+                    sb.append(" stroke-width=\"" + strokeWidth + "\"");
+                else
+                    sb.append(" stroke-width=\"2\"");
+            }
+
+            if(fill != null)
+                sb.append(" fill=\"" + fill + "\"");
+            else
+                sb.append(" fill=\"none\"");
+
+            sb.append("/>");
+
+            return sb.toString();
+        }
+        else
+            return null;
+    }
 }

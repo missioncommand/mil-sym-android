@@ -42,7 +42,7 @@ public class SVGPath {
         }
     }
 
-    public void shift(int x, int y)
+    public void shift(float x, float y)
     {
         int size = this._actions.size();
         float[] temp = null;

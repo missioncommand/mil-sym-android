@@ -460,6 +460,9 @@ public class MainActivity extends Activity {
 		modifiers.put(Modifiers.AD_PLATFORM_TYPE, "AD");
 		modifiers.put(Modifiers.AE_EQUIPMENT_TEARDOWN_TIME, "AE");
 		modifiers.put(Modifiers.AF_COMMON_IDENTIFIER, "AF");
+
+		modifiers.put(Modifiers.AJ_SPEED_LEADER,"600 KPH 045");
+
 		//TODO
 		modifiers.put(Modifiers.AO_ENGAGEMENT_BAR, "AO:AOA-AO");
 		modifiers.put(Modifiers.AR_SPECIAL_DESIGNATOR, "AR");

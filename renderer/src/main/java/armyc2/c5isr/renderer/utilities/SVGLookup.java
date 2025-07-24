@@ -101,6 +101,11 @@ public class SVGLookup {
                 height = Float.parseFloat(temp[4]);
                 bbox = RectUtilities.makeRectF(left, top, width, height);
 
+                if(id.startsWith("461206"))//Hydrography Bottom Features
+                {
+                    //grow bbox as android uses a different serif italic font than browsers and windows
+                    bbox = RectUtilities.makeRectF((int)(left + (left * -0.04)), (int)(top + (top * -0.1)), (int)(width * 1.2), (int)(height * 1.1));
+                }
                     /*if(id.equals("25130100"))
                         Log.e("action point",id);//*/
 
@@ -226,6 +231,8 @@ public class SVGLookup {
                         affiliation = SymbolID.StandardIdentity_Affiliation_Unknown;
                     }
             }
+            if(context == SymbolID.StandardIdentity_Context_Restricted_Target_Reality || context == SymbolID.StandardIdentity_Context_No_Strike_Entity_Reality)
+                context = SymbolID.StandardIdentity_Context_Reality;
             frameID = context + "_" + affiliation + ss + "_" + status;
         }
         else//2525E or above
@@ -254,6 +261,8 @@ public class SVGLookup {
             {
                 return "octagon";
             }
+            if(context == SymbolID.StandardIdentity_Context_Restricted_Target_Reality || context == SymbolID.StandardIdentity_Context_No_Strike_Entity_Reality)
+                context = SymbolID.StandardIdentity_Context_Reality;
             frameID = context + "_" + affiliation + frameShape + "_" + status;
         }
         return frameID;

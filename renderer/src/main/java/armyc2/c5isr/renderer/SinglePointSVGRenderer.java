@@ -6,11 +6,9 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.FontMetrics;
 import android.graphics.Point;
-import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
-import android.util.LruCache;
 
 import com.caverock.androidsvg.SVG;
 
@@ -323,8 +321,7 @@ public class SinglePointSVGRenderer implements SettingsChangedEventListener
                 RectUtilities.shift(symbolBounds,0,(int)-symbolBounds.top);
 
                 //Add core symbol to SVGSymbolInfo
-                Point anchor = new Point(symbolBounds.centerX(),symbolBounds.centerY());
-                si =  new SVGSymbolInfo(sbGroupUnit.toString(), anchor,symbolBounds,symbolBounds);
+                si =  new SVGSymbolInfo(sbGroupUnit.toString(), centerPoint,symbolBounds,symbolBounds);
 
                 hasDisplayModifiers = ModifierRenderer.hasDisplayModifiers(symbolID, modifiers);
                 hasTextModifiers = ModifierRenderer.hasTextModifiers(symbolID, modifiers);
@@ -417,7 +414,10 @@ public class SinglePointSVGRenderer implements SettingsChangedEventListener
                             newSDI = ModifierRenderer.processActivitiesTextModifiers(si, symbolID, modifiers, attributes);
                         break;
                     case SymbolID.SymbolSet_CyberSpace:
-                        newSDI = ModifierRenderer.processCyberSpaceTextModifiers(si, symbolID, modifiers, attributes);
+                        if(ver >= SymbolID.Version_2525E)
+                            newSDI = ModifierRenderer.processCyberSpaceTextModifiersE(si, symbolID, modifiers, attributes);
+                        else
+                            newSDI = ModifierRenderer.processCyberSpaceTextModifiers(si, symbolID, modifiers, attributes);
                         break;
                     case SymbolID.SymbolSet_MineWarfare:
                         break;//no modifiers
@@ -433,6 +433,8 @@ public class SinglePointSVGRenderer implements SettingsChangedEventListener
                 si = (SVGSymbolInfo) newSDI;
             }
             newSDI = null;
+
+            si = (SVGSymbolInfo) ModifierRenderer.processSpeedLeader(si,symbolID,modifiers,attributes);
 
             int widthOffset = 0;
             if(hasTextModifiers)
@@ -676,10 +678,10 @@ public class SinglePointSVGRenderer implements SettingsChangedEventListener
                 if (drawCustomOutline) {
                     borderPadding = RendererUtilities.findWidestStrokeWidth(siIcon.getSVG());
                 }
-                top = Math.round(siIcon.getBbox().top);
-                left = Math.round(siIcon.getBbox().left);
-                width = Math.round(siIcon.getBbox().width());
-                height = Math.round(siIcon.getBbox().height());
+                top = (int)Math.floor(siIcon.getBbox().top);
+                left = (int)Math.floor(siIcon.getBbox().left);
+                width = (int)Math.ceil(siIcon.getBbox().width() + (siIcon.getBbox().left - left));
+                height = (int)Math.ceil(siIcon.getBbox().height() + (siIcon.getBbox().top - top));
                 if (siIcon.getBbox().bottom > 400)
                     svgStart = "<svg xmlns:svg=\"http://www.w3.org/2000/svg\" version=\"1.1\" viewBox=\"0 0 612 792\">";
                 else
