@@ -678,10 +678,10 @@ public class SinglePointSVGRenderer implements SettingsChangedEventListener
                 if (drawCustomOutline) {
                     borderPadding = RendererUtilities.findWidestStrokeWidth(siIcon.getSVG());
                 }
-                top = Math.round(siIcon.getBbox().top);
-                left = Math.round(siIcon.getBbox().left);
-                width = Math.round(siIcon.getBbox().width());
-                height = Math.round(siIcon.getBbox().height());
+                top = (int)Math.floor(siIcon.getBbox().top);
+                left = (int)Math.floor(siIcon.getBbox().left);
+                width = (int)Math.ceil(siIcon.getBbox().width() + (siIcon.getBbox().left - left));
+                height = (int)Math.ceil(siIcon.getBbox().height() + (siIcon.getBbox().top - top));
                 if (siIcon.getBbox().bottom > 400)
                     svgStart = "<svg xmlns:svg=\"http://www.w3.org/2000/svg\" version=\"1.1\" viewBox=\"0 0 612 792\">";
                 else
