@@ -79,9 +79,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_marginLeft="3dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginRight="-3dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="411dp"
+        android:layout_marginRight="-5dp"
         android:text="@string/hello_world" />
 
     <CheckBox
