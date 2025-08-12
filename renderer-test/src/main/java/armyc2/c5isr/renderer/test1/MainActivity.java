@@ -622,7 +622,9 @@ public class MainActivity extends Activity {
 			//Display results///////////////////////////////////////////////////////////////////////
 	    	TextView t = (TextView)findViewById(R.id.tvStatus);
 	    	t.setText(results);
-	    	
+	    	//Log.i("Speed Test: ", results);
+			Log.e("Speed Test: ", results);
+			ErrorLogger.LogMessage(results);
 	    	Bitmap msBmp = ii.getImage();
 	    	
 	    	/*Canvas msCanvas = new Canvas(msBmp);

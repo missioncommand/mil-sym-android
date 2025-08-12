@@ -4,6 +4,8 @@
  */
 package armyc2.c5isr.renderer.utilities;
 
+import android.graphics.Typeface;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -150,6 +152,14 @@ public class MilStdAttributes {
      */
     public static final String PatternScale = "PATTERNSCALE";
 
+    public static final String FontFamily = "FONTFAMILY";
+    /**
+     * Like Typeface.BOLD
+     */
+    public static final String FontStyle = "FONTSTYLE";
+
+    public static final String FontSize = "FONTSIZE";
+
     /**
      * No Longer relevant
      * @return {@link ArrayList}
@@ -194,6 +204,9 @@ public class MilStdAttributes {
             list.add(DrawAsIcon);
             if(SymbolUtilities.hasModifier(symbolID,Modifiers.AO_ENGAGEMENT_BAR))
                 list.add(EngagementBarColor);
+            list.add(FontFamily);
+            list.add(FontStyle);
+            list.add(FontSize);
         }
         else
         {
