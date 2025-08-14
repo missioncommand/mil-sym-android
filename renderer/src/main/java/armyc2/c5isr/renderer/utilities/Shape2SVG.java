@@ -38,10 +38,10 @@ public class Shape2SVG {
             return null;
     }
 
-    public static String Convert(String text, int x, int y, Paint font, String stroke, String fill, String strokeWidth, String strokeOpacity, String fillOpacity, String dashArray)
+    public static String Convert(String text, int x, int y, Paint font, String stroke, String fill, String strokeWidth, String strokeOpacity, String fillOpacity, String dashArray, String fontName)
     {
         //(String text, int x, int y, Font font, FontRenderContext frc)
-        TextInfo textInfo = new TextInfo(text, x, y, font);
+        TextInfo textInfo = new TextInfo(text, x, y, font, fontName);
         return Convert(textInfo, stroke, fill, strokeWidth, strokeOpacity, fillOpacity, dashArray);
     }
 
@@ -52,8 +52,10 @@ public class Shape2SVG {
         if(textInfo != null)
         {
             String style = null;
-            String name = RendererSettings.getInstance().getModiferFontProps()[0] + ", sans-serif";//"SansSerif";
-            String size = RendererSettings.getInstance().getModiferFontProps()[2];
+            String name = textInfo.getFontName();
+            if(!name.endsWith("serif"))
+                name += ", sans-serif";
+            String size = String.valueOf(textInfo.getFontSize());
             String weight = null;
             String anchor = null;//"start";
             String text = textInfo.getText();

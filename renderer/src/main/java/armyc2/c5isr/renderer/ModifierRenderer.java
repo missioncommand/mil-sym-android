@@ -100,6 +100,14 @@ public class ModifierRenderer
         float modifierFontHeight = hd[0];
         float modifierFontDescent = hd[1];
 
+        String modifierFontName = RendererSettings.getInstance().getModiferFontProps()[0];
+        if(attributes != null && attributes.containsKey(MilStdAttributes.FontFamily))
+        {
+            String temp = attributes.get(MilStdAttributes.FontFamily);
+            if(temp != null && !temp.isEmpty())
+                modifierFontName = temp;
+        }
+
         int ss = SymbolID.getSymbolSet(symbolID);
 
         if (attributes.containsKey(MilStdAttributes.Alpha))
@@ -608,7 +616,7 @@ public class ModifierRenderer
             int echelonOffset = 2,
                     outlineOffset = RS.getTextOutlineWidth();
 
-            tiEchelon = new TextInfo(strEchelon, 0, 0, modifierFont);
+            tiEchelon = new TextInfo(strEchelon, 0, 0, modifierFont, modifierFontName);
             echelonBounds = tiEchelon.getTextBounds();
 
             int y = Math.round(symbolBounds.left - echelonOffset);
@@ -645,7 +653,7 @@ public class ModifierRenderer
             int amOffset = 2;
             int outlineOffset = RS.getTextOutlineWidth();
 
-            tiAM = new TextInfo(affiliationModifier, 0, 0, modifierFont);
+            tiAM = new TextInfo(affiliationModifier, 0, 0, modifierFont, modifierFontName);
             amBounds = tiAM.getTextBounds();
 
             int x, y;
@@ -905,7 +913,7 @@ public class ModifierRenderer
             strAO = modifiers.get(Modifiers.AO_ENGAGEMENT_BAR);
         if(strAO != null)
         {
-            ebText = new TextInfo(strAO, 0, 0, modifierFont);
+            ebText = new TextInfo(strAO, 0, 0, modifierFont, modifierFontName);
             ebTextBounds = ebText.getTextBounds();
             ebHeight = ebTextBounds.height() + 4;
 
@@ -2439,6 +2447,14 @@ public class ModifierRenderer
         float modifierFontHeight = hd[0];
         float modifierFontDescent = hd[1];
 
+        String modifierFontName = RendererSettings.getInstance().getModiferFontProps()[0];
+        if(attributes != null && attributes.containsKey(MilStdAttributes.FontFamily))
+        {
+            String temp = attributes.get(MilStdAttributes.FontFamily);
+            if(temp != null && !temp.isEmpty())
+                modifierFontName = temp;
+        }
+
         int bufferHorizontal = (int)modifierFontHeight/2;
         int bufferXL = bufferHorizontal;
         int bufferXR = bufferHorizontal;
@@ -2513,7 +2529,7 @@ public class ModifierRenderer
             if(text != null)
             {
 	            //bounds = armyc2.c5isr.renderer.utilities.RendererUtilities.getTextOutlineBounds(modifierFont, text, new SO.Point(0,0));
-	            tiTemp = new TextInfo(text, 0, 0, modifierFont);
+	            tiTemp = new TextInfo(text, 0, 0, modifierFont, modifierFontName);
 	            labelBounds = tiTemp.getTextBounds();
 	            labelWidth = labelBounds.width();
 	            x = Math.round((symbolBounds.left + (symbolBounds.width() * 0.5f)) - (labelWidth * 0.5f));
@@ -2554,7 +2570,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-	            tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+	            tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
 	            labelBounds = tiTemp.getTextBounds();
 	            labelWidth = labelBounds.width();
 	
@@ -2585,7 +2601,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-	            tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+	            tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
 	            labelBounds = tiTemp.getTextBounds();
 	            labelWidth = labelBounds.width();
 	
@@ -2642,7 +2658,7 @@ public class ModifierRenderer
                 modifierValue = modifierValue.trim();
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-	            tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+	            tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
 	            labelBounds = tiTemp.getTextBounds();
 	            labelWidth = labelBounds.width();
 	
@@ -2678,7 +2694,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-	            tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+	            tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
 	            labelBounds = tiTemp.getTextBounds();
 	            labelWidth = labelBounds.width();
 	
@@ -2700,7 +2716,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-	            tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+	            tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
 	            labelBounds = tiTemp.getTextBounds();
 	            labelWidth = labelBounds.width();
 	
@@ -2744,7 +2760,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -2774,7 +2790,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-	            tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+	            tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
 	            labelBounds = tiTemp.getTextBounds();
 	            labelWidth = labelBounds.width();
 	
@@ -2863,7 +2879,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -2894,7 +2910,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-	            tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+	            tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
 	            labelBounds = tiTemp.getTextBounds();
 	            labelWidth = labelBounds.width();
 	
@@ -2970,7 +2986,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-	            tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+	            tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
 	            labelBounds = tiTemp.getTextBounds();
 	            labelWidth = labelBounds.width();
 	
@@ -3002,7 +3018,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-	            tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+	            tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
 	            labelBounds = tiTemp.getTextBounds();
 	            labelWidth = labelBounds.width();
 	
@@ -3021,7 +3037,7 @@ public class ModifierRenderer
         // </editor-fold>
 
         //Shift Points and Draw
-        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes);
+        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes, modifierFont);
 
         // <editor-fold defaultstate="collapsed" desc="Cleanup">
         tiArray = null;
@@ -3048,6 +3064,14 @@ public class ModifierRenderer
         float[] hd = getFontHeightandDescent(modifierFont);
         float modifierFontHeight = hd[0];
         float modifierFontDescent = hd[1];
+
+        String modifierFontName = RendererSettings.getInstance().getModiferFontProps()[0];
+        if(attributes != null && attributes.containsKey(MilStdAttributes.FontFamily))
+        {
+            String temp = attributes.get(MilStdAttributes.FontFamily);
+            if(temp != null && !temp.isEmpty())
+                modifierFontName = temp;
+        }
 
         int bufferXL = 7;
         int bufferXR = 7;
@@ -3147,7 +3171,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -3167,7 +3191,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -3194,7 +3218,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -3215,7 +3239,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -3241,7 +3265,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -3262,7 +3286,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -3322,7 +3346,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -3345,7 +3369,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -3430,7 +3454,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -3453,7 +3477,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -3472,7 +3496,7 @@ public class ModifierRenderer
         // </editor-fold>
 
         //Shift Points and Draw
-        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes);
+        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes, modifierFont);
 
         // <editor-fold defaultstate="collapsed" desc="Cleanup">
         tiArray = null;
@@ -3491,6 +3515,14 @@ public class ModifierRenderer
         float[] hd = getFontHeightandDescent(modifierFont);
         float modifierFontHeight = hd[0];
         float modifierFontDescent = hd[1];
+
+        String modifierFontName = RendererSettings.getInstance().getModiferFontProps()[0];
+        if(attributes != null && attributes.containsKey(MilStdAttributes.FontFamily))
+        {
+            String temp = attributes.get(MilStdAttributes.FontFamily);
+            if(temp != null && !temp.isEmpty())
+                modifierFontName = temp;
+        }
 
         int bufferXL = 7;
         int bufferXR = 7;
@@ -3591,7 +3623,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -3636,7 +3668,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -3682,7 +3714,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -3734,7 +3766,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
@@ -3770,7 +3802,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -3796,7 +3828,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -3817,7 +3849,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -3887,7 +3919,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -3910,7 +3942,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -3995,7 +4027,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -4018,7 +4050,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -4038,7 +4070,7 @@ public class ModifierRenderer
         // </editor-fold>
 
         //Shift Points and Draw
-        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes);
+        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes, modifierFont);
 
         // <editor-fold defaultstate="collapsed" desc="Cleanup">
         tiArray = null;
@@ -4057,6 +4089,15 @@ public class ModifierRenderer
         float[] hd = getFontHeightandDescent(modifierFont);
         float modifierFontHeight = hd[0];
         float modifierFontDescent = hd[1];
+
+        String modifierFontName = RendererSettings.getInstance().getModiferFontProps()[0];
+        if(attributes != null && attributes.containsKey(MilStdAttributes.FontFamily))
+        {
+            String temp = attributes.get(MilStdAttributes.FontFamily);
+            if(temp != null && !temp.isEmpty())
+                modifierFontName = temp;
+        }
+
 
         int bufferXL = 7;
         int bufferXR = 7;
@@ -4133,7 +4174,7 @@ public class ModifierRenderer
 
                 if(modifierValue != null && !modifierValue.equals(""))
                 {
-                    tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                    tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                     labelBounds = tiTemp.getTextBounds();
                     labelWidth = labelBounds.width();
 
@@ -4164,7 +4205,7 @@ public class ModifierRenderer
 
                 if(modifierValue != null && modifierValue.equals("")==false)
                 {
-                    tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                    tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                     labelBounds = tiTemp.getTextBounds();
                     labelWidth = labelBounds.width();
 
@@ -4187,7 +4228,7 @@ public class ModifierRenderer
 
                 if(modifierValue != null && modifierValue.equals("") == false)
                 {
-                    tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                    tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                     labelBounds = tiTemp.getTextBounds();
                     labelWidth = labelBounds.width();
 
@@ -4208,7 +4249,7 @@ public class ModifierRenderer
 
                 if(modifierValue != null && modifierValue.equals("") == false)
                 {
-                    tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                    tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                     labelBounds = tiTemp.getTextBounds();
                     labelWidth = labelBounds.width();
 
@@ -4229,7 +4270,7 @@ public class ModifierRenderer
 
                 if(modifierValue != null && modifierValue.equals("") == false)
                 {
-                    tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                    tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                     labelBounds = tiTemp.getTextBounds();
                     labelWidth = labelBounds.width();
 
@@ -4261,7 +4302,7 @@ public class ModifierRenderer
 
                 if (modifierValue.equals("") == false)
                 {
-                    tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                    tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                     labelBounds = tiTemp.getTextBounds();
                     labelWidth = labelBounds.width();
 
@@ -4294,7 +4335,7 @@ public class ModifierRenderer
 
                 if(modifierValue != null && !modifierValue.equals(""))
                 {
-                    tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                    tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                     labelBounds = tiTemp.getTextBounds();
                     labelWidth = labelBounds.width();
 
@@ -4325,7 +4366,7 @@ public class ModifierRenderer
 
                 if(modifierValue != null && modifierValue.equals("")==false)
                 {
-                    tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                    tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                     labelBounds = tiTemp.getTextBounds();
                     labelWidth = labelBounds.width();
 
@@ -4346,7 +4387,7 @@ public class ModifierRenderer
 
                 if(modifierValue != null && modifierValue.equals("") == false)
                 {
-                    tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                    tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                     labelBounds = tiTemp.getTextBounds();
                     labelWidth = labelBounds.width();
 
@@ -4367,7 +4408,7 @@ public class ModifierRenderer
 
                 if(modifierValue != null && modifierValue.equals("") == false)
                 {
-                    tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                    tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                     labelBounds = tiTemp.getTextBounds();
                     labelWidth = labelBounds.width();
 
@@ -4399,7 +4440,7 @@ public class ModifierRenderer
 
                 if (modifierValue.equals("") == false)
                 {
-                    tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                    tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                     labelBounds = tiTemp.getTextBounds();
                     labelWidth = labelBounds.width();
 
@@ -4420,7 +4461,7 @@ public class ModifierRenderer
         // </editor-fold>
 
         //Shift Points and Draw
-        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes);
+        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes, modifierFont);
 
         // <editor-fold defaultstate="collapsed" desc="Cleanup">
         tiArray = null;
@@ -4439,6 +4480,14 @@ public class ModifierRenderer
         float[] hd = getFontHeightandDescent(modifierFont);
         float modifierFontHeight = hd[0];
         float modifierFontDescent = hd[1];
+
+        String modifierFontName = RendererSettings.getInstance().getModiferFontProps()[0];
+        if(attributes != null && attributes.containsKey(MilStdAttributes.FontFamily))
+        {
+            String temp = attributes.get(MilStdAttributes.FontFamily);
+            if(temp != null && !temp.isEmpty())
+                modifierFontName = temp;
+        }
 
         int bufferXL = 7;
         int bufferXR = 7;
@@ -4507,7 +4556,7 @@ public class ModifierRenderer
             if(text != null)
             {
                 //bounds = armyc2.c5isr.renderer.utilities.RendererUtilities.getTextOutlineBounds(modifierFont, text, new SO.Point(0,0));
-                tiTemp = new TextInfo(text, 0, 0, modifierFont);
+                tiTemp = new TextInfo(text, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
                 x = Math.round((bounds.left + (bounds.width() * 0.5f)) - (labelWidth * 0.5f));
@@ -4541,7 +4590,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -4581,7 +4630,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -4616,7 +4665,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -4650,7 +4699,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -4681,7 +4730,7 @@ public class ModifierRenderer
             modifierValue = modifierValue.trim();
 
             if (modifierValue.equals("") == false) {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -4700,7 +4749,7 @@ public class ModifierRenderer
             modifierValue = modifiers.get(Modifiers.AD_PLATFORM_TYPE);
 
             if (modifierValue != null && modifierValue.equals("") == false) {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int) labelBounds.width();
 
@@ -4720,7 +4769,7 @@ public class ModifierRenderer
             modifierValue = modifiers.get(Modifiers.AR_SPECIAL_DESIGNATOR);
 
             if (modifierValue != null && modifierValue.equals("") == false) {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int) labelBounds.width();
 
@@ -4740,7 +4789,7 @@ public class ModifierRenderer
             modifierValue = modifiers.get(Modifiers.W_DTG_1);
 
             if (modifierValue != null && modifierValue.equals("") == false) {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int) labelBounds.width();
 
@@ -4758,7 +4807,7 @@ public class ModifierRenderer
         // </editor-fold>
 
         //Shift Points and Draw
-        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes);
+        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes, modifierFont);
 
         // <editor-fold defaultstate="collapsed" desc="Cleanup">
         tiArray = null;
@@ -4776,6 +4825,14 @@ public class ModifierRenderer
         float[] hd = getFontHeightandDescent(modifierFont);
         float modifierFontHeight = hd[0];
         float modifierFontDescent = hd[1];
+
+        String modifierFontName = RendererSettings.getInstance().getModiferFontProps()[0];
+        if(attributes != null && attributes.containsKey(MilStdAttributes.FontFamily))
+        {
+            String temp = attributes.get(MilStdAttributes.FontFamily);
+            if(temp != null && !temp.isEmpty())
+                modifierFontName = temp;
+        }
 
         int bufferXL = 7;
         int bufferXR = 7;
@@ -4841,7 +4898,7 @@ public class ModifierRenderer
             if(text != null)
             {
                 //bounds = armyc2.c5isr.renderer.utilities.RendererUtilities.getTextOutlineBounds(modifierFont, text, new SO.Point(0,0));
-                tiTemp = new TextInfo(text, 0, 0, modifierFont);
+                tiTemp = new TextInfo(text, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
                 x = Math.round((symbolBounds.left + (symbolBounds.width() * 0.5f)) - (labelWidth * 0.5f));
@@ -4882,7 +4939,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -4913,7 +4970,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -4950,7 +5007,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -4971,7 +5028,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -4994,7 +5051,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -5065,7 +5122,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -5100,7 +5157,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -5151,7 +5208,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && !modifierValue.isEmpty())
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -5206,7 +5263,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -5224,7 +5281,7 @@ public class ModifierRenderer
         // </editor-fold>
 
         //Shift Points and Draw
-        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes);
+        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes, modifierFont);
 
         // <editor-fold defaultstate="collapsed" desc="Cleanup">
         tiArray = null;
@@ -5243,6 +5300,14 @@ public class ModifierRenderer
         float[] hd = getFontHeightandDescent(modifierFont);
         float modifierFontHeight = hd[0];
         float modifierFontDescent = hd[1];
+
+        String modifierFontName = RendererSettings.getInstance().getModiferFontProps()[0];
+        if(attributes != null && attributes.containsKey(MilStdAttributes.FontFamily))
+        {
+            String temp = attributes.get(MilStdAttributes.FontFamily);
+            if(temp != null && !temp.isEmpty())
+                modifierFontName = temp;
+        }
 
         int bufferXL = 7;
         int bufferXR = 7;
@@ -5307,7 +5372,7 @@ public class ModifierRenderer
             if(text != null)
             {
                 //bounds = armyc2.c5isr.renderer.utilities.RendererUtilities.getTextOutlineBounds(modifierFont, text, new SO.Point(0,0));
-                tiTemp = new TextInfo(text, 0, 0, modifierFont);
+                tiTemp = new TextInfo(text, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
                 x = Math.round((symbolBounds.left + (symbolBounds.width() * 0.5f)) - (labelWidth * 0.5f));
@@ -5348,7 +5413,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -5379,7 +5444,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -5417,7 +5482,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -5454,7 +5519,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -5475,7 +5540,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -5545,7 +5610,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -5568,7 +5633,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -5622,7 +5687,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -5672,7 +5737,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && !modifierValue.isEmpty())
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -5690,7 +5755,7 @@ public class ModifierRenderer
         // </editor-fold>
 
         //Shift Points and Draw
-        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes);
+        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes, modifierFont);
 
         // <editor-fold defaultstate="collapsed" desc="Cleanup">
         tiArray = null;
@@ -5709,6 +5774,14 @@ public class ModifierRenderer
         float[] hd = getFontHeightandDescent(modifierFont);
         float modifierFontHeight = hd[0];
         float modifierFontDescent = hd[1];
+
+        String modifierFontName = RendererSettings.getInstance().getModiferFontProps()[0];
+        if(attributes != null && attributes.containsKey(MilStdAttributes.FontFamily))
+        {
+            String temp = attributes.get(MilStdAttributes.FontFamily);
+            if(temp != null && !temp.isEmpty())
+                modifierFontName = temp;
+        }
 
         int bufferXL = 7;
         int bufferXR = 7;
@@ -5775,7 +5848,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -5803,7 +5876,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -5824,7 +5897,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -5886,7 +5959,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -5913,7 +5986,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -5959,7 +6032,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -6005,7 +6078,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -6024,7 +6097,7 @@ public class ModifierRenderer
         // </editor-fold>
 
         //Shift Points and Draw
-        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes);
+        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes, modifierFont);
 
         // <editor-fold defaultstate="collapsed" desc="Cleanup">
         tiArray = null;
@@ -6043,6 +6116,14 @@ public class ModifierRenderer
         float[] hd = getFontHeightandDescent(modifierFont);
         float modifierFontHeight = hd[0];
         float modifierFontDescent = hd[1];
+
+        String modifierFontName = RendererSettings.getInstance().getModiferFontProps()[0];
+        if(attributes != null && attributes.containsKey(MilStdAttributes.FontFamily))
+        {
+            String temp = attributes.get(MilStdAttributes.FontFamily);
+            if(temp != null && !temp.isEmpty())
+                modifierFontName = temp;
+        }
 
         int bufferXL = 7;
         int bufferXR = 7;
@@ -6117,7 +6198,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
@@ -6144,7 +6225,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -6177,7 +6258,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
@@ -6198,7 +6279,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -6220,7 +6301,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
@@ -6281,7 +6362,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -6308,7 +6389,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -6354,7 +6435,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
@@ -6400,7 +6481,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -6419,7 +6500,7 @@ public class ModifierRenderer
         // </editor-fold>
 
         //Shift Points and Draw
-        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes);
+        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes, modifierFont);
 
         // <editor-fold defaultstate="collapsed" desc="Cleanup">
         tiArray = null;
@@ -6438,6 +6519,14 @@ public class ModifierRenderer
         float[] hd = getFontHeightandDescent(modifierFont);
         float modifierFontHeight = hd[0];
         float modifierFontDescent = hd[1];
+
+        String modifierFontName = RendererSettings.getInstance().getModiferFontProps()[0];
+        if(attributes != null && attributes.containsKey(MilStdAttributes.FontFamily))
+        {
+            String temp = attributes.get(MilStdAttributes.FontFamily);
+            if(temp != null && !temp.isEmpty())
+                modifierFontName = temp;
+        }
 
         int bufferXL = 7;
         int bufferXR = 7;
@@ -6528,7 +6617,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
@@ -6553,7 +6642,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
@@ -6580,7 +6669,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
@@ -6601,7 +6690,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
@@ -6627,7 +6716,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
@@ -6648,7 +6737,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
@@ -6709,7 +6798,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
@@ -6735,7 +6824,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
@@ -6780,7 +6869,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
@@ -6825,7 +6914,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
@@ -6845,7 +6934,7 @@ public class ModifierRenderer
         // </editor-fold>
 
         //Shift Points and Draw
-        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes);
+        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes, modifierFont);
 
         // <editor-fold defaultstate="collapsed" desc="Cleanup">
         tiArray = null;
@@ -6864,6 +6953,14 @@ public class ModifierRenderer
         float[] hd = getFontHeightandDescent(modifierFont);
         float modifierFontHeight = hd[0];
         float modifierFontDescent = hd[1];
+
+        String modifierFontName = RendererSettings.getInstance().getModiferFontProps()[0];
+        if(attributes != null && attributes.containsKey(MilStdAttributes.FontFamily))
+        {
+            String temp = attributes.get(MilStdAttributes.FontFamily);
+            if(temp != null && !temp.isEmpty())
+                modifierFontName = temp;
+        }
 
         int bufferXL = 7;
         int bufferXR = 7;
@@ -6929,7 +7026,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -6956,7 +7053,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -6996,7 +7093,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -7043,7 +7140,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -7066,7 +7163,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -7099,7 +7196,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -7144,7 +7241,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -7164,7 +7261,7 @@ public class ModifierRenderer
         // </editor-fold>
 
         //Shift Points and Draw
-        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes);
+        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes, modifierFont);
 
         // <editor-fold defaultstate="collapsed" desc="Cleanup">
         tiArray = null;
@@ -7183,6 +7280,14 @@ public class ModifierRenderer
         float[] hd = getFontHeightandDescent(modifierFont);
         float modifierFontHeight = hd[0];
         float modifierFontDescent = hd[1];
+
+        String modifierFontName = RendererSettings.getInstance().getModiferFontProps()[0];
+        if(attributes != null && attributes.containsKey(MilStdAttributes.FontFamily))
+        {
+            String temp = attributes.get(MilStdAttributes.FontFamily);
+            if(temp != null && !temp.isEmpty())
+                modifierFontName = temp;
+        }
 
         int bufferXL = 7;
         int bufferXR = 7;
@@ -7248,7 +7353,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -7275,7 +7380,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -7315,7 +7420,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -7362,7 +7467,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -7385,7 +7490,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -7418,7 +7523,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -7463,7 +7568,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -7483,7 +7588,7 @@ public class ModifierRenderer
         // </editor-fold>
 
         //Shift Points and Draw
-        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes);
+        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes, modifierFont);
 
         // <editor-fold defaultstate="collapsed" desc="Cleanup">
         tiArray = null;
@@ -7502,6 +7607,14 @@ public class ModifierRenderer
         float[] hd = getFontHeightandDescent(modifierFont);
         float modifierFontHeight = hd[0];
         float modifierFontDescent = hd[1];
+
+        String modifierFontName = RendererSettings.getInstance().getModiferFontProps()[0];
+        if(attributes != null && attributes.containsKey(MilStdAttributes.FontFamily))
+        {
+            String temp = attributes.get(MilStdAttributes.FontFamily);
+            if(temp != null && !temp.isEmpty())
+                modifierFontName = temp;
+        }
 
         int bufferXL = 7;
         int bufferXR = 7;
@@ -7584,7 +7697,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -7608,7 +7721,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -7629,7 +7742,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -7650,7 +7763,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -7671,7 +7784,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -7695,7 +7808,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -7714,7 +7827,7 @@ public class ModifierRenderer
         // </editor-fold>
 
         //Shift Points and Draw
-        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes);
+        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes, modifierFont);
 
         // <editor-fold defaultstate="collapsed" desc="Cleanup">
         tiArray = null;
@@ -7733,6 +7846,14 @@ public class ModifierRenderer
         float[] hd = getFontHeightandDescent(modifierFont);
         float modifierFontHeight = hd[0];
         float modifierFontDescent = hd[1];
+
+        String modifierFontName = RendererSettings.getInstance().getModiferFontProps()[0];
+        if(attributes != null && attributes.containsKey(MilStdAttributes.FontFamily))
+        {
+            String temp = attributes.get(MilStdAttributes.FontFamily);
+            if(temp != null && !temp.isEmpty())
+                modifierFontName = temp;
+        }
 
         int bufferXL = 7;
         int bufferXR = 7;
@@ -7798,7 +7919,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -7835,7 +7956,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -7875,7 +7996,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -7922,7 +8043,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -7945,7 +8066,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -7975,7 +8096,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && !modifierValue.equals(""))
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
@@ -8027,7 +8148,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -8052,7 +8173,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -8071,7 +8192,7 @@ public class ModifierRenderer
         // </editor-fold>
 
         //Shift Points and Draw
-        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes);
+        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes, modifierFont);
 
         // <editor-fold defaultstate="collapsed" desc="Cleanup">
         tiArray = null;
@@ -8090,6 +8211,14 @@ public class ModifierRenderer
         float[] hd = getFontHeightandDescent(modifierFont);
         float modifierFontHeight = hd[0];
         float modifierFontDescent = hd[1];
+
+        String modifierFontName = RendererSettings.getInstance().getModiferFontProps()[0];
+        if(attributes != null && attributes.containsKey(MilStdAttributes.FontFamily))
+        {
+            String temp = attributes.get(MilStdAttributes.FontFamily);
+            if(temp != null && !temp.isEmpty())
+                modifierFontName = temp;
+        }
 
         int bufferXL = 7;
         int bufferXR = 7;
@@ -8157,7 +8286,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -8177,7 +8306,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -8204,7 +8333,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -8231,7 +8360,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -8254,7 +8383,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -8291,7 +8420,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -8311,7 +8440,7 @@ public class ModifierRenderer
         // </editor-fold>
 
         //Shift Points and Draw
-        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes);
+        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes, modifierFont);
 
         // <editor-fold defaultstate="collapsed" desc="Cleanup">
         tiArray = null;
@@ -8330,6 +8459,14 @@ public class ModifierRenderer
         float[] hd = getFontHeightandDescent(modifierFont);
         float modifierFontHeight = hd[0];
         float modifierFontDescent = hd[1];
+
+        String modifierFontName = RendererSettings.getInstance().getModiferFontProps()[0];
+        if(attributes != null && attributes.containsKey(MilStdAttributes.FontFamily))
+        {
+            String temp = attributes.get(MilStdAttributes.FontFamily);
+            if(temp != null && !temp.isEmpty())
+                modifierFontName = temp;
+        }
 
         int bufferXL = 7;
         int bufferXR = 7;
@@ -8398,7 +8535,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -8418,7 +8555,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = (int)labelBounds.width();
 
@@ -8439,7 +8576,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -8466,7 +8603,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -8493,7 +8630,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -8516,7 +8653,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -8537,7 +8674,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -8574,7 +8711,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -8594,7 +8731,7 @@ public class ModifierRenderer
         // </editor-fold>
 
         //Shift Points and Draw
-        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes);
+        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes, modifierFont);
 
         // <editor-fold defaultstate="collapsed" desc="Cleanup">
         tiArray = null;
@@ -8613,6 +8750,14 @@ public class ModifierRenderer
         float[] hd = getFontHeightandDescent(modifierFont);
         float modifierFontHeight = hd[0];
         float modifierFontDescent = hd[1];
+
+        String modifierFontName = RendererSettings.getInstance().getModiferFontProps()[0];
+        if(attributes != null && attributes.containsKey(MilStdAttributes.FontFamily))
+        {
+            String temp = attributes.get(MilStdAttributes.FontFamily);
+            if(temp != null && !temp.isEmpty())
+                modifierFontName = temp;
+        }
 
         int bufferXL = 7;
         int bufferXR = 7;
@@ -8680,7 +8825,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -8700,7 +8845,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -8727,7 +8872,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -8762,7 +8907,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -8788,7 +8933,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -8825,7 +8970,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -8848,7 +8993,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -8933,7 +9078,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -8954,7 +9099,7 @@ public class ModifierRenderer
         // </editor-fold>
 
         //Shift Points and Draw
-        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes);
+        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes, modifierFont);
 
         // <editor-fold defaultstate="collapsed" desc="Cleanup">
         tiArray = null;
@@ -8973,6 +9118,14 @@ public class ModifierRenderer
         float[] hd = getFontHeightandDescent(modifierFont);
         float modifierFontHeight = hd[0];
         float modifierFontDescent = hd[1];
+
+        String modifierFontName = RendererSettings.getInstance().getModiferFontProps()[0];
+        if(attributes != null && attributes.containsKey(MilStdAttributes.FontFamily))
+        {
+            String temp = attributes.get(MilStdAttributes.FontFamily);
+            if(temp != null && !temp.isEmpty())
+                modifierFontName = temp;
+        }
 
         int bufferXL = 7;
         int bufferXR = 7;
@@ -9040,7 +9193,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -9060,7 +9213,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -9087,7 +9240,7 @@ public class ModifierRenderer
 
             if(modifierValue != null && modifierValue.equals("") == false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -9108,7 +9261,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -9129,7 +9282,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -9155,7 +9308,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -9192,7 +9345,7 @@ public class ModifierRenderer
 
             if(modifierValue.equals("")==false)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -9215,7 +9368,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -9300,7 +9453,7 @@ public class ModifierRenderer
 
             if(modifierValue != null)
             {
-                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont);
+                tiTemp = new TextInfo(modifierValue, 0, 0, modifierFont, modifierFontName);
                 labelBounds = tiTemp.getTextBounds();
                 labelWidth = labelBounds.width();
 
@@ -9321,7 +9474,7 @@ public class ModifierRenderer
         // </editor-fold>
 
         //Shift Points and Draw
-        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes);
+        newsdi = shiftUnitPointsAndDraw(tiArray,sdi,attributes, modifierFont);
 
         // <editor-fold defaultstate="collapsed" desc="Cleanup">
         tiArray = null;
@@ -9340,6 +9493,14 @@ public class ModifierRenderer
         float[] hd = getFontHeightandDescent(modifierFont);
         float modifierFontHeight = hd[0];
         float modifierFontDescent = hd[1];
+
+        String modifierFontName = RendererSettings.getInstance().getModiferFontProps()[0];
+        if(attributes != null && attributes.containsKey(MilStdAttributes.FontFamily))
+        {
+            String temp = attributes.get(MilStdAttributes.FontFamily);
+            if(temp != null && !temp.isEmpty())
+                modifierFontName = temp;
+        }
 
         ImageInfo ii = null;
         SVGSymbolInfo ssi = null;
@@ -9437,7 +9598,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1)) {
                     strText = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = Math.round(ti.getTextBounds().width());
                         //One modifier symbols and modifier goes in center
                         x = bounds.left + (int) (bounds.width() * 0.5f);
@@ -9454,7 +9615,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1)) {
                     strText = modifiers.get(Modifiers.H_ADDITIONAL_INFO_1);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = Math.round(ti.getTextBounds().width());
                         //One modifier symbols and modifier goes in center
                         x = bounds.left + (int) (bounds.width() * 0.5f);
@@ -9471,7 +9632,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1)) {
                     strText = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = Math.round(ti.getTextBounds().width());
                         //One modifier symbols, top third & center
                         x = bounds.left + (int) (bounds.width() * 0.5f);
@@ -9489,7 +9650,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1)) {
                     strText = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
 
                         //One modifier symbols and modifier goes right of center
                         if (ec == 131800)
@@ -9509,7 +9670,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1)) {
                     strText = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
 
                         //One modifier symbols and modifier goes right of symbol
 
@@ -9529,7 +9690,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1)) {
                     strText = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = ti.getTextBounds().width();
                         //One modifier symbols and modifier goes just below of center
                         x = bounds.left + (int) (bounds.width() * 0.5);
@@ -9551,7 +9712,7 @@ public class ModifierRenderer
                 {
                     strText = modifiers.get(Modifiers.H_ADDITIONAL_INFO_1);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
 
                         x = RectUtilities.getCenterX(bounds) + (int) (bounds.width() * 0.15f);
                         y = bounds.top + (int) (bounds.height() * 0.75f);
@@ -9566,7 +9727,7 @@ public class ModifierRenderer
                 {
                     strText = modifiers.get(Modifiers.X_ALTITUDE_DEPTH);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = Math.round(ti.getTextBounds().width());
                         x = RectUtilities.getCenterX(bounds) - (int) (bounds.width() * 0.15f);
                         x = x - (labelWidth);
@@ -9581,7 +9742,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1) && (ec == 160300 || ec == 132000)) {
                     strText = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
 
                         x = RectUtilities.getCenterX(bounds) + (int) (bounds.width() * 0.15f);
                         y = bounds.top + (int) (bounds.height() * 0.25f);
@@ -9603,7 +9764,7 @@ public class ModifierRenderer
                             strText = modifiers.get(Modifiers.AP1_TARGET_NUMBER_EXTENSION);
                     }
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
 
                         x = RectUtilities.getCenterX(bounds) + (int) (bounds.width() * 0.15f);
                         y = bounds.top + (int) (bounds.height() * 0.25f);
@@ -9619,7 +9780,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1)) {
                     strText = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
 
                         //One modifier symbols and modifier goes right of symbol
 
@@ -9638,7 +9799,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.C_QUANTITY)) {
                     strText = modifiers.get(Modifiers.C_QUANTITY);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = (int)Math.round(ti.getTextBounds().width());
                         //subset of NBC, just nuclear
                         x = (int)(bounds.left + (bounds.width() * 0.5));
@@ -9651,7 +9812,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.W_DTG_1)) {
                     strText = modifiers.get(Modifiers.W_DTG_1);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = (int)Math.round(ti.getTextBounds().width());
 
                         x = (int)bounds.left - labelWidth - bufferXL;
@@ -9669,7 +9830,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.W1_DTG_2)) {
                     strText = modifiers.get(Modifiers.W1_DTG_2);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = (int)Math.round(ti.getTextBounds().width());
 
                         x = (int)bounds.left - labelWidth - bufferXL;
@@ -9690,7 +9851,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.N_HOSTILE)) {
                     strText = modifiers.get(Modifiers.N_HOSTILE);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
 
                         x = bounds.left + bounds.width() + bufferXR;
 
@@ -9708,7 +9869,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1)) {
                     strText = modifiers.get(Modifiers.H_ADDITIONAL_INFO_1);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
 
                         x = bounds.left + bounds.width() + bufferXR;
                         if (!byLabelHeight) {
@@ -9725,7 +9886,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.W_DTG_1)) {
                     strText = modifiers.get(Modifiers.W_DTG_1);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = Math.round(ti.getTextBounds().width());
 
                         x = bounds.left - labelWidth - bufferXL;
@@ -9743,7 +9904,7 @@ public class ModifierRenderer
                 if ((ec == 281500 || ec == 281600) && modifiers.containsKey(Modifiers.V_EQUIP_TYPE)) {//nuclear event or nuclear fallout producing event
                     strText = modifiers.get(Modifiers.V_EQUIP_TYPE);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
 
                         //subset of nbc, just nuclear
                         labelWidth = Math.round(ti.getTextBounds().width());
@@ -9757,7 +9918,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1)) {
                     strText = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = Math.round(ti.getTextBounds().width());
                         x = bounds.left - labelWidth - bufferXL;
                         if (!byLabelHeight) {
@@ -9773,7 +9934,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.Y_LOCATION)) {
                     strText = modifiers.get(Modifiers.Y_LOCATION);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = Math.round(ti.getTextBounds().width());
                         //just NBC
                         //x = bounds.left + (bounds.width() * 0.5);
@@ -9796,7 +9957,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.C_QUANTITY)) {
                     strText = modifiers.get(Modifiers.C_QUANTITY);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = Math.round(ti.getTextBounds().width());
                         //subset of NBC, just nuclear
                         x = bounds.left + (int) (bounds.width() * 0.5);
@@ -9813,7 +9974,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1)) {
                     strText = modifiers.get(Modifiers.H_ADDITIONAL_INFO_1);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = Math.round(ti.getTextBounds().width());
                         x = bounds.left + (int) (bounds.width() * 0.5);
                         x = x - (int) (labelWidth * 0.5);
@@ -9828,7 +9989,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.W_DTG_1)) {
                     strText = modifiers.get(Modifiers.W_DTG_1);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = Math.round(ti.getTextBounds().width());
                         x = bounds.left + (int) (bounds.width() * 0.5);
                         x = x - (int) (labelWidth * 0.5);
@@ -9842,8 +10003,8 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.N_HOSTILE)) {
                     strText = modifiers.get(Modifiers.N_HOSTILE);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
-                        TextInfo ti2 = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
+                        TextInfo ti2 = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = Math.round(ti.getTextBounds().width());
                         x = bounds.left + (bounds.width()) + bufferXR;//right
                         //x = x + labelWidth;//- (labelBounds.width * 0.75);
@@ -9874,8 +10035,8 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1)) {
                     strText = modifiers.get(Modifiers.H_ADDITIONAL_INFO_1);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
-                        TextInfo ti2 = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
+                        TextInfo ti2 = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = Math.round(ti.getTextBounds().width());
                         x = bounds.left + (bounds.width()) + bufferXR;//right
                         y = centerPoint.y;
@@ -9888,8 +10049,8 @@ public class ModifierRenderer
                     if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1)) {
                         strText = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
                         if (strText != null) {
-                            ti = new TextInfo(strText, 0, 0, modifierFont);
-                            TextInfo ti2 = new TextInfo(strText, 0, 0, modifierFont);
+                            ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
+                            TextInfo ti2 = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                             labelWidth = Math.round(ti.getTextBounds().width());
                             x = bounds.left + (bounds.width()) + bufferXR;//right
                             y = centerPoint.y - labelHeight;
@@ -9906,7 +10067,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.X_ALTITUDE_DEPTH)) {
                     strText = modifiers.get(Modifiers.X_ALTITUDE_DEPTH);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = Math.round(ti.getTextBounds().width());
                         x = bounds.left + (int) (bounds.width() * 0.7);
                         y = bounds.top + labelHeight;// + (bounds.height * 0.5);
@@ -9923,7 +10084,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1)) {
                     strText = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = Math.round(ti.getTextBounds().width());
                         x = bounds.left + bounds.width() + bufferXR;
                         y = bounds.top + labelHeight;// + (bounds.height * 0.5);
@@ -9940,7 +10101,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1)) {
                     strText = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = Math.round(ti.getTextBounds().width());
                         x = bounds.left - labelWidth - bufferXL;
                         y = bounds.top + labelHeight;// + (bounds.height * 0.5);
@@ -9957,7 +10118,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.X_ALTITUDE_DEPTH)) {
                     strText = modifiers.get(Modifiers.X_ALTITUDE_DEPTH);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = Math.round(ti.getTextBounds().width());
                         x = bounds.left + (bounds.width() + bufferXR);
                         y = bounds.top + labelHeight;// + (bounds.height * 0.5);
@@ -9974,7 +10135,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1)) {
                     strText = modifiers.get(Modifiers.H_ADDITIONAL_INFO_1);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = Math.round(ti.getTextBounds().width());
                         x = bounds.left + (int) (bounds.width() * 0.65f);
 //                  x = x - (labelBounds.width * 0.5);
@@ -9993,7 +10154,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1)) {
                     strText = modifiers.get(Modifiers.H_ADDITIONAL_INFO_1);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = Math.round(ti.getTextBounds().width());
                         x = (int)(bounds.left + (bounds.width() * 0.5) - (labelWidth/2));
                         y = bounds.top - bufferY;
@@ -10009,7 +10170,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.W_DTG_1)) {
                     strText = modifiers.get(Modifiers.W_DTG_1);
                     if (strText != null) {
-                        ti = new TextInfo(strText + " - ", 0, 0, modifierFont);
+                        ti = new TextInfo(strText + " - ", 0, 0, modifierFont, modifierFontName);
                         x = bounds.left + (bounds.width() + bufferXR);
                         y = bounds.top + labelHeight;
 
@@ -10021,7 +10182,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.W1_DTG_2)) {
                     strText = modifiers.get(Modifiers.W1_DTG_2);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         x = bounds.left + (bounds.width() + bufferXR);
                         y = bounds.top + (labelHeight * 2);
 
@@ -10033,7 +10194,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1)) {
                     strText = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         x = bounds.left + (bounds.width() + bufferXR);
                         y = bounds.top + (labelHeight * 3);
 
@@ -10048,7 +10209,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1)) {
                     strText = modifiers.get(Modifiers.H_ADDITIONAL_INFO_1);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = Math.round(ti.getTextBounds().width());
                         x = (int)(bounds.left + (bounds.width() * 0.5) - (labelWidth/2));
                         y = bounds.top + bounds.height() + labelHeight + bufferY;
@@ -10064,7 +10225,7 @@ public class ModifierRenderer
                 if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1)) {
                     strText = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
                     if (strText != null) {
-                        ti = new TextInfo(strText, 0, 0, modifierFont);
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = Math.round(ti.getTextBounds().width());
                         x = bounds.left + (bounds.width() + bufferXR);
 //                  x = x - (labelBounds.width * 0.5);
@@ -10093,7 +10254,7 @@ public class ModifierRenderer
                 else
                     strText += "?";
 
-                ti = new TextInfo(strText, 0, 0, modifierFont);
+                ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                 labelWidth = Math.round(ti.getTextBounds().width());
                 //One modifier symbols and modifier goes in center
                 x = bounds.left + (int) (bounds.width() * 0.5f);
@@ -10110,7 +10271,7 @@ public class ModifierRenderer
                 if(modX != null)
                     strText = modX;
 
-                ti = new TextInfo(strText, 0, 0, modifierFont);
+                ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                 labelWidth = Math.round(ti.getTextBounds().width());
                 //One modifier symbols and modifier goes in center
                 x = bounds.left + (int) (bounds.width() * 0.5f);
@@ -10127,7 +10288,7 @@ public class ModifierRenderer
                 if(modX != null)
                     strText = modX;
 
-                ti = new TextInfo(strText, 0, 0, modifierFont);
+                ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                 labelWidth = Math.round(ti.getTextBounds().width());
                 //One modifier symbols and modifier goes in center
                 x = bounds.left + (int) (bounds.width() * 0.5f);
@@ -10144,7 +10305,7 @@ public class ModifierRenderer
                 if(modX != null)
                     strText = modX;
 
-                ti = new TextInfo(strText, 0, 0, modifierFont);
+                ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                 labelWidth = Math.round(ti.getTextBounds().width());
                 //One modifier symbols and modifier goes in center
                 x = bounds.left + (int) (bounds.width() * 0.5f);
@@ -10207,7 +10368,7 @@ public class ModifierRenderer
             float fdiStrokeWidth = Math.round(RendererSettings.getInstance().getDeviceDPI() / 96f);
             RectUtilities.grow(fdiBounds,Math.round(fdiStrokeWidth/2));
 
-            ti = new TextInfo("TEST",0,0,modifierFont);
+            ti = new TextInfo("TEST",0,0, modifierFont, modifierFontName);
             if (ti != null && SymbolUtilities.isCBRNEvent(symbolID))
             {
                 int shiftY = Math.round(symbolBounds.top - ti.getTextBounds().height() - 2);
@@ -10489,6 +10650,14 @@ public class ModifierRenderer
         float modifierFontHeight = hd[0];
         float modifierFontDescent = hd[1];
 
+        String modifierFontName = RendererSettings.getInstance().getModiferFontProps()[0];
+        if(attributes != null && attributes.containsKey(MilStdAttributes.FontFamily))
+        {
+            String temp = attributes.get(MilStdAttributes.FontFamily);
+            if(temp != null && !temp.isEmpty())
+                modifierFontName = temp;
+        }
+
         // <editor-fold defaultstate="collapsed" desc="Variables">
         ImageInfo ii = null;
         SVGSymbolInfo ssi = null;
@@ -10581,7 +10750,7 @@ public class ModifierRenderer
                 strText = modifiers.get(Modifiers.N_HOSTILE);
                 if(strText != null)
                 {
-	                ti = new TextInfo(strText, 0, 0, modifierFont);
+	                ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
 	
 	                x = bounds.left + bounds.width() + bufferXR;
 	
@@ -10607,7 +10776,7 @@ public class ModifierRenderer
             	strText = modifiers.get(Modifiers.H_ADDITIONAL_INFO_1);
             	if(strText != null)
             	{
-	                ti = new TextInfo(strText, 0, 0, modifierFont);
+	                ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
 	                labelWidth = Math.round(ti.getTextBounds().width());
 	
 	                x = bounds.left + (int) (bounds.width() * 0.5f);
@@ -10623,7 +10792,7 @@ public class ModifierRenderer
                 strText = modifiers.get(Modifiers.H1_ADDITIONAL_INFO_2);
                 if(strText != null)
                 {
-	                ti = new TextInfo(strText, 0, 0, modifierFont);
+	                ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
 	                labelWidth = Math.round(ti.getTextBounds().width());
 	
 	                x = bounds.left + (int) (bounds.width() * 0.5);
@@ -10643,7 +10812,7 @@ public class ModifierRenderer
 
                 if(strText != null)
                 {
-                    ti = new TextInfo(strText, 0, 0, modifierFont);
+                    ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                     labelWidth = Math.round(ti.getTextBounds().width());
 
                     x = bounds.left + (int) (bounds.width() * 0.5);
@@ -10659,7 +10828,7 @@ public class ModifierRenderer
                 strText = modifiers.get(Modifiers.W_DTG_1);
                 if(strText != null)
                 {
-	                ti = new TextInfo(strText, 0, 0, modifierFont);
+	                ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
 	                labelWidth = Math.round(ti.getTextBounds().width());
 	
 	                x = bounds.left - labelWidth - bufferXL;
@@ -10674,7 +10843,7 @@ public class ModifierRenderer
                 strText = modifiers.get(Modifiers.W1_DTG_2);
                 if(strText != null)
                 {
-	                ti = new TextInfo(strText, 0, 0, modifierFont);
+	                ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
 	                labelWidth = Math.round(ti.getTextBounds().width());
 	
 	                x = bounds.left - labelWidth - bufferXL;
@@ -10691,7 +10860,7 @@ public class ModifierRenderer
                 strText = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
                 if(strText != null)
                 {
-	                ti = new TextInfo(strText, 0, 0, modifierFont);
+	                ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
 	
 	                x = bounds.left + bounds.width() + bufferXR;
 	                y = bounds.top + labelHeight - descent;
@@ -10705,7 +10874,7 @@ public class ModifierRenderer
                 strText = modifiers.get(Modifiers.T1_UNIQUE_DESIGNATION_2);
                 if(strText != null)
                 {
-	                ti = new TextInfo(strText, 0, 0, modifierFont);
+	                ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
 	                labelWidth = Math.round(ti.getTextBounds().width());
 	
 	                //points
@@ -10736,7 +10905,7 @@ public class ModifierRenderer
                 float fdiStrokeWidth = Math.round(RendererSettings.getInstance().getDeviceDPI() / 96f);
                 RectUtilities.grow(fdiBounds,Math.round(fdiStrokeWidth/2));
 
-                ti = new TextInfo("TEST",0,0,modifierFont);
+                ti = new TextInfo("TEST",0,0, modifierFont, modifierFontName);
                 if (ti != null)
                 {
                     int shiftY = Math.round(symbolBounds.top - ti.getTextBounds().height() - 2);
@@ -10945,12 +11114,8 @@ public class ModifierRenderer
 
     }
 
-    private static SymbolDimensionInfo shiftUnitPointsAndDraw(ArrayList<TextInfo> tiArray, SymbolDimensionInfo sdi, Map<String,String> attributes)
+    private static SymbolDimensionInfo shiftUnitPointsAndDraw(ArrayList<TextInfo> tiArray, SymbolDimensionInfo sdi, Map<String,String> attributes, Paint modifierFont)
     {
-        Paint modifierFont = getFont(attributes);
-        float[] hd = getFontHeightandDescent(modifierFont);
-        float modifierFontHeight = hd[0];
-        float modifierFontDescent = hd[1];
 
         ImageInfo ii = null;
         SVGSymbolInfo ssi = null;
@@ -11086,11 +11251,13 @@ public class ModifierRenderer
     private static String renderTextElements(ArrayList<TextInfo> tiArray, Color color, Color backgroundColor)
     {
         String style = null;
-        String name = RendererSettings.getInstance().getModiferFontProps()[0] + ", sans-serif";//"SansSerif";
-        String size = RendererSettings.getInstance().getModiferFontProps()[2];
+        String name = tiArray.get(0).getFontName();//"SansSerif";
+        if(!name.endsWith("serif"))
+            name += ", sans-serif";
+        String size = String.valueOf(tiArray.get(0).getFontSize());
         String weight = null;
         String anchor = null;//"start";
-        if(RendererSettings.getInstance().getModiferFont().getTypeface().isBold())
+        if(tiArray.get(0).getFontStyle() == Typeface.BOLD)
             weight = "bold";
         StringBuilder sbSVG = new StringBuilder();
 
@@ -11430,6 +11597,9 @@ public class ModifierRenderer
             if (SymbolID.getAmplifierDescriptor(symbolID) > 0 || modifiers.containsKey(Modifiers.Q_DIRECTION_OF_MOVEMENT))
                 hasModifiers = true;
 
+            if(modifiers.containsKey(Modifiers.AJ_SPEED_LEADER))
+                hasModifiers = true;
+
             if(modifiers.containsKey(Modifiers.AO_ENGAGEMENT_BAR))
                 hasModifiers = true;
 
@@ -11545,23 +11715,25 @@ public class ModifierRenderer
                     ff =  temp;//Typeface.create(temp,fstyle);
                 }
             }
+            tf = Typeface.create(ff,fstyle);
+            if(tf == null)
+                tf = Typeface.create(props[0],fstyle);
+            if(tf == null)
+                return null;
+
+            p = new Paint();
+            p.setTextSize(fsize);
+            p.setAntiAlias(true);
+            p.setTypeface(tf);
+            p.setStrokeCap(Cap.BUTT);
+            p.setStrokeJoin(Join.MITER);
+            p.setStrokeMiter(3f);
+
+            return p;
         }
+        else
+            return _modifierFont;
 
-        tf = Typeface.create(ff,fstyle);
-        if(tf == null)
-            tf = Typeface.create(props[0],fstyle);
-        if(tf == null)
-            return null;
-
-        p = new Paint();
-        p.setTextSize(fsize);
-        p.setAntiAlias(true);
-        p.setTypeface(tf);
-        p.setStrokeCap(Cap.BUTT);
-        p.setStrokeJoin(Join.MITER);
-        p.setStrokeMiter(3f);
-
-        return p;
     }
 
     private static float[] getFontHeightandDescent(Paint font)
