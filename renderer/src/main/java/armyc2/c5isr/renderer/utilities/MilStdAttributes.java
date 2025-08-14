@@ -262,6 +262,12 @@ public class MilStdAttributes {
                 return "Distance Units";
             case AltitudeUnits:
                 return "Altitude Units";
+            case FontFamily:
+                return "Font Family";
+            case FontStyle:
+                return "Font Style";
+            case FontSize:
+                return "Font Size";
             default:
                 return "unrecognized attribute";
         }
@@ -310,6 +316,12 @@ public class MilStdAttributes {
                 return DistanceUnits;
             case "ALTITUDEUNITS":
                 return AltitudeUnits;
+            case "FONTFAMILY":
+                return FontFamily;
+            case "FONTSTYLE":
+                return FontStyle;
+            case "FONTSIZE":
+                return FontSize;
             default:
                 return null;
         }
