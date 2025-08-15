@@ -678,6 +678,17 @@ public class SinglePointSVGRenderer implements SettingsChangedEventListener
                 if (drawCustomOutline) {
                     borderPadding = RendererUtilities.findWidestStrokeWidth(siIcon.getSVG());
                 }
+
+                //Oceanographic / Bottom Feature - essentially italic serif fonts need more vertical space
+                //pixel sizes above 150 it's fine, which is weird
+                if(SymbolUtilities.getBasicSymbolID(symbolID).startsWith("461206"))
+                {
+                    double va = siIcon.getBbox().height() * 0.025;
+                    double ha = siIcon.getBbox().width() * 0.025;//some also need to be slightly wider
+                    Rect adjustment = RectUtilities.makeRect((float)(siIcon.getBbox().left),(float)(siIcon.getBbox().top - va),(float)(siIcon.getBbox().width() + ha),(float)(siIcon.getBbox().height() + va));
+                    siIcon.getBbox().set(adjustment);
+                }
+
                 top = (int)Math.floor(siIcon.getBbox().top);
                 left = (int)Math.floor(siIcon.getBbox().left);
                 width = (int)Math.ceil(siIcon.getBbox().width() + (siIcon.getBbox().left - left));
