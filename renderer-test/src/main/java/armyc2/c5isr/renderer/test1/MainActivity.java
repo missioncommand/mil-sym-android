@@ -235,6 +235,10 @@ public class MainActivity extends Activity {
 
 			//RendererSettings.getInstance().setOperationalConditionModifierType(RendererSettings.OperationalConditionModifierType_SLASH);
 			//attributes.put(MilStdAttributes.KeepUnitRatio,"false");
+
+			/*attributes.put(MilStdAttributes.FontFamily,"serif");
+			attributes.put(MilStdAttributes.FontStyle,String.valueOf(Typeface.ITALIC));
+			attributes.put(MilStdAttributes.FontSize,"32");//*/
 	    	
 	    	populateModifiers = ((CheckBox)findViewById(R.id.cbModifiers)).isChecked();
 	    	
@@ -549,6 +553,14 @@ public class MainActivity extends Activity {
 	    	//RendererSettings.getInstance().setTextBackgroundMethod(RendererSettings.TextBackgroundMethod_OUTLINE_QUICK);
 	    	//RendererSettings.getInstance().setTextBackgroundMethod(RendererSettings.TextBackgroundMethod_OUTLINE);
 	    	populateModifiers = ((CheckBox)findViewById(R.id.cbModifiers)).isChecked();
+
+			/*attributes.put(MilStdAttributes.FontFamily,"arial");
+			attributes.put(MilStdAttributes.FontStyle,String.valueOf(Typeface.BOLD));
+			attributes.put(MilStdAttributes.FontSize,"32");//*/
+
+			/*attributes.put(MilStdAttributes.FontFamily,"serif");
+			attributes.put(MilStdAttributes.FontStyle,String.valueOf(Typeface.ITALIC));
+			attributes.put(MilStdAttributes.FontSize,"32");//*/
 	    	
 	    	if(populateModifiers==true)
 	    	{
@@ -622,7 +634,9 @@ public class MainActivity extends Activity {
 			//Display results///////////////////////////////////////////////////////////////////////
 	    	TextView t = (TextView)findViewById(R.id.tvStatus);
 	    	t.setText(results);
-	    	
+	    	//Log.i("Speed Test: ", results);
+			//Log.e("Speed Test: ", results);
+			//ErrorLogger.LogMessage(results);
 	    	Bitmap msBmp = ii.getImage();
 	    	
 	    	/*Canvas msCanvas = new Canvas(msBmp);

@@ -3,13 +3,17 @@ package armyc2.c5isr.renderer.utilities;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 
 public class TextInfo {
 
+	String _fontName = "arial";
+	float _fontSize = 32;
+	int _fontStyle = Typeface.BOLD;
 	String _text = "";
 	Point _location = null;
 	Rect _bounds = null;
-	public TextInfo(String text, int x, int y, Paint font)
+	public TextInfo(String text, int x, int y, Paint font, String fontName)
 	{
 		if(text != null)
 		{
@@ -20,6 +24,13 @@ public class TextInfo {
 		_bounds = new Rect();
 
 		font.getTextBounds(_text, 0, _text.length(), _bounds);
+
+		if(font != null) {
+			_fontName = fontName;//font.getTypeface().getSystemFontFamilyName();//Output: "Helvetica"
+			//_fontName = font.getFontName();//Output: "Helvetica Bold"
+			_fontSize = font.getTextSize();
+			_fontStyle = font.getTypeface().getStyle();
+		}
 	
 	}
 	
@@ -67,5 +78,21 @@ public class TextInfo {
 		}
 		
 		return bounds;
+	}
+
+
+	public String getFontName()
+	{
+		return _fontName;
+	}
+
+	public float getFontSize()
+	{
+		return _fontSize;
+	}
+
+	public int getFontStyle()
+	{
+		return _fontStyle;
 	}
 }
