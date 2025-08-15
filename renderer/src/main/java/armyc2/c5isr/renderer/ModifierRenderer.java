@@ -2405,7 +2405,6 @@ public class ModifierRenderer
 
                     slPath.offset(offsetX,offsetY);
 
-                    slPath.offset(offsetX,offsetY);
                     ctx.drawBitmap(((ImageInfo) sdi).getImage(), offsetX, offsetY, null);
                     ctx.drawPath(slPath,slPaint);
 
@@ -2418,8 +2417,8 @@ public class ModifierRenderer
                 else if (sdi instanceof SVGSymbolInfo)
                 {//public static String Convert(Shape shape,String stroke, String fill, String strokeWidth, String strokeOpacity, String fillOpacity, String dashArray, String lineCap)
                     String svg = ((SVGSymbolInfo) sdi).getSVG();
-
-                    svg += (Shape2SVG.Convert(slPath, "#000000", "none", String.valueOf(strokeWidth),null,null,null, null));
+                    svg += slsvgPath.toSVGElement("#000000",strokeWidth,"none",1,1,null);
+                    //svg += (Shape2SVG.Convert(slPath, "#000000", "none", String.valueOf(strokeWidth),null,null,null, null));
                     rsdi = new SVGSymbolInfo(svg,symbolCenter,symbolBounds,imageBounds);
                 }
             }
