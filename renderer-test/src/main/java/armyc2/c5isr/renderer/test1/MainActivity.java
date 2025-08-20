@@ -236,7 +236,7 @@ public class MainActivity extends Activity {
 			//RendererSettings.getInstance().setOperationalConditionModifierType(RendererSettings.OperationalConditionModifierType_SLASH);
 			//attributes.put(MilStdAttributes.KeepUnitRatio,"false");
 
-			attributes.put(MilStdAttributes.FontFamily,"serif");
+			/*attributes.put(MilStdAttributes.FontFamily,"serif");
 			attributes.put(MilStdAttributes.FontStyle,String.valueOf(Typeface.ITALIC));
 			attributes.put(MilStdAttributes.FontSize,"16");//*/
 	    	
