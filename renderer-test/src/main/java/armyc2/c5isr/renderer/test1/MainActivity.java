@@ -236,9 +236,9 @@ public class MainActivity extends Activity {
 			//RendererSettings.getInstance().setOperationalConditionModifierType(RendererSettings.OperationalConditionModifierType_SLASH);
 			//attributes.put(MilStdAttributes.KeepUnitRatio,"false");
 
-			/*attributes.put(MilStdAttributes.FontFamily,"serif");
+			attributes.put(MilStdAttributes.FontFamily,"serif");
 			attributes.put(MilStdAttributes.FontStyle,String.valueOf(Typeface.ITALIC));
-			attributes.put(MilStdAttributes.FontSize,"32");//*/
+			attributes.put(MilStdAttributes.FontSize,"16");//*/
 	    	
 	    	populateModifiers = ((CheckBox)findViewById(R.id.cbModifiers)).isChecked();
 	    	
@@ -560,7 +560,7 @@ public class MainActivity extends Activity {
 
 			/*attributes.put(MilStdAttributes.FontFamily,"serif");
 			attributes.put(MilStdAttributes.FontStyle,String.valueOf(Typeface.ITALIC));
-			attributes.put(MilStdAttributes.FontSize,"32");//*/
+			attributes.put(MilStdAttributes.FontSize,"256");//*/
 	    	
 	    	if(populateModifiers==true)
 	    	{
