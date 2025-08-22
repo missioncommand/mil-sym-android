@@ -5265,7 +5265,7 @@ public class ModifierRenderer
                 if(modifiers.containsKey(Modifiers.Z_SPEED))
                 {
                     y = -2;
-                    if(!strict && !modifiers.containsKey(Modifiers.M_HIGHER_FORMATION))
+                    if(!strict && !modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1))
                         y++;
                     temp = modifiers.get(Modifiers.Z_SPEED);
                     if(temp != null && !temp.isEmpty())
@@ -5601,9 +5601,9 @@ public class ModifierRenderer
                     {
                         if(!modifiers.containsKey(Modifiers.Z_SPEED)  ||
                                 modifiers.containsKey(Modifiers.X_ALTITUDE_DEPTH))
-                            y = y--;
-                        else if(!modifiers.containsKey(Modifiers.V_EQUIP_TYPE))
-                            y = y--;
+                            y++;
+                        if(!modifiers.containsKey(Modifiers.V_EQUIP_TYPE))
+                            y++;
                     }
                     temp = "";
                     if(modifiers.containsKey(Modifiers.G_STAFF_COMMENTS))
@@ -5655,7 +5655,7 @@ public class ModifierRenderer
                     {
                         if(!modifiers.containsKey(Modifiers.V_EQUIP_TYPE))
                             y--;
-                        else if(!modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1))
+                        if(!modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1))
                             y--;
                     }
 
@@ -5748,7 +5748,7 @@ public class ModifierRenderer
                     {
                         if(!modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1))
                             y--;
-                        else if(!modifiers.containsKey(Modifiers.V_EQUIP_TYPE))
+                        if(!modifiers.containsKey(Modifiers.V_EQUIP_TYPE))
                             y--;
                     }
 
@@ -5845,7 +5845,7 @@ public class ModifierRenderer
                     {
                         if(!modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1))
                             y--;
-                        else if(!modifiers.containsKey(Modifiers.V_EQUIP_TYPE))
+                        if(!modifiers.containsKey(Modifiers.V_EQUIP_TYPE))
                             y--;
                     }
 
@@ -5883,7 +5883,7 @@ public class ModifierRenderer
                     {
                         if(!modifiers.containsKey(Modifiers.G_STAFF_COMMENTS))
                             y++;
-                        else if(!modifiers.containsKey(Modifiers.X_ALTITUDE_DEPTH))
+                        if(!modifiers.containsKey(Modifiers.X_ALTITUDE_DEPTH))
                             y++;
                     }
 
@@ -6785,7 +6785,7 @@ public class ModifierRenderer
                         if(!(modifiers.containsKey(Modifiers.G_STAFF_COMMENTS)  ||
                                 modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1)))
                             y++;
-                        else if(!modifiers.containsKey(Modifiers.P_IFF_SIF_AIS))
+                        if(!modifiers.containsKey(Modifiers.P_IFF_SIF_AIS))
                             y++;
                     }
                     temp = "";
@@ -6902,7 +6902,7 @@ public class ModifierRenderer
                         if(!(modifiers.containsKey(Modifiers.G_STAFF_COMMENTS)  ||
                                 modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1)))
                             y++;
-                        else if(!modifiers.containsKey(Modifiers.P_IFF_SIF_AIS))
+                        if(!modifiers.containsKey(Modifiers.P_IFF_SIF_AIS))
                             y++;
                     }
                     temp = "";
