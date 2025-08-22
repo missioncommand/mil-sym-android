@@ -7251,6 +7251,7 @@ public class ModifierRenderer
                 }
 
                 //Do left side labels
+                x=-1;
                 if(modifiers.containsKey(Modifiers.V_EQUIP_TYPE))
                 {
                     y = 0;//center
