@@ -248,6 +248,38 @@ public class ExportSPImagesE {
             modFolder = new File(rootFolder + File.separator + "Modifiers" + File.separator + "Unit");
             renderAndSave(modFolder, id, modifiers, attributes);
         }
+
+        modifiers.remove(Modifiers.G_STAFF_COMMENTS);
+        modifiers.remove(Modifiers.AQ_GUARDED_UNIT);
+        modifiers.remove(Modifiers.M_HIGHER_FORMATION);
+        modifiers.remove(Modifiers.T_UNIQUE_DESIGNATION_1);
+        modifiers.remove(Modifiers.V_EQUIP_TYPE);
+        modifiers.remove(Modifiers.W_DTG_1);
+        modifiers.remove(Modifiers.X_ALTITUDE_DEPTH);
+        modifiers.remove(Modifiers.Y_LOCATION);
+        modifiers.remove(Modifiers.Z_SPEED);
+        for (String basicID : unitTestIDs) {
+            if (basicID.startsWith("36"))
+                continue;
+
+            id = VERSION + "0300272600000000000000000840";
+
+            id = SymbolID.setEntityCode(id, Integer.parseInt(basicID.substring(2)));
+            id = SymbolID.setSymbolSet(id, Integer.parseInt(basicID.substring(0, 2)));
+
+            MSInfo msi = MSLookup.getInstance().getMSLInfo(basicID, SymbolID.getVersion(id));
+            if (msi.getModifiers().contains(Modifiers.R_MOBILITY_INDICATOR)) {
+                id = SymbolID.setAmplifierDescriptor(id, 31);
+            } else if (msi.getModifiers().contains(Modifiers.AG_AUX_EQUIP_INDICATOR)) {
+                id = SymbolID.setAmplifierDescriptor(id, 61);
+            }
+
+            modFolder = new File(rootFolder + File.separator + "Modifiers" + File.separator + "Flexible Placement");
+            attributes.put(MilStdAttributes.ModifierPlacement, RendererSettings.ModifierPlacement_FLEXIBLE + "");
+            renderAndSave(modFolder, SVGLookup.getMainIconID(id) + "_flex.svg", id, modifiers, attributes);
+            attributes.put(MilStdAttributes.ModifierPlacement, RendererSettings.ModifierPlacement_STRICT + "");
+            renderAndSave(modFolder, SVGLookup.getMainIconID(id) + "_strict.svg", id, modifiers, attributes);
+        }
     }
 
     /**
