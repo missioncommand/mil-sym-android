@@ -4935,10 +4935,10 @@ public class ModifierRenderer
         String svgFill = RendererUtilities.colorToHexString(color,false);
         String svgStrokeWidth = String.valueOf(RendererSettings.getInstance().getTextOutlineWidth());
         sbSVG.append("\n<g");
-        sbSVG.append(" font-family=\"" + name + '"');
-        sbSVG.append(" font-size=\"" + size + "px\"");
+        sbSVG.append(" font-family=\"").append(name).append('"');
+        sbSVG.append(" font-size=\"").append(size).append("px\"");
         if(weight != null)
-            sbSVG.append(" font-weight=\"" + weight + "\"");
+            sbSVG.append(" font-weight=\"").append(weight).append("\"");
         sbSVG.append(" alignment-baseline=\"alphabetic\"");//
         sbSVG.append(">");
 
@@ -5130,7 +5130,7 @@ public class ModifierRenderer
         if(attributes != null && attributes.containsKey(MilStdAttributes.ModifierPlacement))
         {
             String mp = attributes.get(MilStdAttributes.ModifierPlacement);
-            if(SymbolUtilities.isNumber(mp))
+            if(mp.equals("0") || mp.equals("1") || mp.equals("2"))
             {
                 p = Integer.parseInt(mp);
                 if(p == 0)
