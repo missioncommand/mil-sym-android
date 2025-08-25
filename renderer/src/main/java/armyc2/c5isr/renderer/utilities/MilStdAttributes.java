@@ -161,6 +161,11 @@ public class MilStdAttributes {
     public static final String FontSize = "FONTSIZE";
 
     /**
+     * Strict placement or more flexible placement consolidating space when other labels aren't present.
+     */
+    public static final String ModifierPlacement = "MODIFIERPLACEMENT";
+
+    /**
      * No Longer relevant
      * @return {@link ArrayList}
      * @deprecated see {@link #GetAttributesList(String)}
@@ -197,7 +202,7 @@ public class MilStdAttributes {
         //list.add(IconColor);
         list.add(PixelSize);
 
-        if(SymbolUtilities.isMultiPoint(symbolID)==false) {
+        if(!SymbolUtilities.isMultiPoint(symbolID)) {
             list.add(KeepUnitRatio);
             list.add(OutlineSymbol);
             list.add(OutlineColor);
@@ -207,6 +212,7 @@ public class MilStdAttributes {
             list.add(FontFamily);
             list.add(FontStyle);
             list.add(FontSize);
+            list.add(ModifierPlacement);
         }
         else
         {
@@ -268,6 +274,8 @@ public class MilStdAttributes {
                 return "Font Style";
             case FontSize:
                 return "Font Size";
+            case ModifierPlacement:
+                return "Modifier Placement";
             default:
                 return "unrecognized attribute";
         }
@@ -322,6 +330,8 @@ public class MilStdAttributes {
                 return FontStyle;
             case "FONTSIZE":
                 return FontSize;
+            case "MODIFIERPLACEMENT":
+                return ModifierPlacement;
             default:
                 return null;
         }

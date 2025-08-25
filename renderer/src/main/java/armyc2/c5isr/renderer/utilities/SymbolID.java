@@ -233,12 +233,13 @@ public class SymbolID {
     public static final char FrameShape_Space = '1';
     public static final char FrameShape_Air = '2';
     public static final char FrameShape_LandUnit = '3';
-    public static final char FrameShape_LandEquipment_SeaSurface = '4';
+    public static final char FrameShape_LandEquipment = '4';
     public static final char FrameShape_LandInstallation = '5';
     public static final char FrameShape_DismountedIndividuals = '6';
     public static final char FrameShape_SeaSubsurface = '7';
     public static final char FrameShape_Activity_Event = '8';
     public static final char FrameShape_Cyberspace = '9';
+    public static final char FrameShape_SeaSurface = 'A';
 
     /**
      * Attempts to resolve a bad symbol ID into a value that can be found in {@link MSLookup}.
@@ -1133,7 +1134,7 @@ public class SymbolID {
             case SymbolSet_SpaceMissile:
             case SymbolSet_SignalsIntelligence_Space:
                 if(ss==SymbolSet_SignalsIntelligence && SymbolID.getVersion(symbolID) >= SymbolID.Version_2525E)
-                    return SymbolID.FrameShape_LandEquipment_SeaSurface;
+                    return SymbolID.FrameShape_LandEquipment;//should be specified in 2525E+
                 else
                     return SymbolID.FrameShape_Space;
             case SymbolSet_LandUnit:
@@ -1141,11 +1142,12 @@ public class SymbolID {
             case SymbolSet_SignalsIntelligence_Land:
                 return SymbolID.FrameShape_LandUnit;
             case SymbolSet_LandEquipment:
-            case SymbolSet_SeaSurface:
-            case SymbolSet_SignalsIntelligence_SeaSurface:
-                return SymbolID.FrameShape_LandEquipment_SeaSurface;
+                return SymbolID.FrameShape_LandEquipment;
             case SymbolSet_LandInstallation:
                 return SymbolID.FrameShape_LandInstallation;
+            case SymbolSet_SeaSurface:
+            case SymbolSet_SignalsIntelligence_SeaSurface:
+                return SymbolID.FrameShape_SeaSurface;
             case SymbolSet_SeaSubsurface:
             case SymbolSet_SignalsIntelligence_SeaSubsurface:
             case SymbolSet_MineWarfare:
@@ -1159,6 +1161,22 @@ public class SymbolID {
             default:
                 return SymbolID.FrameShape_Unknown;
         }
+    }
+
+    /**
+     *
+     * @param symbolID
+     * @param frameShape like SymbolID.FrameShape_LandEquipment
+     * @return
+     */
+    public static String setFrameShape(String symbolID, char frameShape)
+    {
+        if(symbolID != null && symbolID.length() >= 23)
+        {
+            return symbolID.substring(0,22) + frameShape + symbolID.substring(23);
+        }
+        else
+            return symbolID;
     }
 
     /**

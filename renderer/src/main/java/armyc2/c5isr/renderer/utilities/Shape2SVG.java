@@ -83,14 +83,14 @@ public class Shape2SVG {
             if(RendererSettings.getInstance().getModiferFont().getTypeface().isBold())
                 weight = "bold";
 
-            sb.append("<text x=\"" + location.x + "\" y=\"" + location.y + "\"");
+            sb.append("<text x=\"").append(location.x).append("\" y=\"").append(location.y).append("\"");
 
             if(anchor != null)
-                sb.append(" text-anchor=\"" + anchor + "\"");
-            sb.append(" font-family=\"" + name + '"');
-            sb.append(" font-size=\"" + size + "px\"");
+                sb.append(" text-anchor=\"").append(anchor).append("\"");
+            sb.append(" font-family=\"").append(name).append('"');
+            sb.append(" font-size=\"").append(size).append("px\"");
             if(weight != null)
-                sb.append(" font-weight=\"" + weight + "\"");
+                sb.append(" font-weight=\"").append(weight).append("\"");
             sb.append(" alignment-baseline=\"alphabetic\"");//
             sb.append(" stroke-miterlimit=\"3\"");
 
@@ -134,7 +134,7 @@ public class Shape2SVG {
 
             sb = new StringBuilder();
             if(stroke != null && fill != null)
-                sb.append(seStroke + "\n" + seFill).append("\n");
+                sb.append(seStroke).append("\n").append(seFill).append("\n");
             else if(fill != null)
                 sb.append(seFill);
             else
@@ -186,10 +186,10 @@ public class Shape2SVG {
 
 
 
-            sb.append("<text x=\"" + location.x + "\" y=\"" + location.y + "\"");
+            sb.append("<text x=\"").append(location.x).append("\" y=\"").append(location.y).append("\"");
 
             if(anchor != null)
-                sb.append(" text-anchor=\"" + anchor + "\"");
+                sb.append(" text-anchor=\"").append(anchor).append("\"");
 
             //sb.append(" text-anchor=\"" + anchor + "\"");//always start for single points and default SVG behavior
 
@@ -201,42 +201,63 @@ public class Shape2SVG {
             String seStroke = "",
                     seFill = "";
 
-
+            StringBuilder sbStroke = null;
+            StringBuilder sbFill = null;
 
             if(stroke != null)
             {
-                seStroke = sb.toString();
+                /*seStroke = sb.toString();
 
                 seStroke += " stroke=\"" + stroke + "\"";
-                /*else
-                    seStroke = se + ' stroke="' + stroke.replace(/#/g,"&#35;") + '"';*/
 
                 if(strokeWidth != null)
                     seStroke += " stroke-width=\"" + strokeWidth + "\"";
                 seStroke += " fill=\"none\"";
                 seStroke += ">";
                 seStroke += text;
-                seStroke += "</text>";
+                seStroke += "</text>";//*/
+
+                sbStroke = new StringBuilder(sb.toString());
+                sbStroke.append(" stroke=\"").append(stroke).append("\"");
+                if(strokeWidth != null)
+                    sbStroke.append(" stroke-width=\"").append(strokeWidth).append("\"");
+                sbStroke.append(" fill=\"none\"");
+                sbStroke.append(">");
+                sbStroke.append(text);
+                sbStroke.append("</text>");
+
             }
 
             if(fill != null)
             {
-                seFill = sb.toString();
-
-
+                /*seFill = sb.toString();
                 seFill += " fill=\"" + fill + "\"";
                 seFill += ">";
                 seFill += text;
-                seFill += "</text>";
+                seFill += "</text>";//*/
+
+                sbFill = new StringBuilder(sb.toString());
+                sbFill.append(" fill=\"").append(fill).append("\"");
+                sbFill.append(">");
+                sbFill.append(text);
+                sbFill.append("</text>");
             }
 
-            sb = new StringBuilder();
+            /*sb = new StringBuilder();
             if(stroke != null && fill != null)
-                sb.append(seStroke + "\n" + seFill).append("\n");
+                sb.append(seStroke).append("\n").append(seFill).append("\n");
             else if(fill != null)
                 sb.append(seFill);
             else
+                return null;//*/
+
+            if(sbStroke != null && sbFill != null)
+                sb.append(sbStroke).append("\n").append(sbFill).append("\n");
+            else if(fill != null)
+                sb.append(sbFill);
+            else
                 return null;
+
             return sb.toString();
         }
         return null;
@@ -283,21 +304,21 @@ public class Shape2SVG {
         StringBuilder sb = new StringBuilder();
         if(rect != null && rect.isEmpty() != true)
         {
-            sb.append("<rect x=\"" + rect.left + "\" y=\"" + rect.top);
-            sb.append("\" width=\"" + rect.width() + "\" height=\"" + rect.height() + "\"");
+            sb.append("<rect x=\"").append(rect.left).append("\" y=\"").append(rect.top);
+            sb.append("\" width=\"").append(rect.width()).append("\" height=\"").append(rect.height()).append("\"");
 
             if(stroke != null)
             {
-                sb.append(" stroke=\"" + stroke + "\"");
+                sb.append(" stroke=\"").append(stroke).append("\"");
 
                 if(strokeWidth != null)
-                    sb.append(" stroke-width=\"" + strokeWidth + "\"");
+                    sb.append(" stroke-width=\"").append(strokeWidth).append("\"");
                 else
                     sb.append(" stroke-width=\"2\"");
             }
 
             if(fill != null)
-                sb.append(" fill=\"" + fill + "\"");
+                sb.append(" fill=\"").append(fill).append("\"");
             else
                 sb.append(" fill=\"none\"");
 
@@ -314,21 +335,21 @@ public class Shape2SVG {
         StringBuilder sb = new StringBuilder();
         if(rect != null && rect.isEmpty() != true)
         {
-            sb.append("<rect x=\"" + rect.left + "\" y=\"" + rect.top);
-            sb.append("\" width=\"" + rect.width() + "\" height=\"" + rect.height() + "\"");
+            sb.append("<rect x=\"").append(rect.left).append("\" y=\"").append(rect.top);
+            sb.append("\" width=\"").append(rect.width()).append("\" height=\"").append(rect.height()).append("\"");
 
             if(stroke != null)
             {
-                sb.append(" stroke=\"" + stroke + "\"");
+                sb.append(" stroke=\"").append(stroke).append("\"");
 
                 if(strokeWidth != null)
-                    sb.append(" stroke-width=\"" + strokeWidth + "\"");
+                    sb.append(" stroke-width=\"").append(strokeWidth).append("\"");
                 else
                     sb.append(" stroke-width=\"2\"");
             }
 
             if(fill != null)
-                sb.append(" fill=\"" + fill + "\"");
+                sb.append(" fill=\"").append(fill).append("\"");
             else
                 sb.append(" fill=\"none\"");
 
@@ -345,21 +366,21 @@ public class Shape2SVG {
         StringBuilder sb = new StringBuilder();
         if(point != null)
         {
-            sb.append("<ellipse cx=\"" + point.x + "\" cy=\"" + point.y);
-            sb.append("\" rx=\"" + radius + "\" ry=\"" + radius + "\"");
+            sb.append("<ellipse cx=\"").append(point.x).append("\" cy=\"").append(point.y);
+            sb.append("\" rx=\"").append(radius).append("\" ry=\"").append(radius).append("\"");
 
             if(stroke != null)
             {
-                sb.append(" stroke=\"" + stroke + "\"");
+                sb.append(" stroke=\"").append(stroke).append("\"");
 
                 if(strokeWidth != null)
-                    sb.append(" stroke-width=\"" + strokeWidth + "\"");
+                    sb.append(" stroke-width=\"").append(strokeWidth).append("\"");
                 else
                     sb.append(" stroke-width=\"2\"");
             }
 
             if(fill != null)
-                sb.append(" fill=\"" + fill + "\"");
+                sb.append(" fill=\"").append(fill).append("\"");
             else
                 sb.append(" fill=\"none\"");
 

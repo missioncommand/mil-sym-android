@@ -954,12 +954,14 @@ public class ExportSPImagesE {
                 return "Air";
             case SymbolID.FrameShape_LandUnit:
                 return "Land Unit";
-            case SymbolID.FrameShape_LandEquipment_SeaSurface:
-                return "Sea Surface";
+            case SymbolID.FrameShape_LandEquipment:
+                return "Land Equipment";
             case SymbolID.FrameShape_LandInstallation:
                 return "Land Installation";
             case SymbolID.FrameShape_DismountedIndividuals:
                 return "Dismounted Individuals";
+            case SymbolID.FrameShape_SeaSurface:
+                return "Sea Surface";
             case SymbolID.FrameShape_SeaSubsurface:
                 return "Sea Subsurface";
             case SymbolID.FrameShape_Activity_Event:
