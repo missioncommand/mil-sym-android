@@ -2086,11 +2086,11 @@ public final class clsRenderer {
                 case 310800:
                     return TacticalLines.CSA;
                 case 330500:
-                    return TacticalLines.ROUTE;
+                    return TacticalLines.TRAFFIC_ROUTE;
                 case 330501:
-                    return TacticalLines.ROUTE_ONEWAY;
+                    return TacticalLines.TRAFFIC_ROUTE_ONEWAY;
                 case 330502:
-                    return TacticalLines.ROUTE_ALT;
+                    return TacticalLines.TRAFFIC_ROUTE_ALT;
                 case 344100:
                     return TacticalLines.FPOL;
                 case 344200:

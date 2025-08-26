@@ -901,9 +901,9 @@ public final class clsUtility {
                 case TacticalLines.ASR_ONEWAY:
                 case TacticalLines.ASR_TWOWAY:
                 case TacticalLines.ASR_ALT:
-                case TacticalLines.ROUTE:
-                case TacticalLines.ROUTE_ONEWAY:
-                case TacticalLines.ROUTE_ALT:
+                case TacticalLines.TRAFFIC_ROUTE:
+                case TacticalLines.TRAFFIC_ROUTE_ONEWAY:
+                case TacticalLines.TRAFFIC_ROUTE_ALT:
                     result = true;
                     break;
                 default:
@@ -1549,8 +1549,8 @@ public final class clsUtility {
                 case TacticalLines.ASR_ONEWAY:
                 case TacticalLines.ASR_TWOWAY:
                 case TacticalLines.ASR_ALT:
-                case TacticalLines.ROUTE_ONEWAY:
-                case TacticalLines.ROUTE_ALT:
+                case TacticalLines.TRAFFIC_ROUTE_ONEWAY:
+                case TacticalLines.TRAFFIC_ROUTE_ALT:
                 case TacticalLines.ATWALL:
                     break;
                 default:
@@ -1954,7 +1954,7 @@ public final class clsUtility {
             {
                 case TacticalLines.MSR:
                 case TacticalLines.ASR:
-                case TacticalLines.ROUTE:
+                case TacticalLines.TRAFFIC_ROUTE:
                 case TacticalLines.BOUNDARY:
                     if(tg.get_H()==null || tg.get_H().isEmpty())
                         return null;
@@ -1996,7 +1996,7 @@ public final class clsUtility {
             switch (linetype) {
                 case TacticalLines.MSR:
                 case TacticalLines.ASR:
-                case TacticalLines.ROUTE:
+                case TacticalLines.TRAFFIC_ROUTE:
                 case TacticalLines.BOUNDARY:
                     if (tg.get_H() == null || tg.get_H().isEmpty())
                         return null;
@@ -2051,7 +2051,7 @@ public final class clsUtility {
             {
                 case TacticalLines.ASR:
                 case TacticalLines.MSR:
-                case TacticalLines.ROUTE:
+                case TacticalLines.TRAFFIC_ROUTE:
                 case TacticalLines.BOUNDARY:
                     break;
                 default:

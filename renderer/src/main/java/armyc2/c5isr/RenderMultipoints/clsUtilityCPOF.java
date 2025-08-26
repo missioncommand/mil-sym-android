@@ -1440,8 +1440,8 @@ public final class clsUtilityCPOF {
                 case TacticalLines.ASR_ONEWAY:
                 case TacticalLines.ASR_TWOWAY:
                 case TacticalLines.ASR_ALT:
-                case TacticalLines.ROUTE_ONEWAY:
-                case TacticalLines.ROUTE_ALT:
+                case TacticalLines.TRAFFIC_ROUTE_ONEWAY:
+                case TacticalLines.TRAFFIC_ROUTE_ALT:
                 case TacticalLines.DHA_REVD:
                 case TacticalLines.DHA:
                 case TacticalLines.KILL_ZONE:
@@ -1456,7 +1456,7 @@ public final class clsUtilityCPOF {
                     return true;
                 case TacticalLines.MSR: //post clip these so there are identical points regardless whether segment data is set 10-5-16
                 case TacticalLines.ASR:
-                case TacticalLines.ROUTE:
+                case TacticalLines.TRAFFIC_ROUTE:
                 case TacticalLines.BOUNDARY:
                     return false;
                 default:
@@ -1563,9 +1563,9 @@ public final class clsUtilityCPOF {
             case TacticalLines.ASR_ONEWAY:
             case TacticalLines.ASR_TWOWAY:
             case TacticalLines.ASR_ALT:
-            case TacticalLines.ROUTE:
-            case TacticalLines.ROUTE_ONEWAY:
-            case TacticalLines.ROUTE_ALT:
+            case TacticalLines.TRAFFIC_ROUTE:
+            case TacticalLines.TRAFFIC_ROUTE_ONEWAY:
+            case TacticalLines.TRAFFIC_ROUTE_ALT:
                 //undo any fill
                 Shape2 shape = null;
                 if (shapes != null && shapes.size() > 0) {
@@ -1969,8 +1969,8 @@ public final class clsUtilityCPOF {
                 case TacticalLines.ASR_ONEWAY:
                 case TacticalLines.ASR_TWOWAY:
                 case TacticalLines.ASR_ALT:
-                case TacticalLines.ROUTE_ONEWAY:
-                case TacticalLines.ROUTE_ALT:
+                case TacticalLines.TRAFFIC_ROUTE_ONEWAY:
+                case TacticalLines.TRAFFIC_ROUTE_ALT:
                     //added because of segment data 4-22-13
                     //removed from this case block since we now post-clip these because of segment color data 10-5-16
 //                case TacticalLines.MSR:
