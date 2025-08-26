@@ -269,9 +269,6 @@ public final class WebRenderer /* extends Applet */ {
                     && (format == WebRenderer.OUTPUT_FORMAT_KML || format == WebRenderer.OUTPUT_FORMAT_GEOJSON)
                     && JavaRendererUtilities.is3dSymbol(symbolCode)
                     && modifiers.get(Modifiers.X_ALTITUDE_DEPTH) != null) {
-                if (altitudeMode.isEmpty())
-                    altitudeMode = "absolute";
-
                 output = RenderMilStd3dSymbol(id, name, description, symbolCode, controlPoints, altitudeMode, scale, bbox, modifiers, attributes, format);
             }
 
@@ -633,13 +630,13 @@ public final class WebRenderer /* extends Applet */ {
     }
 
     public static String RenderBasic3DShape(String id, String name, String description, int basicShapeType,
-                                          String controlPoints, String altitudeMode,
-                                          double scale, String bbox, Map<String, String> modifiers, Map<String, String> attributes, int format) {
+                                            String controlPoints, String altitudeMode,
+                                            double scale, String bbox, Map<String, String> modifiers, Map<String, String> attributes, int format) {
         String output = "";
         try {
             JavaRendererUtilities.addAltModeToModifiersString(attributes, altitudeMode);
             if (SymbolUtilities.isBasicShape(basicShapeType))
-                output = Shape3DHandler.RenderBasic3DShape(id, name, description, basicShapeType, controlPoints,
+                output = Shape3DHandler.RenderBasic3DShape(id, name, description, basicShapeType, controlPoints, altitudeMode,
                         scale, bbox, modifiers, attributes, format);
         } catch (Exception ea) {
             output = "{\"type\":'error',error:'There was an error creating the 3D MilStdSymbol - " + ea.toString() + "'}";

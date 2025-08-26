@@ -27,6 +27,13 @@ public final class TacticalLines {
     @Deprecated
     public static final int BS_BBOX=15000004;
 
+    public static final int BS_ORBIT = 16000001;
+    public static final int BS_ROUTE = 16000002;
+    public static final int BS_RADARC = 16000003;
+    public static final int BS_POLYARC = 16000004;
+    public static final int BS_CAKE = 16000005;
+    public static final int BS_TRACK = 16000006;
+
     public static final int PZ = 22138000;
     public static final int LZ = 22137000;
     public static final int DZ = 22135000;
