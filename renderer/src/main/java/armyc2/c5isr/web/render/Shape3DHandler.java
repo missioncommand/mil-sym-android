@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
 import java.util.logging.Level;
 
@@ -20,24 +21,27 @@ import armyc2.c5isr.renderer.utilities.IPointConversion;
 import armyc2.c5isr.renderer.utilities.MSLookup;
 import armyc2.c5isr.renderer.utilities.MilStdAttributes;
 import armyc2.c5isr.renderer.utilities.MilStdSymbol;
+import armyc2.c5isr.renderer.utilities.Modifiers;
 import armyc2.c5isr.renderer.utilities.RendererSettings;
 import armyc2.c5isr.renderer.utilities.RendererUtilities;
 import armyc2.c5isr.renderer.utilities.ShapeInfo;
+import armyc2.c5isr.renderer.utilities.SymbolUtilities;
 import armyc2.c5isr.web.render.utilities.JavaRendererUtilities;
+import armyc2.c5isr.web.render.utilities.Point3D;
+import armyc2.c5isr.web.render.utilities.ShapeInfo3D;
 
 public class Shape3DHandler {
-
-
     public static String RenderMilStd3dSymbol(String id,
-                                      String name,
-                                      String description,
-                                      String symbolCode,
-                                      String controlPoints,
-                                      Double scale,
-                                      String bbox,
-                                      Map<String,String> symbolModifiers,
-                                      Map<String,String> symbolAttributes,
-                                      int format)//,
+                                              String name,
+                                              String description,
+                                              String symbolCode,
+                                              String controlPoints,
+                                              String altitudeMode,
+                                              Double scale,
+                                              String bbox,
+                                              Map<String, String> symbolModifiers,
+                                              Map<String, String> symbolAttributes,
+                                              int format)
     {
         //System.out.println("MultiPointHandler.RenderSymbol()");
         boolean normalize = true;
@@ -51,28 +55,55 @@ public class Shape3DHandler {
         Rectangle rect = null;
         String[] coordinates = controlPoints.split(" ");
         TGLight tgl = new TGLight();
-        ArrayList<ShapeInfo> shapes = new ArrayList<ShapeInfo>();
-        ArrayList<ShapeInfo> modifiers = new ArrayList<ShapeInfo>();
+        ArrayList<ShapeInfo3D> shapes = new ArrayList<ShapeInfo3D>();
+        ArrayList<ShapeInfo3D> modifiers = new ArrayList<ShapeInfo3D>();
         //ArrayList<Point2D> pixels = new ArrayList<Point2D>();
         ArrayList<Point2D> geoCoords = new ArrayList<Point2D>();
         int len = coordinates.length;
         //diagnostic create geoCoords here
-        Point2D coordsUL=null;
+        Point2D coordsUL = null;
+
+        // 3D default colors
+        if (symbolAttributes.get(MilStdAttributes.LineColor) == null) {
+            Color defaultColor = SymbolUtilities.getLineColorOfAffiliation(symbolCode);
+            if (defaultColor == null) {
+                defaultColor = new Color(Color.BLACK);
+            }
+            symbolAttributes.put(MilStdAttributes.LineColor, defaultColor.toHexString());
+        }
+        if (symbolAttributes.get(MilStdAttributes.FillColor) == null) {
+            Color defaultColor = SymbolUtilities.getFillColorOfAffiliation(symbolCode);
+            if (defaultColor == null) {
+                defaultColor = new Color(Color.BLACK);
+            }
+            defaultColor.setAlpha(170);
+            symbolAttributes.put(MilStdAttributes.FillColor, defaultColor.toHexString());
+        }
+
+        if (!JavaRendererUtilities.is3dSymbol(symbolCode)) {
+            String basicID = SymbolUtilities.getBasicSymbolID(symbolCode);
+            final String errorMsg = "Basic ID: " + basicID + " is not a 3D Symbol";
+            String ErrorOutput = "";
+            ErrorOutput += ("{\"type\":\"error\",\"error\":\"There was an error creating the 3D MilStdSymbol " + symbolCode + " - ID: " + id + " - ");
+            ErrorOutput += errorMsg; //reason for error
+            ErrorOutput += ("\"}");
+            ErrorLogger.LogMessage("Shape3DHandler", "RenderMilStd3dSymbol", errorMsg, Level.FINE);
+            return ErrorOutput;
+        }
 
         String symbolIsValid = MultiPointHandler.canRenderMultiPoint(symbolCode, symbolModifiers, len);
         if (!symbolIsValid.equals("true")) {
             String ErrorOutput = "";
-            ErrorOutput += ("{\"type\":\"error\",\"error\":\"There was an error creating the MilStdSymbol " + symbolCode + " - ID: " + id + " - ");
+            ErrorOutput += ("{\"type\":\"error\",\"error\":\"There was an error creating the 3D MilStdSymbol " + symbolCode + " - ID: " + id + " - ");
             ErrorOutput += symbolIsValid; //reason for error
             ErrorOutput += ("\"}");
-            ErrorLogger.LogMessage("MultiPointHandler","RenderSymbol",symbolIsValid, Level.WARNING);
+            ErrorLogger.LogMessage("Shape3DHandler", "RenderMilStd3dSymbol", symbolIsValid, Level.WARNING);
             return ErrorOutput;
         }
 
         if (MSLookup.getInstance().getMSLInfo(symbolCode).getDrawRule() != DrawRules.AREA10) // AREA10 can support infinite points
             len = Math.min(len, MSLookup.getInstance().getMSLInfo(symbolCode).getMaxPointCount());
-        for (int i = 0; i < len; i++)
-        {
+        for (int i = 0; i < len; i++) {
             String[] coordPair = coordinates[i].split(",");
             Double latitude = Double.valueOf(coordPair[1].trim()).doubleValue();
             Double longitude = Double.valueOf(coordPair[0].trim()).doubleValue();
@@ -116,7 +147,7 @@ public class Shape3DHandler {
                 ptGeoUL = MultiPointHandler.getGeoUL(bboxCoords);
                 left = ptGeoUL.getX();
                 top = ptGeoUL.getY();
-                String bbox2=MultiPointHandler.getBboxFromCoords(bboxCoords);
+                String bbox2 = MultiPointHandler.getBboxFromCoords(bboxCoords);
                 scale = MultiPointHandler.getReasonableScale(bbox2, scale);
                 ipc = new PointConverter(left, top, scale);
                 Point2D ptPixels = null;
@@ -233,8 +264,7 @@ public class Shape3DHandler {
 
         //disable clipping
         if (MultiPointHandler.ShouldClipSymbol(symbolCode) == false)
-            if(MultiPointHandler.crossesIDL(geoCoords)==false)
-            {
+            if (MultiPointHandler.crossesIDL(geoCoords) == false) {
                 rect = null;
                 bboxCoords = null;
             }
@@ -247,7 +277,7 @@ public class Shape3DHandler {
             //String fillColor = null;
             MilStdSymbol mSymbol = new MilStdSymbol(symbolCode, null, geoCoords, null);
 
-            if (format == WebRenderer.OUTPUT_FORMAT_GEOSVG){
+            if (format == WebRenderer.OUTPUT_FORMAT_GEOSVG) {
                 // Use dash array and hatch pattern fill for SVG output
                 symbolAttributes.put(MilStdAttributes.UseDashArray, "true");
                 symbolAttributes.put(MilStdAttributes.UsePatternFill, "true");
@@ -265,31 +295,103 @@ public class Shape3DHandler {
                 clsRenderer.renderWithPolylines(mSymbol, ipc, bboxCoords);
             }
 
-            shapes = mSymbol.getSymbolShapes();
-            modifiers = mSymbol.getModifierShapes();
+            // Convert 2D shape to 3D
+            if (MSLookup.getInstance().getMSLInfo(symbolCode).getDrawRule() == DrawRules.CORRIDOR1) {
+                // Remove circles from air corridor for 3d
+                // Set line color for other shapes
+                for (int i = 0; i < mSymbol.getSymbolShapes().size() - 1; i++) {
+                    mSymbol.getSymbolShapes().get(i).setLineColor(mSymbol.getSymbolShapes().get(mSymbol.getSymbolShapes().size() - 1).getLineColor());
+                }
+                mSymbol.getSymbolShapes().remove(mSymbol.getSymbolShapes().size() - 1);
+                Collections.reverse(mSymbol.getSymbolShapes());
+            }
+            // Confirm there are at least two altitudes per shape
+            ArrayList<Double> altitudes = mSymbol.getModifiers_AM_AN_X(Modifiers.X_ALTITUDE_DEPTH);
+            if (altitudes.size() == 1) {
+                altitudes.add(0, 0.0);
+            }
+            final Double lastAlt = altitudes.get(altitudes.size() - 1);
+            final Double nextToLastAlt = altitudes.get(altitudes.size() - 2);
+            while (altitudes.size() < mSymbol.getSymbolShapes().size() * 2) {
+                altitudes.add(nextToLastAlt);
+                altitudes.add(lastAlt);
+            }
+            for (int shapeIndex = 0; shapeIndex < mSymbol.getSymbolShapes().size(); shapeIndex++) {
+                final Double minAlt = altitudes.get(shapeIndex * 2);
+                final Double maxAlt = altitudes.get((shapeIndex * 2) + 1);
+                final ShapeInfo oldShape = mSymbol.getSymbolShapes().get(shapeIndex);
 
-            if (format == WebRenderer.OUTPUT_FORMAT_JSON) {
-                jsonOutput.append("{\"type\":\"symbol\",");
-                jsonContent = JSONize(shapes, modifiers, ipc, true, normalize);
-                jsonOutput.append(jsonContent);
-                jsonOutput.append("}");
-            } else if (format == WebRenderer.OUTPUT_FORMAT_KML) {
+                ShapeInfo3D bottomShape = new ShapeInfo3D();
+                bottomShape.setShapeType(oldShape.getShapeType());
+                bottomShape.setStroke(oldShape.getStroke());
+                bottomShape.setLineColor(oldShape.getLineColor());
+                bottomShape.setFillColor(oldShape.getFillColor());
+                bottomShape.setPatternFillImage(oldShape.getPatternFillImage());
+                bottomShape.setPolylines(new ArrayList<ArrayList<Point2D>>());
+                ShapeInfo3D topShape = new ShapeInfo3D();
+                topShape.setShapeType(oldShape.getShapeType());
+                topShape.setStroke(oldShape.getStroke());
+                topShape.setLineColor(oldShape.getLineColor());
+                topShape.setFillColor(oldShape.getFillColor());
+                topShape.setPatternFillImage(oldShape.getPatternFillImage());
+                topShape.setPolylines(new ArrayList<ArrayList<Point2D>>());
+
+                for (int polyLineIndex = 0; polyLineIndex < oldShape.getPolylines().size(); polyLineIndex++) {
+                    final ArrayList<Point2D> polyline = oldShape.getPolylines().get(polyLineIndex);
+                    bottomShape.getPolylines3D().add(new ArrayList<Point3D>());
+                    topShape.getPolylines3D().add(new ArrayList<Point3D>());
+                    for (int ptIndex = 0; ptIndex < polyline.size(); ptIndex++) {
+                        final Point2D pt = polyline.get(ptIndex);
+                        final Point2D pt2 = polyline.get((ptIndex + 1) % polyline.size());
+                        bottomShape.getPolylines3D().get(polyLineIndex).add(new Point3D(pt, minAlt));
+                        topShape.getPolylines3D().get(polyLineIndex).add(new Point3D(pt, maxAlt));
+
+                        ShapeInfo3D sideShape = new ShapeInfo3D();
+                        sideShape.setShapeType(oldShape.getShapeType());
+                        sideShape.setStroke(oldShape.getStroke());
+                        sideShape.setLineColor(oldShape.getLineColor());
+                        sideShape.setFillColor(oldShape.getFillColor());
+                        sideShape.setPatternFillImage(oldShape.getPatternFillImage());
+                        sideShape.setPolylines3D(new ArrayList<ArrayList<Point3D>>());
+                        sideShape.getPolylines3D().add(new ArrayList<>());
+                        sideShape.getPolylines3D().get(0).add(new Point3D(pt, minAlt));
+                        sideShape.getPolylines3D().get(0).add(new Point3D(pt2, minAlt));
+                        sideShape.getPolylines3D().get(0).add(new Point3D(pt2, maxAlt));
+                        sideShape.getPolylines3D().get(0).add(new Point3D(pt, maxAlt));
+                        sideShape.getPolylines3D().get(0).add(new Point3D(pt, minAlt));
+                        shapes.add(sideShape);
+                    }
+                }
+                shapes.add(bottomShape);
+                shapes.add(topShape);
+            }
+
+            final double modifierAlt = Collections.max(altitudes.subList(0, mSymbol.getSymbolShapes().size() * 2));
+            for (ShapeInfo oldShape : mSymbol.getModifierShapes()) {
+                ShapeInfo3D modShape = new ShapeInfo3D();
+                modShape.setModifierString(oldShape.getModifierString());
+                modShape.setModifierPosition(new Point3D(oldShape.getModifierPosition(), modifierAlt));
+                modShape.setModifierAngle(oldShape.getModifierAngle());
+                modShape.setTextJustify(oldShape.getTextJustify());
+                modShape.setModifierImage(oldShape.getModifierImage());
+
+                modifiers.add(modShape);
+            }
+
+            if (format == WebRenderer.OUTPUT_FORMAT_KML) {
                 Color textColor = mSymbol.getTextColor();
-                if(textColor==null)
-                    textColor=mSymbol.getLineColor();
+                if (textColor == null) textColor = mSymbol.getLineColor();
 
-                jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, normalize, textColor);
+                jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, normalize, textColor, altitudeMode);
                 jsonOutput.append(jsonContent);
-            } else if (format == WebRenderer.OUTPUT_FORMAT_GEOJSON)
-            {
+            } else if (format == WebRenderer.OUTPUT_FORMAT_GEOJSON) {
                 jsonOutput.append("{\"type\":\"FeatureCollection\",\"features\":");
                 jsonContent = GeoJSONize(shapes, modifiers, ipc, normalize, mSymbol.getTextColor(), mSymbol.getTextBackgroundColor());
                 jsonOutput.append(jsonContent);
 
                 //moving meta data properties to the last feature with no coords as feature collection doesn't allow properties
-                jsonOutput.replace(jsonOutput.toString().length()-1,jsonOutput.toString().length(),"" );
-                if (jsonContent.length() > 2)
-                    jsonOutput.append(",");
+                jsonOutput.replace(jsonOutput.toString().length() - 1, jsonOutput.toString().length(), "");
+                if (jsonContent.length() > 2) jsonOutput.append(",");
                 jsonOutput.append("{\"type\": \"Feature\",\"geometry\": { \"type\": \"Polygon\",\"coordinates\": [ ]}");
 
                 jsonOutput.append(",\"properties\":{\"id\":\"");
@@ -302,25 +404,17 @@ public class Shape3DHandler {
                 jsonOutput.append(symbolCode);
                 jsonOutput.append("\",\"wasClipped\":\"");
                 jsonOutput.append(String.valueOf(mSymbol.get_WasClipped()));
-                //jsonOutput.append("\"}}");
-
                 jsonOutput.append("\"}}]}");
-            } else if (format == WebRenderer.OUTPUT_FORMAT_GEOSVG) {
-                String textColor = mSymbol.getTextColor() != null ? RendererUtilities.colorToHexString(mSymbol.getTextColor(), false) : "";
-                String backgroundColor = mSymbol.getTextBackgroundColor() != null ? RendererUtilities.colorToHexString(mSymbol.getTextBackgroundColor(), false) : "";
-                //returns an svg with a geoTL and geoBR value to use to place the canvas on the map
-                jsonContent = MultiPointHandlerSVG.GeoSVGize(id, name, description, symbolCode, shapes, modifiers, ipc, normalize, textColor, backgroundColor, mSymbol.get_WasClipped());
-                jsonOutput.append(jsonContent);
             }
         } catch (Exception exc) {
             String st = JavaRendererUtilities.getStackTrace(exc);
             jsonOutput = new StringBuilder();
-            jsonOutput.append("{\"type\":\"error\",\"error\":\"There was an error creating the MilStdSymbol " + symbolCode + ": " + "- ");
+            jsonOutput.append("{\"type\":\"error\",\"error\":\"There was an error creating the 3D MilStdSymbol " + symbolCode + ": " + "- ");
             jsonOutput.append(exc.getMessage() + " - ");
             jsonOutput.append(st);
             jsonOutput.append("\"}");
 
-            ErrorLogger.LogException("MultiPointHandler", "RenderSymbol", exc);
+            ErrorLogger.LogException("Shape3DHandler", "RenderMilStd3dSymbol", exc);
         }
 
         boolean debug = false;
@@ -346,23 +440,24 @@ public class Shape3DHandler {
             }
         }
 
-        ErrorLogger.LogMessage("MultiPointHandler", "RenderSymbol()", "exit RenderSymbol", Level.FINER);
+        ErrorLogger.LogMessage("Shape3DHandler", "RenderMilStd3dSymbol()", "exit RenderMilStd3dSymbol", Level.FINER);
         return jsonOutput.toString();
-
     }
 
 
-    private static String KMLize(String id, String name,
+    private static String KMLize(String id,
+                                 String name,
                                  String description,
                                  String symbolCode,
-                                 ArrayList<ShapeInfo> shapes,
-                                 ArrayList<ShapeInfo> modifiers,
+                                 ArrayList<ShapeInfo3D> shapes,
+                                 ArrayList<ShapeInfo3D> modifiers,
                                  IPointConversion ipc,
-                                 boolean normalize, Color textColor) {
-
+                                 boolean normalize,
+                                 Color textColor,
+                                 String altitudeMode) {
         java.lang.StringBuilder kml = new java.lang.StringBuilder();
 
-        ShapeInfo tempModifier = null;
+        ShapeInfo3D tempModifier = null;
 
         String cdataStart = "<![CDATA[";
         String cdataEnd = "]]>";
@@ -373,7 +468,7 @@ public class Shape3DHandler {
         kml.append("<visibility>1</visibility>");
         for (int i = 0; i < len; i++) {
 
-            String shapesToAdd = ShapeToKMLString(name, description, symbolCode, shapes.get(i), ipc, normalize);
+            String shapesToAdd = ShapeToKMLString(name, description, symbolCode, shapes.get(i), ipc, normalize, altitudeMode);
             kml.append(shapesToAdd);
         }
 
@@ -387,19 +482,21 @@ public class Shape3DHandler {
             //assume kml text is going to be centered
             //AdjustModifierPointToCenter(tempModifier);
 
-            String labelsToAdd = LabelToKMLString(tempModifier, ipc, normalize, textColor);
+            String labelsToAdd = LabelToKMLString(tempModifier, ipc, normalize, textColor, altitudeMode);
             kml.append(labelsToAdd);
         }
 
         kml.append("</Folder>");
         return kml.toString();
     }
+
     private static String ShapeToKMLString(String name,
                                            String description,
                                            String symbolCode,
-                                           ShapeInfo shapeInfo,
+                                           ShapeInfo3D shapeInfo,
                                            IPointConversion ipc,
-                                           boolean normalize) {
+                                           boolean normalize,
+                                           String altitudeMode) {
 
         java.lang.StringBuilder kml = new java.lang.StringBuilder();
 
@@ -453,7 +550,7 @@ public class Shape3DHandler {
                 kml.append("<color>" + googleFillColor + "</color>");
                 kml.append("<colorMode>normal</colorMode>");
             }
-            if (fillPattern != null){
+            if (fillPattern != null) {
                 kml.append("<shader>" + MultiPointHandler.bitmapToString(fillPattern) + "</shader>");
             }
 
@@ -468,22 +565,22 @@ public class Shape3DHandler {
 
         kml.append("</Style>");
 
-        ArrayList shapesArray = shapeInfo.getPolylines();
+        ArrayList<ArrayList<Point3D>> shapesArray = shapeInfo.getPolylines3D();
         int len = shapesArray.size();
         kml.append("<MultiGeometry>");
 
         for (int i = 0; i < len; i++) {
-            ArrayList shape = (ArrayList) shapesArray.get(i);
-            normalize = MultiPointHandler.normalizePoints(shape, ipc);
+            ArrayList<Point3D> shape = shapesArray.get(i);
+            normalize = normalizePoints(shape, ipc);
             if (lineColor != null && fillColor == null) {
-                kml.append("<LineString>");
+                kml.append("<Polygon>");
                 kml.append("<tessellate>1</tessellate>");
-                kml.append("<altitudeMode>clampToGround</altitudeMode>");
-                kml.append("<coordinates>");
+                kml.append("<altitudeMode>" + altitudeMode + "</altitudeMode>");
+                kml.append("<outerBoundaryIs><LinearRing><coordinates>");
                 int n = shape.size();
                 //for (int j = 0; j < shape.size(); j++)
                 for (int j = 0; j < n; j++) {
-                    Point2D coord = (Point2D) shape.get(j);
+                    Point3D coord = shape.get(j);
                     Point2D geoCoord = ipc.PixelsToGeo(coord);
                     if (normalize) {
                         geoCoord = MultiPointHandler.NormalizeCoordToGECoord(geoCoord);
@@ -491,22 +588,26 @@ public class Shape3DHandler {
 
                     double latitude = Math.round(geoCoord.getY() * 100000000.0) / 100000000.0;
                     double longitude = Math.round(geoCoord.getX() * 100000000.0) / 100000000.0;
+                    double altitude = coord.getZ();
 
                     kml.append(longitude);
                     kml.append(",");
                     kml.append(latitude);
-                    if(j<shape.size()-1)
-                        kml.append(" ");
+                    kml.append(",");
+                    kml.append(altitude);
+                    if (j < shape.size() - 1) kml.append(" ");
                 }
 
-                kml.append("</coordinates>");
-                kml.append("</LineString>");
+                kml.append("</coordinates></LinearRing></outerBoundaryIs>");
+                kml.append("</Polygon>");
             }
 
             if (fillColor != null) {
 
                 if (i == 0) {
                     kml.append("<Polygon>");
+                    kml.append("<tessellate>1</tessellate>");
+                    kml.append("<altitudeMode>" + altitudeMode + "</altitudeMode>");
                 }
                 //kml.append("<outerBoundaryIs>");
                 if (i == 1 && len > 1) {
@@ -515,38 +616,17 @@ public class Shape3DHandler {
                     kml.append("<outerBoundaryIs>");
                 }
                 kml.append("<LinearRing>");
-                kml.append("<altitudeMode>clampToGround</altitudeMode>");
-                kml.append("<tessellate>1</tessellate>");
                 kml.append("<coordinates>");
 
-                //this section is a workaround for a google earth bug. Issue 417 was closed
-                //for linestrings but they did not fix the smae issue for fills. If Google fixes the issue
-                //for fills then this section will need to be commented or it will induce an error.
-                double lastLongitude = Double.MIN_VALUE;
-                if (normalize == false && MultiPointHandler.IsOnePointSymbolCode(symbolCode)) {
-                    int n = shape.size();
-                    //for (int j = 0; j < shape.size(); j++)
-                    for (int j = 0; j < n; j++) {
-                        Point2D coord = (Point2D) shape.get(j);
-                        Point2D geoCoord = ipc.PixelsToGeo(coord);
-                        double longitude = geoCoord.getX();
-                        if (lastLongitude != Double.MIN_VALUE) {
-                            if (Math.abs(longitude - lastLongitude) > 180d) {
-                                normalize = true;
-                                break;
-                            }
-                        }
-                        lastLongitude = longitude;
-                    }
-                }
                 int n = shape.size();
                 //for (int j = 0; j < shape.size(); j++)
                 for (int j = 0; j < n; j++) {
-                    Point2D coord = (Point2D) shape.get(j);
+                    Point3D coord = shape.get(j);
                     Point2D geoCoord = ipc.PixelsToGeo(coord);
 
                     double latitude = Math.round(geoCoord.getY() * 100000000.0) / 100000000.0;
                     double longitude = Math.round(geoCoord.getX() * 100000000.0) / 100000000.0;
+                    double altitude = coord.getZ();
 
                     //fix for fill crossing DTL
                     if (normalize) {
@@ -558,8 +638,9 @@ public class Shape3DHandler {
                     kml.append(longitude);
                     kml.append(",");
                     kml.append(latitude);
-                    if(j<shape.size()-1)
-                        kml.append(" ");
+                    kml.append(",");
+                    kml.append(altitude);
+                    if (j < shape.size() - 1) kml.append(" ");
                 }
 
                 kml.append("</coordinates>");
@@ -581,11 +662,15 @@ public class Shape3DHandler {
         return kml.toString();
     }
 
-    private static String LabelToKMLString(ShapeInfo shapeInfo, IPointConversion ipc, boolean normalize, Color textColor) {
+    private static String LabelToKMLString(ShapeInfo3D shapeInfo,
+                                           IPointConversion ipc,
+                                           boolean normalize,
+                                           Color textColor,
+                                           String altitudeMode) {
         java.lang.StringBuilder kml = new java.lang.StringBuilder();
 
         //Point2D coord = (Point2D) new Point2D.Double(shapeInfo.getGlyphPosition().getX(), shapeInfo.getGlyphPosition().getY());
-        Point2D coord = (Point2D) new Point2D.Double(shapeInfo.getModifierPosition().getX(), shapeInfo.getModifierPosition().getY());
+        Point3D coord = new Point3D(shapeInfo.getModifierPosition().getX(), shapeInfo.getModifierPosition().getY(), shapeInfo.getModifierPosition().getZ());
         Point2D geoCoord = ipc.PixelsToGeo(coord);
         //M. Deutch 9-26-11
         if (normalize) {
@@ -593,6 +678,7 @@ public class Shape3DHandler {
         }
         double latitude = Math.round(geoCoord.getY() * 100000000.0) / 100000000.0;
         double longitude = Math.round(geoCoord.getX() * 100000000.0) / 100000000.0;
+        double altitude = coord.getZ();
         long angle = Math.round(shapeInfo.getModifierAngle());
 
         String text = shapeInfo.getModifierString();
@@ -617,16 +703,18 @@ public class Shape3DHandler {
             kml.append("</IconStyle>");
             kml.append("<LabelStyle>");
             kml.append("<color>" + color + "</color>");
-            kml.append("<scale>" + String.valueOf(kmlScale) +"</scale>");
+            kml.append("<scale>" + String.valueOf(kmlScale) + "</scale>");
             kml.append("</LabelStyle>");
             kml.append("</Style>");
             kml.append("<Point>");
-            kml.append("<extrude>1</extrude>");
-            kml.append("<altitudeMode>relativeToGround</altitudeMode>");
+            kml.append("<extrude>0</extrude>");
+            kml.append("<altitudeMode>" + altitudeMode + "</altitudeMode>");
             kml.append("<coordinates>");
             kml.append(longitude);
             kml.append(",");
             kml.append(latitude);
+            kml.append(",");
+            kml.append(altitude);
             kml.append("</coordinates>");
             kml.append("</Point>");
             kml.append("</Placemark>");
@@ -638,10 +726,15 @@ public class Shape3DHandler {
     }
 
 
-    private static String GeoJSONize(ArrayList<ShapeInfo> shapes, ArrayList<ShapeInfo> modifiers, IPointConversion ipc, boolean normalize, Color textColor, Color textBackgroundColor) {
+    private static String GeoJSONize(ArrayList<ShapeInfo3D> shapes,
+                                     ArrayList<ShapeInfo3D> modifiers,
+                                     IPointConversion ipc,
+                                     boolean normalize,
+                                     Color textColor,
+                                     Color textBackgroundColor) {
 
         String jstr = "";
-        ShapeInfo tempModifier = null;
+        ShapeInfo3D tempModifier = null;
         StringBuilder fc = new StringBuilder();//JSON feature collection
 
         fc.append("[");
@@ -664,14 +757,13 @@ public class Shape3DHandler {
             tempModifier = modifiers.get(j);
 
             String modifiersToAdd = null;
-            if(modifiers.get(j).getModifierImage() != null) {
+            if (modifiers.get(j).getModifierImage() != null) {
                 modifiersToAdd = ImageToGeoJSONString(tempModifier, ipc, normalize);
             } else {
                 modifiersToAdd = LabelToGeoJSONString(tempModifier, ipc, normalize, textColor, textBackgroundColor);
             }
             if (modifiersToAdd.length() > 0) {
-                if (fc.length() > 1)
-                    fc.append(",");
+                if (fc.length() > 1) fc.append(",");
                 fc.append(modifiersToAdd);
             }
         }
@@ -680,7 +772,7 @@ public class Shape3DHandler {
         return GeoJSON;
     }
 
-    private static String ShapeToGeoJSONString(ShapeInfo shapeInfo, IPointConversion ipc, boolean normalize) {
+    private static String ShapeToGeoJSONString(ShapeInfo3D shapeInfo, IPointConversion ipc, boolean normalize) {
         StringBuilder JSONed = new StringBuilder();
         StringBuilder properties = new StringBuilder();
         StringBuilder geometry = new StringBuilder();
@@ -706,8 +798,6 @@ public class Shape3DHandler {
 
         if (stroke != null) {
             lineWidth = (int) stroke.getLineWidth();
-            //lineWidth++;
-            //System.out.println("lineWidth: " + String.valueOf(lineWidth));
         }
 
         //generate JSON properties for feature
@@ -724,15 +814,12 @@ public class Shape3DHandler {
         if (shapeInfo.getPatternFillImage() != null) {
             properties.append("\"fillPattern\":\"" + MultiPointHandler.bitmapToString(shapeInfo.getPatternFillImage()) + "\",");
         }
-        if(stroke.getDashArray() != null)
-        {
+        if (stroke.getDashArray() != null) {
             float[] arrSDA = stroke.getDashArray();
             sda = "[";
             sda += String.valueOf(arrSDA[0]);
-            if(arrSDA.length > 1)
-            {
-                for(int i = 1; i < arrSDA.length; i++)
-                {
+            if (arrSDA.length > 1) {
+                for (int i = 1; i < arrSDA.length; i++) {
                     sda = sda + ", " + String.valueOf(arrSDA[i]);
                 }
             }
@@ -759,14 +846,11 @@ public class Shape3DHandler {
             properties.append("\"fill\":\"" + RendererUtilities.colorToHexString(fillColor, false) + "\",");
             properties.append("\"fill-opacity\":" + String.valueOf(fillColor.getAlpha() / 255f) + ",");
         }
-        if(stroke.getDashArray() != null)
-        {
+        if (stroke.getDashArray() != null) {
             float[] da = stroke.getDashArray();
             sda = String.valueOf(da[0]);
-            if(da.length > 1)
-            {
-                for(int i = 1; i < da.length; i++)
-                {
+            if (da.length > 1) {
+                for (int i = 1; i < da.length; i++) {
                     sda = sda + " " + String.valueOf(da[i]);
                 }
             }
@@ -775,12 +859,10 @@ public class Shape3DHandler {
             sda = null;
         }
 
-        if(lineCap == BasicStroke.CAP_SQUARE)
-            properties.append("\"stroke-linecap\":\"square\",");
-        else if(lineCap == BasicStroke.CAP_ROUND)
+        if (lineCap == BasicStroke.CAP_SQUARE) properties.append("\"stroke-linecap\":\"square\",");
+        else if (lineCap == BasicStroke.CAP_ROUND)
             properties.append("\"stroke-linecap\":\"round\",");
-        else if(lineCap == BasicStroke.CAP_BUTT)
-            properties.append("\"stroke-linecap\":\"butt\",");
+        else if (lineCap == BasicStroke.CAP_BUTT) properties.append("\"stroke-linecap\":\"butt\",");
 
         strokeWidth = String.valueOf(lineWidth);
         properties.append("\"stroke-width\":" + strokeWidth);
@@ -792,18 +874,18 @@ public class Shape3DHandler {
         geometry.append(geometryType);
         geometry.append(",\"coordinates\":[");
 
-        ArrayList shapesArray = shapeInfo.getPolylines();
+        ArrayList<ArrayList<Point3D>> shapesArray = shapeInfo.getPolylines3D();
 
         for (int i = 0; i < shapesArray.size(); i++) {
-            ArrayList pointList = (ArrayList) shapesArray.get(i);
+            ArrayList<Point3D> pointList = shapesArray.get(i);
 
-            normalize = MultiPointHandler.normalizePoints(pointList, ipc);
+            normalize = normalizePoints(pointList, ipc);
 
             geometry.append("[");
 
             //System.out.println("Pixel Coords:");
             for (int j = 0; j < pointList.size(); j++) {
-                Point2D coord = (Point2D) pointList.get(j);
+                Point3D coord = pointList.get(j);
                 Point2D geoCoord = ipc.PixelsToGeo(coord);
                 //M. Deutch 9-27-11
                 if (normalize) {
@@ -811,6 +893,7 @@ public class Shape3DHandler {
                 }
                 double latitude = Math.round(geoCoord.getY() * 100000000.0) / 100000000.0;
                 double longitude = Math.round(geoCoord.getX() * 100000000.0) / 100000000.0;
+                double altitude = coord.getZ();
 
                 //fix for fill crossing DTL
                 if (normalize && fillColor != null) {
@@ -822,7 +905,7 @@ public class Shape3DHandler {
                 //diagnostic M. Deutch 10-18-11
                 //set the point as geo so that the
                 //coord.setLocation(longitude, latitude);
-                coord = new Point2D.Double(longitude, latitude);
+                coord = new Point3D(longitude, latitude, altitude);
                 pointList.set(j, coord);
                 //end section
 
@@ -830,6 +913,8 @@ public class Shape3DHandler {
                 geometry.append(longitude);
                 geometry.append(",");
                 geometry.append(latitude);
+                geometry.append(",");
+                geometry.append(altitude);
                 geometry.append("]");
 
                 if (j < (pointList.size() - 1)) {
@@ -854,7 +939,7 @@ public class Shape3DHandler {
         return JSONed.toString();
     }
 
-    private static String ImageToGeoJSONString(ShapeInfo shapeInfo, IPointConversion ipc, boolean normalize) {
+    private static String ImageToGeoJSONString(ShapeInfo3D shapeInfo, IPointConversion ipc, boolean normalize) {
 
         StringBuilder JSONed = new StringBuilder();
         StringBuilder properties = new StringBuilder();
@@ -863,7 +948,7 @@ public class Shape3DHandler {
         //AffineTransform at = shapeInfo.getAffineTransform();
         //Point2D coord = (Point2D)new Point2D.Double(at.getTranslateX(), at.getTranslateY());
         //Point2D coord = (Point2D) new Point2D.Double(shapeInfo.getGlyphPosition().getX(), shapeInfo.getGlyphPosition().getY());
-        Point2D coord = (Point2D) new Point2D.Double(shapeInfo.getModifierPosition().getX(), shapeInfo.getModifierPosition().getY());
+        Point3D coord = new Point3D(shapeInfo.getModifierPosition().getX(), shapeInfo.getModifierPosition().getY(), shapeInfo.getModifierPosition().getZ());
         Point2D geoCoord = ipc.PixelsToGeo(coord);
         //M. Deutch 9-27-11
         if (normalize) {
@@ -871,6 +956,7 @@ public class Shape3DHandler {
         }
         double latitude = Math.round(geoCoord.getY() * 100000000.0) / 100000000.0;
         double longitude = Math.round(geoCoord.getX() * 100000000.0) / 100000000.0;
+        double altitude = coord.getZ();
         double angle = shapeInfo.getModifierAngle();
         coord.setLocation(longitude, latitude);
 
@@ -894,6 +980,8 @@ public class Shape3DHandler {
             JSONed.append(longitude);
             JSONed.append(",");
             JSONed.append(latitude);
+            geometry.append(",");
+            geometry.append(altitude);
             JSONed.append("]");
             JSONed.append("}}");
 
@@ -904,20 +992,19 @@ public class Shape3DHandler {
         return JSONed.toString();
     }
 
-    private static String LabelToGeoJSONString(ShapeInfo shapeInfo, IPointConversion ipc, boolean normalize, Color textColor, Color textBackgroundColor) {
+    private static String LabelToGeoJSONString(ShapeInfo3D shapeInfo, IPointConversion ipc, boolean normalize, Color textColor, Color textBackgroundColor) {
 
         StringBuilder JSONed = new StringBuilder();
         StringBuilder properties = new StringBuilder();
         StringBuilder geometry = new StringBuilder();
 
         Color outlineColor = MultiPointHandler.getIdealTextBackgroundColor(textColor);
-        if(textBackgroundColor != null)
-            outlineColor = textBackgroundColor;
+        if (textBackgroundColor != null) outlineColor = textBackgroundColor;
 
         //AffineTransform at = shapeInfo.getAffineTransform();
         //Point2D coord = (Point2D)new Point2D.Double(at.getTranslateX(), at.getTranslateY());
         //Point2D coord = (Point2D) new Point2D.Double(shapeInfo.getGlyphPosition().getX(), shapeInfo.getGlyphPosition().getY());
-        Point2D coord = (Point2D) new Point2D.Double(shapeInfo.getModifierPosition().getX(), shapeInfo.getModifierPosition().getY());
+        Point3D coord = new Point3D(shapeInfo.getModifierPosition().getX(), shapeInfo.getModifierPosition().getY(), shapeInfo.getModifierPosition().getZ());
         Point2D geoCoord = ipc.PixelsToGeo(coord);
         //M. Deutch 9-27-11
         if (normalize) {
@@ -925,6 +1012,7 @@ public class Shape3DHandler {
         }
         double latitude = Math.round(geoCoord.getY() * 100000000.0) / 100000000.0;
         double longitude = Math.round(geoCoord.getX() * 100000000.0) / 100000000.0;
+        double altitude = coord.getZ();
         double angle = shapeInfo.getModifierAngle();
         coord.setLocation(longitude, latitude);
 
@@ -933,14 +1021,11 @@ public class Shape3DHandler {
 
         String text = shapeInfo.getModifierString();
 
-        int justify=shapeInfo.getTextJustify();
-        String strJustify="left";
-        if(justify==0)
-            strJustify="left";
-        else if(justify==1)
-            strJustify="center";
-        else if(justify==2)
-            strJustify="right";
+        int justify = shapeInfo.getTextJustify();
+        String strJustify = "left";
+        if (justify == 0) strJustify = "left";
+        else if (justify == 1) strJustify = "center";
+        else if (justify == 2) strJustify = "right";
 
 
         RendererSettings RS = RendererSettings.getInstance();
@@ -983,6 +1068,8 @@ public class Shape3DHandler {
             JSONed.append(longitude);
             JSONed.append(",");
             JSONed.append(latitude);
+            geometry.append(",");
+            geometry.append(altitude);
             JSONed.append("]");
             JSONed.append("}}");
 
@@ -993,4 +1080,23 @@ public class Shape3DHandler {
         return JSONed.toString();
     }
 
+    /**
+     * copy of {@link MultiPointHandler#normalizePoints(ArrayList, IPointConversion)} with Point3D
+     */
+    static Boolean normalizePoints(ArrayList<Point3D> shape, IPointConversion ipc) {
+        ArrayList geoCoords = new ArrayList();
+        int n = shape.size();
+        //for (int j = 0; j < shape.size(); j++)
+        for (int j = 0; j < n; j++) {
+            Point2D coord = shape.get(j);
+            Point2D geoCoord = ipc.PixelsToGeo(coord);
+            geoCoord = MultiPointHandler.NormalizeCoordToGECoord(geoCoord);
+            double latitude = geoCoord.getY();
+            double longitude = geoCoord.getX();
+            Point2D pt2d = new Point2D.Double(longitude, latitude);
+            geoCoords.add(pt2d);
+        }
+        Boolean normalize = MultiPointHandler.crossesIDL(geoCoords);
+        return normalize;
+    }
 }

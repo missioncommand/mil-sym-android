@@ -400,7 +400,7 @@ public final class WebRenderer /* extends Applet */ {
         String output = "";
         try {
 
-            output = Shape3DHandler.RenderMilStd3dSymbol(id, name, description, symbolCode, controlPoints,
+            output = Shape3DHandler.RenderMilStd3dSymbol(id, name, description, symbolCode, controlPoints, altitudeMode,
                     scale, bbox, modifiers, attributes, format);
 
             //DEBUGGING
