@@ -265,34 +265,42 @@ public final class WebRenderer /* extends Applet */ {
         	
         	JavaRendererUtilities.addAltModeToModifiersString(attributes,altitudeMode);
         
+            if (!altitudeMode.equals("clampToGround")
+                    && (format == WebRenderer.OUTPUT_FORMAT_KML || format == WebRenderer.OUTPUT_FORMAT_GEOJSON)
+                    && JavaRendererUtilities.is3dSymbol(symbolCode)
+                    && modifiers.get(Modifiers.X_ALTITUDE_DEPTH) != null) {
+                if (altitudeMode.isEmpty())
+                    altitudeMode = "absolute";
 
-            output = MultiPointHandler.RenderSymbol(id, name, description, symbolCode, controlPoints,
-                    scale, bbox, modifiers, attributes, format);
-
-            //DEBUGGING
-            if(ErrorLogger.getLevel().intValue() <= Level.FINER.intValue())
-            {
-                System.out.println("");
-                StringBuilder sb = new StringBuilder();
-                sb.append("\nID: " + id + "\n");
-                sb.append("Name: " + name + "\n");
-                sb.append("Description: " + description + "\n");
-                sb.append("SymbolID: " + symbolCode + "\n");
-                sb.append("Scale: " + String.valueOf(scale) + "\n");
-                sb.append("BBox: " + bbox + "\n");
-                sb.append("Coords: " + controlPoints + "\n");
-                sb.append("Modifiers: " + modifiers + "\n");
-                ErrorLogger.LogMessage("WebRenderer", "RenderSymbol", sb.toString(),Level.FINER);
-            }
-            if(ErrorLogger.getLevel().intValue() <= Level.FINEST.intValue())
-            {
-                String briefOutput = output.replaceAll("</Placemark>", "</Placemark>\n");
-                briefOutput = output.replaceAll("(?s)<description[^>]*>.*?</description>", "<description></description>");
-                ErrorLogger.LogMessage("WebRenderer", "RenderSymbol", "Output:\n" + briefOutput,Level.FINEST);
+                output = RenderMilStd3dSymbol(id, name, description, symbolCode, controlPoints, altitudeMode, scale, bbox, modifiers, attributes, format);
             }
 
-            
-            
+            if (output.isEmpty()) {
+                output = MultiPointHandler.RenderSymbol(id, name, description, symbolCode, controlPoints,
+                        scale, bbox, modifiers, attributes, format);
+
+                //DEBUGGING
+                if (ErrorLogger.getLevel().intValue() <= Level.FINER.intValue()) {
+                    System.out.println("");
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("\nID: " + id + "\n");
+                    sb.append("Name: " + name + "\n");
+                    sb.append("Description: " + description + "\n");
+                    sb.append("SymbolID: " + symbolCode + "\n");
+                    sb.append("Scale: " + String.valueOf(scale) + "\n");
+                    sb.append("BBox: " + bbox + "\n");
+                    sb.append("Coords: " + controlPoints + "\n");
+                    sb.append("Modifiers: " + modifiers + "\n");
+                    ErrorLogger.LogMessage("WebRenderer", "RenderSymbol", sb.toString(), Level.FINER);
+                }
+                if (ErrorLogger.getLevel().intValue() <= Level.FINEST.intValue()) {
+                    String briefOutput = output.replaceAll("</Placemark>", "</Placemark>\n");
+                    briefOutput = output.replaceAll("(?s)<description[^>]*>.*?</description>", "<description></description>");
+                    ErrorLogger.LogMessage("WebRenderer", "RenderSymbol", "Output:\n" + briefOutput, Level.FINEST);
+                }
+
+            }
+
         } catch (Exception ea) {
             
             output = "{\"type\":'error',error:'There was an error creating the MilStdSymbol - " + ea.toString() + "'}";
@@ -351,7 +359,75 @@ public final class WebRenderer /* extends Applet */ {
         return output;
     }
 
+    /**
+     * Renders all 3d multi-point symbols, creating KML or GeoJSON that can be
+     * used to draw it on a Google map.
+     * 3D version of RenderSymbol()
+     *
+     * @param id            A unique identifier used to identify the symbol by Google map.
+     *                      The id will be the folder name that contains the graphic.
+     * @param name          a string used to display to the user as the name of the
+     *                      graphic being created.
+     * @param description   a brief description about the graphic being made and
+     *                      what it represents.
+     * @param symbolCode    A 20-30 digit symbolID corresponding to one of the
+     *                      graphics in the MIL-STD-2525D
+     * @param controlPoints The vertices of the graphics that make up the
+     *                      graphic.  Passed in the format of a string, using decimal degrees
+     *                      separating lat and lon by a comma, separating coordinates by a space.
+     *                      The following format shall be used "x1,y1[,z1] [xn,yn[,zn]]..."
+     * @param altitudeMode  Indicates whether the symbol should interpret
+     *                      altitudes as above sea level or above ground level. Options are
+     *                      "clampToGround", "relativeToGround" (from surface of earth), "absolute"
+     *                      (sea level), "relativeToSeaFloor" (from the bottom of major bodies of
+     *                      water).
+     * @param scale         A number corresponding to how many meters one meter of our
+     *                      map represents. A value "50000" would mean 1:50K which means for every
+     *                      meter of our map it represents 50000 meters of real world distance.
+     * @param bbox          The viewable area of the map.  Passed in the format of a
+     *                      string "lowerLeftX,lowerLeftY,upperRightX,upperRightY." Not required
+     *                      but can speed up rendering in some cases.
+     *                      example: "-50.4,23.6,-42.2,24.2"
+     * @param modifiers     keyed using constants from Modifiers.
+     *                      Pass in comma delimited String for modifiers with multiple values like AM, AN &amp; X
+     * @param attributes    keyed using constants from MilStdAttributes.
+     * @param format        An enumeration: 2 for GeoJSON.
+     * @return A JSON string representation of the graphic.
+     */
+    public static String RenderMilStd3dSymbol(String id, String name, String description,
+                                              String symbolCode, String controlPoints, String altitudeMode,
+                                              double scale, String bbox, Map<String, String> modifiers, Map<String, String> attributes, int format) {
+        String output = "";
+        try {
 
+            output = Shape3DHandler.RenderMilStd3dSymbol(id, name, description, symbolCode, controlPoints,
+                    scale, bbox, modifiers, attributes, format);
+
+            //DEBUGGING
+            if (ErrorLogger.getLevel().intValue() <= Level.FINER.intValue()) {
+                System.out.println("");
+                StringBuilder sb = new StringBuilder();
+                sb.append("\nID: " + id + "\n");
+                sb.append("Name: " + name + "\n");
+                sb.append("Description: " + description + "\n");
+                sb.append("SymbolID: " + symbolCode + "\n");
+                sb.append("Scale: " + String.valueOf(scale) + "\n");
+                sb.append("BBox: " + bbox + "\n");
+                sb.append("Coords: " + controlPoints + "\n");
+                sb.append("Modifiers: " + modifiers + "\n");
+                ErrorLogger.LogMessage("WebRenderer", "RenderMilStd3dSymbol", sb.toString(), Level.FINER);
+            }
+            if (ErrorLogger.getLevel().intValue() <= Level.FINEST.intValue()) {
+                String briefOutput = output.replaceAll("</Placemark>", "</Placemark>\n");
+                briefOutput = output.replaceAll("(?s)<description[^>]*>.*?</description>", "<description></description>");
+                ErrorLogger.LogMessage("WebRenderer", "RenderMilStd3dSymbol", "Output:\n" + briefOutput, Level.FINEST);
+            }
+        } catch (Exception ea) {
+            output = "{\"type\":'error',error:'There was an error creating the 3D MilStdSymbol - " + ea.toString() + "'}";
+            ErrorLogger.LogException("WebRenderer", "RenderMilStd3dSymbol", ea, Level.WARNING);
+        }
+        return output;
+    }
 
     /**
 	 * Renders all MilStd 2525 multi-point symbols, creating MilStdSymbol that contains the
