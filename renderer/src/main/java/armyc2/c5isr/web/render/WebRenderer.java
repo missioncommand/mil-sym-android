@@ -632,6 +632,21 @@ public final class WebRenderer /* extends Applet */ {
         return output;
     }
 
+    public static String RenderBasic3DShape(String id, String name, String description, int basicShapeType,
+                                          String controlPoints, String altitudeMode,
+                                          double scale, String bbox, Map<String, String> modifiers, Map<String, String> attributes, int format) {
+        String output = "";
+        try {
+            JavaRendererUtilities.addAltModeToModifiersString(attributes, altitudeMode);
+            if (SymbolUtilities.isBasicShape(basicShapeType))
+                output = Shape3DHandler.RenderBasic3DShape(id, name, description, basicShapeType, controlPoints,
+                        scale, bbox, modifiers, attributes, format);
+        } catch (Exception ea) {
+            output = "{\"type\":'error',error:'There was an error creating the 3D MilStdSymbol - " + ea.toString() + "'}";
+            ErrorLogger.LogException("WebRenderer", "RenderBasic3DShape", ea, Level.WARNING);
+        }
+        return output;
+    }
     
     /**
      * Given a symbol code meant for a single point symbol, returns the
