@@ -3123,7 +3123,6 @@ public final class lineutility {
      * points
      * @param nOldCounter the number of client points
      * @param bWayIs the parallel line to use (0) for inner or outer spikes
-     * @param linetype the line type
      *
      * @return the symbol point count
      */
