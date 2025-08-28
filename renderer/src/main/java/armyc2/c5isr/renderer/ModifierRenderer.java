@@ -932,7 +932,9 @@ public class ModifierRenderer
             {
                 ebTop = echelonBounds.top - ebHeight - barOffset;
             }
-            else if(isCOnTop(symbolID) && modifiers.containsKey(Modifiers.C_QUANTITY))//OR frame in air/space
+            else if((isCOnTop(symbolID) && modifiers.containsKey(Modifiers.C_QUANTITY)) ||
+                        SymbolID.getContext(symbolID) == SymbolID.StandardIdentity_Context_Exercise ||
+                        SymbolID.getContext(symbolID) == SymbolID.StandardIdentity_Context_Simulation)
             {
                 ebTop = symbolBounds.top - (int)(ebHeight*2.5f);
             }
