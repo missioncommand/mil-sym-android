@@ -3120,21 +3120,22 @@ public class ModifierRenderer
         List<Modifier> mods = getLabelPositionIndexes(symbolID, modifiers, attributes);
 
         Modifier mod = null;
-        for(int i = 0; i < mods.size(); i++)
-        {
-            mod = mods.get(i);
+        if(mods != null) {
+            for (int i = 0; i < mods.size(); i++) {
+                mod = mods.get(i);
 
-            tiTemp = new TextInfo(mod.getText(), 0, 0, modifierFont, modifierFontName);
-            labelBounds = tiTemp.getTextBounds();
-            labelWidth = (int)labelBounds.width();
+                tiTemp = new TextInfo(mod.getText(), 0, 0, modifierFont, modifierFontName);
+                labelBounds = tiTemp.getTextBounds();
+                labelWidth = (int) labelBounds.width();
 
-            //on left
-            x = (int)getLabelXPosition(bounds, labelWidth, mod.getIndexX(), modifierFontHeight);
-            //above center V
-            y = (int)getLabelYPosition(bounds, labelHeight, descent, bufferText, mod.getCentered(), mod.getIndexY());
+                //on left
+                x = (int) getLabelXPosition(bounds, sdi.getCenterPoint(), labelWidth, mod.getIndexX(), modifierFontHeight);
+                //above center V
+                y = (int) getLabelYPosition(bounds, labelHeight, descent, bufferText, mod.getCentered(), mod.getIndexY());
 
-            tiTemp.setLocation(x, y);
-            tiArray.add(tiTemp);
+                tiTemp.setLocation(x, y);
+                tiArray.add(tiTemp);
+            }
         }
 
 
@@ -7316,7 +7317,7 @@ public class ModifierRenderer
      * @param location if 1, label on right side of symbol. On left if -1, center if 0.
      * @returns
      */
-    private static double getLabelXPosition(Rect bounds, int labelWidth, int location, float modifierFontHeight)
+    private static double getLabelXPosition(Rect bounds, Point centerPoint, int labelWidth, int location, float modifierFontHeight)
     {
         int buffer = (int)modifierFontHeight/2;
 
@@ -7331,7 +7332,10 @@ public class ModifierRenderer
         }
         else if(location == 0)
         {
-            x = (int)Math.round((bounds.left + (bounds.width() * 0.5f)) - (labelWidth * 0.5f));
+            if(centerPoint != null)
+                x = (int)Math.round(centerPoint.x - (labelWidth * 0.5));
+            else
+                x = Math.round((bounds.left + (bounds.width() * 0.5f)) - (labelWidth * 0.5f));
         }
         return x;
     }
