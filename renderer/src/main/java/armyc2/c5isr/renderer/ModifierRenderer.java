@@ -641,46 +641,6 @@ public class ModifierRenderer
         }
         // </editor-fold>
 
-        // <editor-fold defaultstate="collapsed" desc="Build Affiliation Modifier">
-        //Draw Echelon
-        String affiliationModifier = null;
-        if (RS.getDrawAffiliationModifierAsLabel() == false)
-        {
-            affiliationModifier = SymbolUtilities.getStandardIdentityModifier(symbolID);
-        }
-        if (affiliationModifier != null)
-        {
-
-            int amOffset = 2;
-            int outlineOffset = RS.getTextOutlineWidth();
-
-            tiAM = new TextInfo(affiliationModifier, 0, 0, modifierFont, modifierFontName);
-            amBounds = tiAM.getTextBounds();
-
-            int x, y;
-
-            if (echelonBounds != null
-                    && ((echelonBounds.left + echelonBounds.width() > symbolBounds.left + symbolBounds.width())))
-            {
-                y = Math.round(symbolBounds.top - amOffset);
-                x = echelonBounds.left + echelonBounds.width();
-            }
-            else
-            {
-                y = Math.round(symbolBounds.top - amOffset);
-                x = Math.round(symbolBounds.left + symbolBounds.width());
-            }
-            tiAM.setLocation(x, y);
-
-            //adjust for outline.
-            RectUtilities.grow(amBounds, outlineOffset);
-            RectUtilities.shift(amBounds, 0, -outlineOffset);
-            tiAM.setLocation(x, y - outlineOffset);
-
-            imageBounds.union(amBounds);
-        }
-        // </editor-fold>
-
         // <editor-fold defaultstate="collapsed" desc="Build Task Force">
         Rect tfBounds = null;
         Rect tfRectangle = null;
@@ -970,6 +930,45 @@ public class ModifierRenderer
         }
 
 
+        // </editor-fold>
+
+        // <editor-fold defaultstate="collapsed" desc="Build Affiliation Modifier">
+        String affiliationModifier = null;
+        if (RS.getDrawAffiliationModifierAsLabel() == false)
+        {
+            affiliationModifier = SymbolUtilities.getStandardIdentityModifier(symbolID);
+        }
+        if (affiliationModifier != null)
+        {
+
+            int amOffset = 2;
+            int outlineOffset = RS.getTextOutlineWidth();
+
+            tiAM = new TextInfo(affiliationModifier, 0, 0, modifierFont, modifierFontName);
+            amBounds = tiAM.getTextBounds();
+
+            int x, y;
+
+            if (echelonBounds != null
+                    && ((echelonBounds.left + echelonBounds.width() > symbolBounds.left + symbolBounds.width())))
+            {
+                y = Math.round(symbolBounds.top - amOffset);
+                x = echelonBounds.left + echelonBounds.width();
+            }
+            else
+            {
+                y = Math.round(symbolBounds.top - amOffset);
+                x = Math.round(symbolBounds.left + symbolBounds.width());
+            }
+            tiAM.setLocation(x, y);
+
+            //adjust for outline.
+            RectUtilities.grow(amBounds, outlineOffset);
+            RectUtilities.shift(amBounds, 0, -outlineOffset);
+            tiAM.setLocation(x, y - outlineOffset);
+
+            imageBounds.union(amBounds);
+        }
         // </editor-fold>
 
         // <editor-fold defaultstate="collapsed" desc="Build HQ Staff">
@@ -7426,6 +7425,10 @@ public class ModifierRenderer
                         y = (bounds.top + (bounds.height() / 2) + ((labelHeight*3 - descent + bufferText)));
                         break;
                 }
+            }
+            if(location == 9)//on top of symbol
+            {
+                y = Math.round(bounds.top - bufferText - descent);
             }
         }
         return y;
