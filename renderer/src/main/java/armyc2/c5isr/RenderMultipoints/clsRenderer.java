@@ -1701,8 +1701,6 @@ public final class clsRenderer {
                 case TacticalLines.RANGE_FAN:
                 case TacticalLines.RANGE_FAN_SECTOR:
                 case TacticalLines.RADAR_SEARCH:
-                case TacticalLines.BS_RADARC:
-                case TacticalLines.BS_CAKE:
                     if (tg.get_FillColor() == null || tg.get_FillColor().getAlpha() < 2) {
                         break;
                     }
@@ -2100,8 +2098,6 @@ public final class clsRenderer {
                     case TacticalLines.RANGE_FAN:
                     case TacticalLines.RANGE_FAN_SECTOR:
                     case TacticalLines.RADAR_SEARCH:
-                    case TacticalLines.BS_RADARC:
-                    case TacticalLines.BS_CAKE:
                         if (tg.get_FillColor() == null || tg.get_FillColor().getAlpha() < 2) {
                             break;
                         }
