@@ -369,16 +369,17 @@ public class Shape3DHandler {
                 shapes.add(topShape);
             }
 
-            final double modifierAlt = Collections.max(altitudes.subList(0, mSymbol.getSymbolShapes().size() * 2));
-            for (ShapeInfo oldShape : mSymbol.getModifierShapes()) {
-                ShapeInfo3D modShape = new ShapeInfo3D();
-                modShape.setModifierString(oldShape.getModifierString());
-                modShape.setModifierPosition(new Point3D(oldShape.getModifierPosition(), modifierAlt));
-                modShape.setModifierAngle(oldShape.getModifierAngle());
-                modShape.setTextJustify(oldShape.getTextJustify());
-                modShape.setModifierImage(oldShape.getModifierImage());
-
-                modifiers.add(modShape);
+            if (!mSymbol.getSymbolShapes().isEmpty() && !mSymbol.getModifierShapes().isEmpty()) {
+                final double modifierAlt = Collections.max(altitudes.subList(0, mSymbol.getSymbolShapes().size() * 2));
+                for (ShapeInfo oldShape : mSymbol.getModifierShapes()) {
+                    ShapeInfo3D modShape = new ShapeInfo3D();
+                    modShape.setModifierString(oldShape.getModifierString());
+                    modShape.setModifierPosition(new Point3D(oldShape.getModifierPosition(), modifierAlt));
+                    modShape.setModifierAngle(oldShape.getModifierAngle());
+                    modShape.setTextJustify(oldShape.getTextJustify());
+                    modShape.setModifierImage(oldShape.getModifierImage());
+                    modifiers.add(modShape);
+                }
             }
 
             if (format == WebRenderer.OUTPUT_FORMAT_KML) {
@@ -708,16 +709,17 @@ public class Shape3DHandler {
                 shapes.add(topShape);
             }
 
-            final double modifierAlt = Collections.max(altitudes.subList(0, mSymbol.getSymbolShapes().size() * 2));
-            for (ShapeInfo oldShape : mSymbol.getModifierShapes()) {
-                ShapeInfo3D modShape = new ShapeInfo3D();
-                modShape.setModifierString(oldShape.getModifierString());
-                modShape.setModifierPosition(new Point3D(oldShape.getModifierPosition(), modifierAlt));
-                modShape.setModifierAngle(oldShape.getModifierAngle());
-                modShape.setTextJustify(oldShape.getTextJustify());
-                modShape.setModifierImage(oldShape.getModifierImage());
-
-                modifiers.add(modShape);
+            if (!mSymbol.getSymbolShapes().isEmpty() && !mSymbol.getModifierShapes().isEmpty()) {
+                final double modifierAlt = Collections.max(altitudes.subList(0, mSymbol.getSymbolShapes().size() * 2));
+                for (ShapeInfo oldShape : mSymbol.getModifierShapes()) {
+                    ShapeInfo3D modShape = new ShapeInfo3D();
+                    modShape.setModifierString(oldShape.getModifierString());
+                    modShape.setModifierPosition(new Point3D(oldShape.getModifierPosition(), modifierAlt));
+                    modShape.setModifierAngle(oldShape.getModifierAngle());
+                    modShape.setTextJustify(oldShape.getTextJustify());
+                    modShape.setModifierImage(oldShape.getModifierImage());
+                    modifiers.add(modShape);
+                }
             }
 
             if (format == WebRenderer.OUTPUT_FORMAT_KML) {
