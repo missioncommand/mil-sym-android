@@ -2,7 +2,7 @@
 
 ## About
 
-mil-sym-android is an Android port of the Java-based MIL-STD rendering libraries that have been used in US Army Mission Command software for years.  In November 2013 Mission Command was given the approval to release and maintain these libraries as public open source.  Eventually work on the 2525C SEC Renderer ended and the project was retired.
+mil-sym-android is an Android port of the [Java-based MIL-STD rendering libraries](https://github.com/missioncommand/mil-sym-java) that have been used in US Army Mission Command software for years.  In November 2013 Mission Command was given the approval to release and maintain these libraries as public open source.  Eventually work on the 2525C SEC Renderer ended and the project was retired.
 The Library is still available here: [mil-sym-android-renderer](https://central.sonatype.com/artifact/io.github.missioncommand/mil-sym-android-renderer)
 
 This is a continuation of that effort and this library aims to support 2525D, 2525E and potentially more future versions.
@@ -13,9 +13,15 @@ This is a continuation of that effort and this library aims to support 2525D, 25
 The old 2525C renderer has been retired but the libraries and usage information are still available here:  
 [2525C Renderer Overview](https://github.com/missioncommand/mil-sym-android/wiki/2525C-Renderer-Overview)
 
+### Ports
+---
+[Java](https://github.com/missioncommand/mil-sym-java)  
+[Android](https://github.com/missioncommand/mil-sym-android)  
+[TypeScript](https://github.com/missioncommand/mil-sym-ts)  
+
 ### MIL-STD-2525
 ---
-The [MIL-STD-2525] standard defines how to visualize military symbology.  This project provides support for the entire MIL-STD-2525D Change 1 and 2525E Change 1.
+The MIL-STD-2525 standard defines how to visualize military symbology.  This project provides support for the entire MIL-STD-2525D Change 1 and 2525E Change 1.
 
 ### Project Structure
 ---
