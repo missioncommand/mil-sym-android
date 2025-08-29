@@ -13,22 +13,22 @@ This is a continuation of that effort and this library aims to support 2525D, 25
 The old 2525C renderer has been retired but the libraries and usage information are still available here:  
 [2525C Renderer Overview](https://github.com/missioncommand/mil-sym-android/wiki/2525C-Renderer-Overview)
 
-### Ports
+Ports
 -----------
 [Java](https://github.com/missioncommand/mil-sym-java)  
 [Android](https://github.com/missioncommand/mil-sym-android)  
 [TypeScript](https://github.com/missioncommand/mil-sym-ts)  
 
-### MIL-STD-2525
+MIL-STD-2525
 -----------
 The MIL-STD-2525 standard defines how to visualize military symbology.  This project provides support for the entire MIL-STD-2525D Change 1 and 2525E Change 1.
 
-### Project Structure
+Project Structure
 -----------
 mil-sym-android has a namespace structure that resembles the java layout although differs where we needed to implement java functionality that wasn't available in the Dalvik VM.
 
 
-### Tech
+Tech
 -----------
 
 Eclipse with Android plugins
