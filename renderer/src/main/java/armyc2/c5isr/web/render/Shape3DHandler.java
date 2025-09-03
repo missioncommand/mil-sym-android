@@ -480,18 +480,10 @@ public class Shape3DHandler {
 
         // 3D default colors
         if (symbolAttributes.get(MilStdAttributes.LineColor) == null) {
-            Color defaultColor = SymbolUtilities.getLineColorOfAffiliation(symbolCode);
-            if (defaultColor == null) {
-                defaultColor = new Color(Color.BLACK);
-            }
-            symbolAttributes.put(MilStdAttributes.LineColor, defaultColor.toHexString());
+            symbolAttributes.put(MilStdAttributes.LineColor, Color.BLACK.toHexString());
         }
         if (symbolAttributes.get(MilStdAttributes.FillColor) == null) {
-            Color defaultColor = SymbolUtilities.getFillColorOfAffiliation(symbolCode);
-            if (defaultColor == null) {
-                defaultColor = new Color(Color.WHITE);
-            }
-            defaultColor.setAlpha(170);
+            Color defaultColor = new Color(255, 255, 255, 170);
             symbolAttributes.put(MilStdAttributes.FillColor, defaultColor.toHexString());
         }
 
