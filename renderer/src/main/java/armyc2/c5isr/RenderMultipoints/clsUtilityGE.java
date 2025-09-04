@@ -21,7 +21,6 @@ import static armyc2.c5isr.JavaLineArray.lineutility.CalcDistanceDouble;
 
 import armyc2.c5isr.JavaTacticalRenderer.clsMETOC;
 import armyc2.c5isr.renderer.utilities.Color;
-import armyc2.c5isr.renderer.utilities.RendererSettings;
 import armyc2.c5isr.graphics2d.Area;
 import armyc2.c5isr.graphics2d.BasicStroke;
 import armyc2.c5isr.graphics2d.Line2D;
@@ -1141,7 +1140,7 @@ public final class clsUtilityGE {
                 case TacticalLines.BOUNDARY:
                 case TacticalLines.MSR:
                 case TacticalLines.ASR:
-                case TacticalLines.ROUTE:
+                case TacticalLines.TRAFFIC_ROUTE:
                     break;
                 default:
                     return false;

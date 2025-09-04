@@ -5,6 +5,8 @@
 package armyc2.c5isr.RenderMultipoints;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,7 +91,7 @@ public final class clsUtilityCPOF {
             POINT2 pt1 = new POINT2(0, 0);
             radius.value = new double[1];
             width.value = new double[1];
-            attitude.value = new double[1];
+            attitude.value = new double[2];
             length.value = new double[1];
             switch (lineType) {
                 case TacticalLines.CIRCULAR:
@@ -195,6 +197,7 @@ public final class clsUtilityCPOF {
                 case TacticalLines.KILLBOXBLUE_RECTANGULAR:
                 case TacticalLines.KILLBOXPURPLE_RECTANGULAR:
                 case TacticalLines.RECTANGULAR_TARGET:
+                case TacticalLines.BS_ORBIT:
                     if (tg.LatLongs.size() >= 2) {
                         //get the length and the attitude in mils
                         pt0 = tg.LatLongs.get(0);
@@ -205,6 +208,14 @@ public final class clsUtilityCPOF {
                     if (SymbolUtilities.isNumber(tg.get_AM())) {
                         width.value[0] = Double.parseDouble(tg.get_AM());
                     }
+                    break;
+                case TacticalLines.BS_POLYARC:
+                    if (SymbolUtilities.isNumber(tg.get_AM())) {
+                        length.value[0] = Double.parseDouble(tg.get_AM());
+                    }
+                    String[] an = tg.get_AN().split(",");
+                    attitude.value[0] = Double.parseDouble(an[0]);
+                    attitude.value[1] = Double.parseDouble(an[1]);
                     break;
                 default:
                     break;
@@ -380,6 +391,139 @@ public final class clsUtilityCPOF {
 
                     tg.Pixels.add(pt00);
                     break;
+                case TacticalLines.BS_ORBIT:
+                    ptTemp = mdlGeodesic.geodesic_coordinate(pt0, width.value[0] / 2, attitude.value[0] - 90);
+                    ptTemp = clsUtilityCPOF.PointLatLongToPixels(ptTemp, converter);
+                    ptTemp.style = 0;
+                    tg.Pixels.add(ptTemp);
+
+                    ptTemp = mdlGeodesic.geodesic_coordinate(pt1, width.value[0] / 2, attitude.value[0] - 90);
+                    pPoints = new POINT2[3];
+                    pPoints[0] = new POINT2(pt1);
+                    pPoints[1] = new POINT2(ptTemp);
+                    pPoints[2] = new POINT2(ptTemp);
+                    ArrayList<POINT2> pPoints2 = mdlGeodesic.GetGeodesicArc(pPoints);
+                    for (j = 0; j < pPoints2.size() / 2; j++) {
+                        ptTemp = clsUtilityCPOF.PointLatLongToPixels(pPoints2.get(j), converter);
+                        ptTemp.style = 0;
+                        tg.Pixels.add(ptTemp);
+                    }
+
+                    ptTemp = mdlGeodesic.geodesic_coordinate(pt0, width.value[0] / 2, attitude.value[0] + 90);
+                    pPoints[0] = new POINT2(pt0);
+                    pPoints[1] = new POINT2(ptTemp);
+                    pPoints[2] = new POINT2(ptTemp);
+                    pPoints2 = mdlGeodesic.GetGeodesicArc(pPoints);
+                    for (j = 0; j < pPoints2.size() / 2; j++) {
+                        ptTemp = clsUtilityCPOF.PointLatLongToPixels(pPoints2.get(j), converter);
+                        ptTemp.style = 0;
+                        tg.Pixels.add(ptTemp);
+                    }
+                    break;
+                case TacticalLines.BS_ROUTE:
+                    ArrayList<String> am = new ArrayList<>(Arrays.asList(tg.get_AM().split(",")));
+                    while (am.size() < tg.LatLongs.size() - 1) {
+                        am.add(am.get(am.size() - 1));
+                    }
+                    for (int i = 0; i < tg.LatLongs.size() - 1; i++) {
+                        ref<double[]> a12  = new ref();
+                        ref<double[]> a21 = new ref();
+                        pt0 = tg.LatLongs.get(i);
+                        pt1 = tg.LatLongs.get(i + 1);
+                        double widthVal = 0;
+                        double attitudeVal = 0;
+
+                        mdlGeodesic.geodesic_distance(pt0, pt1, a12, a21);
+                        attitudeVal = a12.value[0];
+
+                        if (SymbolUtilities.isNumber(am.get(i))) {
+                            widthVal = Double.parseDouble(am.get(i));
+                        }
+
+                        //get the upper left corner
+                        pt00 = mdlGeodesic.geodesic_coordinate(pt0, widthVal / 2, attitudeVal - 90);
+                        pt00 = clsUtilityCPOF.PointLatLongToPixels(pt00, converter);
+
+                        pt00.style = 0;
+                        tg.Pixels.add(pt00);
+
+                        //second corner (clockwise from center)
+                        ptTemp = mdlGeodesic.geodesic_coordinate(pt0, widthVal / 2, attitudeVal + 90);
+                        ptTemp = clsUtilityCPOF.PointLatLongToPixels(ptTemp, converter);
+                        ptTemp.style = 0;
+                        tg.Pixels.add(ptTemp);
+
+                        //third corner (clockwise from center)
+                        ptTemp = mdlGeodesic.geodesic_coordinate(pt1, widthVal / 2, attitudeVal + 90);
+                        ptTemp = clsUtilityCPOF.PointLatLongToPixels(ptTemp, converter);
+                        ptTemp.style = 0;
+                        tg.Pixels.add(ptTemp);
+
+                        //fourth corner (clockwise from center)
+                        ptTemp = mdlGeodesic.geodesic_coordinate(pt1, widthVal / 2, attitudeVal - 90);
+                        ptTemp = clsUtilityCPOF.PointLatLongToPixels(ptTemp, converter);
+                        ptTemp.style = 0;
+                        tg.Pixels.add(ptTemp);
+
+                        pt00 = new POINT2(pt00);
+                        pt00.style = 5;
+                        tg.Pixels.add(pt00);
+                    }
+                    break;
+                case TacticalLines.BS_TRACK:
+                    am = new ArrayList<>(Arrays.asList(tg.get_AM().split(",")));
+                    while (am.size() < tg.LatLongs.size() - 1) {
+                        am.add(am.get(am.size() - 1));
+                    }
+                    for (int i = 0; i < tg.LatLongs.size() - 1; i++) {
+                        ref<double[]> a12  = new ref();
+                        ref<double[]> a21 = new ref();
+                        pt0 = tg.LatLongs.get(i);
+                        pt1 = tg.LatLongs.get(i + 1);
+                        double leftWidth = 0;
+                        double rightWidth = 0;
+                        double attitudeVal = 0;
+
+                        mdlGeodesic.geodesic_distance(pt0, pt1, a12, a21);
+                        attitudeVal = a12.value[0];
+
+                        if (SymbolUtilities.isNumber(am.get(2 * i))) {
+                            leftWidth = Double.parseDouble(am.get(2 * i));
+                        }
+                        if (SymbolUtilities.isNumber(am.get(2 * i + 1))) {
+                            rightWidth = Double.parseDouble(am.get(2 * i + 1));
+                        }
+
+                        //get the upper left corner
+                        pt00 = mdlGeodesic.geodesic_coordinate(pt0, leftWidth, attitudeVal - 90);
+                        pt00 = clsUtilityCPOF.PointLatLongToPixels(pt00, converter);
+
+                        pt00.style = 0;
+                        tg.Pixels.add(pt00);
+
+                        //second corner (clockwise from center)
+                        ptTemp = mdlGeodesic.geodesic_coordinate(pt0, rightWidth, attitudeVal + 90);
+                        ptTemp = clsUtilityCPOF.PointLatLongToPixels(ptTemp, converter);
+                        ptTemp.style = 0;
+                        tg.Pixels.add(ptTemp);
+
+                        //third corner (clockwise from center)
+                        ptTemp = mdlGeodesic.geodesic_coordinate(pt1, rightWidth, attitudeVal + 90);
+                        ptTemp = clsUtilityCPOF.PointLatLongToPixels(ptTemp, converter);
+                        ptTemp.style = 0;
+                        tg.Pixels.add(ptTemp);
+
+                        //fourth corner (clockwise from center)
+                        ptTemp = mdlGeodesic.geodesic_coordinate(pt1, leftWidth, attitudeVal - 90);
+                        ptTemp = clsUtilityCPOF.PointLatLongToPixels(ptTemp, converter);
+                        ptTemp.style = 0;
+                        tg.Pixels.add(ptTemp);
+
+                        pt00 = new POINT2(pt00);
+                        pt00.style = 5;
+                        tg.Pixels.add(pt00);
+                    }
+                    break;
                 case TacticalLines.RECTANGULAR_TARGET:
                     POINT2[] pts = new POINT2[4]; // 4 Corners
 
@@ -510,7 +654,7 @@ public final class clsUtilityCPOF {
                     pPoints[1] = new POINT2(ptTemp);
                     pPoints[2] = new POINT2(ptTemp);
 
-                    ArrayList<POINT2> pPoints2 = mdlGeodesic.GetGeodesicArc(pPoints);
+                    pPoints2 = mdlGeodesic.GetGeodesicArc(pPoints);
                     POINT2 ptTemp2 = null;
                     //fill pixels and latlongs
                     for (j = 0; j < pPoints2.size(); j++) //was 103
@@ -536,10 +680,41 @@ public final class clsUtilityCPOF {
                     RangeFanOrientation(tg, lineType, converter);
                     break;
                 case TacticalLines.RADAR_SEARCH:
+                case TacticalLines.BS_RADARC:
+                case TacticalLines.BS_CAKE:
                     GetSectorRangeFan(tg, converter);
                     break;
                 case TacticalLines.RANGE_FAN_FILL:  //circular range fan calls Change1TacticalAreas twice
                     GetSectorRangeFan(tg, converter);
+                    break;
+                case TacticalLines.BS_POLYARC:
+                    // Polyarc points should be counterclockwise
+                    if (clsUtilityCPOF.CalculateSignedAreaOfPolygon(tg.LatLongs) < 0) {
+                        ptTemp = tg.LatLongs.remove(0);
+                        Collections.reverse(tg.LatLongs);
+                        tg.LatLongs.add(0, ptTemp);
+                    }
+
+                    ArrayList<POINT2> pPointsArc = new ArrayList<POINT2>();
+                    pPoints2 = new ArrayList<POINT2>();
+                    pPoints2.add(pt0);
+                    pPoints2.add(mdlGeodesic.geodesic_coordinate(pt0, length.value[0], attitude.value[0]));
+                    pPoints2.add(mdlGeodesic.geodesic_coordinate(pt0, length.value[0], attitude.value[1]));
+                    mdlGeodesic.GetGeodesicArc2(pPoints2, pPointsArc);
+
+                    for (int i = 0; i < pPointsArc.size(); i++) {
+                        ptTemp = new POINT2(pPointsArc.get(i));
+                        ptTemp = clsUtilityCPOF.PointLatLongToPixels(ptTemp, converter);
+                        tg.Pixels.add(ptTemp);
+                    }
+
+                    for (int i = 1; i < tg.LatLongs.size(); i++) {
+                        ptTemp = new POINT2(tg.LatLongs.get(i));
+                        ptTemp = clsUtilityCPOF.PointLatLongToPixels(ptTemp, converter);
+                        tg.Pixels.add(ptTemp);
+                    }
+
+                    tg.Pixels.add(tg.Pixels.get(0));
                     break;
                 default:
                     return false;
@@ -668,7 +843,7 @@ public final class clsUtilityCPOF {
                 if (currentPt.style == 5 || currentPt.style == 10) {
                     beginLine = true;
                     //unless there are doubled points with style=5
-                    if (linetype == TacticalLines.RANGE_FAN_FILL && k < tg.Pixels.size() - 1) {
+                    if ((linetype == TacticalLines.RANGE_FAN_FILL || linetype == TacticalLines.BS_ROUTE || linetype == TacticalLines.BS_TRACK || linetype == TacticalLines.BS_CAKE) && k < tg.Pixels.size() - 1) {
                         shapes.add(shape);
                         shape = new Shape2(Shape2.SHAPE_TYPE_POLYLINE);
                     }
@@ -1440,8 +1615,8 @@ public final class clsUtilityCPOF {
                 case TacticalLines.ASR_ONEWAY:
                 case TacticalLines.ASR_TWOWAY:
                 case TacticalLines.ASR_ALT:
-                case TacticalLines.ROUTE_ONEWAY:
-                case TacticalLines.ROUTE_ALT:
+                case TacticalLines.TRAFFIC_ROUTE_ONEWAY:
+                case TacticalLines.TRAFFIC_ROUTE_ALT:
                 case TacticalLines.DHA_REVD:
                 case TacticalLines.DHA:
                 case TacticalLines.KILL_ZONE:
@@ -1456,7 +1631,7 @@ public final class clsUtilityCPOF {
                     return true;
                 case TacticalLines.MSR: //post clip these so there are identical points regardless whether segment data is set 10-5-16
                 case TacticalLines.ASR:
-                case TacticalLines.ROUTE:
+                case TacticalLines.TRAFFIC_ROUTE:
                 case TacticalLines.BOUNDARY:
                     return false;
                 default:
@@ -1563,9 +1738,9 @@ public final class clsUtilityCPOF {
             case TacticalLines.ASR_ONEWAY:
             case TacticalLines.ASR_TWOWAY:
             case TacticalLines.ASR_ALT:
-            case TacticalLines.ROUTE:
-            case TacticalLines.ROUTE_ONEWAY:
-            case TacticalLines.ROUTE_ALT:
+            case TacticalLines.TRAFFIC_ROUTE:
+            case TacticalLines.TRAFFIC_ROUTE_ONEWAY:
+            case TacticalLines.TRAFFIC_ROUTE_ALT:
                 //undo any fill
                 Shape2 shape = null;
                 if (shapes != null && shapes.size() > 0) {
@@ -1969,8 +2144,8 @@ public final class clsUtilityCPOF {
                 case TacticalLines.ASR_ONEWAY:
                 case TacticalLines.ASR_TWOWAY:
                 case TacticalLines.ASR_ALT:
-                case TacticalLines.ROUTE_ONEWAY:
-                case TacticalLines.ROUTE_ALT:
+                case TacticalLines.TRAFFIC_ROUTE_ONEWAY:
+                case TacticalLines.TRAFFIC_ROUTE_ALT:
                     //added because of segment data 4-22-13
                     //removed from this case block since we now post-clip these because of segment color data 10-5-16
 //                case TacticalLines.MSR:
@@ -2410,4 +2585,21 @@ public final class clsUtilityCPOF {
         }
     }
 
+    /**
+     * Calculating the signed area will tell you which direction the points are going.
+     * Negative = Clock-wise, Positive = counter clock-wise
+     * A = 1/2 * (x1*y2 - x2*y1 + x2*y3 - x3*y2 + ... + xn*y1 - x1*yn)
+     */
+    static double CalculateSignedAreaOfPolygon(ArrayList<POINT2> coords) {
+        double signedArea = 0;
+        final int len = coords.size();
+        for (int i = 0; i < len; i++) {
+            double x1 = coords.get(i).x;
+            double y1 = coords.get(i).y;
+            double x2 = coords.get((i + 1) % len).x;
+            double y2 = coords.get((i + 1) % len).y;
+            signedArea += (x1 * y2 - x2 * y1);
+        }
+        return signedArea / 2;
+    }
 }
