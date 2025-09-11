@@ -727,7 +727,8 @@ public class MultiPointHandler {
             }
 
             if (bboxCoords == null) {
-                clsRenderer.renderWithPolylines(mSymbol, ipc, rect);
+                Rectangle clipBounds = getOverscanClipBounds(rect, ipc);
+                clsRenderer.renderWithPolylines(mSymbol, ipc, clipBounds);
             } else {
                 clsRenderer.renderWithPolylines(mSymbol, ipc, bboxCoords);
             }
@@ -1052,7 +1053,8 @@ public class MultiPointHandler {
             }
 
             if (bboxCoords == null) {
-                clsRenderer.renderWithPolylines(mSymbol, ipc, rect);
+                Rectangle clipBounds = getOverscanClipBounds(rect, ipc);
+                clsRenderer.renderWithPolylines(mSymbol, ipc, clipBounds);
             } else {
                 clsRenderer.renderWithPolylines(mSymbol, ipc, bboxCoords);
             }
@@ -1293,7 +1295,8 @@ public class MultiPointHandler {
 
             //new interface
             //IMultiPointRenderer mpr = MultiPointRenderer.getInstance();
-            clsRenderer.renderWithPolylines(mSymbol, ipc, rect);
+            Rectangle clipBounds = getOverscanClipBounds(rect, ipc);
+            clsRenderer.renderWithPolylines(mSymbol, ipc, clipBounds);
             shapes = mSymbol.getSymbolShapes();
             modifiers = mSymbol.getModifierShapes();
 
@@ -1376,6 +1379,21 @@ public class MultiPointHandler {
 
         return jsonOutput.toString();
 
+    }
+
+    static Rectangle getOverscanClipBounds(Rectangle rect, IPointConversion ipc) {
+        if (rect == null)
+            return null;
+        double maxWidth = Math.abs(ipc.GeoToPixels(new Point2D.Double(180, 0)).getX() - ipc.GeoToPixels(new Point2D.Double(0, 0)).getX());
+        double maxHeight = Math.abs(ipc.GeoToPixels(new Point2D.Double(0, 90)).getY() - ipc.GeoToPixels(new Point2D.Double(0, -90)).getY());
+        double overScanScale = RendererSettings.getInstance().get_overscanScale();
+        if (rect.width * overScanScale > maxWidth) {
+            overScanScale = maxWidth / rect.width;
+        }
+        if (rect.height * overScanScale > maxHeight) {
+            overScanScale = maxHeight / rect.height;
+        }
+        return new Rectangle((int) (rect.x - (rect.width * (overScanScale - 1)) / 2), (int) (rect.y - (rect.height * (overScanScale - 1)) / 2), (int) (rect.width * overScanScale), (int) (rect.height * overScanScale));
     }
 
     /**
