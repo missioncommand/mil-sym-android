@@ -3,6 +3,7 @@ package armyc2.c5isr.renderer.test1;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +39,7 @@ import armyc2.c5isr.renderer.utilities.RectUtilities;
 import armyc2.c5isr.renderer.utilities.RendererSettings;
 import armyc2.c5isr.renderer.utilities.SVGInfo;
 import armyc2.c5isr.renderer.utilities.SVGSymbolInfo;
+import armyc2.c5isr.renderer.utilities.SectorModUtils;
 import armyc2.c5isr.renderer.utilities.SymbolUtilities;
 
 
@@ -178,6 +180,12 @@ public class MainActivity extends Activity {
 			}
 
             t.setText("Renderer Initialized");
+
+		SectorModUtils smu = SectorModUtils.getInstance();
+		String name = smu.getName(11,1,1,"01");
+		ArrayList<String[]> al = smu.getSectorModList(11,1,1);
+		name = smu.getName(15,0,1,"100");
+		ErrorLogger.LogMessage(name);
             
 		
 	}

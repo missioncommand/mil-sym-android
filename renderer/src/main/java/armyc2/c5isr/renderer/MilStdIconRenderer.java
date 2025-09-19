@@ -22,6 +22,7 @@ import armyc2.c5isr.renderer.utilities.RendererSettings;
 import armyc2.c5isr.renderer.utilities.SVGInfo;
 import armyc2.c5isr.renderer.utilities.SVGLookup;
 import armyc2.c5isr.renderer.utilities.SVGSymbolInfo;
+import armyc2.c5isr.renderer.utilities.SectorModUtils;
 import armyc2.c5isr.renderer.utilities.SymbolID;
 import armyc2.c5isr.renderer.utilities.SymbolUtilities;
 
@@ -90,6 +91,9 @@ public class MilStdIconRenderer
 
                 //Country Codes
                 GENCLookup.getInstance().init(context);
+
+                //SectorMod lookups
+                SectorModUtils.getInstance().init(context);
 
                 // setup single point renderer
                 _SPR = SinglePointRenderer.getInstance();
