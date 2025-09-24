@@ -159,7 +159,11 @@ public class SVGLookup {
 
         String frameID = null;
         String ss;
+
         int affiliation = SymbolID.getAffiliation(symbolID);
+        if(affiliation > SymbolID.StandardIdentity_Affiliation_Hostile_Faker)
+            affiliation = SymbolID.StandardIdentity_Affiliation_Unknown;
+
         int status = SymbolID.getStatus(symbolID);
         //Some affiliations are always dashed and only have one SVG for status with a value of 0
         if(affiliation == SymbolID.StandardIdentity_Affiliation_Pending ||
