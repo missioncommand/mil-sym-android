@@ -7331,7 +7331,7 @@ public class ModifierRenderer
     /**
      * @param bounds     bounds of the core icon
      * @param labelWidth height of the label to be placed
-     * @param location   if 1, label on right side of symbol. On left if -1, center if 0.
+     * @param location   -1 left, 0 center, 1 right
      * @returns
      */
     private static double getLabelXPosition(Rect bounds, int labelWidth, int location, float modifierFontHeight)
