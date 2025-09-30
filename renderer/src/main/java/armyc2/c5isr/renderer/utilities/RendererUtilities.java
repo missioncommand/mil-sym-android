@@ -193,7 +193,7 @@ public class RendererUtilities {
 
                     if(int1 == -1 || int2 == -1)
                     {
-                        ErrorLogger.LogMessage("SymbolUtilities", "getColorFromHexString", "Bad hex value: " + hexOriginal, Level.WARNING);
+                        ErrorLogger.LogMessage("RendererUtilities", "getColorFromHexString", "Bad hex value: " + hexOriginal, Level.WARNING);
                         return null;
                     }
 
@@ -212,13 +212,13 @@ public class RendererUtilities {
             }
             else
             {
-                ErrorLogger.LogMessage("SymbolUtilities", "getColorFromHexString", "Bad hex value: " + hexOriginal, Level.WARNING);
+                ErrorLogger.LogMessage("RendererUtilities", "getColorFromHexString", "Bad hex value: " + hexOriginal, Level.WARNING);
             }
             return null;
         }
         catch (Exception exc)
         {
-            ErrorLogger.LogException("SymbolUtilities", "getColorFromHexString", exc);
+            ErrorLogger.LogException("RendererUtilities", "getColorFromHexString", exc);
             return null;
         }
     }

@@ -89,7 +89,7 @@ public class PatternFillRenderer {
             mySVG = SVG.getFromString(hatchFillSVGString);
         } catch (SVGParseException e) {
             // Failed to generate SVG return empty bitmap
-            ErrorLogger.LogException("PatternFillRendererD", "MakeHatchPatternFill", e);
+            ErrorLogger.LogException("PatternFillRenderer", "MakeHatchPatternFill", e);
             return bm;
         }
         Canvas canvas = new Canvas(bm);

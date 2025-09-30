@@ -203,7 +203,7 @@ public class MultiPointHandlerSVG {
                 west = new Point2D.Double(0, 0);
             }
         } catch (Exception err) {
-            ErrorLogger.LogException("MultiPointHandler", "GeoSVGize", err);
+            ErrorLogger.LogException("MultiPointHandlerSVG", "GeoSVGize", err);
         }
 
         if (paths != null && len > 0 && unionBounds != null) {

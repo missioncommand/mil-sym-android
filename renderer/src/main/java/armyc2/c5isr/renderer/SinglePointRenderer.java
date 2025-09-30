@@ -187,7 +187,7 @@ public class SinglePointRenderer implements SettingsChangedEventListener
         }
         catch (Exception excModifiers)
         {
-            ErrorLogger.LogException("MilStdIconRenderer", "RenderUnit", excModifiers);
+            ErrorLogger.LogException("SinglePointRenderer", "RenderUnit", excModifiers);
         }
         // </editor-fold>
 
@@ -453,7 +453,7 @@ public class SinglePointRenderer implements SettingsChangedEventListener
         }
         catch (Exception exc)
         {
-            ErrorLogger.LogException("MilStdIconRenderer", "RenderUnit", exc);
+            ErrorLogger.LogException("SinglePointRenderer", "RenderUnit", exc);
         }
         return null;
     }
@@ -639,7 +639,7 @@ public class SinglePointRenderer implements SettingsChangedEventListener
         }
         catch (Exception excModifiers)
         {
-            ErrorLogger.LogException("MilStdIconRenderer", "RenderSP", excModifiers);
+            ErrorLogger.LogException("SinglePointRenderer", "RenderSP", excModifiers);
         }
 
         try
@@ -852,7 +852,7 @@ public class SinglePointRenderer implements SettingsChangedEventListener
         }
         catch (Exception exc)
         {
-            ErrorLogger.LogException("MilStdIconRenderer", "RenderSP", exc);
+            ErrorLogger.LogException("SinglePointRenderer", "RenderSP", exc);
         }
         return null;
     }
@@ -970,7 +970,7 @@ public class SinglePointRenderer implements SettingsChangedEventListener
         }
         catch (Exception excModifiers)
         {
-            ErrorLogger.LogException("MilStdIconRenderer", "RenderSP", excModifiers);
+            ErrorLogger.LogException("SinglePointRenderer", "RenderModifier", excModifiers);
         }
 
         try
@@ -1076,7 +1076,7 @@ public class SinglePointRenderer implements SettingsChangedEventListener
         }
         catch (Exception exc)
         {
-            ErrorLogger.LogException("MilStdIconRenderer", "RenderSP", exc);
+            ErrorLogger.LogException("SinglePointRenderer", "RenderModifier", exc);
         }
         return null;
     }

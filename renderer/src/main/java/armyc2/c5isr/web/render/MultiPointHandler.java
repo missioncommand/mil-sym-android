@@ -1977,7 +1977,7 @@ public class MultiPointHandler {
                 return (255 - bgDelta < nThreshold) ? new Color(0, 0, 0, fgColor.getAlpha()) : new Color(255, 255, 255, fgColor.getAlpha());
             }
         } catch (Exception exc) {
-            ErrorLogger.LogException("SymbolDraw", "getIdealtextBGColor", exc);
+            ErrorLogger.LogException("MultiPointHandler", "getIdealTextBackgroundColor", exc);
         }
         return Color.WHITE;
     }
