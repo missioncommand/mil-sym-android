@@ -1150,8 +1150,8 @@ public class SymbolUtilities {
      * @return {@link Point} representing the point in the image that is the anchor point of the symbol.
      */
     public static Point getCMSymbolAnchorPoint(String symbolID, RectF bounds) {
-        float centerX = bounds.width() / 2f;
-        float centerY = bounds.height() / 2f;
+        float centerX = (bounds.width() / 2f) - 1;//-1 because width might be 37 but the points are only 0 - 36
+        float centerY = (bounds.height() / 2f) - 1;
 
         int ss = SymbolID.getSymbolSet(symbolID);
         int ec = SymbolID.getEntityCode(symbolID);
@@ -1167,7 +1167,7 @@ public class SymbolUtilities {
                 case DrawRules.POINT5://entry point 2105
                 case DrawRules.POINT6://ground zero 2107
                 case DrawRules.POINT7://missile detection point 2111
-                    centerY = bounds.height();
+                    centerY = bounds.height()-1;
                     break;
                 case DrawRules.POINT4://drop point 2104 //almost bottom and center
                     centerY = (bounds.height() * 0.80f);

@@ -316,8 +316,11 @@ public class MainActivity extends Activity {
 		    	outline.setStyle(Style.STROKE);
 		    	outline.setStrokeWidth(1);
                 //draw outline around symbol////////////////////////////////////////////////////////
-		    	//msCanvas.drawRect(ii.getSymbolBounds(), outline);
 		    	msCanvas.drawRect(ii.getCenterPoint().x - 1, ii.getCenterPoint().y - 1, ii.getCenterPoint().x + 1, ii.getCenterPoint().y + 1, outline);//*/
+				outline.setColor(Color.BLUE);
+				outline.setAlpha(128);
+				outline.setStrokeWidth(3);
+				msCanvas.drawRect(ii.getSymbolBounds(), outline);
 
 
 				Log.i(TAG, "SymbolBounds: " + ii.getSymbolBounds().toString());

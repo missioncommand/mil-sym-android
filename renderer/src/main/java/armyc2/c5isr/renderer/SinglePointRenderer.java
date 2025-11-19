@@ -602,10 +602,13 @@ public class SinglePointRenderer implements SettingsChangedEventListener
                         pixelSize = (int)Math.ceil((pixelSize/1.5f) * 1.2f);
                 }
 
-                if(attributes.containsKey(MilStdAttributes.OutlineSymbol))
-                    drawCustomOutline = Boolean.parseBoolean(attributes.get(MilStdAttributes.OutlineSymbol));
-                else
-                    drawCustomOutline = RendererSettings.getInstance().getOutlineSPControlMeasures();
+                if(!(drawAsIcon==true || hasAPFill==true))//don't outline icons because they're not going on the map and icons with fills don't need it
+                {
+                    if (attributes.containsKey(MilStdAttributes.OutlineSymbol))
+                        drawCustomOutline = Boolean.parseBoolean(attributes.get(MilStdAttributes.OutlineSymbol));
+                    else
+                        drawCustomOutline = RendererSettings.getInstance().getOutlineSPControlMeasures();
+                }
 
                 if(SymbolUtilities.isMultiPoint(symbolID))
                     drawCustomOutline=false;//icon previews for multipoints do not need outlines since they shouldn't be on the map
@@ -757,15 +760,13 @@ public class SinglePointRenderer implements SettingsChangedEventListener
                     w = symbolBounds.width();
                     h = symbolBounds.height();
 
-                    if(h/(h+borderPadding) > 0.10)
-                    {
-                        borderPadding = (float)(h * 0.1);
+                    if(borderPadding > 0) {
+                        if (h / (h + borderPadding) > 0.10) {
+                            borderPadding = (float) (h * 0.1);
+                        } else if (w / (w + borderPadding) > 0.10) {
+                            borderPadding = (float) (w * 0.1);
+                        }
                     }
-                    else if(w/(w+borderPadding) > 0.10)
-                    {
-                        borderPadding = (float)(w * 0.1);
-                    }
-
                 }
 
                 //Draw glyphs to bitmap
@@ -778,9 +779,11 @@ public class SinglePointRenderer implements SettingsChangedEventListener
                 int offset = 0;
                 if(drawCustomOutline)
                 {
-                    //TODO: maybe come up with a calculation vs just the #2, although it seems to work well.
                     RectUtilities.grow(rect, 2);
                     offset = 4;
+
+                    //RectUtilities.grow(rect, Math.round(borderPadding / ratio));
+                    //offset = (int)borderPadding;
                 }//*/
 
 
@@ -793,7 +796,9 @@ public class SinglePointRenderer implements SettingsChangedEventListener
                 mySVG.setDocumentViewBox(rect.left,rect.top,rect.width(),rect.height());
                 mySVG.renderToCanvas(canvas);
 
-                Point centerPoint = SymbolUtilities.getCMSymbolAnchorPoint(symbolID,new RectF(offset, offset, symbolBounds.right, symbolBounds.bottom));
+                Point centerPoint = SymbolUtilities.getCMSymbolAnchorPoint(symbolID,new RectF(offset, offset, symbolBounds.right-offset, symbolBounds.bottom-offset));
+                if(offset > 0)
+                    centerPoint.offset(offset,offset);
 
                 ii = new ImageInfo(bmp, centerPoint, symbolBounds);
 

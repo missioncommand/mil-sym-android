@@ -524,10 +524,13 @@ public class SinglePointSVGRenderer implements SettingsChangedEventListener
                         pixelSize = (int)Math.ceil((pixelSize/1.5f) * 1.2f);
                 }
 
-                if (attributes.containsKey(MilStdAttributes.OutlineSymbol))
-                    drawCustomOutline = Boolean.parseBoolean(attributes.get(MilStdAttributes.OutlineSymbol));
-                else
-                    drawCustomOutline = RendererSettings.getInstance().getOutlineSPControlMeasures();
+                if(!(drawAsIcon==true || hasAPFill==true))//don't outline icons because they're not going on the map and icons with fills don't need it
+                {
+                    if (attributes.containsKey(MilStdAttributes.OutlineSymbol))
+                        drawCustomOutline = Boolean.parseBoolean(attributes.get(MilStdAttributes.OutlineSymbol));
+                    else
+                        drawCustomOutline = RendererSettings.getInstance().getOutlineSPControlMeasures();
+                }
 
                 if (SymbolUtilities.isMultiPoint(symbolID))
                     drawCustomOutline = false;//icon previews for multipoints do not need outlines since they shouldn't be on the map

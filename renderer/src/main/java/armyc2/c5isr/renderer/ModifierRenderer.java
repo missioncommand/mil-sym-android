@@ -3260,8 +3260,7 @@ public class ModifierRenderer
         }
 
         if(ss == SymbolID.SymbolSet_ControlMeasure) {
-            if (ec == 130500 //contact point
-                    || ec == 130700) //decision point
+            if (ec == 130500) //contact point
             {
                 if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1)) {
                     strText = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
@@ -3278,7 +3277,39 @@ public class ModifierRenderer
                         arrMods.add(ti);
                     }
                 }
-            } else if (ec == 212800)//harbor
+                if (modifiers.containsKey(Modifiers.W_DTG_1)) {
+                    strText = modifiers.get(Modifiers.W_DTG_1);
+                    if (strText != null) {
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
+                        labelWidth = ti.getTextBounds().width();
+
+                        x = (bounds.left - labelWidth - bufferXL);
+                        y = (bounds.top + labelHeight - descent);
+
+                        ti.setLocation(x, y);
+                        arrMods.add(ti);
+                    }
+                }
+            }
+            if (ec == 130700) //decision point
+            {
+                if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1)) {
+                    strText = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
+                    if (strText != null) {
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
+                        labelWidth = Math.round(ti.getTextBounds().width());
+                        //One modifier symbols and modifier goes in center
+                        x = bounds.left + (int) (bounds.width() * 0.5f);
+                        x = x - (int) (labelWidth * 0.5f);
+                        y = bounds.top + (int) (bounds.height() * 0.5f);
+                        y = y + (int) (labelHeight * 0.5f);
+
+                        ti.setLocation(Math.round(x), Math.round(y));
+                        arrMods.add(ti);
+                    }
+                }
+            }
+            else if (ec == 212800)//harbor
             {
                 if (modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1)) {
                     strText = modifiers.get(Modifiers.H_ADDITIONAL_INFO_1);
