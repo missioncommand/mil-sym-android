@@ -3728,6 +3728,7 @@ public class ModifierRenderer
             }
             else if(e == 21 && et == 35)//sonobuoys
             {
+                boolean is2525E = (SymbolID.getVersion(symbolID) >= SymbolID.Version_2525E);
                 //H sitting on center of circle to the right
                 //T above H
                 centerPoint = SymbolUtilities.getCMSymbolAnchorPoint(symbolID,RectUtilities.makeRectFFromRect(bounds));
@@ -3740,6 +3741,11 @@ public class ModifierRenderer
                         x = bounds.left + (bounds.width()) + bufferXR;//right
                         y = centerPoint.y;
 
+                        if(is2525E) {
+                            x = x - (int)(bounds.width() * 0.2);
+                            y = (int) (bounds.top + (bounds.height() / 2));
+                        }
+
                         ti.setLocation(Math.round(x), Math.round(y));
                         arrMods.add(ti);
                     }
@@ -3751,8 +3757,12 @@ public class ModifierRenderer
                             ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                             TextInfo ti2 = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                             labelWidth = Math.round(ti.getTextBounds().width());
-                            x = bounds.left + (bounds.width()) + bufferXR;//right
+                            x = (bounds.left + (bounds.width()) + bufferXR - (int)(bounds.width() * 0.2) );//right
                             y = centerPoint.y - labelHeight;
+
+                            if(is2525E) {
+                                y = (bounds.top + (bounds.height() / 2)) - labelHeight;
+                            }
 
                             ti.setLocation(Math.round(x), Math.round(y));
                             arrMods.add(ti);
