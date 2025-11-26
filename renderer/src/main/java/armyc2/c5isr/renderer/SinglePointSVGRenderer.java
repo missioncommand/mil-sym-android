@@ -517,7 +517,7 @@ public class SinglePointSVGRenderer implements SettingsChangedEventListener
                 } else {
                     pixelSize = RendererSettings.getInstance().getDefaultPixelSize();
                 }
-                if (keepUnitRatio == true && msi.getSymbolSet() == SymbolID.SymbolSet_ControlMeasure && msi.getGeometry().equalsIgnoreCase("point")) {
+                /*if (keepUnitRatio == true && msi.getSymbolSet() == SymbolID.SymbolSet_ControlMeasure && msi.getGeometry().equalsIgnoreCase("point")) {
                     if(msi.getDrawRule() == DrawRules.POINT1)//Action Points
                         pixelSize = (int)Math.ceil((pixelSize/1.5f) * 2.0f);
                     else if(SymbolID.getSymbolSet(symbolID)==SymbolID.SymbolSet_ControlMeasure &&
@@ -527,7 +527,7 @@ public class SinglePointSVGRenderer implements SettingsChangedEventListener
                     }
                     else
                         pixelSize = (int)Math.ceil((pixelSize/1.5f) * 1.2f);
-                }
+                }//*/
 
                 if(!(drawAsIcon==true || hasAPFill==true))//don't outline icons because they're not going on the map and icons with fills don't need it
                 {
@@ -624,6 +624,26 @@ public class SinglePointSVGRenderer implements SettingsChangedEventListener
 
                 String strSVGIcon = null;
 
+                if(keepUnitRatio)
+                {
+                    double scaler = Math.max(width/(float)height, height/(float)width);
+                    if (scaler < 1.2)
+                        scaler = 1.2;
+                    if (scaler > 2)
+                        scaler = 2;
+
+                    if(!SymbolUtilities.isCBRNEvent(symbolID))
+                        pixelSize = (int) Math.ceil((pixelSize / 1.5f) * scaler);
+
+                    /*
+                    double min = Math.min(width/(float)height, height/(float)width);
+                    if (min < 0.6)//Rectangle
+                        pixelSize = (int) Math.ceil((pixelSize / 1.5f) * 2.0f);
+                    else if(min < 0.85)
+                        pixelSize = (int) Math.ceil((pixelSize / 1.5f) * 1.8f);
+                    else //more of a square
+                        pixelSize = (int) Math.ceil((pixelSize / 1.5f) * 1.2f);//*/
+                }
 
                 if (hasAPFill) //action points and a few others //Sonobuoy //ACP, CCP, PUP
                 {
