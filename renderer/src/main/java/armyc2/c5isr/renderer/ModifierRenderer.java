@@ -4593,6 +4593,13 @@ public class ModifierRenderer
 	
 	                y = (int) ((bounds.height() * 0.55));//633333333
 	                y = bounds.top + y;
+
+                    int ec = SymbolID.getEntityCode(symbolID);
+                    if((ec >= 281800 && ec <= 281809) || ec == 321100)
+                    {
+                        y = (int) ((bounds.height() * 0.63));
+                        y = (int)bounds.top + y;
+                    }
 	
 	                ti.setLocation(x, y);
 	                arrMods.add(ti);
