@@ -2289,7 +2289,7 @@ public class ModifierRenderer
         int ss = SymbolID.getSymbolSet(symbolID);
         int pixelSize = RendererSettings.getInstance().getDefaultPixelSize();
         int dpi = RendererSettings.getInstance().getDeviceDPI();
-        if(attributes.containsKey(MilStdAttributes.PixelSize))
+        if(attributes != null && attributes.containsKey(MilStdAttributes.PixelSize))
             pixelSize = Integer.parseInt(attributes.get(MilStdAttributes.PixelSize));
         float strokeWidth = 3f;
         strokeWidth = (float) dpi / 48f;
@@ -2301,7 +2301,8 @@ public class ModifierRenderer
         Rect slBounds = null;
         try {
             if (SymbolUtilities.hasModifier(symbolID, Modifiers.AJ_SPEED_LEADER) &&
-                    (modifiers.containsKey(Modifiers.AJ_SPEED_LEADER))) {
+                    (modifiers != null && modifiers.containsKey(Modifiers.AJ_SPEED_LEADER)))
+            {
                 String aj = modifiers.get(Modifiers.AJ_SPEED_LEADER);
                 String[] values = aj.split(" ");
                 if (values.length >= 3) {
