@@ -746,7 +746,7 @@ public class MultiPointHandler {
                 if(textColor==null)
                     textColor=mSymbol.getLineColor();
 
-                jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, normalize, textColor, mSymbol.get_WasClipped());
+                jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, normalize, textColor, mSymbol.getWasClipped(), mSymbol.isTextScaleSensitive(), mSymbol.isSymbolScaleSensitive());
                 jsonOutput.append(jsonContent);
             } else if (format == WebRenderer.OUTPUT_FORMAT_GEOJSON)
             {
@@ -769,7 +769,11 @@ public class MultiPointHandler {
                 jsonOutput.append("\",\"symbolID\":\"");
                 jsonOutput.append(symbolCode);
                 jsonOutput.append("\",\"wasClipped\":\"");
-                jsonOutput.append(String.valueOf(mSymbol.get_WasClipped()));
+                jsonOutput.append(String.valueOf(mSymbol.getWasClipped()));
+                jsonOutput.append("\",\"textScaleSensitive\":\"");
+                jsonOutput.append(String.valueOf(mSymbol.isTextScaleSensitive()));
+                jsonOutput.append("\",\"symbolScaleSensitive\":\"");
+                jsonOutput.append(String.valueOf(mSymbol.isSymbolScaleSensitive()));
                 //jsonOutput.append("\"}}");
 
                 jsonOutput.append("\"}}]}");
@@ -1312,7 +1316,7 @@ public class MultiPointHandler {
                 if(textColor==null)
                     textColor=mSymbol.getLineColor();
 
-                jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, normalize, textColor, mSymbol.get_WasClipped());
+                jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, normalize, textColor, mSymbol.getWasClipped(), mSymbol.isTextScaleSensitive(), mSymbol.isSymbolScaleSensitive());
                 jsonOutput.append(jsonContent);
             } else if (format == WebRenderer.OUTPUT_FORMAT_GEOJSON) {
                 jsonOutput.append("{\"type\":\"FeatureCollection\",\"features\":");
@@ -1334,7 +1338,11 @@ public class MultiPointHandler {
                 jsonOutput.append("\",\"symbolID\":\"");
                 jsonOutput.append(symbolCode);
                 jsonOutput.append("\",\"wasClipped\":\"");
-                jsonOutput.append(String.valueOf(mSymbol.get_WasClipped()));
+                jsonOutput.append(String.valueOf(mSymbol.getWasClipped()));
+                jsonOutput.append("\",\"textScaleSensitive\":\"");
+                jsonOutput.append(String.valueOf(mSymbol.isTextScaleSensitive()));
+                jsonOutput.append("\",\"symbolScaleSensitive\":\"");
+                jsonOutput.append(String.valueOf(mSymbol.isSymbolScaleSensitive()));
                 //jsonOutput.append("\"}}");
 
                 jsonOutput.append("\"}}]}");
@@ -1848,7 +1856,9 @@ public class MultiPointHandler {
                                  IPointConversion ipc,
                                  boolean normalize,
                                  Color textColor,
-                                 boolean wasClipped) {
+                                 boolean wasClipped,
+                                 int textScaleSensitive,
+                                 int symbolScaleSensitive) {
         java.lang.StringBuilder kml = new java.lang.StringBuilder();
         ShapeInfo tempModifier = null;
         String cdataStart = "<![CDATA[";
@@ -1861,6 +1871,8 @@ public class MultiPointHandler {
         kml.append("<ExtendedData>");
         kml.append("<Data name=\"symbolID\"><value>").append(symbolCode).append("</value></Data>");
         kml.append("<Data name=\"wasClipped\"><value>").append(wasClipped).append("</value></Data>");
+        kml.append("<Data name=\"textScaleSensitive\"><value>").append(textScaleSensitive).append("</value></Data>");
+        kml.append("<Data name=\"symbolScaleSensitive\"><value>").append(symbolScaleSensitive).append("</value></Data>");
         kml.append("</ExtendedData>");
         for (int i = 0; i < len; i++) {
             String shapesToAdd = ShapeToKMLString(shapes.get(i), ipc, normalize);
@@ -3539,7 +3551,7 @@ public class MultiPointHandler {
                 if(textColor==null)
                     textColor=mSymbol.getLineColor();
 
-                jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, normalize, textColor, mSymbol.get_WasClipped());
+                jsonContent = KMLize(id, name, description, symbolCode, shapes, modifiers, ipc, normalize, textColor, mSymbol.getWasClipped(), mSymbol.isTextScaleSensitive(), mSymbol.isSymbolScaleSensitive());
                 jsonOutput.append(jsonContent);
             } else if (format == WebRenderer.OUTPUT_FORMAT_GEOJSON)
             {
@@ -3562,7 +3574,11 @@ public class MultiPointHandler {
                 jsonOutput.append("\",\"symbolID\":\"");
                 jsonOutput.append(symbolCode);
                 jsonOutput.append("\",\"wasClipped\":\"");
-                jsonOutput.append(String.valueOf(mSymbol.get_WasClipped()));
+                jsonOutput.append(String.valueOf(mSymbol.getWasClipped()));
+                jsonOutput.append("\",\"textScaleSensitive\":\"");
+                jsonOutput.append(String.valueOf(mSymbol.isTextScaleSensitive()));
+                jsonOutput.append("\",\"symbolScaleSensitive\":\"");
+                jsonOutput.append(String.valueOf(mSymbol.isSymbolScaleSensitive()));
                 //jsonOutput.append("\"}}");
 
                 jsonOutput.append("\"}}]}");
