@@ -137,6 +137,9 @@ public class SVGLookup {
      */
     public SVGInfo getSVGLInfo(String id, int version)
     {
+        if(id.startsWith("27") && version < SymbolID.Version_2525E)
+            version = SymbolID.Version_2525E;
+        
         if(version >= SymbolID.Version_2525E)
         {
             if (_SVGLookupE.containsKey(id))
