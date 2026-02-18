@@ -23,10 +23,14 @@ public class MSLookup {
     private static Boolean _initCalled = false;
 
     private static Map<String, MSInfo> _MSLookupD = null;
+    private static Map<String, MSInfo> _MSLookup6D = null;
     private static Map<String, MSInfo> _MSLookupE = null;
+    private static Map<String, MSInfo> _MSLookup6E = null;
     private String TAG = "MSLookup";
     private List<String> _IDListD = null;
+    private List<String> _IDList6D = null;
     private List<String> _IDListE = null;
+    private List<String> _IDList6E = null;
 
 
     /*
@@ -52,9 +56,13 @@ public class MSLookup {
         if (_initCalled == false)
         {
             _MSLookupD = new HashMap<>();
+            _MSLookup6D = new HashMap<>();
             _MSLookupE = new HashMap<>();
+            _MSLookup6E = new HashMap<>();
             _IDListD = new ArrayList<>();
+            _IDList6D = new ArrayList<>();
             _IDListE = new ArrayList<>();
+            _IDList6E = new ArrayList<>();
 
             try
             {
@@ -87,15 +95,6 @@ public class MSLookup {
 
         try
         {
-            if(version >= SymbolID.Version_2525E) {
-                lookup = _MSLookupE;
-                list = _IDListE;
-            }
-            else//2525Dch1
-            {
-                lookup = _MSLookupD;
-                list = _IDListD;
-            }
 
             String id = null;
             String ss = null;
@@ -104,6 +103,7 @@ public class MSLookup {
             String et = null;
             String est = null;
             String ec = null;
+            String ver = null;
             String g = null;
             String dr = null;
             String m = null;
@@ -114,7 +114,7 @@ public class MSLookup {
                 //parse first line
                 temp = line.split(delimiter);
 
-                if(temp.length < 5)
+                if(temp.length < 6)
                     ec = "000000";
                 else
                     ec = temp[4];
@@ -137,40 +137,57 @@ public class MSLookup {
                 if(!temp[0].equals(""))
                     ss = temp[0];
 
+                if (!temp[5].equals(""))
+                    ver = temp[5];
+
                 id = ss + ec;
 
                 intSS = Integer.parseInt(ss);
                 if(!ec.equals("000000"))
                 {
-                    if (temp.length >= 7)
+                    if (temp.length >= 8)
                     {//Control Measures and METOCS
-                        if(temp.length >= 8)
+                        if(temp.length >= 9)
                         {
-                            m = temp[7];//modifiers
+                            m = temp[8];//modifiers
                             if(m != null && !m.equals(""))
                                 //m = m.replace("\"","");
                                 modifiers = m.split(",");
                             else
                                 modifiers = null;
                         }
-                        g = temp[5];//geometry
-                        dr = temp[6];//draw rule
-                        lookup.put(id, new MSInfo(version, ss, e, et, est, ec, g, dr, populateModifierList(modifiers)));
+                        g = temp[6];//geometry
+                        dr = temp[7];//draw rule
+
+                        //multi points
+                        String[] verArr = ver.split(",");
+                        for(String v : verArr)
+                        {
+                            addToLookup(new MSInfo(Integer.parseInt(v), ss, e, et, est, ec, g, dr, populateModifierList(modifiers)));
+                        }
                     }
                     else
                     {//Everything else
-                        //_MSLookupD.put(id, new MSInfo(ss, e, et, est, ec));
-                        lookup.put(id, new MSInfo(version, ss, e, et, est, ec,populateModifierList(ss,ec, version)));
+                        //single points
+                        String[] verArr = ver.split(",");
+                        for(String v : verArr)
+                        {
+                            addToLookup(new MSInfo(Integer.parseInt(v), ss, e, et, est, ec, populateModifierList(ss, ec, version)));
+                        }
                     }
-                    list.add(id);
+                    addToList(ver, id);
                 }
                 else if(intSS != SymbolID.SymbolSet_ControlMeasure &&
                         intSS != SymbolID.SymbolSet_Atmospheric &&
                         intSS != SymbolID.SymbolSet_Oceanographic &&
                         intSS != SymbolID.SymbolSet_MeteorologicalSpace)
                 {
-                    lookup.put(id, new MSInfo(version, ss, e, et, est, ec, populateModifierList(ss, ec, version)));
-                    list.add(id);
+                    String[] verArr = ver.split(",");
+                    for(String v : verArr)
+                    {
+                        addToLookup(new MSInfo(Integer.parseInt(v), ss, e, et, est, ec, populateModifierList(ss, ec, version)));
+                    }
+                    addToList(ver, id);
                 }
 
                 modifiers = null;
@@ -181,7 +198,7 @@ public class MSLookup {
 
             if(version < SymbolID.Version_2525E)//add handful of SymbolID.Version_2525D codes to lookup
             {
-                AddVersion10Symbols(lookup);
+                //AddVersion10Symbols(lookup);
             }
 
         }
@@ -192,6 +209,71 @@ public class MSLookup {
 
     }
 
+    private void addToLookup(MSInfo msi)
+    {
+        int version = msi.getVersion();
+        if(version==SymbolID.Version_2525Dch1)
+            _MSLookupD.put(msi.getBasicSymbolID(), msi);
+        if(version==SymbolID.Version_APP6D)
+            _MSLookup6D.put(msi.getBasicSymbolID(), msi);
+        if(version==SymbolID.Version_2525Ech1)
+            _MSLookupE.put(msi.getBasicSymbolID(), msi);
+        if(version==SymbolID.Version_APP6Ech2)
+            _MSLookup6E.put(msi.getBasicSymbolID(), msi);
+    }
+
+    private boolean addCustomToLookupAndList(MSInfo msi)
+    {
+        boolean success = false;
+        int version = msi.getVersion();
+        if(version==SymbolID.Version_2525Dch1) {
+            if(!_MSLookupD.containsKey(msi.getBasicSymbolID())) {
+                _MSLookupD.put(msi.getBasicSymbolID(), msi);
+                _IDListD.add(msi.getBasicSymbolID());
+                success = true;
+            }
+        }
+        if(version==SymbolID.Version_APP6D){
+            if (!_MSLookup6D.containsKey(msi.getBasicSymbolID())) {
+                _MSLookup6D.put(msi.getBasicSymbolID(), msi);
+                _IDList6D.add(msi.getBasicSymbolID());
+                success = true;
+            }
+        }
+        if(version==SymbolID.Version_2525Ech1){
+            if(!_MSLookupE.containsKey(msi.getBasicSymbolID())) {
+                _MSLookupE.put(msi.getBasicSymbolID(), msi);
+                _IDListE.add(msi.getBasicSymbolID());
+                success = true;
+            }
+        }
+        if(version==SymbolID.Version_APP6Ech2) {
+            if(!_MSLookup6E.containsKey(msi.getBasicSymbolID())) {
+                _MSLookup6E.put(msi.getBasicSymbolID(), msi);
+                _IDList6E.add(msi.getBasicSymbolID());
+                success = true;
+            }
+        }
+        return success;
+    }
+
+    private void addToList(String versions, String basicSymbolID)
+    {
+        if(versions.contains(String.valueOf(SymbolID.Version_2525Dch1)))
+            _IDListD.add(basicSymbolID);
+        if(versions.contains(String.valueOf(SymbolID.Version_APP6D)))
+            _IDList6D.add(basicSymbolID);
+        if(versions.contains(String.valueOf(SymbolID.Version_2525Ech1)))
+            _IDListE.add(basicSymbolID);
+        if(versions.contains(String.valueOf(SymbolID.Version_APP6Ech2)))
+            _IDList6E.add(basicSymbolID);
+    }
+
+    /**
+     * these will eventually be in APP6D
+     * //TODO: remove when APP6D implemented
+     * @param lookup
+     */
     private void AddVersion10Symbols(Map<String,MSInfo> lookup)
     {
         String id = null;
@@ -775,35 +857,20 @@ public class MSLookup {
     public MSInfo getMSLInfo(String basicID, int version)
     {
         int length = basicID.length();
-        if(length == 8)
-        {
-            if(version >= SymbolID.Version_2525E)
-            {
-                if(_MSLookupE.containsKey(basicID))
-                    return _MSLookupE.get(basicID);
-                else
-                    return null;
-            }
-            else if (version == SymbolID.Version_2525D && basicID.equals("25272100"))
-            {
-                // MSDZ can have extra point in D
-                return new MSInfo(SymbolID.Version_2525D, "25",
-                        "Protection Areas", "Minimum Safe Distance Zone", "",
-                        "272100", "Area", "Area14", new ArrayList<>());
-            }
+        if (length == 8) {
+            if (version == SymbolID.Version_2525E || version == SymbolID.Version_2525Ech1)
+                return _MSLookupE.get(basicID);
+            else if (version == SymbolID.Version_APP6Ech2 || version == SymbolID.Version_APP6Ech1)
+                return _MSLookup6E.get(basicID);
+            else if (version == SymbolID.Version_APP6D || version == SymbolID.Version_APP6Dch2)
+                return _MSLookup6D.get(basicID);
             else
-            {
-                if(_MSLookupD.containsKey(basicID))
-                    return _MSLookupD.get(basicID);
-                else
-                    return null;
-            }
+                return _MSLookupD.get(basicID);
         }
-        else if(length >= 20 && length <= 30)//probably got a full id instead of a basic ID.
+        else if (length >= 20 && length <= 30)//probably got a full id instead of a basic ID.
         {
             return getMSLInfo(SymbolUtilities.getBasicSymbolID(basicID), version);
-        }
-        else
+        } else
             return null;
     }
 
@@ -813,11 +880,15 @@ public class MSLookup {
      */
     public List<String> getIDList(int version)
     {
-        if(version < SymbolID.Version_2525E)
-            return _IDListD;
-        else if(version >= SymbolID.Version_2525E)
+        if (version == SymbolID.Version_2525E || version == SymbolID.Version_2525Ech1)
             return _IDListE;
-        else
+        else if (version == SymbolID.Version_APP6D || version == SymbolID.Version_APP6Dch2)
+            return _IDList6D;
+        else if (version == SymbolID.Version_2525Dch1)
+            return _IDListD;
+        else if (version == SymbolID.Version_APP6Ech1 || version == SymbolID.Version_APP6Ech2)
+            return _IDList6E;
+        else//default to 2525Dch1
             return _IDListD;
     }
 
@@ -831,29 +902,12 @@ public class MSLookup {
         boolean success = false;
         try
         {
-            int version = msInfo.getVersion();
-            if (version < SymbolID.Version_2525E)
-            {
-                if(this._IDListD.indexOf(msInfo.getBasicSymbolID()) == -1)
-                {
-                    this._IDListD.add(msInfo.getBasicSymbolID());
-                    MSLookup._MSLookupD.put(msInfo.getBasicSymbolID(), msInfo);
-                    success = true;
-                }
-                else
-                    ErrorLogger.LogMessage("Symbol Set and Entity Code combination already exist: " + msInfo.getBasicSymbolID(), Level.INFO,false);
-            }
-            else if (version >= SymbolID.Version_2525E)
-            {
-                if(this._IDListE.indexOf(msInfo.getBasicSymbolID()) == -1)
-                {
-                    this._IDListE.add(msInfo.getBasicSymbolID());
-                    MSLookup._MSLookupE.put(msInfo.getBasicSymbolID(), msInfo);
-                    success = true;
-                }
-                else
-                    ErrorLogger.LogMessage("Symbol Set and Entity Code combination already exist: " + msInfo.getBasicSymbolID(), Level.INFO,false);
-            }
+            if(msInfo != null)
+                success = addCustomToLookupAndList(msInfo);
+            else
+                ErrorLogger.LogMessage("Attempt to add custom msInfo with null object.",Level.INFO,false);
+            if(msInfo != null && !success)
+                ErrorLogger.LogMessage("Symbol Set and Entity Code combination already exist: " + msInfo.getBasicSymbolID(),Level.INFO,false);
         }
         catch(Exception e)
         {
