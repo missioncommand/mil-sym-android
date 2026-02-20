@@ -300,6 +300,7 @@ public class SVGLookup {
         {
             switch(SymbolID.getEntityCode(symbolID))
             {
+                case 110501:
                 case 111000:
                 case 111001:
                 case 111002:
@@ -401,6 +402,21 @@ public class SVGLookup {
                 case 120107:
                 case 120701:
                 case 120702:
+                    //do thing to append correct number
+                    mainIconID += getPostFixForIcon(symbolID);
+                    break;
+                default:
+                    break;
+            }
+        }
+        else if(ss == SymbolID.SymbolSet_DismountedIndividuals)
+        {
+            switch (SymbolID.getEntityCode(symbolID))
+            {
+                case 110101:
+                case 110102:
+                case 110103:
+                case 110104:
                     //do thing to append correct number
                     mainIconID += getPostFixForIcon(symbolID);
                     break;
