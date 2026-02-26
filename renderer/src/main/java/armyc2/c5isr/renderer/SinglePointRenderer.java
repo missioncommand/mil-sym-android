@@ -614,6 +614,10 @@ public class SinglePointRenderer implements SettingsChangedEventListener
                         drawCustomOutline = Boolean.parseBoolean(attributes.get(MilStdAttributes.OutlineSymbol));
                     else
                         drawCustomOutline = RendererSettings.getInstance().getOutlineSPControlMeasures();
+
+                    //Protection of Cultural Property doesn't get outlined
+                    if(ss==25 && ec >= 360000 && ec < 360400)
+                        drawCustomOutline = false;
                 }
 
                 if(SymbolUtilities.isMultiPoint(symbolID))

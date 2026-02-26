@@ -21,6 +21,8 @@ public class SVGLookup {
     private static Boolean _initCalled = false;
     private static Map<String, SVGInfo> _SVGLookupD = null;
     private static Map<String, SVGInfo> _SVGLookupE = null;
+    private static Map<String, SVGInfo> _SVGLookup6D = null;
+    private static Map<String, SVGInfo> _SVGLookup6E = null;
     private String TAG = "SVGLookup";
 
 
@@ -48,6 +50,8 @@ public class SVGLookup {
         {
             _SVGLookupD = new HashMap<>();
             _SVGLookupE = new HashMap<>();
+            _SVGLookup6D = new HashMap<>();
+            _SVGLookup6E = new HashMap<>();
 
             try
             {
@@ -55,9 +59,17 @@ public class SVGLookup {
                 loadData(isD, SymbolID.Version_2525Dch1);
                 isD.close();
 
+                InputStream is6D = context.getResources().openRawResource(R.raw.svg6d);
+                loadData(is6D, SymbolID.Version_2525Dch1);
+                is6D.close();
+
                 InputStream isE = context.getResources().openRawResource(R.raw.svge);
-                loadData(isE, SymbolID.Version_2525E);
+                loadData(isE, SymbolID.Version_2525Ech1);
                 isE.close();
+
+                InputStream is6E = context.getResources().openRawResource(R.raw.svg6e);
+                loadData(is6E, SymbolID.Version_2525E);
+                is6E.close();
 
                 _initCalled = true;
             }
@@ -71,12 +83,6 @@ public class SVGLookup {
 
     private void loadData(InputStream is, int version)
     {
-        Map<String, SVGInfo> lookup;
-        if(version >= SymbolID.Version_2525E)
-            lookup = _SVGLookupE;
-        else
-            lookup = _SVGLookupD;
-
         String[] temp = null;
         String id = null;
         RectF bbox = null;
@@ -86,8 +92,17 @@ public class SVGLookup {
         try
         {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
             String line = br.readLine();
+
+            Map<String, SVGInfo> lookup = null;
+            if(version == SymbolID.Version_2525E || version == SymbolID.Version_2525Ech1)
+                lookup = _SVGLookupE;
+            else if(version == SymbolID.Version_2525Dch1)
+                lookup = _SVGLookupD;
+            else if(version == SymbolID.Version_APP6D)// || version == SymbolID.Version_APP6Dch2)
+                lookup = _SVGLookup6D;
+            else if(version == SymbolID.Version_APP6Ech1 || version == SymbolID.Version_APP6Ech2)
+                lookup = _SVGLookup6E;
 
             while (line != null)
             {
@@ -119,7 +134,8 @@ public class SVGLookup {
                     svg = RendererUtilities.increaseStrokeWidth(svg, 2);
                 }//*/
 
-                lookup.put(id, new SVGInfo(id, bbox, svg));
+                if(lookup != null)
+                    lookup.put(id, new SVGInfo(id, bbox, svg));
 
                 //read next line for next loop
                 line = br.readLine();
@@ -144,18 +160,31 @@ public class SVGLookup {
      */
     public SVGInfo getSVGLInfo(String id, int version)
     {
-        if(id.startsWith("27") && version < SymbolID.Version_2525E)
-            version = SymbolID.Version_2525E;
-        
-        if(version >= SymbolID.Version_2525E)
+        if(version == SymbolID.Version_2525E || version == SymbolID.Version_2525Ech1)
         {
             if (_SVGLookupE.containsKey(id))
                 return _SVGLookupE.get(id);
         }
-        else
+        else if(version == SymbolID.Version_2525Dch1)
         {
             if (_SVGLookupD.containsKey(id))
                 return _SVGLookupD.get(id);
+        }
+        else if(version == SymbolID.Version_APP6Ech2 || version == SymbolID.Version_APP6Ech1)
+        {
+            if (_SVGLookup6E.containsKey(id))
+                return _SVGLookup6E.get(id);
+            else if (_SVGLookupE.containsKey(id))
+                return _SVGLookupE.get(id);
+        }
+        else if(version == SymbolID.Version_APP6D)
+        {
+            if (_SVGLookup6D.containsKey(id))
+                return _SVGLookup6D.get(id);
+            else if (_SVGLookupD.containsKey(id))
+                return _SVGLookupD.get(id);
+            else if (_SVGLookupE.containsKey(id))//Dismounted Individual
+                return _SVGLookupE.get(id);
         }
 
         return null;
