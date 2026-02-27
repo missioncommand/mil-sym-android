@@ -3249,6 +3249,15 @@ public class ModifierRenderer
             outlineOffset = 0;
         }
 
+        //Check for Valid Country Code
+        int cc = SymbolID.getCountryCode(symbolID);
+        String scc = "";
+        if(cc > 0)
+        {
+            scc = GENCLookup.getInstance().get3CharCode(cc);
+        }
+        if(!scc.isEmpty())
+            modifiers.put(Modifiers.AS_COUNTRY, scc);
 
         // <editor-fold defaultstate="collapsed" desc="Process Special Modifiers">
         TextInfo ti = null;
@@ -3292,11 +3301,18 @@ public class ModifierRenderer
                     }
                 }
             }
-            if (ec == 130700) //decision point
+            else if (ec == 130700) //decision point
             {
                 if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1)) {
-                    strText = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
-                    if (strText != null) {
+
+                    strText = "";
+                    if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1))
+                        strText += modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
+                    if (modifiers.containsKey(Modifiers.AS_COUNTRY))
+                        strText += " " + modifiers.get(Modifiers.AS_COUNTRY);
+                    strText = strText.trim();
+
+                    if (!strText.isEmpty()) {
                         ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = Math.round(ti.getTextBounds().width());
                         //One modifier symbols and modifier goes in center
@@ -3473,6 +3489,35 @@ public class ModifierRenderer
                     }
                 }
             }
+            else if (ec == 213400 && SymbolID.getVersion(symbolID)==SymbolID.Version_APP6Ech2)  //Navigation Reference Point
+            {
+                if (modifiers.containsKey(Modifiers.W_DTG_1))
+                {
+                    strText = modifiers.get(Modifiers.W_DTG_1);
+                    if (strText != null) {
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
+
+                        x = (int)(bounds.left + (bounds.width() * 0.75f));
+                        y = (int)(bounds.top + (bounds.height() * 0.75f));
+                        y = y + labelHeight;
+
+                        ti.setLocation(Math.round(x), Math.round(y));
+                        arrMods.add(ti);
+                    }
+                }
+                if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1)) {
+                    strText = modifiers.get(Modifiers.T_UNIQUE_DESIGNATION_1);
+                    if (strText != null) {
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
+
+                        x = (int)(bounds.left + (bounds.width() * 0.25f)-ti.getTextBounds().width());
+                        y = (int)(bounds.top + (bounds.height() * 0.25f));
+
+                        ti.setLocation(Math.round(x), Math.round(y));
+                        arrMods.add(ti);
+                    }
+                }
+            }
             else if (ec == 132100)//Key Terrain
             {
                 if (modifiers.containsKey(Modifiers.T_UNIQUE_DESIGNATION_1)) {
@@ -3492,14 +3537,32 @@ public class ModifierRenderer
                     }
                 }
             }
+            else if (ec == 132300)  //Vital Ground
+            {
+                if (modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1)) {
+                    strText = modifiers.get(Modifiers.H_ADDITIONAL_INFO_1);
+                    if (strText != null) {
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
+
+                        //One modifier symbols and modifier goes bottom right of symbol
+                        x = (int)(bounds.left + (bounds.width() * 0.88f));
+
+                        y = (int)(bounds.top + (bounds.height() * 0.88f));
+                        y = y + (labelHeight - descent);
+
+                        ti.setLocation(Math.round(x), Math.round(y));
+                        arrMods.add(ti);
+                    }
+                }
+            }
             else if(ec == 182600)//Isolated Personnel Location
             {
-                if (modifiers.containsKey(Modifiers.C_QUANTITY)) {
-                    strText = modifiers.get(Modifiers.C_QUANTITY);
+                if (modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1)) {
+                    strText = modifiers.get(Modifiers.H_ADDITIONAL_INFO_1);
                     if (strText != null) {
                         ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
                         labelWidth = (int)Math.round(ti.getTextBounds().width());
-                        //subset of NBC, just nuclear
+
                         x = (int)(bounds.left + (bounds.width() * 0.5));
                         x = x - (int) (labelWidth * 0.5);
                         y = (int)bounds.top - descent;
@@ -3947,6 +4010,22 @@ public class ModifierRenderer
                         arrMods.add(ti);
                     }
 
+                }
+            }
+            else if(ec == 360100 || ec == 360200 || ec == 360300)//Protection of Cultural Property
+            {
+                if (modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1)) {
+                    strText = modifiers.get(Modifiers.H_ADDITIONAL_INFO_1);
+                    if (strText != null) {
+                        ti = new TextInfo(strText, 0, 0, modifierFont, modifierFontName);
+
+                        //One modifier symbols and modifier goes right of center
+                        x = (int)(bounds.left + bounds.width() + bufferXR);
+                        y = (int)(bounds.top + (bounds.height() * 0.6));
+
+                        ti.setLocation(Math.round(x), Math.round(y));
+                        arrMods.add(ti);
+                    }
                 }
             }
         }
