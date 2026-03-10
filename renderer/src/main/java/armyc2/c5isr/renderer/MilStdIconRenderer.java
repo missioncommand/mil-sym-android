@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 
+import armyc2.c5isr.renderer.utilities.C2DLookup;
 import armyc2.c5isr.renderer.utilities.DrawRules;
 import armyc2.c5isr.renderer.utilities.ErrorLogger;
 import armyc2.c5isr.renderer.utilities.GENCLookup;
@@ -94,6 +95,9 @@ public class MilStdIconRenderer
 
                 //SectorMod lookups
                 SectorModUtils.getInstance().init(context);
+
+                //C2DLookup (2525C -> 2525Dch1 code conversion)
+                C2DLookup.getInstance().init(context);
 
                 // setup single point renderer
                 _SPR = SinglePointRenderer.getInstance();

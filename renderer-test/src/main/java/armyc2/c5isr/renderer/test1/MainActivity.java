@@ -29,7 +29,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import armyc2.c5isr.renderer.MilStdIconRenderer;
+import armyc2.c5isr.renderer.utilities.C2DLookup;
 import armyc2.c5isr.renderer.utilities.ErrorLogger;
+import armyc2.c5isr.renderer.utilities.GENCLookup;
 import armyc2.c5isr.renderer.utilities.ImageInfo;
 import armyc2.c5isr.renderer.utilities.MSInfo;
 import armyc2.c5isr.renderer.utilities.MSLookup;
@@ -181,11 +183,22 @@ public class MainActivity extends Activity {
 
             t.setText("Renderer Initialized");
 
-		SectorModUtils smu = SectorModUtils.getInstance();
-		String name = smu.getName(11,1,1,"01");
-		ArrayList<String[]> al = smu.getSectorModList(11,1,1);
-		name = smu.getName(15,0,1,"100");
-		ErrorLogger.LogMessage(name);
+			//Sector Mod Test
+			SectorModUtils smu = SectorModUtils.getInstance();
+			String name = smu.getName(11,1,1,"01");
+			ArrayList<String[]> al = smu.getSectorModList(11,1,1);
+			name = smu.getName(15,0,1,"100");
+			ErrorLogger.LogMessage(name);
+
+			//test code conversion
+            String newCode = C2DLookup.getInstance().getDCode("GFGPDAE---**USX",true);
+            ErrorLogger.LogMessage(newCode);
+            String country = GENCLookup.getInstance().get3CharCode(840);
+            ErrorLogger.LogMessage(country);
+            country = GENCLookup.getInstance().get3CharCode(540);
+            ErrorLogger.LogMessage(country);
+            country = GENCLookup.getInstance().get3DigitCode("US");
+            ErrorLogger.LogMessage(country);//*/
             
 		
 	}
