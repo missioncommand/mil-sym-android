@@ -3939,6 +3939,10 @@ public final class arraysupport {
                 case TacticalLines.EASY:
                     acCounter = DISMSupport.GetDISMEasyDouble(pLinePoints, lineType);
                     break;
+                case TacticalLines.DECEIVE:
+                    DISMSupport.GetDISMDeceiveDouble(pLinePoints);
+                    acCounter = 4;
+                    break;
                 case TacticalLines.BYPASS:
                     acCounter = DISMSupport.GetDISMBypassDouble(pLinePoints, lineType);
                     break;
