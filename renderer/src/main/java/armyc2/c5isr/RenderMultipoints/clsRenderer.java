@@ -2779,6 +2779,8 @@ public final class clsRenderer {
                 return TacticalLines.SCREEN;
             case 342300:
                 return TacticalLines.SEIZE;
+            case 343000:
+                return TacticalLines.CAPTURE;
             case 342400:
                 return TacticalLines.WITHDRAW;
             case 342500:

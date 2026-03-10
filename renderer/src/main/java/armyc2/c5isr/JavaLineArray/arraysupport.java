@@ -3811,6 +3811,7 @@ public final class arraysupport {
                     acCounter = DISMSupport.GetDISMByDifDouble(pLinePoints, lineType, clipBounds);
                     break;
                 case TacticalLines.SEIZE:
+                case TacticalLines.CAPTURE:
                 case TacticalLines.EVACUATE:
                     double radius = 0;
                     if (vblSaveCounter == 4) {
@@ -3983,6 +3984,7 @@ public final class arraysupport {
                 case TacticalLines.SECURE:
                 case TacticalLines.AREA_DEFENSE:
                 case TacticalLines.SEIZE:
+                case TacticalLines.CAPTURE:
                 case TacticalLines.EVACUATE:
                 case TacticalLines.TURN:
                 case TacticalLines.BS_RECTANGLE:
