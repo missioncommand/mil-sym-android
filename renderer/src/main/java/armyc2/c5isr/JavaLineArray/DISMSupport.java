@@ -2318,7 +2318,7 @@ public final class DISMSupport
             points[counter - 1].style = 5;
 
             // draw the arrowhead on line between savepoints 2 and 3
-            if (linetype != TacticalLines.MOBILE_DEFENSE) {
+            if (linetype == TacticalLines.RIP) {
                 pts[0] = new POINT2(savepoints[2]);
                 pts[1] = new POINT2(savepoints[3]);
                 iLengthPt2Pt3 =  Math.sqrt((pts[1].x - pts[0].x) * (pts[1].x - pts[0].x) +
