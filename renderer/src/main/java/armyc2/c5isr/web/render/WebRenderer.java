@@ -781,14 +781,22 @@ public final class WebRenderer /* extends Applet */ {
                     returnVal = SymbolID.setEntityCode(returnVal,140603);//Direction of Supporting Attack
                     returnVal = SymbolID.setHQTFD(returnVal,SymbolID.HQTFD_FeintDummy);
                     break;
-                case 260100: //FSCL
-                case 260200: //CFL
-                case 260300: //NFL
-                case 260400: //BCL
-                case 260500: //RFL
-                    //instead of T1 uses T2 & AS
+                case 270705://Dummy Minefield
+                    returnVal = SymbolID.setEntityCode(returnVal,270701);//Static Depiction
+                    returnVal = SymbolID.setHQTFD(returnVal,SymbolID.HQTFD_FeintDummy);
                     break;
-
+                case 270706://Dummy Minefield, Dynamic
+                    returnVal = SymbolID.setEntityCode(returnVal,270707);//Dynamic Depiction
+                    returnVal = SymbolID.setHQTFD(returnVal,SymbolID.HQTFD_FeintDummy);
+                    break;
+                case 270900://Decoy Mined Area
+                    returnVal = SymbolID.setEntityCode(returnVal,270800);//Mined Area
+                    returnVal = SymbolID.setHQTFD(returnVal,SymbolID.HQTFD_FeintDummy);
+                    break;
+                case 270901://Decoy Mined Area, Fenced
+                    returnVal = SymbolID.setEntityCode(returnVal,270801);//Mined Area
+                    returnVal = SymbolID.setHQTFD(returnVal,SymbolID.HQTFD_FeintDummy);
+                    break;
             }
             return returnVal;
         }
