@@ -3471,7 +3471,6 @@ public final class arraysupport {
                     acCounter = 14;
                     break;
                 case TacticalLines.DIRATKSPT:
-                case TacticalLines.INFILTRATION:
                     if (lineType == TacticalLines.DIRATKSPT) {
                         //reverse the points
                         lineutility.ReversePointsDouble2(
@@ -3490,6 +3489,31 @@ public final class arraysupport {
                     if (dMBR > 500 * DPIScaleFactor) {
                         dMBR = 500 * DPIScaleFactor;
                     }
+
+                    lineutility.GetArrowHead4Double(pLinePoints[vblCounter - 5], pLinePoints[vblCounter - 4], (int) dMBR / 20, (int) dMBR / 20, pArrowPoints, 0);
+                    for (k = 0; k < 3; k++) {
+                        pLinePoints[vblCounter - k - 1] = new POINT2(pArrowPoints[k]);
+                    }
+                    acCounter = vblCounter;
+                    break;
+                case TacticalLines.EXFILTRATION:
+                case TacticalLines.INFILTRATION:
+
+                    if (dMBR / 20 > maxLength * DPIScaleFactor) {
+                        dMBR = 20 * maxLength * DPIScaleFactor;
+                    }
+                    if (dMBR / 20 < minLength * DPIScaleFactor) {
+                        dMBR = 20 * minLength * DPIScaleFactor;
+                    }
+                    if (dMBR < 150 * DPIScaleFactor) {
+                        dMBR = 150 * DPIScaleFactor;
+                    }
+                    if (dMBR > 500 * DPIScaleFactor) {
+                        dMBR = 500 * DPIScaleFactor;
+                    }
+
+                    pLinePoints = DISMSupport.GetInfiltrationDouble(pLinePoints);
+                    vblCounter = pLinePoints.length;;
 
                     lineutility.GetArrowHead4Double(pLinePoints[vblCounter - 5], pLinePoints[vblCounter - 4], (int) dMBR / 20, (int) dMBR / 20, pArrowPoints, 0);
                     for (k = 0; k < 3; k++) {
@@ -4785,6 +4809,7 @@ public final class arraysupport {
                     addPolyline(secondPoly, 9, shapes); // Arrow and bowtie
                     break;
                 case TacticalLines.DIRATKSPT:
+                case TacticalLines.EXFILTRATION:
                 case TacticalLines.INFILTRATION:
                     addPolyline(pLinePoints, acCounter - 3, shapes); // Main line
                     secondPoly = new POINT2[3];
