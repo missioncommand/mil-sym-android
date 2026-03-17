@@ -1281,7 +1281,7 @@ public final class lineutility {
      *
      * @return the extension point
      */
-    protected static POINT2 ExtendLine2Double(POINT2 pt1,
+    public static POINT2 ExtendLine2Double(POINT2 pt1,
             POINT2 pt2,
             double dist,
             int styl) {

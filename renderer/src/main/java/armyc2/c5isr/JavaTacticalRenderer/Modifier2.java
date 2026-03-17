@@ -33,9 +33,11 @@ import armyc2.c5isr.renderer.SinglePointRenderer;
 import armyc2.c5isr.renderer.utilities.Color;
 import armyc2.c5isr.renderer.utilities.EntityCode;
 import armyc2.c5isr.renderer.utilities.ErrorLogger;
+import armyc2.c5isr.renderer.utilities.GENCLookup;
 import armyc2.c5isr.renderer.utilities.IPointConversion;
 import armyc2.c5isr.renderer.utilities.ImageInfo;
 import armyc2.c5isr.renderer.utilities.MilStdAttributes;
+import armyc2.c5isr.renderer.utilities.Modifiers;
 import armyc2.c5isr.renderer.utilities.RendererException;
 import armyc2.c5isr.renderer.utilities.RendererSettings;
 import armyc2.c5isr.renderer.utilities.RendererUtilities;
@@ -1152,6 +1154,7 @@ public class Modifier2 {
                     break;
                 case TacticalLines.PDF:
                 case TacticalLines.PL:
+                case TacticalLines.DECISION_LINE:
                 case TacticalLines.FEBA:
                 case TacticalLines.LOA:
                 case TacticalLines.LOD:
@@ -2109,6 +2112,7 @@ public class Modifier2 {
                 case TacticalLines.MINED:
                 case TacticalLines.FENCED:
                 case TacticalLines.PL:
+                case TacticalLines.DECISION_LINE:
                 case TacticalLines.FEBA:
                 case TacticalLines.FCL:
                 case TacticalLines.HOLD:
@@ -2287,6 +2291,17 @@ public class Modifier2 {
                 case TacticalLines.PL:
                     AddIntegralAreaModifier(tg, label + TSpace + tg.get_Name(), toEnd, T1LineFactor, pt0, pt1, false);
                     AddIntegralAreaModifier(tg, label + TSpace + tg.get_Name(), toEnd, T1LineFactor, ptLast, ptNextToLast, false);
+                    break;
+                case TacticalLines.DECISION_LINE:
+                    if(tg.get_AS() == null || !tg.get_AS().isEmpty())
+                        tg.set_AS(GENCLookup.getInstance().get3CharCode(SymbolID.getCountryCode(tg.get_SymbolId())));
+                    Bitmap bi =  getImageModifier(tg);
+
+                    POINT2 ptDP1 = lineutility.ExtendLine2Double(pt1,pt0,bi.getWidth()/2,0);
+                    POINT2 ptDP2 = lineutility.ExtendLine2Double(ptNextToLast, ptLast,bi.getWidth()/2,0);
+
+                    AddIntegralAreaModifier(tg,bi,toEnd,0,ptDP1,ptDP1,false);
+                    AddIntegralAreaModifier(tg,bi,toEnd,0,ptDP2,ptDP2,false);
                     break;
                 case TacticalLines.BS_LINE:
                 case TacticalLines.BBS_LINE:
@@ -4828,7 +4843,20 @@ public class Modifier2 {
                 sa.put(MilStdAttributes.PixelSize, String.valueOf((int) (tg.get_IconSize() * 1.5)));
             }
             symbol = SinglePointRenderer.getInstance().RenderModifier(symbolID, sa);
-        } else if (lineType == TacticalLines.ANCHORAGE_LINE || lineType == TacticalLines.ANCHORAGE_AREA) {
+        }
+        else if (lineType == TacticalLines.DECISION_LINE) {
+
+            sa.put(MilStdAttributes.PixelSize, String.valueOf((int) (tg.get_IconSize() * 1.5)));
+            sa.put(MilStdAttributes.KeepUnitRatio, String.valueOf((tg.get_KeepUnitRation())));
+            sa.put(MilStdAttributes.FillColor, RendererUtilities.colorToHexString(tg.get_FillColor(), true));
+            sa.put(MilStdAttributes.LineColor, RendererUtilities.colorToHexString(tg.get_LineColor(), true));
+            sa.put(MilStdAttributes.OutlineSymbol, "false");
+            mods.put(Modifiers.T_UNIQUE_DESIGNATION_1, (tg.get_Name()));
+
+            String decisionPoint = SymbolID.setEntityCode(symbolID, EntityCode.EntityCode_Decision_Point);
+            symbol = SinglePointRenderer.getInstance().RenderSP(decisionPoint, mods, sa);
+        }
+        else if (lineType == TacticalLines.ANCHORAGE_LINE || lineType == TacticalLines.ANCHORAGE_AREA) {
             sa.put(MilStdAttributes.OutlineSymbol, "false");
             String anchorPoint = SymbolID.setEntityCode(symbolID, EntityCode.EntityCode_AnchoragePoint);
             symbol = SinglePointRenderer.getInstance().RenderSP(anchorPoint, mods, sa);
