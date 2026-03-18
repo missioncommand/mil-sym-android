@@ -5,6 +5,7 @@
 package armyc2.c5isr.JavaLineArray;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import armyc2.c5isr.JavaTacticalRenderer.TGLight;
 import armyc2.c5isr.renderer.utilities.ErrorLogger;
@@ -3519,6 +3520,7 @@ public final class arraysupport {
                     for (k = 0; k < 3; k++) {
                         pLinePoints[vblCounter - k - 1] = new POINT2(pArrowPoints[k]);
                     }
+                    points =  new ArrayList<>(Arrays.asList(pLinePoints));//set pixels to be used for integral modifier placement
                     acCounter = vblCounter;
                     break;
                 case TacticalLines.EXPLOIT:
@@ -3844,6 +3846,11 @@ public final class arraysupport {
                         acCounter = DISMSupport.GetDISMCoverDouble(pLinePoints, lineType);
                     }
                     break;
+                case TacticalLines.ESCORT:
+                {
+                    acCounter = DISMSupport.GetDISMEscortDouble(tg, pLinePoints, TacticalLines.ESCORT);
+                    break;
+                }
                 case TacticalLines.SARA:
                     acCounter = DISMSupport.GetDISMCoverDouble(pLinePoints, lineType);
                     //reorder pLinePoints
@@ -4066,6 +4073,7 @@ public final class arraysupport {
                 case TacticalLines.COVER:
                 case TacticalLines.SCREEN:  //note: screen, cover, guard are getting their modifiers before the call to getlinearray
                 case TacticalLines.GUARD:
+                case TacticalLines.ESCORT:
                 case TacticalLines.PAA_RECTANGULAR:
                 case TacticalLines.RECTANGULAR_TARGET:
                 case TacticalLines.FOLSP:
