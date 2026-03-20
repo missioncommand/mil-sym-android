@@ -526,22 +526,25 @@ public class RendererUtilities {
             //adjust max size for narrow, tall icons
             if(bbox.width() < 60 && bbox.height() > 90)
                 maxSize = 200;
+
+            if(SVGLookup.getMainIconID(symbolID).length() == 8 && length < 145 && length > 0 &&
+                    bbox.height() < 105 &&
+                    SymbolID.getCommonModifier1(symbolID)==0 &&
+                    SymbolID.getCommonModifier2(symbolID)==0 &&
+                    SymbolID.getModifier1(symbolID)==0 &&
+                    SymbolID.getModifier2(symbolID)==0)//if largest side smaller than 145 and there are no section mods, make it bigger
+            {
+                double ratio = maxSize / length;
+                double transx = ((bbox.left + (bbox.width()/2)) * ratio) - (bbox.left + (bbox.width()/2));
+                double transy = ((bbox.top + (bbox.height()/2)) * ratio) - (bbox.top + (bbox.height()/2));
+                String transform = " transform=\"translate(-" + transx + ",-" + transy + ") scale(" + ratio + " " + ratio + ")\">";
+                String svg = icon.getSVG();
+                svg = svg.replaceFirst(">",transform);
+                RectF newBbox = RectUtilities.makeRectF((float)(bbox.left - transx),(float)(bbox.top - transy),(float)(bbox.width() * ratio), (float) (bbox.height() * ratio));
+                retVal = new SVGInfo(icon.getID(),newBbox,svg);
+            }
         }
-        if(SVGLookup.getMainIconID(symbolID).length() == 8 && length < 140 && length > 0 &&
-                SymbolID.getCommonModifier1(symbolID)==0 &&
-                SymbolID.getCommonModifier2(symbolID)==0 &&
-                SymbolID.getModifier1(symbolID)==0 &&
-                SymbolID.getModifier2(symbolID)==0)//if largest side smaller than 140 and there are no section mods, make it bigger
-        {
-            double ratio = maxSize / length;
-            double transx = ((bbox.left + (bbox.width()/2)) * ratio) - (bbox.left + (bbox.width()/2));
-            double transy = ((bbox.top + (bbox.height()/2)) * ratio) - (bbox.top + (bbox.height()/2));
-            String transform = " transform=\"translate(-" + transx + ",-" + transy + ") scale(" + ratio + " " + ratio + ")\">";
-            String svg = icon.getSVG();
-            svg = svg.replaceFirst(">",transform);
-            RectF newBbox = RectUtilities.makeRectF((float)(bbox.left - transx),(float)(bbox.top - transy),(float)(bbox.width() * ratio), (float) (bbox.height() * ratio));
-            retVal = new SVGInfo(icon.getID(),newBbox,svg);
-        }
+
         return retVal;
     }
 
