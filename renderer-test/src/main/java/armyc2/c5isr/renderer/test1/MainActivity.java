@@ -226,7 +226,7 @@ public class MainActivity extends Activity {
 	    	///////////////////
 	    	String symbolID = editText.getText().toString();
 	    	if(symbolID == null || symbolID.contentEquals(""))
-	    		symbolID = "30031000002003000000"; //law enforcement
+	    		symbolID = "11031000001206010000"; //rotary wing reconnaissance
 
 			Map<String,String> modifiers = new HashMap<>();
 			Map<String,String> attributes = new HashMap<>();
@@ -288,7 +288,7 @@ public class MainActivity extends Activity {
 	    		Log.i("DrawSymbol", "CanRender: False");
 
 			//lookup test
-			MSInfo msi = MSLookup.getInstance().getMSLInfo("30031000002003000000");
+			MSInfo msi = MSLookup.getInstance().getMSLInfo("11031000001206010000");
 
 	    	//ImageInfo ii = mir.RenderUnit(symbolID, modifiers);
 			//attributes.put(MilStdAttributes.IconColor,"#00FF00");
