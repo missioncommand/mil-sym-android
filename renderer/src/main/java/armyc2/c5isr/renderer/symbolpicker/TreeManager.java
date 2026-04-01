@@ -73,77 +73,83 @@ public class TreeManager {
         }
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
-        while ((line = br.readLine()) != null) {
-            // count tabs to calculate nodeDepth
-            int nodeDepth = 1;
-            while (line.charAt(0) == '\t') {
-                line = line.substring(1);
-                nodeDepth++;
-            }
+        try {
+            while ((line = br.readLine()) != null) {
+                if (line.split("\t")[5].contains(String.valueOf(version))) {
+                    // count tabs to calculate nodeDepth
+                    int nodeDepth = 1;
+                    while (line.charAt(0) == '\t') {
+                        line = line.substring(1);
+                        nodeDepth++;
+                    }
 
-            if (nodeDepth > parentStack.size()) {
-                parentStack.push(child);
-            }
-            while (nodeDepth < parentStack.size()) {
-                parentStack.pop();
-            }
+                    if (nodeDepth > parentStack.size()) {
+                        parentStack.push(child);
+                    }
+                    while (nodeDepth < parentStack.size()) {
+                        parentStack.pop();
+                    }
 
-            // special case for parsing the Symbol Set codes since they're only 2 digits
-            if (nodeDepth == 1) {
-                String[] segments = line.split("\\t");
-                symbolSet = segments[0];
+                    // special case for parsing the Symbol Set codes since they're only 2 digits
+                    if (nodeDepth == 1) {
+                        String[] segments = line.split("\\t");
+                        symbolSet = segments[0];
 
-                if (SYMBOL_BLACKLIST.contains(symbolSet)) {
-                    continue;
-                }
+                        if (SYMBOL_BLACKLIST.contains(symbolSet)) {
+                            continue;
+                        }
 
-                child = getChild(parentStack.peek(), symbolSet, "000000");
-                if (child == null) {
-                    child = new Node(MSInfo.parseSymbolSetName(symbolSet,version), String.valueOf(version), symbolSet, "000000");
-                    parentStack.peek().addChild(child);
-                }
+                        child = getChild(parentStack.peek(), symbolSet, "000000");
+                        if (child == null) {
+                            child = new Node(MSInfo.parseSymbolSetName(symbolSet, version), String.valueOf(version), symbolSet, "000000");
+                            parentStack.peek().addChild(child);
+                        }
 
-                if (segments[1].equals("Unspecified")) {
-                    // Ignore rest of line
-                    continue;
-                } else {
-                    // There is a subfolder on this line, add parent and continue parsing
-                    parentStack.push(child);
-                }
-            }
+                        if (segments[1].equals("Unspecified")) {
+                            // Ignore rest of line
+                            continue;
+                        } else {
+                            // There is a subfolder on this line, add parent and continue parsing
+                            parentStack.push(child);
+                        }
+                    }
 
-            // skip "{Reserved for future use}" codes
-            if (!line.toLowerCase().contains("{reserved for future use}")) {
-                String[] segments = line.split("\t+");
-                String name;
-                if (nodeDepth == 1) {
-                    name = segments[1];
-                } else {
-                    name = segments[0];
-                }
+                    // skip "{Reserved for future use}" codes
+                    if (!line.toLowerCase().contains("{reserved for future use}")) {
+                        String[] segments = line.split("\t+");
+                        String name;
+                        if (nodeDepth == 1) {
+                            name = segments[1];
+                        } else {
+                            name = segments[0];
+                        }
 
-                // XXXXXX would indicate an error reading the file where it couldn't find 6 digits
-                String code = "XXXXXX";
-                // extract 6-digit decimal code from remainder of line segments
-                for (int i = 1; i < segments.length; i++) {
-                    if (segments[i].matches("\\d{6}")) {
-                        code = segments[i];
-                        break;
+                        // XXXXXX would indicate an error reading the file where it couldn't find 6 digits
+                        String code = "XXXXXX";
+                        // extract 6-digit decimal code from remainder of line segments
+                        for (int i = 1; i < segments.length; i++) {
+                            if (segments[i].matches("\\d{6}")) {
+                                code = segments[i];
+                                break;
+                            }
+                        }
+
+                        if (SYMBOL_BLACKLIST.contains(symbolSet) || SYMBOL_BLACKLIST.contains(symbolSet + code)) {
+                            continue;
+                        }
+
+                        child = getChild(parentStack.peek(), symbolSet, code);
+                        if (child == null) {
+                            child = new Node(name, String.valueOf(version), symbolSet, code);
+                            parentStack.peek().addChild(child);
+                        }
                     }
                 }
-
-                if (SYMBOL_BLACKLIST.contains(symbolSet) || SYMBOL_BLACKLIST.contains(symbolSet + code)) {
-                    continue;
-                }
-
-                child = getChild(parentStack.peek(), symbolSet, code);
-                if (child == null) {
-                    child = new Node(name, String.valueOf(version), symbolSet, code);
-                    parentStack.peek().addChild(child);
-                }
             }
+            br.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        br.close();
     }
 
     private Node getChild(Node parent, String symbolSet, String entityCode) {

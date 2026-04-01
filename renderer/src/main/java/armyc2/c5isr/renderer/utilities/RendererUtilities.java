@@ -358,6 +358,7 @@ public class RendererUtilities {
         String strokeCapSquare = " stroke-linecap=\"square\"";
         String strokeCapButt = " stroke-linecap=\"butt\"";
         String strokeCapRound = " stroke-linecap=\"round\"";
+        int outlineSize = 15;
 
         int affiliation = SymbolID.getAffiliation(symbolID);
         String defaultFillColor = null;
@@ -379,12 +380,14 @@ public class RendererUtilities {
                     defaultStrokeColor = "#00A651";
 
             }
-            //key terrain
-            if(symbolID.length() >= 20 &&
-                    SymbolUtilities.getBasicSymbolID(symbolID).equals("25132100") &&
-                    SymbolID.getVersion(symbolID) >= SymbolID.Version_2525E)
+
+            if(symbolID.length() >= 20)
             {
-                defaultStrokeColor = "#800080";
+                if(SymbolUtilities.getBasicSymbolID(symbolID).equals("25132100") && //key terrain
+                        SymbolID.getVersion(symbolID) >= SymbolID.Version_2525E)
+                    defaultStrokeColor = "#800080";
+                else if(isOutline && SymbolUtilities.getBasicSymbolID(symbolID).startsWith("2535"))//space debris doesn't change color
+                    defaultStrokeColor = "black";
             }
             returnSVG = returnSVG.replaceAll("stroke=\"" + defaultStrokeColor + "\"", "stroke=\"" + hexStrokeColor + "\"" + strokeOpacity);
             returnSVG = returnSVG.replaceAll("fill=\"" + defaultStrokeColor + "\"", "fill=\"" + hexStrokeColor + "\"" + fillOpacity);
@@ -395,35 +398,10 @@ public class RendererUtilities {
         }
 
         if (isOutline) {
-            // Capture and scale stroke-widths to create outlines. Note that some stroke-widths are not integral numbers.
-            Pattern pattern = Pattern.compile("(stroke-width=\")(\\d+\\.?\\d*)\"");
-            Matcher m = pattern.matcher(svg);
-            TreeSet<String> strokeWidthStrings = new TreeSet<>();
-            while (m.find()) {
-                strokeWidthStrings.add(m.group(0));
-            }
-            // replace stroke width values in SVG from greatest to least to avoid unintended replacements
-            // TODO This might not actually sort strings from greatest to least stroke-width values because they're alphabetical
-            for (String target : strokeWidthStrings.descendingSet()) {
-                Pattern numPattern = Pattern.compile("\\d+\\.?\\d*");
-                Matcher numMatcher = numPattern.matcher(target);
-                numMatcher.find();
-                float f = Float.parseFloat(numMatcher.group(0));
-                String replacement = "stroke-width=\"" + (f * OUTLINE_SCALING_FACTOR) + "\"";
-                returnSVG = returnSVG.replace(target, replacement);
-            }
-
-            // add stroke-width and stroke (color) to all groups
-            pattern = Pattern.compile("(<g)");
-            m = pattern.matcher(svg);
-            TreeSet<String> groupStrings = new TreeSet<>();
-            while (m.find()) {
-                groupStrings.add(m.group(0));
-            }
-            for (String target : groupStrings) {
-                String replacement = target + strokeCapSquare + " stroke-width=\"" + (2.5f * OUTLINE_SCALING_FACTOR) + "\" stroke=\"#" + strokeColor.toHexString().substring(2) + "\" ";
-                returnSVG = returnSVG.replace(target, replacement);
-            }
+            //increase stroke-width so the white outline shows around the symbol
+            returnSVG = increaseStrokeWidth(returnSVG,(outlineSize));
+            //set the stroke color for the group so filled shapes without stokes get outlined as well.
+            returnSVG = returnSVG.replaceFirst("<g", "<g stroke=\"" + hexStrokeColor + "\" " + strokeOpacity + " stroke-linecap=\"square\"");
 
         }
         else
@@ -543,29 +521,37 @@ public class RendererUtilities {
             bbox = icon.getBbox();
         double length = 0;
         if(bbox != null)
-            length = Math.max(bbox.width(),bbox.height());
-        if(length < 100 && length > 0 &&
-                SymbolID.getCommonModifier1(symbolID)==0 &&
-                SymbolID.getCommonModifier2(symbolID)==0 &&
-                SymbolID.getModifier1(symbolID)==0 &&
-                SymbolID.getModifier2(symbolID)==0)//if largest side smaller than 100 and there are no section mods, make it bigger
         {
-            double ratio = maxSize / length;
-            double transx = ((bbox.left + (bbox.width()/2)) * ratio) - (bbox.left + (bbox.width()/2));
-            double transy = ((bbox.top + (bbox.height()/2)) * ratio) - (bbox.top + (bbox.height()/2));
-            String transform = " transform=\"translate(-" + transx + ",-" + transy + ") scale(" + ratio + " " + ratio + ")\">";
-            String svg = icon.getSVG();
-            svg = svg.replaceFirst(">",transform);
-            RectF newBbox = RectUtilities.makeRectF((float)(bbox.left - transx),(float)(bbox.top - transy),(float)(bbox.width() * ratio), (float) (bbox.height() * ratio));
-            retVal = new SVGInfo(icon.getID(),newBbox,svg);
+            length = Math.max(bbox.width(), bbox.height());
+            //adjust max size for narrow, tall icons
+            if(bbox.width() < 60 && bbox.height() > 90)
+                maxSize = 200;
+
+            if(SVGLookup.getMainIconID(symbolID).length() == 8 && length < 145 && length > 0 &&
+                    bbox.height() < 105 &&
+                    SymbolID.getCommonModifier1(symbolID)==0 &&
+                    SymbolID.getCommonModifier2(symbolID)==0 &&
+                    SymbolID.getModifier1(symbolID)==0 &&
+                    SymbolID.getModifier2(symbolID)==0)//if largest side smaller than 145 and there are no section mods, make it bigger
+            {
+                double ratio = maxSize / length;
+                double transx = ((bbox.left + (bbox.width()/2)) * ratio) - (bbox.left + (bbox.width()/2));
+                double transy = ((bbox.top + (bbox.height()/2)) * ratio) - (bbox.top + (bbox.height()/2));
+                String transform = " transform=\"translate(-" + transx + ",-" + transy + ") scale(" + ratio + " " + ratio + ")\">";
+                String svg = icon.getSVG();
+                svg = svg.replaceFirst(">",transform);
+                RectF newBbox = RectUtilities.makeRectF((float)(bbox.left - transx),(float)(bbox.top - transy),(float)(bbox.width() * ratio), (float) (bbox.height() * ratio));
+                retVal = new SVGInfo(icon.getID(),newBbox,svg);
+            }
         }
+
         return retVal;
     }
 
     /**
-     * Takes an SVG string and increases all stroke-width values by 2.
+     * Takes an SVG string and increases all stroke-width values by the increaseBy value.
      * @param svgString The raw SVG content.
-     * @oaram increaseBy the number to add to the current stroke value
+     * @param increaseBy the number to add to the current stroke value
      * @return The modified SVG content.
      */
     public static String increaseStrokeWidth(String svgString, int increaseBy) {
@@ -600,6 +586,8 @@ public class RendererUtilities {
 
         // 4. Append any remaining text after the last match
         sb.append(svgString.substring(lastEnd));
+        int firstGroup = sb.indexOf("<g");
+        sb.replace(firstGroup, firstGroup+2,"<g stroke-width=\"" + increaseBy + "\" ");
         return sb.toString();
     }
 

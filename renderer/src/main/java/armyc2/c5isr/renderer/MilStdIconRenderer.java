@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 
+import armyc2.c5isr.renderer.utilities.C2DLookup;
 import armyc2.c5isr.renderer.utilities.DrawRules;
 import armyc2.c5isr.renderer.utilities.ErrorLogger;
 import armyc2.c5isr.renderer.utilities.GENCLookup;
@@ -94,6 +95,9 @@ public class MilStdIconRenderer
 
                 //SectorMod lookups
                 SectorModUtils.getInstance().init(context);
+
+                //C2DLookup (2525C -> 2525Dch1 code conversion)
+                C2DLookup.getInstance().init(context);
 
                 // setup single point renderer
                 _SPR = SinglePointRenderer.getInstance();
@@ -206,16 +210,21 @@ public class MilStdIconRenderer
 
         ImageInfo temp = null;
         MSInfo msi = MSLookup.getInstance().getMSLInfo(symbolID);
-        if (msi == null)
+        /*if (msi == null)
         {
-            //TODO: if null, try to fix the code so that something renders
-                /*symbolID = SymbolUtilities.reconcileSymbolID(symbolID);
-                basicSymbolID = SymbolUtilities.getBasicSymbolIDStrict(symbolID);
-                sd = SymbolDefTable.getInstance().getSymbolDef(basicSymbolID, symStd);//*/
+            //Attempt to fix the code or set if to invalid symbol if unfixable
+            symbolID = SymbolUtilities.reconcileSymbolID(symbolID);
+            msi = MSLookup.getInstance().getMSLInfo(symbolID);
+            if(msi == null)
+            {
+                if(SymbolID.getSymbolSet(symbolID)!=SymbolID.SymbolSet_LandUnit)
+
+                symbolID = "110098000010000000000000000000";//invalid symbol
+            }
         }
         if (msi != null && msi.getDrawRule() == DrawRules.DONOTDRAW) {
             return null;
-        }
+        }//*/
 
         if (ss==SymbolID.SymbolSet_ControlMeasure)
         {

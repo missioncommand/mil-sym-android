@@ -1313,6 +1313,7 @@ public final class clsUtilityCPOF {
 
             switch (lineType) {
                 case TacticalLines.PL:
+                case TacticalLines.DECISION_LINE:
                 case TacticalLines.FEBA:
                 case TacticalLines.LOA:
                 case TacticalLines.LL:
@@ -1477,6 +1478,7 @@ public final class clsUtilityCPOF {
                 case TacticalLines.FLOT:
                 case TacticalLines.LC:
                 case TacticalLines.PL:
+                case TacticalLines.DECISION_LINE:
                 case TacticalLines.FEBA:
                 case TacticalLines.LL:
                 case TacticalLines.EWL:
@@ -1565,9 +1567,12 @@ public final class clsUtilityCPOF {
                 case TacticalLines.FORTL:
                 case TacticalLines.STRONG:
                 case TacticalLines.RAD:
+                case TacticalLines.RADT:
                 case TacticalLines.BIO:
+                case TacticalLines.BIOT:
                 case TacticalLines.NUC:
                 case TacticalLines.CHEM:
+                case TacticalLines.CHEMT:
                 case TacticalLines.DRCL:
                 case TacticalLines.LINTGT:
                 case TacticalLines.LINTGTS:
@@ -1673,6 +1678,7 @@ public final class clsUtilityCPOF {
             case TacticalLines.FLOT:
             case TacticalLines.LC:
             case TacticalLines.PL:
+            case TacticalLines.DECISION_LINE:
             case TacticalLines.FEBA:
             case TacticalLines.LL:
             case TacticalLines.EWL:

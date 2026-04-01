@@ -33,9 +33,11 @@ import armyc2.c5isr.renderer.SinglePointRenderer;
 import armyc2.c5isr.renderer.utilities.Color;
 import armyc2.c5isr.renderer.utilities.EntityCode;
 import armyc2.c5isr.renderer.utilities.ErrorLogger;
+import armyc2.c5isr.renderer.utilities.GENCLookup;
 import armyc2.c5isr.renderer.utilities.IPointConversion;
 import armyc2.c5isr.renderer.utilities.ImageInfo;
 import armyc2.c5isr.renderer.utilities.MilStdAttributes;
+import armyc2.c5isr.renderer.utilities.Modifiers;
 import armyc2.c5isr.renderer.utilities.RendererException;
 import armyc2.c5isr.renderer.utilities.RendererSettings;
 import armyc2.c5isr.renderer.utilities.RendererUtilities;
@@ -67,14 +69,43 @@ public class Modifier2 {
         textPath = new POINT2[2];
     }
 
+    /**
+     * Put label next to pt0 on opposite side of line
+     */
     private static final int toEnd = 1; // Put next to pt0 on opposite side of line
+    /**
+     * put label between both point and apply the angle between the two points
+     */
     private static final int aboveMiddle = 2;    //use both points
+    /**
+     * one point, label always right-side-up
+     */
     private static final int area = 3;   //use one point
+    /**
+     * one point, label always right-side-up
+     */
     private static final int screen = 4;   //use one point, screen, cover, guard points
+    /**
+     * Put next to pt0, but above the line
+     */
     private static final int aboveEnd = 5; // Put next to pt0 on line
+    /**
+     * between both points but perpendicular rotation of text
+     */
     private static final int aboveMiddlePerpendicular = 6; //use both points
+    /**
+     * For Moving and Halted Convoy.
+     * At start of line behind arrowhead
+     */
     private static final int aboveStartInside = 7; //place at the start inside the shape
+    /**
+     * For Moving and Halted Convoy.
+     * At back of line inside arrow shape.
+     */
     private static final int aboveEndInside = 8;  //place at the end inside the shape
+    /**
+     * Image Modifier, uses one point
+     */
     private static final int areaImage = 9;   //use one point
     private static double fillAlphaCanObscureText = 50d;
 
@@ -208,8 +239,10 @@ public class Modifier2 {
                 case TacticalLines.DISRUPT:
                     label = "D";
                     break;
+                case TacticalLines.CAPTURE:
                 case TacticalLines.CANALIZE:
                 case TacticalLines.CLEAR:
+                case TacticalLines.CONTROL:
                     label = "C";
                     break;
                 case TacticalLines.BREACH:
@@ -257,6 +290,9 @@ public class Modifier2 {
                     break;
                 case TacticalLines.LL:
                     label = "LL";
+                    break;
+                case TacticalLines.LOCATE:
+                    label = "LOC";
                     break;
                 case TacticalLines.EWL:
                     label = "EWL";
@@ -396,6 +432,7 @@ public class Modifier2 {
                     label = "PLD";
                     break;
                 case TacticalLines.DELAY:
+                case TacticalLines.DENY:
                     label = "D";
                     break;
                 case TacticalLines.RELEASE:
@@ -558,6 +595,7 @@ public class Modifier2 {
                     label = "RDF";
                     break;
                 case TacticalLines.ELECTRO:
+                case TacticalLines.ESCORT:
                     label = "E";
                     break;
                 case TacticalLines.BEARING_EW:
@@ -602,6 +640,9 @@ public class Modifier2 {
                     break;
                 case TacticalLines.TRIP:
                     label = "t";
+                    break;
+                case TacticalLines.EXFILTRATION:
+                    label = "EX";
                     break;
                 case TacticalLines.INFILTRATION:
                     label = "IN";
@@ -1143,6 +1184,7 @@ public class Modifier2 {
                     break;
                 case TacticalLines.PDF:
                 case TacticalLines.PL:
+                case TacticalLines.DECISION_LINE:
                 case TacticalLines.FEBA:
                 case TacticalLines.LOA:
                 case TacticalLines.LOD:
@@ -2100,6 +2142,7 @@ public class Modifier2 {
                 case TacticalLines.MINED:
                 case TacticalLines.FENCED:
                 case TacticalLines.PL:
+                case TacticalLines.DECISION_LINE:
                 case TacticalLines.FEBA:
                 case TacticalLines.FCL:
                 case TacticalLines.HOLD:
@@ -2162,9 +2205,12 @@ public class Modifier2 {
                 case TacticalLines.DELAY:
                 case TacticalLines.TGMF:
                 case TacticalLines.BIO:
+                case TacticalLines.BIOT://APP6/E
                 case TacticalLines.CHEM:
+                case TacticalLines.CHEMT://APP6/E
                 case TacticalLines.NUC:
                 case TacticalLines.RAD:
+                case TacticalLines.RADT://APP6/E
                 case TacticalLines.MINE_LINE:
                 case TacticalLines.ANCHORAGE_LINE:
                 case TacticalLines.ANCHORAGE_AREA:
@@ -2176,7 +2222,6 @@ public class Modifier2 {
                 case TacticalLines.AAAAA:
                 case TacticalLines.MAIN:
                 case TacticalLines.DIRATKSPT:
-                case TacticalLines.INFILTRATION:
                 case TacticalLines.DIRATKGND:
                 case TacticalLines.LAUNCH_AREA:
                 case TacticalLines.DEFENDED_AREA_CIRCULAR:
@@ -2275,6 +2320,17 @@ public class Modifier2 {
                     AddIntegralAreaModifier(tg, label + TSpace + tg.get_Name(), toEnd, T1LineFactor, pt0, pt1, false);
                     AddIntegralAreaModifier(tg, label + TSpace + tg.get_Name(), toEnd, T1LineFactor, ptLast, ptNextToLast, false);
                     break;
+                case TacticalLines.DECISION_LINE:
+                    if(tg.get_AS() == null || !tg.get_AS().isEmpty())
+                        tg.set_AS(GENCLookup.getInstance().get3CharCode(SymbolID.getCountryCode(tg.get_SymbolId())));
+                    Bitmap bi =  getImageModifier(tg);
+
+                    POINT2 ptDP1 = lineutility.ExtendLine2Double(pt1,pt0,bi.getWidth()/2,0);
+                    POINT2 ptDP2 = lineutility.ExtendLine2Double(ptNextToLast, ptLast,bi.getWidth()/2,0);
+
+                    AddIntegralAreaModifier(tg,bi,toEnd,0,ptDP1,ptDP1,false);
+                    AddIntegralAreaModifier(tg,bi,toEnd,0,ptDP2,ptDP2,false);
+                    break;
                 case TacticalLines.BS_LINE:
                 case TacticalLines.BBS_LINE:
                     if (tg.get_T1() == null || tg.get_T1().isEmpty()) {
@@ -2370,52 +2426,6 @@ public class Modifier2 {
                 case TacticalLines.NFL:
                 case TacticalLines.BCL_REVD:
                 case TacticalLines.RFL:
-                    pt0 = tg.Pixels.get(0);
-                    pt1 = tg.Pixels.get(1);
-                    pt2 = tg.Pixels.get(tg.Pixels.size() - 1);
-                    pt3 = tg.Pixels.get(tg.Pixels.size() - 2);
-                    dist = lineutility.CalcDistanceDouble(pt0, pt1);
-                    dist2 = lineutility.CalcDistanceDouble(pt2, pt3);
-                    stringWidth = (int) ((double) metrics.stringWidth(tg.get_Name() + " " + label));
-                    stringWidth2 = (int) ((double) metrics.stringWidth(tg.get_DTG()));
-                    if (stringWidth2 > stringWidth) {
-                        stringWidth = stringWidth2;
-                    }
-
-                    if (tg.Pixels.size() == 2) //one segment
-                    {
-                        pt1 = lineutility.ExtendAlongLineDouble(pt0, pt1, stringWidth);
-                        AddModifier2(tg, label + TSpace + tg.get_Name(), aboveMiddle, -0.7 * csFactor, pt0, pt1, false);
-                        AddModifier2(tg, tg.get_DTG() + WDash, aboveMiddle, 0.7 * csFactor, pt0, pt1, false);
-                        AddModifier2(tg, tg.get_DTG1(), aboveMiddle, 1.7 * csFactor, pt0, pt1, false);
-                        if (dist > 3.5 * stringWidth)//was 28stringwidth+5
-                        {
-                            pt0 = tg.Pixels.get(tg.Pixels.size() - 1);
-                            pt1 = tg.Pixels.get(tg.Pixels.size() - 2);
-                            pt1 = lineutility.ExtendAlongLineDouble(pt0, pt1, stringWidth);
-                            AddModifier2(tg, label + TSpace + tg.get_Name(), aboveMiddle, -0.7 * csFactor, pt0, pt1, false);
-                            AddModifier2(tg, tg.get_DTG() + WDash, aboveMiddle, 0.7 * csFactor, pt0, pt1, false);
-                            AddModifier2(tg, tg.get_DTG1(), aboveMiddle, 1.7 * csFactor, pt0, pt1, false);
-                        }
-                    } else //more than one semgent
-                    {
-                        double dist3 = lineutility.CalcDistanceDouble(pt0, pt2);
-                        if (dist > stringWidth + 5 || dist >= dist2 || dist3 > stringWidth + 5) {
-                            pt1 = lineutility.ExtendAlongLineDouble(pt0, pt1, stringWidth);
-                            AddModifier2(tg, label + TSpace + tg.get_Name(), aboveMiddle, -0.7 * csFactor, pt0, pt1, false);
-                            AddModifier2(tg, tg.get_DTG() + WDash, aboveMiddle, 0.7 * csFactor, pt0, pt1, false);
-                            AddModifier2(tg, tg.get_DTG1(), aboveMiddle, 1.7 * csFactor, pt0, pt1, false);
-                        }
-                        if (dist2 > stringWidth + 5 || dist2 > dist || dist3 > stringWidth + 5) {
-                            pt0 = tg.Pixels.get(tg.Pixels.size() - 1);
-                            pt1 = tg.Pixels.get(tg.Pixels.size() - 2);
-                            pt1 = lineutility.ExtendAlongLineDouble(pt0, pt1, stringWidth);
-                            AddModifier2(tg, label + TSpace + tg.get_Name(), aboveMiddle, -0.7 * csFactor, pt0, pt1, false);
-                            AddModifier2(tg, tg.get_DTG() + WDash, aboveMiddle, 0.7 * csFactor, pt0, pt1, false);
-                            AddModifier2(tg, tg.get_DTG1(), aboveMiddle, 1.7 * csFactor, pt0, pt1, false);
-                        }
-                    }
-                    break;
                 case TacticalLines.BCL:
                     pt0 = tg.Pixels.get(0);
                     pt1 = tg.Pixels.get(1);
@@ -2424,9 +2434,34 @@ public class Modifier2 {
                     dist = lineutility.CalcDistanceDouble(pt0, pt1);
                     dist2 = lineutility.CalcDistanceDouble(pt2, pt3);
                     String TMod = ""; // Don't add parenthesis if T modifier is empty
-                    if (tg.get_Name() != null && !tg.get_Name().isEmpty())
-                        TMod = " (" + tg.get_Name() + ")";
-                    stringWidth = (int) ((double) metrics.stringWidth(label + TMod));
+
+
+                    int version = SymbolID.getVersion(tg.get_SymbolId());
+                    if(version < SymbolID.Version_2525E) {
+                        TMod = tg.get_Name();
+                        stringWidth = (int) ((double) metrics.stringWidth(TMod + " " + label));
+                    }
+                    else if(version == SymbolID.Version_2525E || version == SymbolID.Version_2525Ech1) {
+                        if(linetype == TacticalLines.BCL) {
+                            if (tg.get_Name() != null && !tg.get_Name().isEmpty())
+                                TMod = " (" + tg.get_Name() + ")";
+                            stringWidth = (int) ((double) metrics.stringWidth(label + TMod));
+                        }
+                        else
+                        {
+                            TMod = tg.get_Name();
+                            stringWidth = (int) ((double) metrics.stringWidth(tg.get_Name() + " " + label));
+                        }
+                    }
+                    else if((version == SymbolID.Version_APP6Ech2)) {
+                        if (tg.get_Name() != null && !tg.get_Name().isEmpty())
+                            TMod += " " + tg.get_Name();
+                        if(tg.get_AS() != null && !tg.get_AS().isEmpty())
+                            TMod += " (" + tg.get_AS() + ")";
+                        stringWidth = (int) ((double) metrics.stringWidth(label + TMod));
+
+                    }
+
                     stringWidth2 = (int) ((double) metrics.stringWidth(tg.get_DTG()));
                     if (stringWidth2 > stringWidth) {
                         stringWidth = stringWidth2;
@@ -2435,7 +2470,7 @@ public class Modifier2 {
                     if (tg.Pixels.size() == 2) //one segment
                     {
                         pt1 = lineutility.ExtendAlongLineDouble(pt0, pt1, stringWidth);
-                        AddModifier2(tg, label + TMod, aboveMiddle, -0.7 * csFactor, pt0, pt1, false);
+                        AddModifier2(tg, label + TSpace + TMod, aboveMiddle, -0.7 * csFactor, pt0, pt1, false);
                         AddModifier2(tg, tg.get_DTG() + WDash, aboveMiddle, 0.7 * csFactor, pt0, pt1, false);
                         AddModifier2(tg, tg.get_DTG1(), aboveMiddle, 1.7 * csFactor, pt0, pt1, false);
                         if (dist > 3.5 * stringWidth)//was 28stringwidth+5
@@ -2443,7 +2478,7 @@ public class Modifier2 {
                             pt0 = tg.Pixels.get(tg.Pixels.size() - 1);
                             pt1 = tg.Pixels.get(tg.Pixels.size() - 2);
                             pt1 = lineutility.ExtendAlongLineDouble(pt0, pt1, stringWidth);
-                            AddModifier2(tg, label + TMod, aboveMiddle, -0.7 * csFactor, pt0, pt1, false);
+                            AddModifier2(tg, label + TSpace + TMod, aboveMiddle, -0.7 * csFactor, pt0, pt1, false);
                             AddModifier2(tg, tg.get_DTG() + WDash, aboveMiddle, 0.7 * csFactor, pt0, pt1, false);
                             AddModifier2(tg, tg.get_DTG1(), aboveMiddle, 1.7 * csFactor, pt0, pt1, false);
                         }
@@ -2452,7 +2487,7 @@ public class Modifier2 {
                         double dist3 = lineutility.CalcDistanceDouble(pt0, pt2);
                         if (dist > stringWidth + 5 || dist >= dist2 || dist3 > stringWidth + 5) {
                             pt1 = lineutility.ExtendAlongLineDouble(pt0, pt1, stringWidth);
-                            AddModifier2(tg, label + TMod, aboveMiddle, -0.7 * csFactor, pt0, pt1, false);
+                            AddModifier2(tg, label + TSpace + TMod, aboveMiddle, -0.7 * csFactor, pt0, pt1, false);
                             AddModifier2(tg, tg.get_DTG() + WDash, aboveMiddle, 0.7 * csFactor, pt0, pt1, false);
                             AddModifier2(tg, tg.get_DTG1(), aboveMiddle, 1.7 * csFactor, pt0, pt1, false);
                         }
@@ -2460,7 +2495,7 @@ public class Modifier2 {
                             pt0 = tg.Pixels.get(tg.Pixels.size() - 1);
                             pt1 = tg.Pixels.get(tg.Pixels.size() - 2);
                             pt1 = lineutility.ExtendAlongLineDouble(pt0, pt1, stringWidth);
-                            AddModifier2(tg, label + TMod, aboveMiddle, -0.7 * csFactor, pt0, pt1, false);
+                            AddModifier2(tg, label + TSpace + TMod, aboveMiddle, -0.7 * csFactor, pt0, pt1, false);
                             AddModifier2(tg, tg.get_DTG() + WDash, aboveMiddle, 0.7 * csFactor, pt0, pt1, false);
                             AddModifier2(tg, tg.get_DTG1(), aboveMiddle, 1.7 * csFactor, pt0, pt1, false);
                         }
@@ -2473,9 +2508,6 @@ public class Modifier2 {
                     //midPt=lineutility.MidPointDouble(pt0, midPt, 0);
                     AddIntegralAreaModifier(tg, tg.get_Name(), aboveMiddle, 0, pt0, midPt, false);
                     addDTG(tg, aboveMiddle, csFactor, 2 * csFactor, pt0, pt1, metrics);
-                    break;
-                case TacticalLines.INFILTRATION:
-                    AddIntegralModifier(tg, label, aboveMiddle, 0, middleSegment, middleSegment + 1, true);
                     break;
                 case TacticalLines.SPT:
                 case TacticalLines.FRONTAL_ATTACK:
@@ -3000,9 +3032,12 @@ public class Modifier2 {
                     addDTG(tg, aboveMiddle, 0, csFactor, pt2, pt3, metrics);
                     break;
                 case TacticalLines.BIO:
+                case TacticalLines.BIOT:
                 case TacticalLines.CHEM:
+                case TacticalLines.CHEMT:
                 case TacticalLines.NUC:
                 case TacticalLines.RAD:
+                case TacticalLines.RADT:
                     AddIntegralAreaModifier(tg, getImageModifier(tg), areaImage, 0, ptCenter, ptCenter, false);
                     break;
                 case TacticalLines.ANCHORAGE_LINE:
@@ -3550,13 +3585,20 @@ public class Modifier2 {
                 case TacticalLines.OCCUPY:
                 case TacticalLines.RETAIN:
                 case TacticalLines.SECURE:
+                case TacticalLines.CONTROL:
+                case TacticalLines.LOCATE:
                 case TacticalLines.AREA_DEFENSE:
                 case TacticalLines.CONTAIN:
                 case TacticalLines.SEIZE:
+                case TacticalLines.CAPTURE:
                 case TacticalLines.EVACUATE:
                 case TacticalLines.TURN:
                 case TacticalLines.CORDONKNOCK:
                 case TacticalLines.CORDONSEARCH:
+                case TacticalLines.DENY:
+                case TacticalLines.ESCORT:
+                case TacticalLines.EXFILTRATION:
+                case TacticalLines.INFILTRATION:
                 case TacticalLines.FOLLA:
                 case TacticalLines.FOLSP:
                 case TacticalLines.ACA_RECTANGULAR:
@@ -3719,11 +3761,14 @@ public class Modifier2 {
                 case TacticalLines.OCCUPY:
                 case TacticalLines.RETAIN:
                 case TacticalLines.SECURE:
+                case TacticalLines.CONTROL:
+                case TacticalLines.LOCATE:
                 case TacticalLines.AREA_DEFENSE:
                     pt0 = tg.Pixels.get(13);
                     pt1 = tg.Pixels.get(14);
                     //pt1=lineutility.ExtendAlongLineDouble(pt1, pt0, -10);
-                    AddIntegralAreaModifier(tg, label, aboveMiddle, -0.125 * csFactor, pt0, pt1, true);
+                    ptCenter = lineutility.MidPointDouble(pt0, pt1, 0);
+                    AddIntegralAreaModifier(tg, label, aboveMiddle, -0.125 * csFactor, ptCenter, ptCenter, true);
                     break;
                 case TacticalLines.CONTAIN:
                     pt0 = tg.Pixels.get(13);
@@ -3748,11 +3793,13 @@ public class Modifier2 {
                     AddIntegralAreaModifier(tg, label, area, -0.125 * csFactor, ptCenter, ptCenter, true);
                     break;
                 case TacticalLines.SEIZE:
+                case TacticalLines.CAPTURE:
                 case TacticalLines.EVACUATE:
                     pt0 = tg.Pixels.get(26);
                     pt1 = tg.Pixels.get(27);
                     //pt1=lineutility.ExtendAlongLineDouble(pt1, pt0, -10);
-                    AddIntegralAreaModifier(tg, label, aboveMiddle, -0.125 * csFactor, pt0, pt1, true);
+                    ptCenter = lineutility.MidPointDouble(pt0, pt1, 0);
+                    AddIntegralAreaModifier(tg, label, aboveMiddle, -0.125 * csFactor, ptCenter, ptCenter, true);
                     break;
                 case TacticalLines.DEFENDED_AREA_RECTANGULAR:
                     ptLeft = lineutility.MidPointDouble(tg.Pixels.get(0), tg.Pixels.get(1), 0);
@@ -3797,6 +3844,7 @@ public class Modifier2 {
                     break;
                 case TacticalLines.CORDONKNOCK:
                 case TacticalLines.CORDONSEARCH:
+                case TacticalLines.DENY:
                     pt0 = tg.Pixels.get(13);
                     pt1 = tg.Pixels.get(0);
                     stringWidth = metrics.stringWidth(label);
@@ -3804,7 +3852,23 @@ public class Modifier2 {
                         stringWidth = -stringWidth;
                     }
                     pt1 = lineutility.ExtendAlongLineDouble2(pt0, pt1, 0.75 * stringWidth);
-                    AddIntegralAreaModifier(tg, label, aboveMiddle, 0, pt0, pt1, true);
+                    ptCenter = lineutility.MidPointDouble(pt0, pt1, 0);
+                    AddIntegralAreaModifier(tg, label, aboveMiddle, 0, ptCenter, ptCenter, true);
+                    break;
+                case TacticalLines.ESCORT:
+                    if(tg.Pixels.size() == 6) {
+                        if (tg.Pixels.get(2).x == tg.Pixels.get(3).x &&
+                                tg.Pixels.get(2).y == tg.Pixels.get(3).y) {
+                            //No Room for E labels
+                            break;//?
+                        }
+                        AddIntegralAreaModifier(tg, label, toEnd, 0, tg.Pixels.get(2), tg.Pixels.get(1), true);
+                        AddIntegralAreaModifier(tg, label, toEnd, 0, tg.Pixels.get(3), tg.Pixels.get(4), true);
+                    }
+                    break;
+                case TacticalLines.EXFILTRATION:
+                case TacticalLines.INFILTRATION:
+                    AddIntegralAreaModifier(tg, label, aboveMiddle, 0, pt0, pt1 , true);
                     break;
                 case TacticalLines.FOLLA:
                     pt0 = tg.Pixels.get(0);
@@ -4443,6 +4507,9 @@ public class Modifier2 {
                 g2d.setBackground(Color.white);
             }
 
+            Point2D anchor = null;
+            Point2D anchorOffset = null;
+
             int direction = -1;
             Point glyphPosition = null;
             for (j = 0; j < tg.modifiers.size(); j++) {
@@ -4505,26 +4572,42 @@ public class Modifier2 {
                             justify = ShapeInfo.justify_left;
                         }
 
+                        //3rd point value is location to start perpendicular line from
                         pt3 = lineutility.ExtendDirectedLine(pt1, pt0, pt0, direction, lineFactor * stringHeight);
+                        //pt3 is the end point of the perpendicularline
 
                         glyphPosition = new Point((int) pt3.x, (int) pt3.y);
                         modifierPosition = new Point2D.Double(pt3.x, pt3.y);
+
+                        anchor = new Point2D.Double(pt0.x, pt0.y);
+                        anchorOffset = new Point2D.Double(pt3.x - pt0.x, pt3.y - pt0.y);
+
                         break;
                     case aboveStartInside:
+                        //returns pt3 which is based on the specified distance from pt0 along the line of pt0 to pt1.
                         pt3 = lineutility.ExtendAlongLineDouble(pt0, pt1, stringWidth);
 
                         glyphPosition = new Point((int) pt3.x, (int) pt3.y);
                         modifierPosition = new Point2D.Double((int) pt3.x, pt3.y);
+
+                        anchor = new Point2D.Double(pt0.x, pt0.y);
+                        anchorOffset = new Point2D.Double(pt3.x - pt0.x, pt3.y - pt0.y);
                         break;
                     case aboveEndInside:
+                        //returns pt3 which is based on the specified distance from pt0 along the line of pt1 to pt0.
                         pt3 = lineutility.ExtendAlongLineDouble(pt1, pt0, stringWidth);
 
                         glyphPosition = new Point((int) pt3.x, (int) pt3.y);
                         modifierPosition = new Point2D.Double((int) pt3.x, pt3.y);
+
+                        anchor = new Point2D.Double(pt1.x, pt1.y);
+                        anchorOffset = new Point2D.Double(pt3.x - pt1.x, pt3.y - pt1.y);
                         break;
                     case aboveMiddle:
                     case aboveMiddlePerpendicular:
                         pt2 = midPt;
+                        anchor = new Point2D.Double(midPt.x,midPt.y);
+
                         if (tg.get_Client().equals("2D")) {
                             lineFactor += 0.5;
                         }
@@ -4550,6 +4633,9 @@ public class Modifier2 {
                         justify = ShapeInfo.justify_center;
                         modifierPosition = new Point2D.Double(midPt.x, midPt.y);
 
+                        //anchor = new Point2D.Double(midPt.x, midPt.y);
+                        anchorOffset = new Point2D.Double(midPt.x - anchor.getX(), midPt.y - anchor.getY());
+
                         if(modifier.type == aboveMiddlePerpendicular) {
                             // Need to negate the original rotation
                             if (x1 > x2) {
@@ -4573,11 +4659,17 @@ public class Modifier2 {
                         glyphPosition = new Point(x, y);
                         justify = ShapeInfo.justify_center;
                         modifierPosition = new Point2D.Double(x, y);
+
+                        anchor = new Point2D.Double(x1, y1);
+                        anchorOffset = new Point2D.Double(x - x1, y - y1);
                         break;
                     case areaImage:
                         glyphPosition = new Point((int)x1, (int)y1);
                         justify = ShapeInfo.justify_center;
                         modifierPosition = new Point2D.Double((int)x1, (int)y1);
+
+                        anchor = new Point2D.Double(x1, y1);
+                        anchorOffset = new Point2D.Double(0, 0);
                         break;
                     case screen:    //for SCREEN, GUARD, COVER, not currently used
                         if (tg.Pixels.size() >= 14) {
@@ -4612,10 +4704,12 @@ public class Modifier2 {
                             x = (int) x1 - (int) stringWidth / 2;
                             y = (int) y1 - (int) stringHeight / 2 + (int) (lineFactor * stringHeight);
                             y = (int) y1 + (int) (stringHeight / 2) + (int) (lineFactor * stringHeight);
+                            anchor = new Point2D.Double(x1, y1);
                         } else {
                             theta = 0;
                             x = (int) tg.Pixels.get(0).x;
                             y = (int) tg.Pixels.get(0).y;
+                            anchor = new Point2D.Double(x, y);
                             x = (int) x - (int) stringWidth / 2;
                             y = (int) y - (int) stringHeight / 2 + (int) (lineFactor * stringHeight);
                             y = (int) y + (int) (stringHeight / 2) + (int) (lineFactor * stringHeight);
@@ -4623,6 +4717,8 @@ public class Modifier2 {
 
                         glyphPosition = new Point(x, y);
                         //glyphPosition=new Point2D.Double(x,y);
+                        //anchor = new Point2D.Double(x1, y1);
+                        anchorOffset = new Point2D.Double(x - anchor.getX(), y - anchor.getY());
                         break;
                     default:
                         break;
@@ -4659,6 +4755,8 @@ public class Modifier2 {
                 //shape2.setModifierStringPosition(glyphPosition);//M. Deutch 7-6-11
                 shape2.setModifierAngle(theta * 180 / Math.PI);
                 shape2.setModifierPosition(modifierPosition);
+                shape2.setModifierAnchor(anchor);
+                shape2.setModifierAnchorOffset(anchorOffset);
 
                 if (shape2 != null) {
                     shapes.add(shape2);
@@ -4820,7 +4918,20 @@ public class Modifier2 {
                 sa.put(MilStdAttributes.PixelSize, String.valueOf((int) (tg.get_IconSize() * 1.5)));
             }
             symbol = SinglePointRenderer.getInstance().RenderModifier(symbolID, sa);
-        } else if (lineType == TacticalLines.ANCHORAGE_LINE || lineType == TacticalLines.ANCHORAGE_AREA) {
+        }
+        else if (lineType == TacticalLines.DECISION_LINE) {
+
+            sa.put(MilStdAttributes.PixelSize, String.valueOf((int) (tg.get_IconSize() * 1.5)));
+            sa.put(MilStdAttributes.KeepUnitRatio, String.valueOf((tg.get_KeepUnitRation())));
+            sa.put(MilStdAttributes.FillColor, RendererUtilities.colorToHexString(tg.get_FillColor(), true));
+            sa.put(MilStdAttributes.LineColor, RendererUtilities.colorToHexString(tg.get_LineColor(), true));
+            sa.put(MilStdAttributes.OutlineSymbol, "false");
+            mods.put(Modifiers.T_UNIQUE_DESIGNATION_1, (tg.get_Name()));
+
+            String decisionPoint = SymbolID.setEntityCode(symbolID, EntityCode.EntityCode_Decision_Point);
+            symbol = SinglePointRenderer.getInstance().RenderSP(decisionPoint, mods, sa);
+        }
+        else if (lineType == TacticalLines.ANCHORAGE_LINE || lineType == TacticalLines.ANCHORAGE_AREA) {
             sa.put(MilStdAttributes.OutlineSymbol, "false");
             String anchorPoint = SymbolID.setEntityCode(symbolID, EntityCode.EntityCode_AnchoragePoint);
             symbol = SinglePointRenderer.getInstance().RenderSP(anchorPoint, mods, sa);

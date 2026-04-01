@@ -9,6 +9,7 @@ import armyc2.c5isr.graphics2d.Font;
 import armyc2.c5isr.graphics2d.TexturePaint;
 import armyc2.c5isr.renderer.utilities.Color;
 import armyc2.c5isr.renderer.utilities.ErrorLogger;
+import armyc2.c5isr.renderer.utilities.GENCLookup;
 import armyc2.c5isr.renderer.utilities.RendererException;
 import armyc2.c5isr.renderer.utilities.RendererSettings;
 import armyc2.c5isr.renderer.utilities.SymbolID;
@@ -518,6 +519,10 @@ public class TGLight {
                 if (echelonSymbol == null) {
                     echelonSymbol = "";
                 }
+
+                int cc = SymbolID.getCountryCode(symbolId);
+                if(cc > 0 && as.isEmpty())
+                    as = GENCLookup.getInstance().get3CharCode(cc);
             }
         } catch (Exception exc) {
             //clsUtility.WriteFile("Error in TGLight.set_SymbolId");

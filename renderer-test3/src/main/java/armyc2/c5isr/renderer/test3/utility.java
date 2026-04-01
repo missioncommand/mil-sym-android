@@ -508,7 +508,7 @@ public final class utility {
                 else if(spec.getModifierImage() != null){
                     x = x-(spec.getModifierImage().getWidth()/2);
                     //Should center on 'y' for minefields too but i can't tell from here if I have LAA or a mine field
-                    //y = y-(spec.getModifierImage().getHeight()/2);
+                    y = y-(spec.getModifierImage().getHeight()/2);
                     g2d.drawBitmap(spec.getModifierImage(), x, y, paint);
                     g2d.restore();
                 }

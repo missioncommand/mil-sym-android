@@ -202,12 +202,15 @@ public final class clsUtility {
             case TacticalLines.COVER:
             case TacticalLines.GUARD:
             case TacticalLines.SEIZE:
+            case TacticalLines.CAPTURE:
+            case TacticalLines.ESCORT:
             case TacticalLines.EVACUATE:
             case TacticalLines.WITHDRAW:
             case TacticalLines.DISENGAGE:
             case TacticalLines.WDRAWUP:
             //non task autoshapes
             case TacticalLines.SARA:
+            case TacticalLines.DECEIVE:
             case TacticalLines.PDF:
             case TacticalLines.IL:
             case TacticalLines.ATKBYFIRE:
@@ -427,9 +430,12 @@ public final class clsUtility {
             case TacticalLines.FORT:
             case TacticalLines.PEN:
             case TacticalLines.BIO:
+            case TacticalLines.BIOT:
             case TacticalLines.NUC:
             case TacticalLines.RAD:
+            case TacticalLines.RADT:
             case TacticalLines.CHEM:
+            case TacticalLines.CHEMT:
             case TacticalLines.SERIES:
             case TacticalLines.ATI:
             case TacticalLines.TBA:
@@ -609,9 +615,12 @@ public final class clsUtility {
                 case TacticalLines.NFA_CIRCULAR:
                 case TacticalLines.NFA_RECTANGULAR:
                 case TacticalLines.BIO:
+                case TacticalLines.BIOT:
                 case TacticalLines.NUC:
                 case TacticalLines.CHEM:
+                case TacticalLines.CHEMT:
                 case TacticalLines.RAD:
+                case TacticalLines.RADT:
                 case TacticalLines.WFZ_REVD:
                 case TacticalLines.WFZ:
                 //case TacticalLines.OBSAREA:
@@ -668,6 +677,7 @@ public final class clsUtility {
                         shape.setLineColor(tg.get_LineColor());
                     }
                     break;
+                case TacticalLines.DECEIVE:
                 case TacticalLines.CLUSTER:
                 case TacticalLines.CATK:
                 case TacticalLines.CATKBYFIRE:
@@ -836,9 +846,12 @@ public final class clsUtility {
                 case TacticalLines.ISOLATE:
                 case TacticalLines.CORDONKNOCK:
                 case TacticalLines.CORDONSEARCH:
+                case TacticalLines.DENY:
                 case TacticalLines.OCCUPY:
                 case TacticalLines.RETAIN:
                 case TacticalLines.SECURE:
+                case TacticalLines.CONTROL:
+                case TacticalLines.LOCATE:
                 case TacticalLines.AREA_DEFENSE:
                 case TacticalLines.MOBILE_DEFENSE:
                 case TacticalLines.FLOT:

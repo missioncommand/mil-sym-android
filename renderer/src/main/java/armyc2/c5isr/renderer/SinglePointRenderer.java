@@ -233,10 +233,10 @@ public class SinglePointRenderer implements SettingsChangedEventListener
 
                 if(siIcon == null)
                 {
-                        if(iconID.substring(2,8).equals("000000")==false && MSLookup.getInstance().getMSLInfo(symbolID) == null)
-                            siIcon = SVGLookup.getInstance().getSVGLInfo("98100000", version);//inverted question mark
-                        else if(SymbolID.getSymbolSet(symbolID) == SymbolID.SymbolSet_Unknown)
+                        if(SymbolID.getSymbolSet(symbolID) == SymbolID.SymbolSet_Unknown)
                             siIcon = SVGLookup.getInstance().getSVGLInfo("00000000", version);//question mark
+                        /*else if(iconID.substring(2,8).equals("000000")==false && MSLookup.getInstance().getMSLInfo(symbolID) == null)
+                            siIcon = SVGLookup.getInstance().getSVGLInfo("98100000", version);//inverted question mark//*/
                 }
 
                 if(RendererSettings.getInstance().getScaleMainIcon())
@@ -614,6 +614,10 @@ public class SinglePointRenderer implements SettingsChangedEventListener
                         drawCustomOutline = Boolean.parseBoolean(attributes.get(MilStdAttributes.OutlineSymbol));
                     else
                         drawCustomOutline = RendererSettings.getInstance().getOutlineSPControlMeasures();
+
+                    //Protection of Cultural Property doesn't get outlined
+                    if(ss==25 && ec >= 360000 && ec < 360400)
+                        drawCustomOutline = false;
                 }
 
                 if(SymbolUtilities.isMultiPoint(symbolID))
@@ -696,6 +700,9 @@ public class SinglePointRenderer implements SettingsChangedEventListener
                 Rect rect = null;
                 iconID = SVGLookup.getMainIconID(symbolID);
                 siIcon = SVGLookup.getInstance().getSVGLInfo(iconID, version);
+                if(siIcon==null) {
+                    return null;
+                }
                 mod1ID = SVGLookup.getMod1ID(symbolID);
                 siMod1 = SVGLookup.getInstance().getSVGLInfo(mod1ID, version);
                 float borderPadding = 0;
@@ -816,7 +823,7 @@ public class SinglePointRenderer implements SettingsChangedEventListener
                 }//*/
 
 
-                if(msi.getSymbolSet()==SymbolID.SymbolSet_ControlMeasure && msi.getDrawRule()==DrawRules.POINT1)//smooth out action points
+                if(SymbolUtilities.isActionPoint(symbolID))//smooth out action points
                     strSVGIcon = "/n<g stroke-linejoin=\"round\" >/n" + strSVGIcon + "/n</g>";
 
                 strSVG = svgStart + strSVGIcon + "</svg>";
@@ -886,7 +893,7 @@ public class SinglePointRenderer implements SettingsChangedEventListener
         }
         catch (Exception exc)
         {
-            ErrorLogger.LogException("SinglePointRenderer", "RenderSP", exc);
+            ErrorLogger.LogException("SinglePointRenderer", "RenderSP(" + SymbolUtilities.getBasicSymbolID(symbolID) + ")", exc);
         }
         return null;
     }
