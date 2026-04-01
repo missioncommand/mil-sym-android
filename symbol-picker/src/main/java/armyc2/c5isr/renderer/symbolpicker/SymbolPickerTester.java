@@ -30,7 +30,7 @@ public class SymbolPickerTester extends Activity {
         setContentView(R.layout.activity_sp_tester);
         Intent i = new Intent(this, SymbolPickerActivity.class);
 
-        i.putExtra(SymbolPickerActivity.supportedVersionsKey, new int[]{SymbolID.Version_2525Dch1, SymbolID.Version_2525E});
+        i.putExtra(SymbolPickerActivity.supportedVersionsKey, new int[]{SymbolID.Version_2525Dch1, SymbolID.Version_2525Ech1});
 
         // Button to initialize symbol picker
         Button newCodeBtn = findViewById(R.id.new_code_btn);

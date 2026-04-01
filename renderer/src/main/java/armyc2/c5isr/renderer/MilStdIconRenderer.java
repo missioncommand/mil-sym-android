@@ -210,19 +210,21 @@ public class MilStdIconRenderer
 
         ImageInfo temp = null;
         MSInfo msi = MSLookup.getInstance().getMSLInfo(symbolID);
-        if (msi == null)
+        /*if (msi == null)
         {
             //Attempt to fix the code or set if to invalid symbol if unfixable
             symbolID = SymbolUtilities.reconcileSymbolID(symbolID);
             msi = MSLookup.getInstance().getMSLInfo(symbolID);
             if(msi == null)
             {
+                if(SymbolID.getSymbolSet(symbolID)!=SymbolID.SymbolSet_LandUnit)
+
                 symbolID = "110098000010000000000000000000";//invalid symbol
             }
         }
         if (msi != null && msi.getDrawRule() == DrawRules.DONOTDRAW) {
             return null;
-        }
+        }//*/
 
         if (ss==SymbolID.SymbolSet_ControlMeasure)
         {
