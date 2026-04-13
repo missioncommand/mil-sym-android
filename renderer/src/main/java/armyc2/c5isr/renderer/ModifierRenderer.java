@@ -6697,7 +6697,7 @@ public class ModifierRenderer
                     if(temp != null && !temp.isEmpty())
                         mods.add(new Modifier("V AF", temp, x, y, centered));
                 }
-                else
+                else if(!strict)
                 {
                     centered = false;
                 }
@@ -6781,7 +6781,7 @@ public class ModifierRenderer
                     if(temp != null && !temp.isEmpty())
                         mods.add(new Modifier("AD", temp, x, y, centered));
                 }
-                else
+                else if(!strict)
                 {
                     centered = false;
                 }
@@ -7604,6 +7604,25 @@ public class ModifierRenderer
                 x = 1;//on right
                 centered = false;
 
+                if(modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1) ||
+                        modifiers.containsKey(Modifiers.AE_EQUIPMENT_TEARDOWN_TIME))
+                {
+                    y = 0;
+                    centered = true;
+                    temp = "";
+                    if(modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1))
+                        temp = modifiers.get(Modifiers.H_ADDITIONAL_INFO_1) + sep;
+                    if(modifiers.containsKey(Modifiers.AE_EQUIPMENT_TEARDOWN_TIME))
+                        temp += modifiers.get(Modifiers.AE_EQUIPMENT_TEARDOWN_TIME);
+                    temp = temp.trim();
+                    if(temp != null && !temp.isEmpty())
+                        mods.add(new Modifier("H AE", temp, x, y, centered));
+                }
+                else if(!strict)
+                {
+                    centered = false;
+                }
+
                 if(modifiers.containsKey(Modifiers.G_STAFF_COMMENTS) || modifiers.containsKey(Modifiers.AQ_GUARDED_UNIT))
                 {
                     y = 1;//above center
@@ -7626,20 +7645,6 @@ public class ModifierRenderer
 
                     if(temp != null && !temp.isEmpty())
                         mods.add(new Modifier("AS", temp, x, y, centered));
-                }
-
-                if(modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1) ||
-                        modifiers.containsKey(Modifiers.AE_EQUIPMENT_TEARDOWN_TIME))
-                {
-                    y = 0;
-                    temp = "";
-                    if(modifiers.containsKey(Modifiers.H_ADDITIONAL_INFO_1))
-                        temp = modifiers.get(Modifiers.H_ADDITIONAL_INFO_1) + sep;
-                    if(modifiers.containsKey(Modifiers.AE_EQUIPMENT_TEARDOWN_TIME))
-                        temp += modifiers.get(Modifiers.AE_EQUIPMENT_TEARDOWN_TIME);
-                    temp = temp.trim();
-                    if(temp != null && !temp.isEmpty())
-                        mods.add(new Modifier("H AE", temp, x, y, centered));
                 }
 
                 if( modifiers.containsKey(Modifiers.M_HIGHER_FORMATION))
