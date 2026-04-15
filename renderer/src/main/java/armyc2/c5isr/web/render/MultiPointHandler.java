@@ -2100,8 +2100,26 @@ public class MultiPointHandler {
             JSONed.append(",\"labelAlign\":\"");
             JSONed.append(strJustify);
             JSONed.append("\",\"labelBaseline\":\"alphabetic\"");
-            JSONed.append(",\"labelXOffset\":0");
-            JSONed.append(",\"labelYOffset\":0");
+
+            //Process Anchor point if available
+            if(shapeInfo.getModifierAnchor() != null)
+            {
+                Point2D anchorPoint = ipc.PixelsToGeo(shapeInfo.getModifierAnchor());
+                if(normalize)
+                    anchorPoint = NormalizeCoordToGECoord(anchorPoint);
+                anchorPoint = new Point2D.Double(Math.round(anchorPoint.getX() * 100000000.0) / 100000000.0,Math.round(anchorPoint.getY() * 100000000.0) / 100000000.0);
+
+                JSONed.append(",\"anchorPoint\":{\"type\":\"Point\",\"coordinates\":[");
+                JSONed.append(anchorPoint.getX());
+                JSONed.append(",");
+                JSONed.append(anchorPoint.getY());
+                JSONed.append("]");
+                JSONed.append("}");
+
+                JSONed.append(",\"anchorOffsetX\":").append(Math.round(shapeInfo.getModifierAnchorOffset().getX()));
+                JSONed.append(",\"anchorOffsetY\":").append(Math.round(shapeInfo.getModifierAnchorOffset().getY()));
+            }
+
             JSONed.append(",\"labelOutlineColor\":\"");
             JSONed.append(RendererUtilities.colorToHexString(outlineColor, false));
             JSONed.append("\",\"labelOutlineWidth\":");
@@ -2335,6 +2353,24 @@ public class MultiPointHandler {
             JSONed.append(angle);
             JSONed.append(",\"angle\":");
             JSONed.append(angle);
+            //Process Anchor point if available
+            if(shapeInfo.getModifierAnchor() != null)
+            {
+                Point2D anchorPoint = ipc.PixelsToGeo(shapeInfo.getModifierAnchor());
+                if(normalize)
+                    anchorPoint = NormalizeCoordToGECoord(anchorPoint);
+                anchorPoint = new Point2D.Double(Math.round(anchorPoint.getX() * 100000000.0) / 100000000.0,Math.round(anchorPoint.getY() * 100000000.0) / 100000000.0);
+
+                JSONed.append(",\"anchorPoint\":{\"type\":\"Point\",\"coordinates\":[");
+                JSONed.append(anchorPoint.getX());
+                JSONed.append(",");
+                JSONed.append(anchorPoint.getY());
+                JSONed.append("]");
+                JSONed.append("}");
+
+                JSONed.append(",\"anchorOffsetX\":").append(Math.round(shapeInfo.getModifierAnchorOffset().getX()));
+                JSONed.append(",\"anchorOffsetY\":").append(Math.round(shapeInfo.getModifierAnchorOffset().getY()));
+            }
             JSONed.append("},");
             JSONed.append("\"geometry\":{\"type\":\"Point\",\"coordinates\":[");
             JSONed.append(longitude);
