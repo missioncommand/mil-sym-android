@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.Stack;
 
 import armyc2.c5isr.renderer.R;
+import armyc2.c5isr.renderer.utilities.ErrorLogger;
 import armyc2.c5isr.renderer.utilities.MSInfo;
 import armyc2.c5isr.renderer.utilities.SymbolID;
 
@@ -75,7 +76,23 @@ public class TreeManager {
 
         try {
             while ((line = br.readLine()) != null) {
-                if (line.split("\t")[5].contains(String.valueOf(version))) {
+
+                String[] segments = line.split("\\t");
+                if(segments[5].contains("15")) {
+                    segments[5] = "13," + segments[5];
+                    if(line.charAt(0)=='\t')
+                        line = "\t";
+                    else
+                        line = "";
+                    for(int lcv = 0; lcv < segments.length; lcv++)
+                    {
+                        line += segments[lcv];
+                        if(lcv < segments.length-1)
+                            line += "\t";
+                    }
+                }
+
+                if (segments[5].contains(String.valueOf(version))) {
                     // count tabs to calculate nodeDepth
                     int nodeDepth = 1;
                     while (line.charAt(0) == '\t') {
@@ -92,7 +109,6 @@ public class TreeManager {
 
                     // special case for parsing the Symbol Set codes since they're only 2 digits
                     if (nodeDepth == 1) {
-                        String[] segments = line.split("\\t");
                         symbolSet = segments[0];
 
                         if (SYMBOL_BLACKLIST.contains(symbolSet)) {
@@ -116,7 +132,7 @@ public class TreeManager {
 
                     // skip "{Reserved for future use}" codes
                     if (!line.toLowerCase().contains("{reserved for future use}")) {
-                        String[] segments = line.split("\t+");
+                        segments = line.split("\\t");
                         String name;
                         if (nodeDepth == 1) {
                             name = segments[1];
@@ -136,6 +152,15 @@ public class TreeManager {
 
                         if (SYMBOL_BLACKLIST.contains(symbolSet) || SYMBOL_BLACKLIST.contains(symbolSet + code)) {
                             continue;
+                        }
+
+                        int versionIndex = 5;
+                        for(int i = 1; i < segments.length; ++i) {
+                            if (segments[i].matches("\\d{6}")) {
+                                code = segments[i];
+                                versionIndex = i+1;
+                                break;
+                            }
                         }
 
                         child = getChild(parentStack.peek(), symbolSet, code);
