@@ -541,6 +541,22 @@ public class RendererUtilities {
                 String svg = icon.getSVG();
                 svg = svg.replaceFirst(">",transform);
                 RectF newBbox = RectUtilities.makeRectF((float)(bbox.left - transx),(float)(bbox.top - transy),(float)(bbox.width() * ratio), (float) (bbox.height() * ratio));
+                //retVal = new SVGInfo(icon.getID(),newBbox,svg);
+
+                //Adjust stroke widths so they remain the same and don't scale up.
+                int decimals = 3;
+                Pattern pattern = Pattern.compile("stroke-width=\"([\\d.]+)\"");
+                Matcher matcher = pattern.matcher(svg);
+                StringBuffer sb = new StringBuffer();
+                while (matcher.find()) {
+                    double original = Double.parseDouble(matcher.group(1));
+                    double adjusted = original * 1.5 / ratio;//multiply by 1.5 to reduce but not eliminate scaling
+                    String replacement = String.format("stroke-width=\"%." + decimals + "f\"", adjusted);
+                    matcher.appendReplacement(sb, replacement);
+                }
+                matcher.appendTail(sb);
+                svg = sb.toString();//*/
+
                 retVal = new SVGInfo(icon.getID(),newBbox,svg);
             }
         }

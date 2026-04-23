@@ -78,6 +78,7 @@ public class TreeManager {
             while ((line = br.readLine()) != null) {
 
                 String[] segments = line.split("\\t");
+                //lookup doesn't have 13 values.  Add 13 wherever there's a 15 for now.
                 if(segments[5].contains("15")) {
                     segments[5] = "13," + segments[5];
                     if(line.charAt(0)=='\t')
@@ -152,15 +153,6 @@ public class TreeManager {
 
                         if (SYMBOL_BLACKLIST.contains(symbolSet) || SYMBOL_BLACKLIST.contains(symbolSet + code)) {
                             continue;
-                        }
-
-                        int versionIndex = 5;
-                        for(int i = 1; i < segments.length; ++i) {
-                            if (segments[i].matches("\\d{6}")) {
-                                code = segments[i];
-                                versionIndex = i+1;
-                                break;
-                            }
                         }
 
                         child = getChild(parentStack.peek(), symbolSet, code);

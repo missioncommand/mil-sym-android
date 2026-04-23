@@ -125,7 +125,7 @@ public class SymbolID {
      */
     public static final int Version_2525E = 13;
     /**
-     * @deprecated use APP6EEch2
+     * @deprecated use APP6Ech2
      */
     public static final int Version_APP6Ech1 = 14;
     public static final int Version_2525Ech1 = 15;
