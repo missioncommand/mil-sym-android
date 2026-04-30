@@ -196,6 +196,11 @@ public class SymbolID {
 
     public static final int SymbolSet_CyberSpace = 60;
 
+    /**
+     * APP6Ev2 only
+     */
+    public static final int SymbolSet_CyberSpace_Equipment = 64;
+
     public static final int SymbolSet_InvalidSymbol = 98;
     public static final int SymbolSet_VersionExtensionFlag = 99;
 
@@ -1206,6 +1211,7 @@ public class SymbolID {
             case SymbolSet_SignalsIntelligence_Land:
                 return SymbolID.FrameShape_LandUnit;
             case SymbolSet_LandEquipment:
+            case SymbolSet_CyberSpace_Equipment:
                 return SymbolID.FrameShape_LandEquipment;
             case SymbolSet_LandInstallation:
                 return SymbolID.FrameShape_LandInstallation;
