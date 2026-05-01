@@ -44,7 +44,7 @@ Gradle based build system.
 Prerequisites:
 * Android SDK is installed
 * ```ANDROID_HOME``` environment variable pointing to location of the Android SDK
-* Android build-tools v30.0.3
+* Android build-tools v35.0.0
 
 External Libraries in use:  
 [AndroidSVG](https://bigbadaboom.github.io/androidsvg/index.html) 1.4 using [Apache v2.0 License](http://www.apache.org/licenses/LICENSE-2.0)  
