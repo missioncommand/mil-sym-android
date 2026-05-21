@@ -2,6 +2,8 @@ package armyc2.c5isr.renderer.utilities;
 
 
 import android.graphics.Point;
+import android.graphics.PointF;
+import android.graphics.Rect;
 import android.graphics.RectF;
 
 import java.text.SimpleDateFormat;
@@ -1164,8 +1166,40 @@ public class SymbolUtilities {
      * @return {@link Point} representing the point in the image that is the anchor point of the symbol.
      */
     public static Point getCMSymbolAnchorPoint(String symbolID, RectF bounds) {
-        float centerX = (bounds.width() / 2f) - 1;//-1 because width might be 37 but the points are only 0 - 36
-        float centerY = (bounds.height() / 2f) - 1;
+        PointF temp = getCMSymbolAnchorPointF(symbolID,bounds);
+        return new Point(Math.round(temp.x), Math.round(temp.y));
+    }
+
+    /**
+     * Gets the anchor point for single point Control Measure as the anchor point isn't always they center of the symbol.
+     * @param symbolID 30 Character {@link String}
+     * @param bounds {@link Rect} representing the bound of the core symbol in the image.
+     * @return {@link Point} representing the point in the image that is the anchor point of the symbol.
+     */
+    public static Point getCMSymbolAnchorPoint(String symbolID, Rect bounds) {
+        PointF temp = getCMSymbolAnchorPointF(symbolID,RectUtilities.makeRectFFromRect(bounds));
+        return new Point(Math.round(temp.x), Math.round(temp.y));
+    }
+
+    /**
+     * Gets the anchor point for single point Control Measure as the anchor point isn't always they center of the symbol.
+     * @param symbolID 30 Character {@link String}
+     * @param bounds {@link Rect} representing the bound of the core symbol in the image.
+     * @return {@link PointF} representing the point in the image that is the anchor point of the symbol.
+     */
+    public static PointF getCMSymbolAnchorPointF(String symbolID, Rect bounds) {
+        return getCMSymbolAnchorPointF(symbolID,RectUtilities.makeRectFFromRect(bounds));
+    }
+
+    /**
+     * Gets the anchor point for single point Control Measure as the anchor point isn't always they center of the symbol.
+     * @param symbolID 30 Character {@link String}
+     * @param bounds {@link RectF} representing the bound of the core symbol in the image.
+     * @return {@link Point} representing the point in the image that is the anchor point of the symbol.
+     */
+    public static PointF getCMSymbolAnchorPointF(String symbolID, RectF bounds) {
+        float centerX = (bounds.width() / 2f)-0.5f;
+        float centerY = (bounds.height() / 2f)-0.5f;
 
         int ss = SymbolID.getSymbolSet(symbolID);
         int ec = SymbolID.getEntityCode(symbolID);
@@ -1196,7 +1230,7 @@ public class SymbolUtilities {
                     centerX = 0;
                     break;
                 case DrawRules.POINT16://Tower 282001 //circle at base of tower
-                    centerY = (bounds.height() * 0.87f);
+                    centerY = (bounds.height() * 0.89f);
                     break;
                 case DrawRules.POINT2://Several different symbols
                     if (ec == 280500)//Wide Area Antitank Mine
@@ -1239,7 +1273,7 @@ public class SymbolUtilities {
             }
         }
 
-        return new Point(Math.round(centerX), Math.round(centerY));
+        return new PointF(centerX, centerY);
     }
 
     /**

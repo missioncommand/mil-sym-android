@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.SparseArray;
 
@@ -346,7 +347,7 @@ public class RendererUtilities {
      * @param isOutline true if this represents a thicker outline to render first beneath the normal symbol (the function must be called twice)
      * @return SVG String
      */
-    public static String setSVGSPCMColors(String symbolID, String svg, Color strokeColor, Color fillColor, boolean isOutline)
+    public static String setSVGSPCMColors(String symbolID, String svg, Color strokeColor, Color fillColor, boolean isOutline, RectF bounds, int pixelSize, int outlineWidth)
     {
         String returnSVG = svg;
         String hexStrokeColor = null;
@@ -397,27 +398,22 @@ public class RendererUtilities {
             strokeColor = Color.BLACK;
         }
 
-        if (isOutline) {
+        if (isOutline && bounds != null)
+        {
+            float p = pixelSize;
+            double h = bounds.height();
+            double w = bounds.width();
+            double ratio = Math.min((p / h), (p / w));
+
+            outlineSize = (int)Math.round(outlineWidth / ratio);
             //increase stroke-width so the white outline shows around the symbol
-            returnSVG = increaseStrokeWidth(returnSVG,(outlineSize));
+            returnSVG = increaseStrokeWidth(returnSVG,outlineSize);
             //set the stroke color for the group so filled shapes without stokes get outlined as well.
             returnSVG = returnSVG.replaceFirst("<g", "<g stroke=\"" + hexStrokeColor + "\" " + strokeOpacity + " stroke-linecap=\"square\"");
 
         }
         else
         {
-            /*
-            Pattern pattern = Pattern.compile("(font-size=\"\\d+\\.?\\d*)\"");
-            Matcher m = pattern.matcher(svg);
-            TreeSet<String> fontStrings = new TreeSet<>();
-            while (m.find()) {
-                fontStrings.add(m.group(0));
-            }
-            for (String target : fontStrings) {
-                String replacement = target + " fill=\"#" + strokeColor.toHexString().substring(2) + "\" ";
-                returnSVG = returnSVG.replace(target, replacement);
-            }//*/
-
             String replacement = " fill=\"" + colorToHexString(strokeColor,false) + "\" ";
             returnSVG = returnSVG.replace("fill=\"#000000\"",replacement);//only replace black fills, leave white fills alone.
 
@@ -613,6 +609,11 @@ public class RendererUtilities {
         return distance;
     }
 
+    public static int calculateOutlineWidth()
+    {
+        return RendererSettings.getInstance().getDeviceDPI()>100 ? RendererSettings.getInstance().getDeviceDPI()/96 * 3 : 3;
+    }
+
     /**
      * A starting point for calculating map scale.
      * The User may prefer a different calculation depending on how their maps works.
@@ -663,6 +664,6 @@ public class RendererUtilities {
 
     // Overloaded method to return non-outline symbols as normal.
     public static String setSVGSPCMColors(String symbolID, String svg, Color strokeColor, Color fillColor) {
-        return setSVGSPCMColors(symbolID, svg, strokeColor, fillColor, false);
+        return setSVGSPCMColors(symbolID, svg, strokeColor, fillColor, false,null,0,0);
     }
 }

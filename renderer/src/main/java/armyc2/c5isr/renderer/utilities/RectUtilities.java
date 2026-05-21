@@ -14,7 +14,7 @@ public class RectUtilities {
 	
 	public static Rect makeRect(float x, float y, float w, float h)
 	{
-		return new Rect((int)x, (int)y, (int)(w+0.5f), (int)(h+0.5f));
+		return new Rect((int)x, (int)y, (int)(x + w + 0.5f), (int)(y + h + 0.5f));
 	}
 	
 	public static RectF makeRectF(float x, float y, float w, float h)
