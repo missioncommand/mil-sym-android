@@ -243,8 +243,8 @@ public class Shape2SVG {
                 sbFill.append("</text>");
             }
 
-            /*sb = new StringBuilder();
-            if(stroke != null && fill != null)
+            sb = new StringBuilder();
+            /*if(stroke != null && fill != null)
                 sb.append(seStroke).append("\n").append(seFill).append("\n");
             else if(fill != null)
                 sb.append(seFill);

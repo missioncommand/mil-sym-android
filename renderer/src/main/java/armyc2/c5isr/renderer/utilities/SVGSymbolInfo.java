@@ -1,7 +1,9 @@
 package armyc2.c5isr.renderer.utilities;
 
 import android.graphics.Point;
+import android.graphics.PointF;
 import android.graphics.Rect;
+import android.graphics.RectF;
 
 
 public class SVGSymbolInfo implements SymbolDimensionInfo{
@@ -9,18 +11,34 @@ public class SVGSymbolInfo implements SymbolDimensionInfo{
     private String _svg = null;
     private String _svgDataURI = null;
 
-    private int _anchorX = 0;
-    private int _anchorY = 0;
+    private float _anchorX = 0;
+    private float _anchorY = 0;
+
     private Rect _symbolBounds = null;
     private Rect _bounds = null;
+    private RectF _symbolBoundsF = null;
+    private RectF _boundsF = null;
 
     public SVGSymbolInfo(String svg, Point anchorPoint, Rect symbolBounds, Rect svgBounds)
     {
         _svg = svg;
-        _anchorX = (int)anchorPoint.x;
-        _anchorY = (int)anchorPoint.y;
+        _anchorX = anchorPoint.x;
+        _anchorY = anchorPoint.y;
         _symbolBounds = symbolBounds;
         _bounds = svgBounds;
+        _symbolBoundsF = RectUtilities.makeRectFFromRect(symbolBounds);
+        _boundsF = RectUtilities.makeRectFFromRect(svgBounds);
+    }
+
+    public SVGSymbolInfo(String svg, PointF anchorPoint, RectF symbolBounds, RectF svgBounds)
+    {
+        _svg = svg;
+        _anchorX = anchorPoint.x;
+        _anchorY = anchorPoint.y;
+        _symbolBounds = RectUtilities.makeRectFromRectF(symbolBounds);
+        _bounds = RectUtilities.makeRectFromRectF(svgBounds);
+        _symbolBoundsF = symbolBounds;
+        _boundsF = svgBounds;
     }
 
     public String getSVGDataURI()
@@ -41,7 +59,7 @@ public class SVGSymbolInfo implements SymbolDimensionInfo{
      */
     public int getCenterX()
     {
-        return _anchorX;
+        return (int)_anchorX;
     }
 
     /**
@@ -50,7 +68,7 @@ public class SVGSymbolInfo implements SymbolDimensionInfo{
      */
     public int getCenterY()
     {
-        return _anchorY;
+        return (int)_anchorY;
     }
 
     /**
@@ -59,7 +77,16 @@ public class SVGSymbolInfo implements SymbolDimensionInfo{
      */
     public Point getCenterPoint()
     {
-        return new Point(_anchorX, _anchorY);
+        return new Point((int)_anchorX, (int)_anchorY);
+    }
+
+    /**
+     * The point the image should be centered on or the "anchor point".
+     * @return {@link PointF}
+     */
+    public PointF getCenterPointF()
+    {
+        return new PointF(_anchorX, _anchorY);
     }
 
     /**
@@ -70,6 +97,15 @@ public class SVGSymbolInfo implements SymbolDimensionInfo{
     public Rect getSymbolBounds()
     {
         return _symbolBounds;
+    }
+    /**
+     * minimum bounding rectangle for the core symbol. Does
+     * not include modifiers, display or otherwise.
+     * @return {@link RectF}
+     */
+    public RectF getSymbolBoundsF()
+    {
+        return _symbolBoundsF;
     }
 
     /**
@@ -82,6 +118,14 @@ public class SVGSymbolInfo implements SymbolDimensionInfo{
         return new Rect(_bounds.left,_bounds.top,_bounds.right,_bounds.bottom);
     }
 
+    /**
+     * Dimension of the entire image.
+     * @return {@link RectF}
+     */
+    public RectF getImageBoundsF()
+    {
+        return new RectF(_boundsF.left,_boundsF.top,_boundsF.right,_boundsF.bottom);
+    }
 
 
 }

@@ -203,6 +203,7 @@ public class SymbolPickerActivity extends Activity {
             int[] versions = getIntent().getIntArrayExtra(supportedVersionsKey);
             if (versions == null)
                 versions = new int[]{SymbolID.Version_2525Dch1};
+            versions = new int[]{SymbolID.Version_APP6Ech2};
             treeManager.buildTree(getApplicationContext(), versions);
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -30,6 +30,7 @@ import armyc2.c5isr.renderer.utilities.RendererSettings;
 import armyc2.c5isr.renderer.utilities.RendererUtilities;
 import armyc2.c5isr.renderer.utilities.SVGInfo;
 import armyc2.c5isr.renderer.utilities.SVGLookup;
+import armyc2.c5isr.renderer.utilities.SVGSymbolInfo;
 import armyc2.c5isr.renderer.utilities.SettingsChangedEvent;
 import armyc2.c5isr.renderer.utilities.SettingsChangedEventListener;
 import armyc2.c5isr.renderer.utilities.SymbolDimensionInfo;
@@ -473,7 +474,7 @@ public class SinglePointRenderer implements SettingsChangedEventListener
 
         Color lineColor = SymbolUtilities.getDefaultLineColor(symbolID);
         Color fillColor = null;//SymbolUtilities.getFillColorOfAffiliation(symbolID);
-
+        int outlineWidth = RendererUtilities.calculateOutlineWidth();
         int alpha = -1;
 
 
@@ -493,8 +494,9 @@ public class SinglePointRenderer implements SettingsChangedEventListener
 
         float ratio = 0;
 
-        Rect symbolBounds = null;
-        RectF fullBounds = null;
+        RectF symbolBounds = null;
+        RectF imageBounds = null;
+
         Bitmap fullBMP = null;
 
         boolean drawAsIcon = false;
@@ -707,7 +709,9 @@ public class SinglePointRenderer implements SettingsChangedEventListener
                 siMod1 = SVGLookup.getInstance().getSVGLInfo(mod1ID, version);
                 float borderPadding = 0;
                 if (drawCustomOutline) {
-                    borderPadding = RendererUtilities.findWidestStrokeWidth(siIcon.getSVG());
+                    borderPadding = (int)Math.ceil(outlineWidth/2f);
+                    if(borderPadding % 2 > 0)
+                        borderPadding++;
                 }
                 top = (int)Math.floor(siIcon.getBbox().top);
                 left = (int)Math.floor(siIcon.getBbox().left);
@@ -754,15 +758,37 @@ public class SinglePointRenderer implements SettingsChangedEventListener
                 //Set dash array depending on affiliation and status
                 siIcon = RendererUtilities.setAffiliationDashArray(symbolID, siIcon);
 
+                //Generate Affiliation Planned Circle for version 16
+                SVGSymbolInfo circle = ModifierRenderer.createPlannedCircle(siIcon.getBbox(),symbolID);
+
+                if(circle != null)
+                {
+                    //workaround for bug in androidsvg: dash-array on circle seems to start at 0 degreeds instead of 90 degrees
+                    //submitted ticket here: https://github.com/BigBadaboom/androidsvg/issues/297
+                    String rotation = " rotate(90) scale";
+                    circle = new SVGSymbolInfo(circle.getSVG().replace("scale",rotation),circle.getCenterPointF(),circle.getSymbolBoundsF(),circle.getImageBoundsF());
+
+                    symbolBounds = circle.getSymbolBoundsF();
+                    top = (int)Math.floor(circle.getImageBoundsF().top);
+                    left = (int)Math.floor(circle.getImageBoundsF().left);
+                    width = (int)Math.round(Math.ceil(circle.getImageBoundsF().width() + (circle.getImageBoundsF().left - left)));
+                    height = (int)Math.round(Math.ceil(circle.getImageBoundsF().height() + (circle.getImageBoundsF().top - top)));
+                    if(keepUnitRatio)
+                        pixelSize = (int)(pixelSize * (width / Math.max(siIcon.getBbox().width(),siIcon.getBbox().height())));
+                    String newSVG = siIcon.getSVG().substring(0,siIcon.getSVG().lastIndexOf("</g>"));
+                    newSVG += circle.getSVG() + "</g>";
+                    siIcon = new SVGInfo(siIcon.getID(),circle.getImageBoundsF(), newSVG);
+                }
+
                 //update line and fill color of frame SVG
                 if(msi.getSymbolSet() == SymbolID.SymbolSet_ControlMeasure && (lineColor != null || fillColor != null)) {
                     if (drawCustomOutline) {
                         // create outline with larger stroke-width first (if selected)
-                        strSVGIcon = RendererUtilities.setSVGSPCMColors(symbolID, siIcon.getSVG(), RendererUtilities.getIdealOutlineColor(lineColor), fillColor, true);
+                        strSVGIcon = RendererUtilities.setSVGSPCMColors(symbolID, siIcon.getSVG(), RendererUtilities.getIdealOutlineColor(lineColor), fillColor, true,siIcon.getBbox(),pixelSize,outlineWidth);
                     }
 
                     // append normal symbol SVG to be layered on top of outline
-                    strSVGIcon += RendererUtilities.setSVGSPCMColors(symbolID, siIcon.getSVG(), lineColor, fillColor, false);
+                    strSVGIcon += RendererUtilities.setSVGSPCMColors(symbolID, siIcon.getSVG(), lineColor, fillColor);
                 }
                 else//weather symbol (don't change color of weather graphics)
                     strSVGIcon = siIcon.getSVG();
@@ -772,16 +798,21 @@ public class SinglePointRenderer implements SettingsChangedEventListener
                 {
                     if (drawCustomOutline) {
                         // create outline with larger stroke-width first (if selected)
-                        strSVGIcon += RendererUtilities.setSVGSPCMColors(mod1ID, siMod1.getSVG(), RendererUtilities.getIdealOutlineColor(RendererUtilities.getColorFromHexString("#00A651")), RendererUtilities.getColorFromHexString("#00A651"), true);
+                        strSVGIcon += RendererUtilities.setSVGSPCMColors(mod1ID, siMod1.getSVG(), RendererUtilities.getIdealOutlineColor(RendererUtilities.getColorFromHexString("#00A651")), RendererUtilities.getColorFromHexString("#00A651"), true,siIcon.getBbox(),pixelSize,outlineWidth);
                     }
                     //strSVGIcon += siMod1.getSVG();
-                    strSVGIcon += RendererUtilities.setSVGSPCMColors(mod1ID, siMod1.getSVG(), lineColor, fillColor, false);
+                    strSVGIcon += RendererUtilities.setSVGSPCMColors(mod1ID, siMod1.getSVG(), lineColor, fillColor);
                 }
 
                 if (pixelSize > 0)
                 {
-                    symbolBounds = RectUtilities.makeRect(left,top,width,height);
-                    rect = new Rect(symbolBounds);
+                    imageBounds = RectUtilities.makeRectF(left,top,width,height);
+                    if(circle != null)
+                        symbolBounds = circle.getSymbolBoundsF();
+                    else
+                        symbolBounds = new RectF(imageBounds);
+
+                    rect = RectUtilities.makeRectFromRectF(imageBounds);
 
                     //adjust size
                     float p = pixelSize;
@@ -790,37 +821,36 @@ public class SinglePointRenderer implements SettingsChangedEventListener
 
                     ratio = Math.min((p / h), (p / w));
 
-                    symbolBounds = RectUtilities.makeRect(0f, 0f, w * ratio, h * ratio);
+                    symbolBounds = RectUtilities.makeRectF((symbolBounds.left - imageBounds.left)*ratio, (symbolBounds.top - imageBounds.top)*ratio, symbolBounds.width() * ratio, symbolBounds.height() * ratio);
+                    imageBounds = RectUtilities.makeRectF(0f, 0f, w * ratio, h * ratio);
 
                     //make sure border padding isn't excessive.
                     w = symbolBounds.width();
                     h = symbolBounds.height();
 
-                    if(borderPadding > 0) {
+                    /*if(borderPadding > 0) {
                         if (h / (h + borderPadding) > 0.10) {
                             borderPadding = (float) (h * 0.1);
                         } else if (w / (w + borderPadding) > 0.10) {
                             borderPadding = (float) (w * 0.1);
                         }
-                    }
+                    }*/
                 }
 
-                //Draw glyphs to bitmap
-                Bitmap bmp = Bitmap.createBitmap((symbolBounds.width() + Math.round(borderPadding)), (symbolBounds.height() + Math.round(borderPadding)), Config.ARGB_8888);
-                Canvas canvas = new Canvas(bmp);
-
-                symbolBounds = new Rect(0, 0, bmp.getWidth(), bmp.getHeight());
 
                 //grow size SVG to accommodate the outline we added
                 int offset = 0;
                 if(drawCustomOutline)
                 {
-                    RectUtilities.grow(rect, 2);
-                    offset = 4;
-
-                    //RectUtilities.grow(rect, Math.round(borderPadding / ratio));
-                    //offset = (int)borderPadding;
+                    RectUtilities.grow(rect, (int)Math.ceil(borderPadding / ratio));
+                    offset = (int)Math.ceil(borderPadding);
                 }//*/
+
+                //Draw glyphs to bitmap
+                imageBounds = RectUtilities.makeRectF(0f, 0f, (int)(imageBounds.width() + 0.5f + (borderPadding)*2), (int)(imageBounds.height() + 0.5f + (borderPadding)*2));
+                RectUtilities.shift(symbolBounds,offset,offset);
+                Bitmap bmp = Bitmap.createBitmap(Math.round(imageBounds.width()), Math.round(imageBounds.height()), Config.ARGB_8888);
+                Canvas canvas = new Canvas(bmp);
 
 
                 if(SymbolUtilities.isActionPoint(symbolID))//smooth out action points
@@ -832,13 +862,15 @@ public class SinglePointRenderer implements SettingsChangedEventListener
                 mySVG.setDocumentViewBox(rect.left,rect.top,rect.width(),rect.height());
                 mySVG.renderToCanvas(canvas);
 
-                Point centerPoint = SymbolUtilities.getCMSymbolAnchorPoint(symbolID,new RectF(offset, offset, symbolBounds.right-offset, symbolBounds.bottom-offset));
-                if(offset > 0)
-                    centerPoint.offset(offset,offset);
+                Point centerPoint = SymbolUtilities.getCMSymbolAnchorPoint(symbolID,symbolBounds);
 
-                ii = new ImageInfo(bmp, centerPoint, symbolBounds);
+                //now that we're done building symbol and applying outlines if needed,
+                //imageBounds and symbolBounds can be considered to be the same
+                symbolBounds = new RectF(imageBounds);//circle.getSymbolBounds();
 
-                if(cacheEnabled && drawAsIcon == false && bmp.getAllocationByteCount() <= maxCachedEntrySize)
+                ii = new ImageInfo(bmp, new Point(Math.round(centerPoint.x),Math.round(centerPoint.y)), RectUtilities.makeRectFromRectF(symbolBounds));
+
+                if(cacheEnabled && !drawAsIcon && bmp.getAllocationByteCount() <= maxCachedEntrySize)
                 {
                     synchronized (_SinglePointCacheMutex)
                     {
@@ -877,7 +909,7 @@ public class SinglePointRenderer implements SettingsChangedEventListener
             //bmp.recycle();
             symbolBounds = null;
             fullBMP = null;
-            fullBounds = null;
+            imageBounds = null;
             mySVG = null;
 
 
@@ -912,6 +944,8 @@ public class SinglePointRenderer implements SettingsChangedEventListener
 
         Color lineColor = null;
         Color fillColor = null;//SymbolUtilities.getFillColorOfAffiliation(symbolID);
+
+        int outlineWidth = RendererUtilities.calculateOutlineWidth();
 
         int alpha = -1;
 
@@ -1051,7 +1085,11 @@ public class SinglePointRenderer implements SettingsChangedEventListener
 
                 //update line and fill color of frame SVG
                 if(msi.getSymbolSet() == SymbolID.SymbolSet_ControlMeasure && (lineColor != null || fillColor != null))
-                    strSVGIcon = RendererUtilities.setSVGFrameColors(symbolID,siIcon.getSVG(),lineColor,fillColor);
+                {
+                    if(drawCustomOutline)
+                        strSVGIcon += RendererUtilities.setSVGSPCMColors(iconID,siIcon.getSVG(), RendererUtilities.getIdealOutlineColor(lineColor), fillColor,true,siIcon.getBbox(),pixelSize,outlineWidth);
+                    strSVGIcon += RendererUtilities.setSVGSPCMColors(iconID, siIcon.getSVG(), lineColor, fillColor);
+                }
                 else
                     strSVGIcon = siIcon.getSVG();
 
