@@ -4409,7 +4409,7 @@ public class ModifierRenderer
 
                 //render////////////////////////////////////////////////////////
                 //draw original icon with potential modifiers.
-                ctx.drawBitmap(ii.getImage(), imageBounds.left, imageBounds.top, null);
+                ctx.drawBitmap(ii.getImage(), symbolBounds.left, symbolBounds.top, null);
                 //ctx.drawImage(ii.getImage(),imageBoundsOld.left,imageBoundsOld.top);
 
 

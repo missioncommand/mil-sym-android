@@ -1198,8 +1198,8 @@ public class SymbolUtilities {
      * @return {@link Point} representing the point in the image that is the anchor point of the symbol.
      */
     public static PointF getCMSymbolAnchorPointF(String symbolID, RectF bounds) {
-        float centerX = (bounds.width() / 2f)-0.5f;
-        float centerY = (bounds.height() / 2f)-0.5f;
+        float centerX = (bounds.width() / 2f);
+        float centerY = (bounds.height() / 2f);
 
         int ss = SymbolID.getSymbolSet(symbolID);
         int ec = SymbolID.getEntityCode(symbolID);
@@ -1273,7 +1273,7 @@ public class SymbolUtilities {
             }
         }
 
-        return new PointF(centerX, centerY);
+        return new PointF((centerX + bounds.left),(centerY + bounds.top));
     }
 
     /**

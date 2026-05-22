@@ -760,8 +760,14 @@ public class SinglePointRenderer implements SettingsChangedEventListener
 
                 //Generate Affiliation Planned Circle for version 16
                 SVGSymbolInfo circle = ModifierRenderer.createPlannedCircle(siIcon.getBbox(),symbolID);
+
                 if(circle != null)
                 {
+                    //workaround for bug in androidsvg: dash-array on circle seems to start at 0 degreeds instead of 90 degrees
+                    //submitted ticket here: https://github.com/BigBadaboom/androidsvg/issues/297
+                    String rotation = " rotate(90) scale";
+                    circle = new SVGSymbolInfo(circle.getSVG().replace("scale",rotation),circle.getCenterPointF(),circle.getSymbolBoundsF(),circle.getImageBoundsF());
+
                     symbolBounds = circle.getSymbolBoundsF();
                     top = (int)Math.floor(circle.getImageBoundsF().top);
                     left = (int)Math.floor(circle.getImageBoundsF().left);
@@ -856,9 +862,11 @@ public class SinglePointRenderer implements SettingsChangedEventListener
                 mySVG.setDocumentViewBox(rect.left,rect.top,rect.width(),rect.height());
                 mySVG.renderToCanvas(canvas);
 
-                Point centerPoint = SymbolUtilities.getCMSymbolAnchorPoint(symbolID,RectUtilities.makeRectFromRectF(symbolBounds));
-                if(symbolBounds.left > 0 || symbolBounds.top > 0)
-                    centerPoint.offset((int)symbolBounds.left,(int)symbolBounds.top);
+                Point centerPoint = SymbolUtilities.getCMSymbolAnchorPoint(symbolID,symbolBounds);
+
+                //now that we're done building symbol and applying outlines if needed,
+                //imageBounds and symbolBounds can be considered to be the same
+                symbolBounds = new RectF(imageBounds);//circle.getSymbolBounds();
 
                 ii = new ImageInfo(bmp, new Point(Math.round(centerPoint.x),Math.round(centerPoint.y)), RectUtilities.makeRectFromRectF(symbolBounds));
 

@@ -767,14 +767,13 @@ public class SinglePointSVGRenderer implements SettingsChangedEventListener
                 }
 
                 //Point centerPoint = SymbolUtilities.getCMSymbolAnchorPoint(symbolID, RectUtilities.makeRectangle2DFromRect(offset, offset, symbolBounds.getWidth()-offset, symbolBounds.getHeight()-offset));
-                PointF centerPoint = SymbolUtilities.getCMSymbolAnchorPointF(symbolID, RectUtilities.makeRectFromRectF(symbolBounds));
+                PointF centerPoint = SymbolUtilities.getCMSymbolAnchorPointF(symbolID, symbolBounds);
+                centerPoint.set(Math.round(centerPoint.x),Math.round(centerPoint.y));
                 //Point centerPoint = SymbolUtilities.getCMSymbolAnchorPoint(symbolID,RectUtilities.makeRectFromRectF(symbolBounds));
-                if(symbolBounds.left > 0 || symbolBounds.top > 0)
-                    centerPoint.offset((int)(symbolBounds.left),(int)(symbolBounds.top));
 
-                /*if(borderPaddingBounds != null) {
-                    RectUtilities.grow(symbolBounds, 4);
-                }//*/
+                //now that we're done building symbol and applying outlines if needed,
+                //imageBounds and symbolBounds can be considered to be the same
+                symbolBounds = new RectF(imageBounds);//circle.getSymbolBounds();
 
                 si = new SVGSymbolInfo(sbGroupUnit.toString(), centerPoint,symbolBounds,imageBounds);
 
