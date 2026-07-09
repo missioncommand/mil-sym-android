@@ -1169,7 +1169,7 @@ public class SymbolPickerActivity extends Activity {
         Map<String,String> modifiers = new HashMap<>();
         Map<String,String> attributes = new HashMap<>();
 
-        attributes.put(MilStdAttributes.PixelSize, "50");
+        attributes.put(MilStdAttributes.PixelSize, "100");
         attributes.put(MilStdAttributes.DrawAsIcon, "true"); // Make all symbols same size
 
         ImageInfo ii = mir.RenderIcon(symbolID, modifiers, attributes);

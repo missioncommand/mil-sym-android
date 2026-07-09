@@ -15,32 +15,12 @@ import armyc2.c5isr.renderer.R;
 import armyc2.c5isr.renderer.utilities.ErrorLogger;
 import armyc2.c5isr.renderer.utilities.MSInfo;
 import armyc2.c5isr.renderer.utilities.SymbolID;
+import armyc2.c5isr.renderer.utilities.SymbolUtilities;
 
 public class TreeManager {
     private static final Set<String> SYMBOL_BLACKLIST = new HashSet<>(Arrays.asList(
             // Symbols with no SVG or drawing in standard
-            "25342900", // Advance to contact
-            "25343000", // Capture
-            "25343100", // Conduct Exploitation
-            "25343200", // Control
-            "25343300", // Demonstration
-            "25343400", // Deny
-            "25343500", // Envelop
-            "25343600", // Escort
-            "25343700", // Exfiltrate
-            "25343800", // Infiltrate
-            "25343900", // Locate
-            "25350000", // Space debris
-            "25350100", "25350101", "25350102", "25350103", // Man made space debris
-            "25350200", "25350201", "25350202", "25350203", // Natural space debris
-            "46120313", // Hydrography Ports and Harbors Facilities
-            "46120301", // Hydrography Ports and Harbors Ports
-            "46120325", // Hydrography Ports and Harbors Shoreline Protection
-            "46120400", // Hydrography Aids to Navigation
-            "47", // Meteorological space
-
-            // Symbols with drawing in standard but no SVG
-            "10163601", // Floating Craft
+            "47", // Meteorological space is an empty Symbol Set currently
 
             // Symbols with ambiguous draw rules
             "45162004" // Tropical Storm Wind Areas
@@ -77,14 +57,14 @@ public class TreeManager {
         try {
             while ((line = br.readLine()) != null) {
 
+                boolean newSymbolSet = false;
                 String[] segments = line.split("\\t");
                 //lookup doesn't have 13 values.  Add 13 wherever there's a 15 for now.
                 if(segments[5].contains("15")) {
                     segments[5] = "13," + segments[5];
-                    if(line.charAt(0)=='\t')
-                        line = "\t";
-                    else
-                        line = "";
+
+                    line = "";
+
                     for(int lcv = 0; lcv < segments.length; lcv++)
                     {
                         line += segments[lcv];
@@ -96,6 +76,11 @@ public class TreeManager {
                 if (segments[5].contains(String.valueOf(version))) {
                     // count tabs to calculate nodeDepth
                     int nodeDepth = 1;
+
+                    if(SymbolUtilities.isNumber(line.substring(0,2))) {
+                        newSymbolSet = true;
+                        line = line.substring(2);
+                    }
                     while (line.charAt(0) == '\t') {
                         line = line.substring(1);
                         nodeDepth++;
@@ -109,7 +94,7 @@ public class TreeManager {
                     }
 
                     // special case for parsing the Symbol Set codes since they're only 2 digits
-                    if (nodeDepth == 1) {
+                    if(newSymbolSet){//(nodeDepth == 1 && !segments[0].isEmpty()) {
                         symbolSet = segments[0];
 
                         if (SYMBOL_BLACKLIST.contains(symbolSet)) {
@@ -119,6 +104,11 @@ public class TreeManager {
                         child = getChild(parentStack.peek(), symbolSet, "000000");
                         if (child == null) {
                             child = new Node(MSInfo.parseSymbolSetName(symbolSet, version), String.valueOf(version), symbolSet, "000000");
+
+                            //new symbol set so go back to the root to add it to the root
+                            while(parentStack.size() > 1)
+                                parentStack.pop();
+
                             parentStack.peek().addChild(child);
                         }
 
@@ -135,11 +125,8 @@ public class TreeManager {
                     if (!line.toLowerCase().contains("{reserved for future use}")) {
                         segments = line.split("\\t");
                         String name;
-                        if (nodeDepth == 1) {
-                            name = segments[1];
-                        } else {
-                            name = segments[0];
-                        }
+
+                        name = segments[0];
 
                         // XXXXXX would indicate an error reading the file where it couldn't find 6 digits
                         String code = "XXXXXX";
