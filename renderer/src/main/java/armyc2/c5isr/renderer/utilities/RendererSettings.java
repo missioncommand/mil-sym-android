@@ -87,6 +87,12 @@ public class RendererSettings{
     private static boolean _AutoCollapseModifiers = true;
 
     /**
+     * group labels thant tend to be close (like W, W1) into a single modifier with an
+     * end-line character '\n' to create the multiline effect
+     */
+    private static boolean _GroupModifiers = false;
+
+    /**
      * If true (default), when HQ Staff is present, location will be indicated by the free
      * end of the staff
      */
@@ -462,6 +468,15 @@ public class RendererSettings{
 
     public boolean getAutoCollapseModifiers() {return _AutoCollapseModifiers;}
 
+
+    /**
+     * If labels on your map engine support the end-line character '\n', group modifiers
+     * into a single label so that they don't conflict and potentially get dropped due to
+     * proximity which some 3D maps tend to do with labels.
+     * @param value
+     */
+    public  void setGroupModifiers(boolean value) {_GroupModifiers = value;}
+    public boolean getGroupModifiers(){return _GroupModifiers;};
 
     /**
      * if RenderSettings.TextBackgroundMethod_OUTLINE is used,
