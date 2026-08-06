@@ -1426,7 +1426,7 @@ public final class clsRenderer {
                 shapes.add(DISMSupport.getFDIShape(tg, ptA, ptB, ptC));
             } else if (drawRule == DrawRules.AXIS1 || drawRule == DrawRules.AXIS2) {
                 // Axis of Advance symbols
-                ArrayList<POINT2> points = shapes.get(0).getPoints();
+                ArrayList<POINT2> points = shapes.get(shapes.size()-1).getPoints();
 
                 //find arrowhead points
                 int tipIndex =0, leftIndex =0, rightIndex =0;//arrowhead points
