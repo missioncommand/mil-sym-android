@@ -1,5 +1,6 @@
 package armyc2.c5isr.renderer.utilities;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
@@ -7,6 +8,9 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.SparseArray;
+
+import com.caverock.androidsvg.SVG;
+import com.caverock.androidsvg.SVGParseException;
 
 import java.util.Map;
 import java.util.TreeSet;
@@ -665,5 +669,23 @@ public class RendererUtilities {
     // Overloaded method to return non-outline symbols as normal.
     public static String setSVGSPCMColors(String symbolID, String svg, Color strokeColor, Color fillColor) {
         return setSVGSPCMColors(symbolID, svg, strokeColor, fillColor, false,null,0,0);
+    }
+
+    public static Bitmap renderSVG(Rect bounds, String svg)
+    {
+        Bitmap bmp = null;
+        SVG mySVG = null;
+        try {
+            bmp = Bitmap.createBitmap(bounds.width(),bounds.height(), Bitmap.Config.ARGB_8888);
+            mySVG = SVG.getFromString(svg);
+            mySVG.setDocumentViewBox(bounds.left, bounds.top, bounds.width(), bounds.height());
+            Canvas canvas = new Canvas(bmp);
+            mySVG.renderToCanvas(canvas);
+        }
+        catch(Exception exc)
+        {
+            ErrorLogger.LogException("SinglePointRenderer", "RenderUnit", exc);
+        }
+        return bmp;
     }
 }
