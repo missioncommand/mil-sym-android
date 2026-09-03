@@ -14,7 +14,6 @@ import armyc2.c5isr.renderer.utilities.RendererUtilities;
 import armyc2.c5isr.renderer.utilities.SymbolID;
 import armyc2.c5isr.renderer.utilities.SymbolUtilities;
 
-import java.awt.*;
 import java.util.Map;
 
 public class LinePattern {
