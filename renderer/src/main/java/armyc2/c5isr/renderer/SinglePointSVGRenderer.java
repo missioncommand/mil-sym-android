@@ -81,15 +81,11 @@ public class SinglePointSVGRenderer implements SettingsChangedEventListener
         SVGSymbolInfo si = null;
         SymbolDimensionInfo newSDI = null;
 
-        String lineColor = null;//SymbolUtilitiesD.getLineColorOfAffiliation(symbolID);
-        String fillColor = null;
+        int version = SymbolID.getVersion(symbolID);
 
-        if(SymbolID.getSymbolSet(symbolID)==SymbolID.SymbolSet_MineWarfare && RendererSettings.getInstance().getSeaMineRenderMethod()==RendererSettings.SeaMineRenderMethod_MEDAL)
-        {
-            lineColor = RendererUtilities.colorToHexString(SymbolUtilities.getLineColorOfAffiliation(symbolID), false);
-            fillColor = RendererUtilities.colorToHexString(SymbolUtilities.getFillColorOfAffiliation(symbolID), true);
-        }
-
+        //Set color defaults
+        String lineColor = RendererUtilities.colorToHexString(SymbolUtilities.getLineColorOfAffiliation(symbolID), false);
+        String fillColor = RendererUtilities.colorToHexString(SymbolUtilities.getFillColorOfAffiliation(symbolID), true);
         String iconColor = null;
 
         int alpha = 255;
@@ -184,7 +180,6 @@ public class SinglePointSVGRenderer implements SettingsChangedEventListener
             //if not, generate symbol
             if (si == null)//*/
             {
-                int version = SymbolID.getVersion(symbolID);
                 //Get SVG pieces of symbol
                 frameID = SVGLookup.getFrameID(symbolID);
                 iconID = SVGLookup.getMainIconID(symbolID);

@@ -91,6 +91,7 @@ public class SinglePointRenderer implements SettingsChangedEventListener
      */
     public ImageInfo RenderUnit(String symbolID, Map<String,String> modifiers, Map<String,String> attributes)
     {
+        //Set color defaults
         Color lineColor = SymbolUtilities.getLineColorOfAffiliation(symbolID);
         Color fillColor = SymbolUtilities.getFillColorOfAffiliation(symbolID);
         Color iconColor = null;
