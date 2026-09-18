@@ -522,7 +522,7 @@ public class SymbolUtilities {
                             retColor = AffiliationColors.HostileGraphicLineColor;//Color.RED;//0xff0000;	// Red
                             break;
                         case SymbolID.StandardIdentity_Affiliation_Suspect_Joker:
-                            if(symStd >= SymbolID.Version_2525E)
+                            if(symStd >= SymbolID.Version_2525E && symStd <= SymbolID.Version_2525Ech1)
                                 retColor = AffiliationColors.SuspectGraphicLineColor;//255,188,1
                             else
                                 retColor = AffiliationColors.HostileGraphicLineColor;//Color.RED;//0xff0000;	// Red
@@ -555,7 +555,7 @@ public class SymbolUtilities {
                             retColor = AffiliationColors.HostileUnitFillColor;//Color.RED;//0xff0000;	// Red
                             break;
                         case SymbolID.StandardIdentity_Affiliation_Suspect_Joker:
-                            if(symStd >= SymbolID.Version_2525E)
+                            if(symStd >= SymbolID.Version_2525E && symStd <= SymbolID.Version_2525Ech1)
                                 retColor = AffiliationColors.SuspectUnitFillColor;//255,188,1
                             else
                                 retColor = AffiliationColors.HostileUnitFillColor;//Color.RED;//0xff0000;	// Red
@@ -663,7 +663,7 @@ public class SymbolUtilities {
             }
         }
         catch (Exception e) {
-            ErrorLogger.LogException("SymbolUtilities", "getFillColorOfAffiliation", e);
+            ErrorLogger.LogException("SymbolUtilities", "isTacticalGraphic", e);
         }
         return false;
     }
@@ -778,7 +778,7 @@ public class SymbolUtilities {
             }
         }
         catch (Exception e) {
-            ErrorLogger.LogException("SymbolUtilities", "getFillColorOfAffiliation", e);
+            ErrorLogger.LogException("SymbolUtilities", "isTGSPWithSpecialModifierLayout", e);
         }
         return false;
     }
@@ -837,7 +837,7 @@ public class SymbolUtilities {
                         retColor = AffiliationColors.HostileUnitFillColor;//0xfa8072;	// Salmon
                         break;
                     case SymbolID.StandardIdentity_Affiliation_Suspect_Joker:
-                        if(SymbolID.getVersion(symbolID) >= SymbolID.Version_2525E)
+                        if(SymbolID.getVersion(symbolID) >= SymbolID.Version_2525E && SymbolID.getVersion(symbolID) <= SymbolID.Version_2525Ech1)
                             retColor = AffiliationColors.SuspectGraphicFillColor;//255,229,153
                         else
                             retColor = AffiliationColors.HostileGraphicFillColor;//Color.RED;//0xff0000;	// Red
