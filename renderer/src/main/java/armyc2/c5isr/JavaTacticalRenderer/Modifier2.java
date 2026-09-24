@@ -2413,6 +2413,17 @@ public class Modifier2 {
                         }
                         modifiersGrouped = true;
                         break;
+                    case TacticalLines.AC://Air Corridors
+                    case TacticalLines.LLTR:
+                    case TacticalLines.MRR:
+                    case TacticalLines.SL:
+                    case TacticalLines.TC:
+                    case TacticalLines.SAAFR:
+                    case TacticalLines.SC:
+                        //AddIntegralAreaModifier(tg, buildAreaGroupString(tg, label), area, 0, ptCenter, ptCenter, false);
+                        AddIntegralModifier(tg, buildAreaGroupString(tg, label), aboveMiddle, 0, middleSegment, middleSegment + 1, false);
+                        modifiersGrouped = true;
+                        break;
                 }
             }
 
@@ -4492,6 +4503,21 @@ public class Modifier2 {
                 modifier += "\n" + "TIME FROM: " + tg.get_DTG();
                 modifier += "\n" + "TIME TO: " + tg.get_DTG1();
                 break;
+            case TacticalLines.AC://Air Corridors
+            case TacticalLines.LLTR:
+            case TacticalLines.MRR:
+            case TacticalLines.SL:
+            case TacticalLines.TC:
+            case TacticalLines.SAAFR:
+            case TacticalLines.SC:
+                modifier = "NAME: " + tg.get_Name();
+                modifier += "\n" + "WIDTH: " + tg.get_AM();
+                modifier += "\n" + "MIN ALT: " + tg.get_X();
+                modifier += "\n" + "MAX ALT: " + tg.get_X1();
+                modifier += "\n" + "DTG Start: " + tg.get_DTG();
+                modifier += "\n" + "DTG End: : " + tg.get_DTG1();
+                modifier += "\n\n" + label + " " + tg.get_Name();
+                modifier += "\n\n\n\n\n\n\n";
         }
         return modifier;
     }
