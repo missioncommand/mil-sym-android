@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import armyc2.c5isr.JavaLineArray.LinePattern;
 import armyc2.c5isr.graphics2d.Point2D;
 import armyc2.c5isr.graphics2d.TexturePaint;
 
@@ -1302,7 +1303,10 @@ public class MilStdSymbol
                 case 341500://Isolate, most detail contained inside
                 case 342600://Cordon and Knock, most detail contained inside
                 case 342700://Cordon and Search, most detail contained inside
-                    return 2;//decoration
+                    if(getUseLinePattern() && LinePattern.supportsLinePattern(_symbolID))
+                        return 0;//using pattern, don't need to refresh
+                    else
+                        return 2;//decoration
 
                 //Areas with Pattern Fill
                 case 151100://Limited Access Area

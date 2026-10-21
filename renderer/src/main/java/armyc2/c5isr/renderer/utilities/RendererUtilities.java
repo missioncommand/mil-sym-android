@@ -7,11 +7,13 @@ import android.graphics.Paint.Style;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.Base64;
 import android.util.SparseArray;
 
 import com.caverock.androidsvg.SVG;
 import com.caverock.androidsvg.SVGParseException;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Map;
 import java.util.TreeSet;
 import java.util.logging.Level;
@@ -22,6 +24,18 @@ public class RendererUtilities {
 
     private static final float OUTLINE_SCALING_FACTOR = 2.5f;
 	private static SparseArray<Color> pastIdealOutlineColors = new SparseArray<Color>();
+
+    public static String imgToBase64String(Bitmap bitmap) {
+        final int COMPRESSION_QUALITY = 100;
+        String encodedImage;
+        ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, COMPRESSION_QUALITY,
+                byteArrayBitmapStream);
+        byte[] b = byteArrayBitmapStream.toByteArray();
+        encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+        return "data:image/png;base64," + encodedImage;
+    }
+
 	/**
      * 
      * @param color {String} color like "#FFFFFF"
