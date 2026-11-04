@@ -2,9 +2,11 @@ package armyc2.c5isr.renderer.test3;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PathMeasure;
 import android.util.Log;
 import android.util.SparseArray;
 
@@ -15,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import armyc2.c5isr.JavaLineArray.BasicShapes;
+import armyc2.c5isr.JavaLineArray.LinePattern;
 import armyc2.c5isr.JavaLineArray.POINT2;
 import armyc2.c5isr.JavaLineArray.lineutility;
 import armyc2.c5isr.graphics2d.AffineTransform;
@@ -201,6 +204,9 @@ public final class utility {
                 attributes.put(MilStdAttributes.LineWidth, MainActivity.lineWidth);
             attributes.put(MilStdAttributes.UseDashArray, Boolean.toString(useDashArray));
 
+            //Line Pattern Test
+            //attributes.put(MilStdAttributes.UseLinePattern, "true");
+
          switch (symbolCode) {
              case "LINE": {
                  MilStdSymbol mss = WebRenderer.RenderBasicShapeAsMilStdSymbol("id", "name", "description", BasicShapes.LINE, controlPtsStr, altitudeMode, scale, rectStr, modifiers, attributes);
@@ -377,6 +383,7 @@ public final class utility {
                         }
                         //end diagnostic
                         canvas.drawPath(path, paint);
+
                     }
 
                 }
@@ -425,6 +432,8 @@ public final class utility {
                         }
                         //end diagnostic
                         canvas.drawPath(path, paint);
+                        if(spec.getLinePattern() != null)
+                            drawImageAlongPath(canvas,spec.getLinePattern(),path,spec.getLinePattern().getLinePatternImage().getWidth(),true);
                     }
                 }
                 if (spec.getLineColor() != null && dash!=null && useDashedLines==true)
@@ -583,6 +592,85 @@ public final class utility {
         } catch (Exception exc) {
             ErrorLogger.LogException("utility", "drawDashedPolylines",
                     new RendererException("Failed inside drawDashedPolylines", exc));
+        }
+    }
+
+    /**
+     * Draws a LinePattern's bitmap repeatedly along the contour of an Android Path.
+     *
+     * @param canvas      The Canvas to draw onto.
+     * @param linePattern The LinePattern to repeat (must provide a Bitmap).
+     * @param path        The Path to follow.
+     * @param spacing     The distance in pixels between each repeated image.
+     * @param alignToPath If true, rotates the image to match the tangent of the path.
+     */
+    public static void drawImageAlongPath(
+            Canvas canvas,
+            LinePattern linePattern,
+            Path path,
+            float spacing,
+            boolean alignToPath
+    ) {
+        if (path == null || linePattern == null || spacing <= 0f) {
+            return;
+        }
+
+        Bitmap image = linePattern.getLinePatternImage();
+        if (image == null) {
+            return;
+        }
+
+        // Half dimensions of the image; vertical offset from LinePattern
+        float halfW = image.getWidth() / 2f;
+        float halfH = (float) linePattern.getLinePatternVerticalOffset();
+
+        // If you want to recenter using a padded image (like the commented Java code):
+        // LinePattern centered = LinePattern.centerLinePattern(linePattern);
+        // Bitmap centeredImage = (Bitmap) centered.getLinePatternImage();
+        // halfH = centeredImage.getHeight() / 2f;
+        // image = centeredImage;
+
+        PathMeasure pm = new PathMeasure(path, false);
+        float pathLength = pm.getLength();
+
+        float distance = 0f;
+        float[] pos = new float[2];
+        float[] tan = new float[2];
+
+        while (true) {
+            if (distance > pathLength) {
+                // Try next contour if present
+                if (!pm.nextContour()) {
+                    break;
+                }
+                pathLength = pm.getLength();
+                distance = 0f;
+            }
+
+            boolean gotPos = pm.getPosTan(distance, pos, alignToPath ? tan : null);
+            if (!gotPos) {
+                break;
+            }
+
+            float x = pos[0];
+            float y = pos[1];
+
+            canvas.save();
+
+            // Translate to the target point on the path
+            canvas.translate(x, y);
+
+            if (alignToPath && (tan[0] != 0f || tan[1] != 0f)) {
+                float angle = (float) (Math.atan2(tan[1], tan[0]) * 180.0 / Math.PI);
+                canvas.rotate(angle);
+            }
+
+            // Draw the image centered on the point
+            canvas.drawBitmap(image, -halfW, -halfH, null);
+
+            canvas.restore();
+
+            distance += spacing;
         }
     }
 }

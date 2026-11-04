@@ -1,13 +1,19 @@
 package armyc2.c5isr.renderer.utilities;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.Base64;
 import android.util.SparseArray;
 
+import com.caverock.androidsvg.SVG;
+import com.caverock.androidsvg.SVGParseException;
+
+import java.io.ByteArrayOutputStream;
 import java.util.Map;
 import java.util.TreeSet;
 import java.util.logging.Level;
@@ -18,6 +24,18 @@ public class RendererUtilities {
 
     private static final float OUTLINE_SCALING_FACTOR = 2.5f;
 	private static SparseArray<Color> pastIdealOutlineColors = new SparseArray<Color>();
+
+    public static String imgToBase64String(Bitmap bitmap) {
+        final int COMPRESSION_QUALITY = 100;
+        String encodedImage;
+        ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, COMPRESSION_QUALITY,
+                byteArrayBitmapStream);
+        byte[] b = byteArrayBitmapStream.toByteArray();
+        encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+        return "data:image/png;base64," + encodedImage;
+    }
+
 	/**
      * 
      * @param color {String} color like "#FFFFFF"
@@ -665,5 +683,23 @@ public class RendererUtilities {
     // Overloaded method to return non-outline symbols as normal.
     public static String setSVGSPCMColors(String symbolID, String svg, Color strokeColor, Color fillColor) {
         return setSVGSPCMColors(symbolID, svg, strokeColor, fillColor, false,null,0,0);
+    }
+
+    public static Bitmap renderSVG(Rect bounds, String svg)
+    {
+        Bitmap bmp = null;
+        SVG mySVG = null;
+        try {
+            bmp = Bitmap.createBitmap(bounds.width(),bounds.height(), Bitmap.Config.ARGB_8888);
+            mySVG = SVG.getFromString(svg);
+            mySVG.setDocumentViewBox(bounds.left, bounds.top, bounds.width(), bounds.height());
+            Canvas canvas = new Canvas(bmp);
+            mySVG.renderToCanvas(canvas);
+        }
+        catch(Exception exc)
+        {
+            ErrorLogger.LogException("SinglePointRenderer", "RenderUnit", exc);
+        }
+        return bmp;
     }
 }

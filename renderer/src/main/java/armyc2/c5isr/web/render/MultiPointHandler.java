@@ -1644,6 +1644,7 @@ public class MultiPointHandler {
         int lineWidth = 0;
         String altMode = null;
         boolean useDashArray = symbol.getUseDashArray();
+        boolean useLinePattern = symbol.getUseLinePattern();
         boolean usePatternFill = symbol.getUseFillPattern();
         int patternFillType = 0;
         boolean hideOptionalLabels = false;
@@ -1783,6 +1784,10 @@ public class MultiPointHandler {
                     useDashArray = Boolean.parseBoolean(saAttributes.get(MilStdAttributes.UseDashArray));
                 }
 
+                if (saAttributes.containsKey(MilStdAttributes.UseLinePattern)) {
+                    useLinePattern = Boolean.parseBoolean(saAttributes.get(MilStdAttributes.UseLinePattern));
+                }
+
                 if (saAttributes.containsKey(MilStdAttributes.UsePatternFill)) {
                     usePatternFill = Boolean.parseBoolean(saAttributes.get(MilStdAttributes.UsePatternFill));
                 }
@@ -1849,6 +1854,7 @@ public class MultiPointHandler {
             }
 
             symbol.setUseDashArray(useDashArray);
+            symbol.setUseLinePattern(useLinePattern);
             symbol.setUseFillPattern(usePatternFill);
             symbol.setHideOptionalLabels(hideOptionalLabels);
             symbol.setAltitudeUnit(altitudeUnit);
