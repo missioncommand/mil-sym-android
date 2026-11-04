@@ -4,7 +4,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 apply plugin: 'org.jreleaser'
 
-version = "2.12.8"
+version = "2.12.9"
 
 android {
     namespace "armyc2.c5isr.renderer"
