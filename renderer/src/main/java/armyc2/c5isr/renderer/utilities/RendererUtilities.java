@@ -4,9 +4,11 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Build;
 import android.util.Base64;
 import android.util.SparseArray;
 
@@ -630,6 +632,34 @@ public class RendererUtilities {
     public static int calculateOutlineWidth()
     {
         return RendererSettings.getInstance().getDeviceDPI()>240 ? (RendererSettings.getInstance().getDeviceDPI()/240 * 2) + 1 : 3;
+    }
+
+    /**
+     * Safely computes and returns the bounds of an Android Path.
+     * Uses the modern, high-precision getBounds() API on Android 14+ (API 34)
+     * and falls back gracefully on older devices.
+     *
+     * @param path The path to evaluate.
+     * @return A RectF containing the exact bounding box of the path.
+     */
+    public static RectF getPathBounds(Path path) {
+        if (path == null) {
+            return new RectF();
+        }
+
+        // Android 14 (UPSIDE_DOWN_CAKE) introduced the API 34+ path iterator bounds
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            return path.getBounds();
+        } else {//*/
+            // Fallback for older devices (API 33 and below)
+            RectF bounds = new RectF();
+
+            @SuppressWarnings("deprecation")
+            boolean exact = true; // Use control points to calculate bounds
+            path.computeBounds(bounds, exact);
+
+            return bounds;
+       // }
     }
 
     /**

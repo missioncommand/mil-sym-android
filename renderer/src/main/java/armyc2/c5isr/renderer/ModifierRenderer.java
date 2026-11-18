@@ -8,6 +8,7 @@ import java.util.Map;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.DashPathEffect;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
@@ -1341,6 +1342,126 @@ public class ModifierRenderer
         }
         // </editor-fold>
 
+        // <editor-fold defaultstate="collapsed" desc="Build Unmanned Indicator">
+        RectF umBounds = null;
+        PointF umCirclePoint = null;
+        float umCircleRadius = 9f;
+        Path umPath = null;
+        String umSVG = null;
+        double umStrokeWidth = 2;
+        PointF umStarPointSVG = null;
+        PointF umCirclePointSVG = null;
+        int hqtfd = SymbolID.getHQTFD(symbolID);
+        if(pixelSize <= 50)
+            umStrokeWidth = 1;
+        if(hqtfd == SymbolID.HQTFD_Unmanned_Marker ||
+                hqtfd == SymbolID.HQTFD_Unmanned_Marker_Autonomous ||
+                hqtfd == SymbolID.HQTFD_Unmanned_Marker_Remotely_Piloted ||
+                hqtfd == SymbolID.HQTFD_Unmanned_Marker_FeintDummy ||
+                hqtfd == SymbolID.HQTFD_Unmanned_Marker_Autonomous_FeintDummy ||
+                hqtfd == SymbolID.HQTFD_Unmanned_Marker_Remotely_Piloted_FeintDummy)
+        {
+            //octagon~182.08058166503906~272.0794677734375~245.8407440185547~244.85235595703125
+            //restricted~375.44801678047673~248.63298320770264~85.1039714496415~79.36734275822477
+            //no-strike~378.0~248.0~80.0~80.0
+            //<circle cx="418" cy="288" fill="yellow" r="36" stroke="black" stroke-width="8"/>
+            //<line fill="none" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="8" x1="390" x2="446" y1="265" y2="310"/>
+            //nsCircle = new Ellipse(x,y,radius * 2, radius * 2);
+            //nsLine = new Line(390 * ratio, 265 * ratio, 446 * ratio, 310 * ratio);
+            double nsTx = 0;
+            double nsTy = 0;
+            double ratio = 1;
+            float ratioF = 1f;
+            SVGInfo si = SVGLookup.getInstance().getSVGLInfo(SVGLookup.getFrameID(symbolID),SymbolID.getVersion(symbolID));
+            if(symbolBounds.height() > symbolBounds.width())
+            {
+                double sHeight = si.getBbox().height();
+                ratio = symbolBounds.height() / sHeight;
+            }
+            else
+            {
+                double sWidth = si.getBbox().width();
+                ratio = symbolBounds.width() / sWidth;
+            }
+
+            ratioF = (float)ratio;
+            float umTx = (si.getBbox().left * ratioF) * -1;
+            float umTy = (si.getBbox().top * ratioF) * -1;
+
+            float xOffset = 0;
+            float yOffset = 0;
+
+            char fs = SymbolID.getFrameShape(symbolID);
+            if(fs == 0)
+                fs = SymbolID.getDefaultFrameShape(symbolID);
+
+
+            Rectangle2D octagonBounds = new Rectangle2D.Double(182.08058166503906,272.0794677734375,245.8407440185547,244.85235595703125);
+            int affiliation = SymbolID.getAffiliation(symbolID);
+
+            if(fs == SymbolID.FrameShape_SeaSubsurface || affiliation == SymbolID.StandardIdentity_Affiliation_Neutral ||
+                    (affiliation == SymbolID.StandardIdentity_Affiliation_Friend &&
+                            (ss == SymbolID.SymbolSet_LandUnit ||
+                                    ss == SymbolID.SymbolSet_LandInstallation ||
+                                    ss == SymbolID.SymbolSet_Activities ||
+                                    ss == SymbolID.SymbolSet_CyberSpace
+                            )))
+            {
+                //indicator just sits on the left side of the symbol
+                String frameID = SVGLookup.getFrameID(symbolID);
+                SVGInfo siFrame = SVGLookup.getInstance().getSVGLInfo(frameID,SymbolID.getVersion(symbolID));
+
+                int lineWidthAdjustment = 9;
+                xOffset = (205 -  siFrame.getBbox().left - lineWidthAdjustment) * -1;
+                //xOffset = -305 * ratio;//((octagonBounds.getWidth() * 1.3) - half) * -1;
+            }
+            else if(affiliation == SymbolID.StandardIdentity_Affiliation_Unknown &&
+                    ss == SymbolID.SymbolSet_SeaSubsurface)
+            {
+                String frameID = SVGLookup.getFrameID(symbolID);
+                SVGInfo siFrame = SVGLookup.getInstance().getSVGLInfo(frameID,SymbolID.getVersion(symbolID));
+                xOffset = ((205 -  siFrame.getBbox().left) * 0.75f) * -1;
+            }
+            else//else, rest can use default position of x=205
+            {
+                yOffset = -20;
+            }
+
+            umPath = createUnmannedIndicatorShape(xOffset ,yOffset);
+            Matrix scaleMatrix = new Matrix();
+            scaleMatrix.setScale((float)ratio,(float)ratio);
+            umPath.transform(scaleMatrix);
+            if(hqtfd == SymbolID.HQTFD_Unmanned_Marker || hqtfd == SymbolID.HQTFD_Unmanned_Marker_FeintDummy) {
+                umCirclePoint = new PointF((205f + xOffset) * ratioF, (310.188f + yOffset) * ratioF);
+                umCircleRadius = 9f/2f * ratioF;
+            }
+            umBounds = RendererUtilities.getPathBounds(umPath); //RectUtilities.toRectangle2D(169,277,72,66);
+            RectUtilities.grow(umBounds,(int)Math.ceil(umStrokeWidth/2));
+
+            //need to shift like we do the frame and main icons since it's based in that space
+            //AffineTransform txfm = AffineTransform.getTranslateInstance(nsTx,nsTy);
+            if(umCirclePoint != null) {
+                umCirclePoint = new PointF(umCirclePoint.x + umTx, umCirclePoint.y + umTy);
+            }
+            Matrix translateMatrix = new Matrix();
+            translateMatrix.setTranslate(umTx,umTy);
+            umPath.transform(translateMatrix);
+            umBounds = RendererUtilities.getPathBounds(umPath);
+            imageBounds.union(RectUtilities.makeRectFromRectF(umBounds));
+
+            //For SVG output
+            umStarPointSVG = new PointF(205,343.841f);
+            umCirclePointSVG = new PointF(205,310);
+
+            //adjust start points and bounds with offset.
+            umStarPointSVG.x = umStarPointSVG.x + xOffset;
+            umStarPointSVG.y = umStarPointSVG.y + yOffset;
+            umCirclePointSVG.x = umCirclePointSVG.x + xOffset;
+            umCirclePointSVG.y = umCirclePointSVG.y + yOffset;
+            RectUtilities.shift(umBounds,xOffset,yOffset);
+        }
+        // </editor-fold>
+
         // <editor-fold defaultstate="collapsed" desc="Shift Modifiers">
         //adjust points if necessary
         if (sdi instanceof ImageInfo && (imageBounds.left < 0 || imageBounds.top < 0))
@@ -1418,6 +1539,13 @@ public class ModifierRenderer
                 nsBounds.offset(shiftX, shiftY);//bounds
                 nsCirclePt.offset(shiftX, shiftY);//circle
                 nsLine.offset(shiftX, shiftY);//line
+            }
+            if(umBounds != null)
+            {
+                umBounds.offset(shiftX, shiftY);//bounds
+                if(umCirclePoint != null)
+                    umCirclePoint.offset(shiftX, shiftY);//circle
+                umPath.offset(shiftX, shiftY);//star
             }
             if (domBounds != null)
             {
@@ -1623,6 +1751,26 @@ public class ModifierRenderer
                 noStrikeGroup += Shape2SVG.Convert(nssvgLine, "#000000", null, String.valueOf(nsStrokeWidth),svgAlpha,svgAlpha,null,null);
                 noStrikeGroup += "</g>";
                 sbSVG.append(noStrikeGroup);
+            }
+
+            if(umBounds != null)
+            {
+                String umStroke = "#000000";
+                String umFill = "#FFFFFF";
+                if(hqtfd == SymbolID.HQTFD_Unmanned_Marker_Autonomous || hqtfd == SymbolID.HQTFD_Unmanned_Marker_Autonomous_FeintDummy)
+                {
+                    umStroke = "#FFFFFF";
+                    umFill = "#000000";
+                }
+
+                umSVG = "<g id=\"UM\">\n\t";
+                umSVG += "<path stroke=\"" + umStroke + "\" fill=\"" + umFill + "\" stroke-width=\"" + umStrokeWidth + "\" d=\"M" + umStarPointSVG.x + "," + umStarPointSVG.y + "c-3.207,-5.299,-5.694,-10.540,-9.796,-15.138c-1.306,-1.614,-2.681,-3.184,-4.121,-4.691c-5.808,-5.497,-12.601,-11.068,-20.332,-13.823c7.731,-2.755,14.524,-8.326,20.332,-13.823c1.440,-1.508,2.816,-3.077,4.121,-4.691c4.102,-4.598,6.590,-9.840,9.796,-15.138c3.207,5.299,5.694,10.540,9.796,15.138c1.306,1.614,2.681,3.184,4.121,4.691c5.808,5.497,12.601,11.068,20.332,13.823c-7.731,2.755,-14.524,8.326,-20.332,13.823c-1.440,1.508,-2.816,3.077,-4.121,4.691c-4.102,4.598,-6.590,9.840,-9.796,15.138z\"/>";
+                if(hqtfd == SymbolID.HQTFD_Unmanned_Marker || hqtfd == SymbolID.HQTFD_Unmanned_Marker_FeintDummy)
+                    umSVG += "\n\t" + "<circle r=\"7\" cx=\"" + umCirclePointSVG.x + "\" cy=\"" + umCirclePointSVG.y + "\" fill=\"black\" />";
+                umSVG += "\n</g>";
+
+                //Make it part of the symbol group so it gets scaled accordingly
+                sbSVG.insert(sbSVG.length()-4,umSVG);
             }
 
             if (domBounds != null)
@@ -1925,6 +2073,32 @@ public class ModifierRenderer
                 //draw slash
                 ctx.drawPath(nsLine,nsPaint);
 
+            }
+            if(umBounds != null)
+            {
+                Paint umPaint = new Paint();
+                Color umStroke = Color.BLACK;
+                Color umFill = Color.WHITE;
+                if(hqtfd == SymbolID.HQTFD_Unmanned_Marker_Autonomous || hqtfd == SymbolID.HQTFD_Unmanned_Marker_Autonomous_FeintDummy)
+                {
+                    umStroke = Color.WHITE;
+                    umFill = Color.BLACK;
+                }
+
+                umPaint.setStrokeWidth((float)umStrokeWidth);
+                umPaint.setColor(umFill.toInt());
+                umPaint.setAlpha(alpha);
+                umPaint.setStyle(Style.FILL);
+                ctx.drawPath(umPath,umPaint);
+                umPaint.setColor(umStroke.toInt());
+                umPaint.setStyle(Style.STROKE);
+                ctx.drawPath(umPath,umPaint);
+
+                if(umCirclePoint != null) {
+                    umPaint.setColor(Color.BLACK.toInt());
+                    umPaint.setStyle(Style.FILL);
+                    ctx.drawCircle(umCirclePoint.x,umCirclePoint.y,umCircleRadius,umPaint);
+                }
             }
 
             if (domBounds != null) {
@@ -2300,6 +2474,47 @@ public class ModifierRenderer
         domPath.lineTo(domPoints[4].x, domPoints[4].y);
         domPath.lineTo(domPoints[5].x, domPoints[5].y);
         ctx.drawPath(domPath, domPaint);
+    }
+
+    private static Path createUnmannedIndicatorShape()
+    {
+        return createUnmannedIndicatorShape(0,0);
+    }
+    private static Path createUnmannedIndicatorShape(float xOffset, float yOffset) {
+        Path path = new Path();
+
+        // Track cursor for relative offset calculations
+        float x = 205.000f + xOffset;
+        float y = 343.841f + yOffset;
+
+        // 1. Establish the scaled starting point (Bottom Tip)
+        path.moveTo(x, y);
+
+        // 2. Bottom-Left Quadrant
+        // rCubicTo parameters: (dx1, dy1, dx2, dy2, dx3, dy3) relative to the cursor
+        path.rCubicTo(-3.207f, -5.299f, -5.694f, -10.540f, -9.796f, -15.138f);
+        path.rCubicTo(-1.306f, -1.614f, -2.681f, -3.184f, -4.121f, -4.691f);
+        path.rCubicTo(-5.808f, -5.497f, -12.601f, -11.068f, -20.332f, -13.823f);
+
+        // 3. Top-Left Quadrant
+        path.rCubicTo(7.731f, -2.755f, 14.524f, -8.326f, 20.332f, -13.823f);
+        path.rCubicTo(1.440f, -1.508f, 2.816f, -3.077f, 4.121f, -4.691f);
+        path.rCubicTo(4.102f, -4.598f, 6.590f, -9.840f, 9.796f, -15.138f);
+
+        // 4. Top-Right Quadrant
+        path.rCubicTo(3.207f, 5.299f, 5.694f, 10.540f, 9.796f, 15.138f);
+        path.rCubicTo(1.306f, 1.614f, 2.681f, 3.184f, 4.121f, 4.691f);
+        path.rCubicTo(5.808f, 5.497f, 12.601f, 11.068f, 20.332f, 13.823f);
+
+        // 5. Bottom-Right Quadrant
+        path.rCubicTo(-7.731f, 2.755f, -14.524f, 8.326f, -20.332f, 13.823f);
+        path.rCubicTo(-1.440f, 1.508f, -2.816f, 3.077f, -4.121f, 4.691f);
+        path.rCubicTo(-4.102f, 4.598f, -6.590f, 9.840f, -9.796f, 15.138f);
+
+        // 6. Close the path
+        path.close();
+
+        return path;
     }
 
     private static Rect processOperationalConditionIndicator(String symbolID, Rect symbolBounds, int offsetY)
