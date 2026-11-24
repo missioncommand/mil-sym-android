@@ -5631,7 +5631,7 @@ public class ModifierRenderer
             {
 
                 //Only Command & Control has AA; ec.equals("110000").  Always in the middle of the unit.
-                if(modifiers.containsKey(Modifiers.AA_SPECIAL_C2_HQ))
+                if(modifiers.containsKey(Modifiers.AA_SPECIAL_C2_HQ) && SymbolUtilities.hasModifier(symbolID, Modifiers.AA_SPECIAL_C2_HQ))
                 {
                     temp = modifiers.get(Modifiers.AA_SPECIAL_C2_HQ);
                     if(temp != null && !temp.isEmpty())
@@ -6557,7 +6557,7 @@ public class ModifierRenderer
             {
 
                 //Only Command & Control has AA; ec.equals("110000").  Always in the middle of the unit.
-                if(modifiers.containsKey(Modifiers.AA_SPECIAL_C2_HQ))
+                if(modifiers.containsKey(Modifiers.AA_SPECIAL_C2_HQ) && SymbolUtilities.hasModifier(symbolID, Modifiers.AA_SPECIAL_C2_HQ))
                 {
                     temp = modifiers.get(Modifiers.AA_SPECIAL_C2_HQ);
                     if(temp != null && !temp.isEmpty())
@@ -7764,7 +7764,7 @@ public class ModifierRenderer
             {
 
                 //Only Command & Control has AA; ec.equals("110000").  Always in the middle of the unit.
-                if(modifiers.containsKey(Modifiers.AA_SPECIAL_C2_HQ))
+                if(modifiers.containsKey(Modifiers.AA_SPECIAL_C2_HQ) && SymbolUtilities.hasModifier(symbolID, Modifiers.AA_SPECIAL_C2_HQ))
                 {
                     temp = modifiers.get(Modifiers.AA_SPECIAL_C2_HQ);
                     if(temp != null && !temp.isEmpty())
