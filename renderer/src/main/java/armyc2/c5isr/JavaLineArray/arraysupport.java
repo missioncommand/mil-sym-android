@@ -2859,7 +2859,8 @@ public final class arraysupport {
                     break;
                 case TacticalLines.MSDZ:
                     lineutility.InitializePOINT2Array(circlePoints);
-                    pt3 = new POINT2(pLinePoints[3]);
+                    //no longer using 4th point in 2525D+
+                    //pt3 = new POINT2(pLinePoints[3]);
                     //dRadius = lineutility.CalcDistanceDouble(pt0, pt1);
                     if(converter==null)
                     {
@@ -2889,7 +2890,9 @@ public final class arraysupport {
                     }
                     pLinePoints[199].style = 5;
                     //dRadius = lineutility.CalcDistanceDouble(pt0, pt3);
-                   if (vblSaveCounter == 4) {
+                    //Next block was for when there was 4 points
+                    //2525D+ only has 3, down 1 from 2525C
+                   /*if (vblSaveCounter == 4) {
                        if (converter == null) {
                            dRadius = lineutility.CalcDistanceDouble(pt0, pt3);
                            lineutility.CalcCircleDouble(pt0, dRadius, 100,
@@ -2900,7 +2903,7 @@ public final class arraysupport {
                        for (j = 0; j < 100; j++) {
                            pLinePoints[200 + j] = new POINT2(circlePoints[j]);
                        }
-                   }
+                   }//*/
                     acCounter = vblCounter;
                     //FillPoints(pLinePoints,acCounter,points);
                     break;
